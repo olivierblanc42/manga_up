@@ -1,4 +1,4 @@
-package com.mangaup.manga_up;
+package manga_up.manga_up;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

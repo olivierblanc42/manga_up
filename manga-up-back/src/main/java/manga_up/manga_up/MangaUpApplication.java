@@ -1,4 +1,4 @@
-package com.mangaup.manga_up;
+package manga_up.manga_up;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

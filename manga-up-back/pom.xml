@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.2</version>
+		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mangaup</groupId>
-	<artifactId>manga-up</artifactId>
+	<groupId>manga_up</groupId>
+	<artifactId>manga_up</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>manga-up</name>
-	<description>Demo project for Spring Boot</description>
+	<name>manga_up</name>
+	<description>project manga up back</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -63,6 +63,11 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.3</version>
 		</dependency>
 	</dependencies>
 
