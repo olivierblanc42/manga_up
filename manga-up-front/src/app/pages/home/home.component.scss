@@ -1,0 +1,53 @@
+@use '../../../variables.scss' as *;
+
+
+.infos-avis {
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.infos {
+    background-color: $secondary;
+    color: $white;
+    width: 100%;
+
+    .trait-vertical {
+        display: none;
+    }
+
+    .verticale-mobile {
+        display: block;
+    }
+
+    >img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    >div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: $gap;
+        flex-wrap: wrap;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $gap;
+        flex-wrap: wrap;
+        min-width: 255px;
+        justify-content: center;
+   >div{
+    min-width: 140px;
+   }
+        span {
+            font-weight: $font-bold;
+        }
+    }
+}

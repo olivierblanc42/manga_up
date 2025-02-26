@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+@use './variables.scss' as *;
+
+
+
+
+body {
+    font-family: $font-primary;
+    font-weight: $font-regular;
+    font-size: $font-content-mobile;
+    margin: 0;
+    h1 {
+        font-size: $font-h1-mobile;
+        font-weight: $font-bold;
+
+    }
+
+    h2 {
+        font-size: $font-h2-mobile;
+        font-weight: $font-bold;
+        text-transform: uppercase;
+        margin-top: 0px;
+    }
+}
+
+.icons{
+    width: 24px;
+    height: 24px;
+}
+
+
+.section {
+    display: flex;
+    flex-direction: column;
+    margin: $margin-section-mobile $margin-content-mobile;
+}
+
+.section__title {
+    h2 {
+        color: $secondary;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+        width: 100%;
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0%;
+            width: 100%;
+            bottom: 0; 
+            height: 5px; 
+            background-image: url('../public/images/Line_3.webp');
+            background-size: contain;
+            background-repeat: no-repeat; 
+        }
+    }
+}
+
+
+
+
+@media (min-width: 1920px) {
+
+    body {
+        font-family: $font-primary;
+        font-weight: $font-regular;
+        margin: 0;
+        font-size: $font-content;
+        background: #f5f5f5;
+
+        h1 {
+            font-size: $font-h1;
+            font-weight: $font-bold;
+
+        }
+
+        h2 {
+            font-size: $font-h2;
+            font-weight: $font-bold;
+            text-transform: uppercase;
+            margin-top: 0px;
+        }
+
+    }
+}

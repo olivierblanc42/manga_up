@@ -1,0 +1,204 @@
+@use '../variables.scss' as *;
+
+.first-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: $gap;
+    margin-right: $gap;
+
+    .logo {
+        
+        width: 162px;
+        height: 48px;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .first-nav__icons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+
+        .fa-bars {
+            display: block;
+        }
+    }
+}
+
+.secondary-nav {
+    display: none;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    background: $gradient-dark;
+    color: $white ;
+
+    >div:nth-child(1) {
+        margin-bottom: 18px;
+    }
+
+    >div:nth-child(2) {
+        >img {
+            width: 100%;
+        }
+    }
+
+    >div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .footer-link {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .sociale {
+            display: flex;
+            flex-direction: row;
+            gap: $gap;
+        }
+    }
+}
+
+
+
+@media (min-width: 1920px) {
+
+    .first-nav {
+        margin-left: $margin-content;
+        margin-right: $margin-content;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        .logo {
+            width: 340px;
+            height: 100px;
+        }
+
+        .search {
+            display: none;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: $border-radius;
+            font-size: $font-content;
+            padding: $padding-s;
+        }
+
+        .first-nav__icons {
+            min-width: 174px;
+            max-width: 174px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .fa-bars {
+                display: none;
+            }
+        }
+
+        .search {
+            display: block;
+            min-width: 585px;
+            max-width: 585px;
+        }
+    }
+
+
+
+    .secondary-nav {
+        display: block;
+        background: $primary;
+        color: $white ;
+        font-size: $font-bold;
+        margin-bottom: $margin-section;
+
+        .secondary-content {
+            margin-left: $margin-content;
+            margin-right: $margin-content;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+
+            >div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                min-width: 197px;
+                justify-content: center;
+
+                >div {
+                    a {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: $gap;
+                        padding-left: $padding-s;
+                        color: $white;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+
+    footer {
+        display: flex;
+        flex-direction: column;
+        background: $gradient-dark;
+        color: $white ;
+
+        >div:nth-child(2) {
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+
+            >img {
+                width: 100%;
+            }
+        }
+
+        >div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: $margin-content;
+            margin-right: $margin-content;
+
+            .footer-link {
+                display: flex;
+                flex-direction: row;
+                gap: $gap;
+            }
+
+            .sociale {
+                display: flex;
+                flex-direction: row;
+                gap: $gap;
+            }
+        }
+    }
+
+}
