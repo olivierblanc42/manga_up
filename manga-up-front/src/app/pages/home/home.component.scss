@@ -56,4 +56,14 @@ swiper-container{
     width: 316px !important;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 10px;
+    .ban-img{
+        border-radius: 10px;
+        box-shadow: $shadow;
+    }
+
+}
+
+.swiper-button-next svg, .swiper-button-prev svg {
+    width: 50% !important;
 }

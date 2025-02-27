@@ -9,7 +9,7 @@
     margin-right: $gap;
 
     .logo {
-        
+
         width: 162px;
         height: 48px;
     }
@@ -129,6 +129,8 @@ footer {
         color: $white ;
         font-size: $font-bold;
         margin-bottom: $margin-section;
+        padding-bottom: 20px;
+        padding-top: 20px;
 
         .secondary-content {
             margin-left: $margin-content;
