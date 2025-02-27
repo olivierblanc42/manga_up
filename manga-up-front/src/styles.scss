@@ -23,6 +23,25 @@ body {
     }
 }
 
+.btn {
+    background: $button-color ;
+    box-sizing: border-box;
+    padding: $padding-xs $padding;
+    color: $white;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+.btn-card {
+    p {
+        padding-left: $padding-xs;
+    }
+
+    i {
+        padding-right: $padding-xs;
+    }
+}
+
 .icons{
     width: 24px;
     height: 24px;
