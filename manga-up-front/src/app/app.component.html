@@ -1,7 +1,7 @@
 <header>
   <nav>
     <div class="first-nav">
-      <a  routerLink="/">
+      <a routerLink="/">
         <img class="logo" src="images/manga-up-logo.webp" alt="logomanga UP">
 
       </a>
@@ -15,8 +15,8 @@
       </div>
       <div class="first-nav__icons">
         <a><img src="svg/mdi_user.svg" alt="" class="icons"></a>
-        <img src="svg/material-symbols_list.svg" class="icons" alt="">
-        <a><img src="svg/mdi_cart-outline.svg"  alt="" class="icons"></a>
+        <img src="svg/material-symbols_list.svg" class="icons" alt="" (click)="openNav()">
+        <a><img src="svg/mdi_cart-outline.svg" alt="" class="icons"></a>
       </div>
     </div>
     <div class="secondary-nav">
@@ -31,7 +31,7 @@
         </div>
         <div>
           <div>
-            <a routerLink="genres" >
+            <a routerLink="genres">
               <img src="svg/material-symbols_list_white.svg" class="icons" alt="">
               <p>Genres</p>
             </a>
@@ -41,7 +41,7 @@
         </div>
         <div>
           <div>
-            <a routerLink="categories" >
+            <a routerLink="categories">
               <img src="svg/material-symbols_list_white.svg" class="icons" alt="">
               <p>Catégories</p>
             </a>
@@ -50,7 +50,7 @@
         </div>
         <div>
           <div>
-            <a routerLink="auteurs" >
+            <a routerLink="auteurs">
               <img src="svg/mdi_pen.svg" class="icons" alt="">
               <p>Auteurs</p>
             </a>
@@ -62,6 +62,49 @@
 
   </nav>
 </header>
+<div #mySidenav id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <div class="menu">
+
+    <a routerLink="mangas" (click)="closeNav()">
+      <div class="menu__item">
+        <img src="svg/mynaui_book-solid.svg" class="icons" alt="">
+        <img  src="images/line-off-canvas.webp"  alt="">
+
+        <p>Mangas</p>
+      </div>
+    </a>
+
+    <a routerLink="genres" (click)="closeNav()"  >
+      <div class="menu__item"  >
+        <img  src="svg/material-symbols_list_white.svg" class="icons" alt="">
+        <img  src="images/line-off-canvas.webp"  alt="">
+        <p>Genres</p>
+
+      </div>
+    </a>
+
+    <a routerLink="categories" (click)="closeNav()"  >
+      <div class="menu__item"  >
+        <img  src="svg/material-symbols_list_white.svg" class="icons" alt="">
+        <img  src="images/line-off-canvas.webp"  alt="">
+        <p>Catégories</p>
+
+      </div>
+    </a>
+
+    <a routerLink="auteurs" (click)="closeNav()"   >
+      <div class="menu__item" >
+        <img src="svg/mdi_pen.svg" class="icons" alt="">
+        <img  src="images/line-off-canvas.webp"  alt="">
+        <p>Auteurs</p>
+
+      </div>
+    </a>
+  </div>
+
+</div>
+
 
 
 <router-outlet />
@@ -70,21 +113,22 @@
 
 <footer>
   <div>
-      <div class="footer-link">
-          <p>Contact</p>
-          <p>Cookies et vie privée</p>
-          <p>Connexion </p>
-      </div>
-      <div class="sociale">
-          <img src="svg\ic_baseline-discord.svg" class="icons">
-          <img src="svg\prime_twitter.svg" class="icons">
-          <img src="svg\ic_baseline-facebook.svg" class="icons">
-          <img src="svg\lets-icons_insta.svg" class="icons">      </div>
+    <div class="footer-link">
+      <p>Contact</p>
+      <p>Cookies et vie privée</p>
+      <p>Connexion </p>
+    </div>
+    <div class="sociale">
+      <img src="svg\ic_baseline-discord.svg" class="icons">
+      <img src="svg\prime_twitter.svg" class="icons">
+      <img src="svg\ic_baseline-facebook.svg" class="icons">
+      <img src="svg\lets-icons_insta.svg" class="icons">
+    </div>
   </div>
   <div>
-      <img src="images/Line_1.webp" alt="">
+    <img src="images/Line_1.webp" alt="">
   </div>
   <div>
-      <p>Copyright © 2025 Manga’Up </p>
+    <p>Copyright © 2025 Manga’Up </p>
   </div>
 </footer>
