@@ -236,7 +236,8 @@ footer {
             flex-direction: column;
             align-items: center;
             row-gap: 10px;
-            p{
+
+            p {
                 text-transform: uppercase;
                 margin: 0px;
             }
@@ -245,7 +246,8 @@ footer {
 }
 
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding-top: 8px;
+    padding-right: 8px;
     text-decoration: none;
     font-size: 25px;
     color: #818181;
@@ -265,10 +267,7 @@ footer {
     margin-left: 50px;
 }
 
-#main {
-    transition: margin-left .5s;
-    padding: 16px;
-}
+
 
 @media screen and (max-height: 450px) {
     .sidenav {
