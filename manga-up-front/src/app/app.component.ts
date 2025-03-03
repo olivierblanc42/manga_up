@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
+import { CardComponent } from "./components/card/card.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, BreadcrumbComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true

@@ -3,10 +3,10 @@
 
 :root {
     /* Change la couleur des flèches dans swiper*/
-    --swiper-navigation-color: black; 
-    --swiper-pagination-color: black; 
-  }
-  
+    --swiper-navigation-color: black;
+    --swiper-pagination-color: black;
+
+}
 
 
 body {
@@ -14,6 +14,7 @@ body {
     font-weight: $font-regular;
     font-size: $font-content-mobile;
     margin: 0;
+
     h1 {
         font-size: $font-h1-mobile;
         font-weight: $font-bold;
@@ -35,11 +36,17 @@ body {
     color: $white;
     border-radius: 2px;
     text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    font-size: $font-mobile-btn ;
 }
 
 .btn-card {
     p {
         padding-left: $padding-xs;
+        margin: 0;
     }
 
     i {
@@ -47,7 +54,7 @@ body {
     }
 }
 
-.icons{
+.icons {
     width: 24px;
     height: 24px;
 }
@@ -66,22 +73,97 @@ body {
         display: inline-block;
         padding-bottom: 10px;
         width: 100%;
+
         &::after {
             content: '';
             position: absolute;
             left: 0%;
             width: 100%;
-            bottom: 0; 
-            height: 5px; 
+            bottom: 0;
+            height: 5px;
             background-image: url('../public/images/Line_3.webp');
             background-size: contain;
-            background-repeat: no-repeat; 
+            background-repeat: no-repeat;
         }
     }
 }
 
+.card {
+    box-shadow: $shadow;
+    background: $background-color;
+    color: $secondary ;
+}
 
+.card-manga {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $padding-s $padding ;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
 
+    h3,
+    p {
+        margin: 0;
+    }
+
+    >img {
+        width: 180px;
+        height: 280px;
+
+    }
+
+    >div {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .card-manga__title {
+            color: black;
+        }
+
+        .card-manga__title,
+        .card-manga__autor {
+            text-transform: uppercase;
+            padding-bottom: 25px;
+        }
+    }
+}
+
+.card-genre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $padding-s $padding ;
+    justify-content: space-between;
+
+    >img {
+        width: 190px;
+        height: 190px;
+
+    }
+
+    >div {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .card-genre__title {
+            color: black;
+            text-transform: uppercase;
+            padding-bottom: 25px;
+        }
+
+    }
+}
+
+.swiper-button-next, .swiper-button-prev {
+
+    width: calc(var(--swiper-navigation-size) / 84* 27) !important;
+}
 
 @media (min-width: 1920px) {
 
@@ -107,9 +189,15 @@ body {
 
     }
 
-    .icons{
+    .icons {
         width: 48px;
         height: 48px;
     }
 }
 
+.swiper-button-next svg, .swiper-button-prev svg {
+    width: 50% !important;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: center;
+}
