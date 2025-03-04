@@ -15,7 +15,7 @@
       </div>
       <div class="first-nav__icons">
         <a><img src="svg/mdi_user.svg" alt="" class="icons"></a>
-        <img src="svg/material-symbols_list.svg" class="icons" alt="" (click)="openNav()">
+        <img src="svg/material-symbols_list.svg" class="icons  menu" alt="" (click)="openNav()">
         <a><img src="svg/mdi_cart-outline.svg" alt="" class="icons"></a>
       </div>
     </div>
@@ -69,34 +69,34 @@
     <a routerLink="mangas" (click)="closeNav()">
       <div class="menu__item">
         <img src="svg/mynaui_book-solid.svg" class="icons" alt="">
-        <img  src="images/line-off-canvas.webp"  alt="">
+        <img src="images/line-off-canvas.webp" alt="">
 
         <p>Mangas</p>
       </div>
     </a>
 
-    <a routerLink="genres" (click)="closeNav()"  >
-      <div class="menu__item"  >
-        <img  src="svg/material-symbols_list_white.svg" class="icons" alt="">
-        <img  src="images/line-off-canvas.webp"  alt="">
+    <a routerLink="genres" (click)="closeNav()">
+      <div class="menu__item">
+        <img src="svg/material-symbols_list_white.svg" class="icons" alt="">
+        <img src="images/line-off-canvas.webp" alt="">
         <p>Genres</p>
 
       </div>
     </a>
 
-    <a routerLink="categories" (click)="closeNav()"  >
-      <div class="menu__item"  >
-        <img  src="svg/material-symbols_list_white.svg" class="icons" alt="">
-        <img  src="images/line-off-canvas.webp"  alt="">
+    <a routerLink="categories" (click)="closeNav()">
+      <div class="menu__item">
+        <img src="svg/material-symbols_list_white.svg" class="icons" alt="">
+        <img src="images/line-off-canvas.webp" alt="">
         <p>Catégories</p>
 
       </div>
     </a>
 
-    <a routerLink="auteurs" (click)="closeNav()"   >
-      <div class="menu__item" >
+    <a routerLink="auteurs" (click)="closeNav()">
+      <div class="menu__item">
         <img src="svg/mdi_pen.svg" class="icons" alt="">
-        <img  src="images/line-off-canvas.webp"  alt="">
+        <img src="images/line-off-canvas.webp" alt="">
         <p>Auteurs</p>
       </div>
     </a>
@@ -104,7 +104,10 @@
 
 </div>
 
-<xng-breadcrumb></xng-breadcrumb>
+
+<xng-breadcrumb class="breadcrumb">
+
+</xng-breadcrumb>
 
 
 <router-outlet />
@@ -114,9 +117,9 @@
 <footer>
   <div>
     <div class="footer-link">
-      <p>Contact</p>
-      <p>Cookies et vie privée</p>
-      <p>Connexion </p>
+      <a>Contact</a>
+      <a routerLink="privacy">Cookies et vie privée</a>
+      <a >Connexion</a>
     </div>
     <div class="sociale">
       <img src="svg\ic_baseline-discord.svg" class="icons">

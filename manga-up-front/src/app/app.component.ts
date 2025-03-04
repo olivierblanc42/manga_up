@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { NavigationEnd, RouterModule, RouterOutlet,Router } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
 import { CardComponent } from "./components/card/card.component";
-
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterModule, BreadcrumbComponent],
@@ -13,7 +13,20 @@ import { CardComponent } from "./components/card/card.component";
 export class AppComponent  implements OnInit {
   title = 'manga-up-front';
   sidenav = viewChild<ElementRef<HTMLElement>>('mySidenav');
-  ngOnInit(): void {
+  
+
+  constructor(private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      if (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home') {
+        document.body.classList.add('home-page');
+      } else {
+        document.body.classList.remove('home-page');
+      }
+    });
+  }
+    ngOnInit(): void {
 
   }
 

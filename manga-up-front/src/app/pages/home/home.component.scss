@@ -1,5 +1,8 @@
 @use '../../../variables.scss' as *;
 
+.main_bredcrumb {
+    display: none !important;
+}
 
 .infos-avis {
     height: 100px;
@@ -28,7 +31,7 @@
 
     >div {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: $gap;
@@ -43,27 +46,54 @@
         flex-wrap: wrap;
         min-width: 255px;
         justify-content: center;
-   >div{
-    min-width: 140px;
-   }
+
+        >div {
+            min-width: 140px;
+        }
+
         span {
             font-weight: $font-bold;
         }
     }
 }
 
-swiper-container{
+swiper-container {
     width: 340px !important;
     margin-left: auto;
     margin-right: auto;
     border-radius: 10px;
-    .ban-img{
+
+    .ban-img {
         border-radius: 10px;
         box-shadow: $shadow;
     }
 
 }
 
-.swiper-button-next svg, .swiper-button-prev svg {
+.swiper-button-next svg,
+.swiper-button-prev svg {
     width: 50% !important;
 }
+
+
+/* Tablette en mode portrait (768px et plus) */
+@media (min-width: 768px) {
+
+    .swiper-genre,.swiper-manga{
+        display: none;
+    }
+
+
+}
+
+
+/* Tablette en mode paysage et petits PC portables (1024px et plus) */
+@media (min-width: 1024px) {}
+
+/* Écran PC standard et laptop (1280px et plus) */
+@media (min-width: 1280px) {}
+
+/* Grand écran PC (1440px et plus) */
+@media (min-width: 1440px) {}
+
+@media (min-width: 1920px) {}

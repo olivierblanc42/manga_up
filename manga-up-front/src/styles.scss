@@ -67,7 +67,7 @@ body {
 }
 
 .section__title {
-    h2 {
+    h1, h2 {
         color: $secondary;
         position: relative;
         display: inline-block;
@@ -88,10 +88,15 @@ body {
     }
 }
 
+.section__grid{
+display: none;
+}
+
 .card {
     box-shadow: $shadow;
     background: $background-color;
     color: $secondary ;
+    border-radius: $border-raduis-card;
 }
 
 .card-manga {
@@ -138,7 +143,8 @@ body {
     align-items: center;
     padding: $padding-s $padding ;
     justify-content: space-between;
-
+    margin-left: auto;
+    margin-right: auto;
     >img {
         width: 190px;
         height: 190px;
@@ -160,13 +166,254 @@ body {
     }
 }
 
-.swiper-button-next, .swiper-button-prev {
 
-    width: calc(var(--swiper-navigation-size) / 84* 27) !important;
+.card-cookie {
+    .card-cookie__title {
+        text-transform: uppercase;
+        background: $tertiary ;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+        h1 {
+            margin: 0px;
+            padding: $padding-s;
+        }
+    }
+
+    .card-cookie__content {
+     
+        padding-top: $padding-l;
+        padding-bottom: $padding-l;
+        padding-left: $padding-xs;
+        padding-right: $padding-xs;
+    }
 }
 
-@media (min-width: 1920px) {
 
+.single-card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    padding: $padding-s;
+    align-items: center;
+    justify-content: space-between;
+
+
+    img {
+        width: 80%;
+        max-width: 216px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 55px;
+    }
+
+    .single-card__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 80%;
+        max-width: 216px;
+        min-height: 600px;
+        margin-left: auto;
+        margin-right: auto;
+
+        >.btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        span {
+            text-transform: uppercase;
+            font-weight: $font-bold;
+        }
+
+        .single-card__summary {
+            box-shadow: $shadow;
+            background: $background-color;
+
+            >p {
+                padding: $padding-s;
+
+            }
+
+            .title__summary {
+                text-transform: uppercase;
+                background: $tertiary ;
+
+                p {
+                    font-weight: $font-bold;
+                    margin: 0px;
+                    padding: $padding-s;
+                }
+            }
+        }
+
+        .single-card__infos {
+            box-shadow: $shadow;
+            background: $background-color;
+
+            >p {
+                padding: $padding-s;
+
+            }
+
+            .title__infos {
+                text-transform: uppercase;
+                background: $tertiary ;
+
+                p {
+                    font-weight: $font-bold;
+                    margin: 0px;
+                    padding: $padding-s;
+                }
+            }
+        }
+    }
+
+}
+
+.swiper-manga{
+    height: 480px !important;
+}
+.swiper-genre{
+    height: 348px !important;
+}
+
+
+body.home-page .breadcrumb {
+    display: none !important;
+  }
+  .swiper-button-next svg, .swiper-button-prev svg {
+    width: 50% !important;
+    height: 100%;
+    object-fit: contain;
+    transform-origin: center;
+}
+
+/* Tablette en mode portrait (768px et plus) */
+@media (min-width: 768px) {
+
+    .section {
+        display: flex;
+        flex-direction: column;
+        margin: $margin-section-mobile $margin-content-mobile;
+
+
+
+        .section__grid{
+            display: grid;
+            grid-template-columns: repeat(2,50%);
+            row-gap: $margin;
+            ui-card{
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+    
+
+
+
+
+    .single-card {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+
+        img {
+            width: 80%;
+            max-width: none;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 55px;
+        }
+        .single-card__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 80%;
+            max-width: none;
+            min-height: none;
+            margin-left: auto;
+            margin-right: auto;
+    
+            >.btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+    
+            span {
+                text-transform: uppercase;
+                font-weight: $font-bold;
+            }
+    
+            .single-card__summary {
+                box-shadow: $shadow;
+                background: $background-color;
+    
+                >p {
+                    padding: $padding-s;
+    
+                }
+    
+                .title__summary {
+                    text-transform: uppercase;
+                    background: $tertiary ;
+    
+                    p {
+                        font-weight: $font-bold;
+                        margin: 0px;
+                        padding: $padding-s;
+                    }
+                }
+            }
+    
+            .single-card__infos {
+                box-shadow: $shadow;
+                background: $background-color;
+    
+                >p {
+                    padding: $padding-s;
+    
+                }
+    
+                .title__infos {
+                    text-transform: uppercase;
+                    background: $tertiary ;
+    
+                    p {
+                        font-weight: $font-bold;
+                        margin: 0px;
+                        padding: $padding-s;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+}
+/* Tablette en mode paysage et petits PC portables (1024px et plus) */
+@media (min-width: 1024px) {
+
+
+    
+}
+
+/* Écran PC standard et laptop (1280px et plus) */
+@media (min-width: 1280px) {
     body {
         font-family: $font-primary;
         font-weight: $font-regular;
@@ -193,11 +440,96 @@ body {
         width: 48px;
         height: 48px;
     }
+
+    .single-card {
+        width: 1040px;
+        height: 950px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: $padding-s;
+        align-items: center;
+        justify-content: space-between;
+
+
+        img {
+            width: 520px;
+            height: 740px;
+            margin: 0px;
+            max-width: none;
+        }
+
+        .single-card__content {
+            display: flex;
+            flex-direction: column;
+            width: 360px;
+            height: 740px;
+            justify-content: space-between;
+            max-width: none;
+
+            >.btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            span {
+                text-transform: uppercase;
+                font-weight: $font-bold;
+            }
+
+            .single-card__summary {
+                box-shadow: $shadow;
+                background: $background-color;
+
+                >p {
+                    padding: $padding-s;
+
+                }
+
+                .title__summary {
+                    text-transform: uppercase;
+                    background: $tertiary ;
+
+                    p {
+                        font-weight: $font-bold;
+                        margin: 0px;
+                        padding: $padding-s;
+                    }
+                }
+            }
+
+            .single-card__infos {
+                box-shadow: $shadow;
+                background: $background-color;
+
+                >p {
+                    padding: $padding-s;
+
+                }
+
+                .title__infos {
+                    text-transform: uppercase;
+                    background: $tertiary ;
+
+                    p {
+                        font-weight: $font-bold;
+                        margin: 0px;
+                        padding: $padding-s;
+                    }
+                }
+            }
+        }
+
+    }
 }
 
-.swiper-button-next svg, .swiper-button-prev svg {
-    width: 50% !important;
-    height: 100%;
-    object-fit: contain;
-    transform-origin: center;
+/* Grand écran PC (1440px et plus) */
+@media (min-width: 1440px) {}
+
+@media (min-width: 1920px) {
+
+ 
 }

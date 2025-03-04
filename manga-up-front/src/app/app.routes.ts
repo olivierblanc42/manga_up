@@ -4,10 +4,13 @@ import { MangasComponent } from './pages/mangas/mangas.component';
 import { GenresComponent } from './pages/genres/genres.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { AuteursComponent } from './pages/auteurs/auteurs.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
+    { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
     { path: 'mangas', component: MangasComponent },
     { path: 'genres', component: GenresComponent },
     { path: 'categories', component: CategoriesComponent },
-    { path: 'auteurs', component: AuteursComponent }
+    { path: 'auteurs', component: AuteursComponent },
+    { path: 'privacy', component: PrivacyPolicyComponent }
+
 ];

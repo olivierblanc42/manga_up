@@ -7,7 +7,10 @@
     justify-content: space-between;
     margin-left: $gap;
     margin-right: $gap;
-
+    margin-bottom: 15px;
+    .menu{
+        display: block;
+     }
     .logo {
 
         width: 162px;
@@ -40,7 +43,12 @@ footer {
     flex-direction: column;
     background: $gradient-dark;
     color: $white ;
-
+a{
+    text-decoration: none;
+    color: $white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
     >div:nth-child(1) {
         margin-bottom: 18px;
     }
@@ -75,8 +83,219 @@ footer {
 
 
 
-@media (min-width: 1920px) {
 
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    background-color: $primary;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+
+    p {
+        color: $white;
+    }
+
+    .menu {
+        min-width: 150px;
+        max-width: 150px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        margin-left: auto;
+        margin-right: auto;
+
+        .menu__item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 10px;
+
+            p {
+                text-transform: uppercase;
+                margin: 0px;
+            }
+        }
+    }
+}
+
+.sidenav a {
+    padding-top: 8px;
+    padding-right: 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+/* Tablette en mode portrait (768px et plus) */
+@media (min-width: 768px) {}
+/* Tablette en mode paysage et petits PC portables (1024px et plus) */
+@media (min-width: 1024px) {
+    .first-nav {
+        // margin-left: $margin-content;
+        // margin-right: $margin-content;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+     .menu{
+        display: none;
+     }
+
+        .search {
+            display: none;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: $border-radius;
+            font-size: $font-content;
+            padding: $padding-s;
+        }
+
+        .first-nav__icons {
+            min-width: 174px;
+            max-width: 174px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .fa-bars {
+                display: none;
+            }
+        }
+
+        .search {
+            display: block;
+            min-width: 585px;
+            max-width: 585px;
+        }
+    }
+
+
+
+    .secondary-nav {
+        display: block;
+        background: $primary;
+        color: $white ;
+        font-size: $font-bold;
+        margin-bottom: $margin-section;
+        padding-bottom: 20px;
+        padding-top: 20px;
+
+        .secondary-content {
+            margin-left: $margin-content;
+            margin-right: $margin-content;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+
+            >div {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                min-width: 197px;
+                justify-content: center;
+
+                >div {
+                    a {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: $gap;
+                        padding-left: $padding-s;
+                        color: $white;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+
+    footer {
+        display: flex;
+        flex-direction: column;
+        background: $gradient-dark;
+        color: $white ;
+
+        >div:nth-child(2) {
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+
+            >img {
+                width: 100%;
+            }
+        }
+
+        >div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: $margin-content;
+            margin-right: $margin-content;
+
+            .footer-link {
+                display: flex;
+                flex-direction: row;
+                gap: $gap;
+            }
+
+            .sociale {
+                display: flex;
+                flex-direction: row;
+                gap: $gap;
+            }
+        }
+    }
+
+}
+
+/* Écran PC standard et laptop (1280px et plus) */
+@media (min-width: 1280px) {}
+
+/* Grand écran PC (1440px et plus) */
+@media (min-width: 1440px) {}
+
+@media (min-width: 1920px) {
     .first-nav {
         margin-left: $margin-content;
         margin-right: $margin-content;
@@ -202,79 +421,6 @@ footer {
             }
         }
     }
-
 }
 
 
-.sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    background-color: $primary;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-
-    p {
-        color: $white;
-    }
-
-    .menu {
-        min-width: 150px;
-        max-width: 150px;
-        display: flex;
-        flex-direction: column;
-        row-gap: 10px;
-        margin-left: auto;
-        margin-right: auto;
-
-        .menu__item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            row-gap: 10px;
-
-            p {
-                text-transform: uppercase;
-                margin: 0px;
-            }
-        }
-    }
-}
-
-.sidenav a {
-    padding-top: 8px;
-    padding-right: 8px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
-
-.sidenav a:hover {
-    color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-
-
-@media screen and (max-height: 450px) {
-    .sidenav {
-        padding-top: 15px;
-    }
-
-    .sidenav a {
-        font-size: 18px;
-    }
-}
