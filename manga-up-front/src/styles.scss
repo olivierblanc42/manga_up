@@ -9,6 +9,7 @@
 }
 
 
+
 body {
     font-family: $font-primary;
     font-weight: $font-regular;
@@ -408,7 +409,36 @@ body.home-page .breadcrumb {
 /* Tablette en mode paysage et petits PC portables (1024px et plus) */
 @media (min-width: 1024px) {
 
-
+    .card-genre {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: $padding-s $padding ;
+        justify-content: space-between;
+        margin-left: auto;
+        margin-right: auto;
+        >img {
+            width: 200px;
+            height: 200px;
+    
+        }
+    
+        >div {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+    
+            .card-genre__title {
+                color: black;
+                text-transform: uppercase;
+                padding-bottom: 25px;
+                margin: 0;
+            }
+    
+        }
+    }
+    
     
 }
 
@@ -435,6 +465,27 @@ body.home-page .breadcrumb {
         }
 
     }
+
+
+
+    .section {
+        display: flex;
+        flex-direction: column;
+        margin: $margin-section-mobile $margin-content-mobile;
+
+
+
+        .section__grid{
+            display: grid;
+            grid-template-columns: repeat(4,25%);
+            row-gap: $margin;
+            ui-card{
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    }
+    
 
     .icons {
         width: 48px;
@@ -531,5 +582,11 @@ body.home-page .breadcrumb {
 
 @media (min-width: 1920px) {
 
+    .section {
+        display: flex;
+        flex-direction: column;
+        margin:  $margin-section $margin-content;
+    }
  
 }
+

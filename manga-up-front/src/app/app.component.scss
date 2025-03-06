@@ -211,14 +211,14 @@ a{
         display: block;
         background: $primary;
         color: $white ;
-        font-size: $font-bold;
+        font-weight: $font-bold;
         margin-bottom: $margin-section;
         padding-bottom: 20px;
         padding-top: 20px;
 
         .secondary-content {
-            margin-left: $margin-content;
-            margin-right: $margin-content;
+            margin-left: 0;
+            margin-right: 0;
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
@@ -424,3 +424,9 @@ a{
 }
 
 
+::ng-deep .custom-swiper-button {
+    background-color: blue !important;
+    color: yellow !important;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }

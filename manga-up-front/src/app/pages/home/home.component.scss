@@ -23,6 +23,10 @@
         display: block;
     }
 
+    .horizontale-mobile{
+        display: block;
+    }
+
     >img {
         display: block;
         margin-left: auto;
@@ -88,7 +92,34 @@ swiper-container {
 
 
 /* Tablette en mode paysage et petits PC portables (1024px et plus) */
-@media (min-width: 1024px) {}
+@media (min-width: 1024px) {
+    .infos {
+
+    
+        .trait-vertical {
+            display: block;
+        }
+    
+        .verticale-mobile {
+            display: none;
+        }
+    
+        .horizontale-mobile{
+            display: none;
+        }
+    
+        >div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: $gap;
+            flex-wrap: wrap;
+        }
+    
+        
+        }
+}
 
 /* Écran PC standard et laptop (1280px et plus) */
 @media (min-width: 1280px) {}
