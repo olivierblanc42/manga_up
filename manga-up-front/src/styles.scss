@@ -68,7 +68,9 @@ body {
 }
 
 .section__title {
-    h1, h2 {
+
+    h1,
+    h2 {
         color: $secondary;
         position: relative;
         display: inline-block;
@@ -89,8 +91,8 @@ body {
     }
 }
 
-.section__grid{
-display: none;
+.section__grid {
+    display: none;
 }
 
 .card {
@@ -146,6 +148,7 @@ display: none;
     justify-content: space-between;
     margin-left: auto;
     margin-right: auto;
+
     >img {
         width: 190px;
         height: 190px;
@@ -182,7 +185,7 @@ display: none;
     }
 
     .card-cookie__content {
-     
+
         padding-top: $padding-l;
         padding-bottom: $padding-l;
         padding-left: $padding-xs;
@@ -278,23 +281,38 @@ display: none;
 
 }
 
-.swiper-manga{
+.swiper-manga {
     height: 480px !important;
 }
-.swiper-genre{
+
+.swiper-genre {
     height: 348px !important;
 }
 
 
 body.home-page .breadcrumb {
     display: none !important;
-  }
-  .swiper-button-next svg, .swiper-button-prev svg {
+}
+
+.breadcrumb{
+    margin-left: $margin-content-mobile !important;
+    margin-right: $margin-content-mobile !important;
+    color: $secondary !important;
+}
+
+.swiper-button-next svg,
+.swiper-button-prev svg {
     width: 50% !important;
     height: 100%;
     object-fit: contain;
     transform-origin: center;
 }
+
+
+.card-padding{
+    padding:$padding;
+}
+
 
 /* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {
@@ -306,17 +324,18 @@ body.home-page .breadcrumb {
 
 
 
-        .section__grid{
+        .section__grid {
             display: grid;
-            grid-template-columns: repeat(2,50%);
+            grid-template-columns: repeat(2, 50%);
             row-gap: $margin;
-            ui-card{
+
+            ui-card {
                 margin-left: auto;
                 margin-right: auto;
             }
         }
     }
-    
+
 
 
 
@@ -325,7 +344,7 @@ body.home-page .breadcrumb {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-
+        width: 80%;
 
         img {
             width: 80%;
@@ -334,16 +353,16 @@ body.home-page .breadcrumb {
             margin-right: auto;
             margin-bottom: 55px;
         }
+
         .single-card__content {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             width: 80%;
             max-width: none;
-            min-height: none;
             margin-left: auto;
             margin-right: auto;
-    
+
             >.btn {
                 display: flex;
                 align-items: center;
@@ -351,25 +370,25 @@ body.home-page .breadcrumb {
                 margin-left: auto;
                 margin-right: auto;
             }
-    
+
             span {
                 text-transform: uppercase;
                 font-weight: $font-bold;
             }
-    
+
             .single-card__summary {
                 box-shadow: $shadow;
                 background: $background-color;
-    
+
                 >p {
                     padding: $padding-s;
-    
+
                 }
-    
+
                 .title__summary {
                     text-transform: uppercase;
                     background: $tertiary ;
-    
+
                     p {
                         font-weight: $font-bold;
                         margin: 0px;
@@ -377,20 +396,20 @@ body.home-page .breadcrumb {
                     }
                 }
             }
-    
+
             .single-card__infos {
                 box-shadow: $shadow;
                 background: $background-color;
-    
+
                 >p {
                     padding: $padding-s;
-    
+
                 }
-    
+
                 .title__infos {
                     text-transform: uppercase;
                     background: $tertiary ;
-    
+
                     p {
                         font-weight: $font-bold;
                         margin: 0px;
@@ -406,6 +425,7 @@ body.home-page .breadcrumb {
 
 
 }
+
 /* Tablette en mode paysage et petits PC portables (1024px et plus) */
 @media (min-width: 1024px) {
 
@@ -417,29 +437,30 @@ body.home-page .breadcrumb {
         justify-content: space-between;
         margin-left: auto;
         margin-right: auto;
+
         >img {
             width: 200px;
             height: 200px;
-    
+
         }
-    
+
         >div {
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-    
+
             .card-genre__title {
                 color: black;
                 text-transform: uppercase;
                 padding-bottom: 25px;
                 margin: 0;
             }
-    
+
         }
     }
-    
-    
+
+
 }
 
 /* Écran PC standard et laptop (1280px et plus) */
@@ -475,17 +496,18 @@ body.home-page .breadcrumb {
 
 
 
-        .section__grid{
+        .section__grid {
             display: grid;
-            grid-template-columns: repeat(4,25%);
+            grid-template-columns: repeat(4, 25%);
             row-gap: $margin;
-            ui-card{
+
+            ui-card {
                 margin-left: auto;
                 margin-right: auto;
             }
         }
     }
-    
+
 
     .icons {
         width: 48px;
@@ -585,8 +607,7 @@ body.home-page .breadcrumb {
     .section {
         display: flex;
         flex-direction: column;
-        margin:  $margin-section $margin-content;
+        margin: $margin-section $margin-content;
     }
- 
-}
 
+}
