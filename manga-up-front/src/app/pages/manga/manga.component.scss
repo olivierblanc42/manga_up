@@ -183,7 +183,8 @@
                 .card-single-manga__img {
                     display: flex;
                     flex-direction: column;
-                    min-width: 320px;
+                    min-width: 200px;
+                    max-width: 200px;
                     width: 30%;
 
                     .card-single-manga__icons {
@@ -199,7 +200,8 @@
                 .card-content {
                     display: flex;
                     flex-direction: column;
-                    min-width: 320px;
+                    min-width: 200px;
+                    max-width: 200px;
                     width: 30%;
 
                     .card-content__title {
@@ -276,6 +278,24 @@
                         padding-bottom: $padding-s;
                         margin: 0;
                     }
+                }
+            }
+        }
+    }
+}
+@media (min-width: 1280px) {
+    .card-single-manga {
+        .card-padding {
+            .card-single-manga__content {
+                .card-single-manga__img {
+                    min-width: 320px;
+                    max-width: 320px;
+                    width: 30%;
+                }
+                .card-content {
+                    min-width: 320px;
+                    max-width: 320px;
+                    width: 30%;
                 }
             }
         }
