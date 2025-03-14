@@ -313,6 +313,32 @@ body.home-page .breadcrumb {
     padding:$padding;
 }
 
+// Partie Admin
+.section-admin{
+    >div{
+        .section-admin__title{
+            background: $tertiary;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+           h1{
+            font-size: $font-h2;
+            padding: $padding-s  ;
+            margin: 0px;
+           }
+        
+        }
+        table {
+            border: 2px solid black;
+            width: 100%;
+            th, td {
+                padding: 8px 10px;
+                border: 2px solid black;
+            }
+        }
+
+    }
+}
+
 
 /* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {
