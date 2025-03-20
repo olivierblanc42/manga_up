@@ -1,11 +1,15 @@
-package manga_up.manga_up.model;
+package manga_up.manga_up;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "user_picture", schema = "manga_up", uniqueConstraints = {
         @UniqueConstraint(name = "user_picture_AK", columnNames = {"Id_users"})
@@ -23,30 +27,6 @@ public class UserPicture {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_users", nullable = false)
-    private User idUsers;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public User getIdUsers() {
-        return idUsers;
-    }
-
-    public void setIdUsers(User idUsers) {
-        this.idUsers = idUsers;
-    }
+    private AppUser idUsers;
 
 }

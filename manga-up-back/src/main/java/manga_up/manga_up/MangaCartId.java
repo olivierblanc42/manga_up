@@ -1,13 +1,17 @@
-package manga_up.manga_up.model;
+package manga_up.manga_up;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Embeddable
 public class MangaCartId implements Serializable {
     private static final long serialVersionUID = 4312962114909606649L;
@@ -18,22 +22,6 @@ public class MangaCartId implements Serializable {
     @NotNull
     @Column(name = "Id_mangas", nullable = false)
     private Integer idMangas;
-
-    public Integer getIdCart() {
-        return idCart;
-    }
-
-    public void setIdCart(Integer idCart) {
-        this.idCart = idCart;
-    }
-
-    public Integer getIdMangas() {
-        return idMangas;
-    }
-
-    public void setIdMangas(Integer idMangas) {
-        this.idMangas = idMangas;
-    }
 
     @Override
     public boolean equals(Object o) {
