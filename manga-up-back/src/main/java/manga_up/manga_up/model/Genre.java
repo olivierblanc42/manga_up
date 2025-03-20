@@ -1,6 +1,9 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -11,21 +14,16 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "category", schema = "manga_up")
-public class Category {
+@Table(name = "genre", schema = "manga_up")
+public class Genre {
     @Id
-    @Column(name = "Id_categories", nullable = false)
+    @Column(name = "Id_gender_mangas", nullable = false)
     private Integer id;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "label", nullable = false, length = 50)
     private String label;
-
-    @NotNull
-    @Lob
-    @Column(name = "description", nullable = false)
-    private String description;
 
     @Column(name = "created_at")
     private Instant createdAt;

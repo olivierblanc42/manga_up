@@ -1,4 +1,4 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -62,6 +62,6 @@ public class AppUser {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_genders_user", nullable = false)
-    private manga_up.manga_up.GenderUser idGendersUser;
+    private GenderUser idGendersUser;
 
 }

@@ -1,4 +1,4 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class GenresManga {
     @MapsId("idMangas")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_mangas", nullable = false)
-    private manga_up.manga_up.Manga idMangas;
+    private Manga idMangas;
 
     @MapsId("idGenderMangas")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

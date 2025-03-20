@@ -1,4 +1,4 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,10 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "means_of_payment", schema = "manga_up")
-public class MeansOfPayment {
+@Table(name = "status", schema = "manga_up")
+public class Status {
     @Id
-    @Column(name = "Id_means_of_payment", nullable = false)
+    @Column(name = "Id_status", nullable = false)
     private Integer id;
 
     @Size(max = 50)

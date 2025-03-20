@@ -4,7 +4,8 @@ package manga_up.manga_up.controller;
 import lombok.extern.slf4j.Slf4j;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.model.User;
+import manga_up.manga_up.model.AppUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/auth")
-@Slf4j
+
 public class AuthController {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
@@ -39,7 +40,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody AppUser user) {
         if (userDao.findByUsername(user.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username is already in use");
         }
@@ -48,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody AppUser user) {
         try{
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             if (authentication.isAuthenticated()) {

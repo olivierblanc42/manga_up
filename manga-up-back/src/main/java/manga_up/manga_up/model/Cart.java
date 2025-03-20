@@ -1,4 +1,4 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -31,12 +31,12 @@ public class Cart {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_status", nullable = false)
-    private manga_up.manga_up.Status idStatus;
+    private Status idStatus;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_means_of_payment", nullable = false)
-    private manga_up.manga_up.MeansOfPayment idMeansOfPayment;
+    private MeansOfPayment idMeansOfPayment;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -1,4 +1,4 @@
-package manga_up.manga_up;
+package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_mangas", nullable = false)
-    private manga_up.manga_up.Manga idMangas;
+    private Manga idMangas;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

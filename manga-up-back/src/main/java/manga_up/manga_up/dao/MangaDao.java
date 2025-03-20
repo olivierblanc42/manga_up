@@ -1,17 +1,15 @@
 package manga_up.manga_up.dao;
 
+import manga_up.manga_up.model.Manga;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import manga_up.manga_up.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public interface AddressDao extends JpaRepository<Address, Integer> {
+public interface MangaDao extends JpaRepository<Manga, Integer> {
 
-    @Query("From Address ")
-    Page<Address> findAllByPage(Pageable pageable);
-
+    @Query("From Author ")
+    Page<Manga> findMangasByPage(Pageable pageable);
 }
