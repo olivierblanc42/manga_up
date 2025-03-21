@@ -18,6 +18,9 @@ public class PictureService {
         this.pictureDao=pictureDao;
     }
 
+
+
+
     /**
      * Récupère une page paginée d'images.
      *

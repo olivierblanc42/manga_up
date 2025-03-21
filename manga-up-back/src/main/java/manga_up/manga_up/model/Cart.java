@@ -15,6 +15,7 @@ import java.time.Instant;
 @Table(name = "cart", schema = "manga_up")
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_cart", nullable = false)
     private Integer id;
 

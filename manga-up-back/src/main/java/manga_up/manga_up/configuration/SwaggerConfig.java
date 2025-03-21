@@ -16,7 +16,7 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("MangaUp API")
                         .version("1.0")
-                        .description("Documentation de l'API MangaUp"))
+                        .description("Documentation MangaUp API"))
                 .addSecurityItem(new SecurityRequirement().addList("JWT"))
                 .components(new io.swagger.v3.oas.models.Components()
                         .addSecuritySchemes("JWT", new SecurityScheme()

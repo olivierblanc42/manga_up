@@ -16,6 +16,7 @@ import java.time.LocalDate;
 })
 public class AppUser {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_users", nullable = false)
     private Integer id;
 
@@ -51,7 +52,8 @@ public class AppUser {
     private LocalDate createdAt;
 
     @Size(max = 128)
-    @Column(name = "password", length = 128)
+    @NotNull
+    @Column(name = "password", nullable = false, length = 128)
     private String password;
 
     @NotNull
