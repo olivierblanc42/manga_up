@@ -1,19 +1,21 @@
 package manga_up.manga_up.service;
 
+import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dao.UserDao;
+import manga_up.manga_up.dto.RegisterDto;
+import manga_up.manga_up.mapper.RegisterMapper;
 import manga_up.manga_up.model.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.Collections;
 
 @Service
@@ -23,9 +25,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
     private final UserDao userdao;
+    private final RegisterMapper registerMapper;
+    private final AddressDao addressDao;
+    private final UserDao userDao;
 
-    public CustomUserDetailsService(UserDao userdao) {
+    public CustomUserDetailsService(UserDao userdao, RegisterMapper registerMapper, AddressDao addressDao, UserDao userDao) {
         this.userdao = userdao;
+        this.registerMapper = registerMapper;
+        this.addressDao = addressDao;
+        this.userDao = userDao;
     }
 
     /**
@@ -52,5 +60,24 @@ public class CustomUserDetailsService implements UserDetailsService {
         LOGGER.info("Find all Users by Pageable");
         return userdao.findAllByPage(pageable);
     }
+
+
+
+    public RegisterDto saveUserDtoRegister(RegisterDto registerDto) {
+        LOGGER.info("saveUserDtoRegister registerDTO : {}", registerDto);
+        AppUser appUser = registerMapper.toAppUser(registerDto);
+        LOGGER.info("saveUserDtoRegister user: {}", appUser);
+        addressDao.save(appUser.getIdUserAddress());
+        appUser.setIdGendersUser(appUser.getIdGendersUser());
+        appUser.setIdUserAddress(appUser.getIdUserAddress());
+        LOGGER.info("saveUserDtoRegister user : {}", appUser);
+        appUser.setCreatedAt(Instant.now());
+        appUser.setRole("ROLE_USER");
+        appUser = userDao.save(appUser);
+        RegisterDto rDto = registerMapper.toDtoRegister(appUser);
+        LOGGER.info("saveUserDtoRegister user : {}", rDto);
+        return rDto;
+    }
+
 
 }

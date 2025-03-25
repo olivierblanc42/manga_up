@@ -1,11 +1,13 @@
 package manga_up.manga_up.controller;
 
 
-import lombok.extern.slf4j.Slf4j;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.model.AppUser;
 
+import manga_up.manga_up.dto.RegisterDto;
+import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.service.CustomUserDetailsService;
+import manga_up.manga_up.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -30,22 +32,24 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService customUserDetailsService;
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-    public AuthController(UserDao userDao, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager) {
+    public AuthController(UserDao userDao, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AppUser user) {
-        if (userDao.findByUsername(user.getUsername()) != null) {
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDTO) {
+        if (userDao.findByUsername(registerDTO.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username is already in use");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return ResponseEntity.ok(userDao.save(user));
+        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        return ResponseEntity.ok(customUserDetailsService.saveUserDtoRegister(registerDTO));
     }
 
     @PostMapping("/login")

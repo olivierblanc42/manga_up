@@ -3,20 +3,15 @@ package manga_up.manga_up.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "user_picture", schema = "manga_up", uniqueConstraints = {
         @UniqueConstraint(name = "user_picture_AK", columnNames = {"Id_users"})
 })
 public class UserPicture {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_user_picture", nullable = false)
     private Integer id;
 
@@ -29,5 +24,29 @@ public class UserPicture {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_users", nullable = false)
     private AppUser idUsers;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public AppUser getIdUsers() {
+        return idUsers;
+    }
+
+    public void setIdUsers(AppUser idUsers) {
+        this.idUsers = idUsers;
+    }
 
 }

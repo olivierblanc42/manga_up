@@ -1,13 +1,9 @@
 package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "genres_manga", schema = "manga_up")
 public class GenresManga {
@@ -24,5 +20,29 @@ public class GenresManga {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_gender_mangas", nullable = false)
     private Genre idGenderMangas;
+
+    public GenresMangaId getId() {
+        return id;
+    }
+
+    public void setId(GenresMangaId id) {
+        this.id = id;
+    }
+
+    public Manga getIdMangas() {
+        return idMangas;
+    }
+
+    public void setIdMangas(Manga idMangas) {
+        this.idMangas = idMangas;
+    }
+
+    public Genre getIdGenderMangas() {
+        return idGenderMangas;
+    }
+
+    public void setIdGenderMangas(Genre idGenderMangas) {
+        this.idGenderMangas = idGenderMangas;
+    }
 
 }

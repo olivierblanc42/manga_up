@@ -1,7 +1,6 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.model.Address;
 import manga_up.manga_up.model.AppUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

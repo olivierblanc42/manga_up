@@ -3,13 +3,10 @@ package manga_up.manga_up.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "app_user", schema = "manga_up", uniqueConstraints = {
         @UniqueConstraint(name = "app_user_AK", columnNames = {"username"})
@@ -49,7 +46,7 @@ public class AppUser {
     private String email;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Instant createdAt;
 
     @Size(max = 128)
     @NotNull
@@ -58,12 +55,100 @@ public class AppUser {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "Id_adress", nullable = false)
-    private Address idAdress;
+    @JoinColumn(name = "Id_user_address", nullable = false)
+    private UserAddress idUserAddress;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_genders_user", nullable = false)
     private GenderUser idGendersUser;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserAddress getIdUserAddress() {
+        return idUserAddress;
+    }
+
+    public void setIdUserAddress(UserAddress idUserAddress) {
+        this.idUserAddress = idUserAddress;
+    }
+
+    public GenderUser getIdGendersUser() {
+        return idGendersUser;
+    }
+
+    public void setIdGendersUser(GenderUser idGendersUser) {
+        this.idGendersUser = idGendersUser;
+    }
 
 }

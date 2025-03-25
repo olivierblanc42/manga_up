@@ -2,7 +2,6 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import manga_up.manga_up.model.Address;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.service.PictureService;
 import org.slf4j.Logger;
@@ -31,7 +30,7 @@ public class PictureController {
     @Operation(summary = "All pictures with pagination")
     @ApiResponse(responseCode = "201", description = "All pictures have been retrived")
     @GetMapping
-    public ResponseEntity<Page<Picture>> getAllPicture( @PageableDefault(
+    public ResponseEntity<Page<Picture>> getAllPicture(@PageableDefault(
             page = 0,
             size = 10,
             sort = "createdAt",

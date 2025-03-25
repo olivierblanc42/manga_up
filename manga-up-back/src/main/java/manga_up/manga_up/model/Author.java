@@ -3,16 +3,13 @@ package manga_up.manga_up.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "author", schema = "manga_up")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_authors", nullable = false)
     private Integer id;
 
@@ -31,8 +28,47 @@ public class Author {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Size(max = 50)
-    @Column(name = "created_at", length = 50)
-    private String createdAt;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
 
 }
