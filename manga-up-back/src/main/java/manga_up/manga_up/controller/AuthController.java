@@ -4,6 +4,7 @@ package manga_up.manga_up.controller;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
 
+import manga_up.manga_up.dto.LoginRequestDto;
 import manga_up.manga_up.dto.RegisterDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.service.CustomUserDetailsService;
@@ -53,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AppUser user) {
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto user) {
         try{
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
             if (authentication.isAuthenticated()) {

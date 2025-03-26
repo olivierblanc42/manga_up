@@ -55,11 +55,13 @@ public class AppUser {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   // @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Id_user_address", nullable = false)
     private UserAddress idUserAddress;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+   // @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Id_genders_user", nullable = false)
     private GenderUser idGendersUser;
 

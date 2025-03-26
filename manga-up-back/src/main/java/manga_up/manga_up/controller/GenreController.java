@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.service.GenreService;
 import org.slf4j.Logger;
@@ -13,9 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/genres")
@@ -42,6 +41,15 @@ public class GenreController {
         Page<Genre> genres = genreService.findAllByGenre(pageable);
         LOGGER.info("Found {} genres", genres.getTotalElements());
         return new ResponseEntity<>(genres, HttpStatus.OK);
+    }
+
+
+
+    @Operation(summary = "Adding a gender")
+    @PostMapping("/add")
+    public ResponseEntity<?> addGenre(@RequestBody GenreDto genre) {
+        LOGGER.info("Adding a genre");
+        return ResponseEntity.ok(genreService.save(genre));
     }
 
 }

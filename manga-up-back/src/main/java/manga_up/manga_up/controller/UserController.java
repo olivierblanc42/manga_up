@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import manga_up.manga_up.dto.UserResponseDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.service.UserService;
 import org.slf4j.Logger;
@@ -31,14 +32,14 @@ public class UserController {
     @Operation(summary = "All users with pagination")
     @ApiResponse(responseCode =  "201", description = "All users have been retrieved")
     @GetMapping
-    public ResponseEntity<Page<AppUser>> getAllUsers(@PageableDefault(
+    public ResponseEntity<Page<UserResponseDto>> getAllUsers(@PageableDefault(
             page = 0,
             size = 10,
             sort = "createdAt",
             direction = Sort.Direction.DESC
     ) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all addresses with pagination");
-        Page<AppUser> users = userService.findAllByPage(pageable);
+        Page<UserResponseDto> users = userService.findAllByPage(pageable);
         LOGGER.info("Found {} addresses", users.getTotalElements());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }

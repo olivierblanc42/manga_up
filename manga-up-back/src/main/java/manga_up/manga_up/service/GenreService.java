@@ -2,21 +2,27 @@ package manga_up.manga_up.service;
 
 
 import manga_up.manga_up.dao.GenreDao;
+import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Service
 public class GenreService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(GenreService.class);
     private final GenreDao genreDao;
-
-    public GenreService(GenreDao genreDao) {
+    private final GenderMangaMapper genderMangaMapper;
+    public GenreService(GenreDao genreDao, GenderMangaMapper genderMangaMapper) {
         this.genreDao = genreDao;
+        this.genderMangaMapper = genderMangaMapper;
     }
 
     /**
@@ -29,4 +35,25 @@ public class GenreService {
         LOGGER.info("Find all genres by Pageable");
         return genreDao.findAllByPage(pageable);
     }
+
+
+    @Transactional
+    public GenreDto save(GenreDto genreDto) {
+        LOGGER.info("genre genreDto : {}", genreDto);
+        Genre genre = genderMangaMapper.toEntity(genreDto);
+        LOGGER.info("genre genreDto : {}", genre);
+        genre.setCreatedAt(Instant.now());
+        try{
+            genre = genreDao.save(genre);
+
+        }catch(Exception e){
+            LOGGER.error("Erreur lors de la sauvegarde du genre: ", e);
+            throw new RuntimeException("Erreur lors de la sauvegarde d'u genre'", e);
+        }
+
+        GenreDto gDto = genderMangaMapper.toDtoGenre(genre);
+        return gDto;
+    }
+
+
 }

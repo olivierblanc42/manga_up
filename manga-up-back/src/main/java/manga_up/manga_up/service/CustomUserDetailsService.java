@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -62,22 +63,36 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-
+    @Transactional
     public RegisterDto saveUserDtoRegister(RegisterDto registerDto) {
         LOGGER.info("saveUserDtoRegister registerDTO : {}", registerDto);
         AppUser appUser = registerMapper.toAppUser(registerDto);
         LOGGER.info("saveUserDtoRegister user: {}", appUser);
-        addressDao.save(appUser.getIdUserAddress());
+
+        if (appUser.getIdUserAddress() != null && appUser.getIdUserAddress().getId() == null) {
+            appUser.setIdUserAddress(addressDao.save(appUser.getIdUserAddress()));
+        } else if (appUser.getIdUserAddress() != null) {
+            appUser.setIdUserAddress(addressDao.findById(appUser.getIdUserAddress().getId()).orElse(null));
+        }
+
         appUser.setIdGendersUser(appUser.getIdGendersUser());
-        appUser.setIdUserAddress(appUser.getIdUserAddress());
-        LOGGER.info("saveUserDtoRegister user : {}", appUser);
+
         appUser.setCreatedAt(Instant.now());
         appUser.setRole("ROLE_USER");
-        appUser = userDao.save(appUser);
+
+        try {
+            appUser = userDao.save(appUser);
+        } catch (Exception e) {
+            LOGGER.error("Erreur lors de la sauvegarde de l'utilisateur : ", e);
+            throw new RuntimeException("Erreur lors de la sauvegarde de l'utilisateur", e);
+        }
+
         RegisterDto rDto = registerMapper.toDtoRegister(appUser);
         LOGGER.info("saveUserDtoRegister user : {}", rDto);
+
         return rDto;
     }
+
 
 
 }

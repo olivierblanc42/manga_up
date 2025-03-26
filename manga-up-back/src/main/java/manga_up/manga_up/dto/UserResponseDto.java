@@ -1,10 +1,7 @@
 package manga_up.manga_up.dto;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import manga_up.manga_up.model.GenderUser;
-import manga_up.manga_up.model.UserAddress;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -13,7 +10,9 @@ import java.util.Objects;
 /**
  * DTO for {@link manga_up.manga_up.model.AppUser}
  */
-public class RegisterDto implements Serializable {
+
+public class UserResponseDto implements Serializable {
+    private Integer id;
     @NotNull
     @Size(max = 50)
     private String username;
@@ -26,39 +25,39 @@ public class RegisterDto implements Serializable {
     @Size(max = 10)
     private String role;
     @Size(max = 15)
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Numéro de téléphone invalide")
     private String phoneNumber;
     @NotNull
-    @Pattern( regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @Size(max = 320)
     private String email;
-
+    private Instant createdAt;
     @NotNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,20}$",
-            message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
-    @Size(max = 128)
-    private String password;
-    private UserAddressDto address;
-    private GenderUserDto genderUserId;
+    private UserAddressDto idUserAddress;
+    @NotNull
+    private GenderUserDto idGendersUser;
 
-    public RegisterDto() {
+    public UserResponseDto() {
     }
 
-    public RegisterDto( String username, String firstname, String lastname, String role, String phoneNumber, String email, String password, UserAddressDto address,GenderUserDto genderUserId) {
-
+    public UserResponseDto(Integer id, String username, String firstname, String lastname, String role, String phoneNumber, String email, Instant createdAt, UserAddressDto idUserAddress, GenderUserDto idGendersUser) {
+        this.id = id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.role = role;
         this.phoneNumber = phoneNumber;
         this.email = email;
-
-        this.password = password;
-        this.address = address;
-        this.genderUserId = genderUserId;
+        this.createdAt = createdAt;
+        this.idUserAddress = idUserAddress;
+        this.idGendersUser = idGendersUser;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -108,64 +107,64 @@ public class RegisterDto implements Serializable {
         this.email = email;
     }
 
-
-
-    public String getPassword() {
-        return password;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public GenderUserDto getGenderUserId() {
-        return genderUserId;
+    public UserAddressDto getIdUserAddress() {
+        return idUserAddress;
     }
 
-    public void setGenderUserId(GenderUserDto genderUser) {
-        this.genderUserId = genderUser;
+    public void setIdUserAddress(UserAddressDto idUserAddress) {
+        this.idUserAddress = idUserAddress;
     }
 
-    public UserAddressDto getAddress() {
-        return address;
+    public GenderUserDto getIdGendersUser() {
+        return idGendersUser;
     }
 
-    public void setAddress(UserAddressDto address) {
-        this.address = address;
+    public void setIdGendersUser(GenderUserDto idGendersUser) {
+        this.idGendersUser = idGendersUser;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RegisterDto entity = (RegisterDto) o;
-        return
+        UserResponseDto entity = (UserResponseDto) o;
+        return Objects.equals(this.id, entity.id) &&
                 Objects.equals(this.username, entity.username) &&
                 Objects.equals(this.firstname, entity.firstname) &&
                 Objects.equals(this.lastname, entity.lastname) &&
                 Objects.equals(this.role, entity.role) &&
                 Objects.equals(this.phoneNumber, entity.phoneNumber) &&
                 Objects.equals(this.email, entity.email) &&
-
-                Objects.equals(this.password, entity.password) &&
-                Objects.equals(this.address, entity.address) &&
-                Objects.equals(this.genderUserId, entity.genderUserId);
+                Objects.equals(this.createdAt, entity.createdAt) &&
+                Objects.equals(this.idUserAddress, entity.idUserAddress) &&
+                Objects.equals(this.idGendersUser, entity.idGendersUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( username, firstname, lastname, role, phoneNumber, email, password,genderUserId, address );
+        return Objects.hash(id, username, firstname, lastname, role, phoneNumber, email, createdAt, idUserAddress, idGendersUser);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-
+                "id = " + id + ", " +
                 "username = " + username + ", " +
                 "firstname = " + firstname + ", " +
                 "lastname = " + lastname + ", " +
                 "role = " + role + ", " +
                 "phoneNumber = " + phoneNumber + ", " +
-                "email = " + email;
+                "email = " + email + ", " +
+                "createdAt = " + createdAt + ", " +
+                "idUserAddress = " + idUserAddress + ", " +
+                "idGendersUser = " + idGendersUser + ")";
     }
 }
