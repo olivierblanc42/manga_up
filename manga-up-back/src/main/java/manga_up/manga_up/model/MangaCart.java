@@ -3,7 +3,7 @@ package manga_up.manga_up.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "manga_cart", schema = "manga_up")
+@Table(name = "manga_cart")
 public class MangaCart {
     @EmbeddedId
     private MangaCartId id;

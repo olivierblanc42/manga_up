@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.model.Genre;
+import manga_up.manga_up.projection.GenreProjection;
 import manga_up.manga_up.service.GenreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class GenreController {
     @Operation(summary = "All genres with pagination")
     @ApiResponse(responseCode =  "201", description = "All genres have been retrieved")
     @GetMapping
-    public ResponseEntity<Page<Genre>> getAllGenres(
+    public ResponseEntity<Page<GenreProjection>> getAllGenres(
             @PageableDefault(
                     page = 0,
                     size = 10,
@@ -38,7 +39,7 @@ public class GenreController {
             ) @ParameterObject Pageable pageable
     ) {
         LOGGER.info("Find all genres with pagination");
-        Page<Genre> genres = genreService.findAllByGenre(pageable);
+        Page<GenreProjection> genres = genreService.findAllByGenre(pageable);
         LOGGER.info("Found {} genres", genres.getTotalElements());
         return new ResponseEntity<>(genres, HttpStatus.OK);
     }

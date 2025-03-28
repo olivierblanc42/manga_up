@@ -8,11 +8,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "manga", schema = "manga_up")
+@Table(name = "manga")
 public class Manga {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_mangas", nullable = false)
     private Integer id;
 
@@ -49,6 +52,24 @@ public class Manga {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "Id_categories", nullable = false)
     private Category idCategories;
+
+    @OneToMany(mappedBy = "idMangas")
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "genres_manga",
+            joinColumns = @JoinColumn(name = "Id_mangas"),
+            inverseJoinColumns = @JoinColumn(name = "Id_gender_mangas"))
+    private Set<Genre> genres = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "mangas_authors",
+            joinColumns = @JoinColumn(name = "Id_mangas"),
+            inverseJoinColumns = @JoinColumn(name = "Id_authors"))
+    private Set<Author> authors = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idMangas")
+    private Set<Picture> pictures = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -128,6 +149,38 @@ public class Manga {
 
     public void setIdCategories(Category idCategories) {
         this.idCategories = idCategories;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
+
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
     }
 
 }

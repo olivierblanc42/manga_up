@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "author", schema = "manga_up")
+@Table(name = "author")
 public class Author {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_authors", nullable = false)
     private Integer id;
 
@@ -30,6 +33,12 @@ public class Author {
 
     @Column(name = "created_at")
     private LocalDate createdAt;
+
+    @ManyToMany
+    @JoinTable(name = "mangas_authors",
+            joinColumns = @JoinColumn(name = "Id_authors"),
+            inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
+    private Set<Manga> mangas = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -69,6 +78,14 @@ public class Author {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<Manga> getMangas() {
+        return mangas;
+    }
+
+    public void setMangas(Set<Manga> mangas) {
+        this.mangas = mangas;
     }
 
 }

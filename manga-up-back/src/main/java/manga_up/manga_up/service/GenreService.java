@@ -5,6 +5,7 @@ import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
+import manga_up.manga_up.projection.GenreProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class GenreService {
      * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
      * @return une page de résultats {@link Page < Address >} contenant les genres
      */
-    public Page<Genre> findAllByGenre(Pageable pageable) {
+    public Page<GenreProjection> findAllByGenre(Pageable pageable) {
         LOGGER.info("Find all genres by Pageable");
         return genreDao.findAllByPage(pageable);
     }

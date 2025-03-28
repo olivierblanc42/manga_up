@@ -1,7 +1,7 @@
 package manga_up.manga_up.service;
 
-import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.model.Author;
+import manga_up.manga_up.dao.AuthorDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
