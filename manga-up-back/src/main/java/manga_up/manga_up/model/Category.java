@@ -5,11 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "category", schema = "manga_up")
+@Table(name = "category")
 public class Category {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_categories", nullable = false)
     private Integer id;
 
@@ -25,6 +28,9 @@ public class Category {
 
     @Column(name = "created_at")
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "idCategories")
+    private Set<Manga> mangas = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -56,6 +62,14 @@ public class Category {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<Manga> getMangas() {
+        return mangas;
+    }
+
+    public void setMangas(Set<Manga> mangas) {
+        this.mangas = mangas;
     }
 
 }

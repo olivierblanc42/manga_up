@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import manga_up.manga_up.model.Category;
+import manga_up.manga_up.projection.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class CategoryController {
     @Operation(summary = "All Categories with pagination")
     @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
     @GetMapping
-    public ResponseEntity<Page<Category>> getCategories(
+    public ResponseEntity<Page<CategoryProjection>> getCategories(
             @PageableDefault(
             page = 0,
             size = 10,
@@ -40,7 +41,7 @@ public class CategoryController {
     ) @ParameterObject Pageable pageable)
     {
         LOGGER.info("Find all Categories with pagination");
-        Page<Category> categories = categoryService.findAllByPage(pageable);
+        Page<CategoryProjection> categories = categoryService.FindAllCategorisByPage(pageable);
         LOGGER.info("Found {} addresses", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
