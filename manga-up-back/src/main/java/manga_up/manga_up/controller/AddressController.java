@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import manga_up.manga_up.model.UserAddress;
-import manga_up.manga_up.service.AddressService;
+import manga_up.manga_up.projection.UserAddressProjection;
+import manga_up.manga_up.service.UserAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
@@ -24,9 +25,9 @@ public class AddressController {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(AddressController.class);
 
-    private final AddressService addressService;
+    private final UserAddressService addressService;
 
-    public AddressController(AddressService addressService) {
+    public AddressController(UserAddressService addressService) {
         this.addressService = addressService;
     }
 
@@ -34,7 +35,7 @@ public class AddressController {
     @Operation(summary = "All addresses with pagination")
     @ApiResponse(responseCode =  "201", description = "All addresses have been retrieved")
     @GetMapping
-    public ResponseEntity<Page<UserAddress>> getAllAddresses(
+    public ResponseEntity<Page<UserAddressProjection>> getAllAddresses(
             @PageableDefault(
                     page = 0,
                     size = 10,
@@ -43,7 +44,7 @@ public class AddressController {
             ) @ParameterObject Pageable pageable
     ) {
         LOGGER.info("Find all addresses with pagination");
-        Page<UserAddress> addresses = addressService.findAllByPage(pageable);
+        Page<UserAddressProjection> addresses = addressService.findAllByPage(pageable);
         LOGGER.info("Found {} addresses", addresses.getTotalElements());
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }

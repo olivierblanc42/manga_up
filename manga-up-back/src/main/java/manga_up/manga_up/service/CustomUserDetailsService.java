@@ -22,7 +22,7 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(AddressService.class);
+    private static final Logger LOGGER= LoggerFactory.getLogger(UserAddressService.class);
 
 
     private final UserDao userdao;

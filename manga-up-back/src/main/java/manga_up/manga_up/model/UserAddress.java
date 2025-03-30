@@ -5,9 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "user_address", schema = "manga_up")
+@Table(name = "user_address")
 public class UserAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,12 @@ public class UserAddress {
     @NotNull
     @Column(name = "postal_code", nullable = false, length = 5)
     private String postalCode;
+
+    @OneToMany(mappedBy = "idUserAddress")
+    private Set<AppUser> appUsers = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idUserAddress")
+    private Set<Cart> carts = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -94,6 +102,22 @@ public class UserAddress {
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public Set<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUsers(Set<AppUser> appUsers) {
+        this.appUsers = appUsers;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
     }
 
 }
