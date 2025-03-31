@@ -49,7 +49,7 @@ public class GenreService {
 
         }catch(Exception e){
             LOGGER.error("Error saving genre: ", e);
-            throw new RuntimeException("Error saving genre'", e);
+            throw new RuntimeException("Error saving genre", e);
         }
 
         GenreDto gDto = genderMangaMapper.toDtoGenre(genre);

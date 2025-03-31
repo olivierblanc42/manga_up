@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import manga_up.manga_up.dto.CategoryDto;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
@@ -15,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,5 +47,13 @@ public class CategoryController {
         LOGGER.info("Found {} addresses", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
+
+    @Operation(summary = "Add category")
+    @PostMapping("/add")
+    public ResponseEntity<?> addCategory(@ParameterObject CategoryDto category) {
+        LOGGER.info("Add category: {}", category);
+        return ResponseEntity.ok(categoryService.save(category));
+    }
+
 
 }
