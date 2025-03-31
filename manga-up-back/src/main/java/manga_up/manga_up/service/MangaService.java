@@ -3,6 +3,7 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.model.Manga;
+import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,9 @@ public class MangaService {
      * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
      * @return une page de résultats {@link Page < Manga >} contenant les mangas
      */
-    public Page<Manga> findAllByPage(Pageable pageable) {
+    public Page<MangaProjection> findAllByPage(Pageable pageable) {
         LOGGER.info("Find all mangas by Pageable");
-        return mangaDao.findAll(pageable);
+        return mangaDao.findAllMangas(pageable);
     }
 
 }

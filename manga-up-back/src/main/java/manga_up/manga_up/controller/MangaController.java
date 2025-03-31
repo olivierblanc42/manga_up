@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import manga_up.manga_up.model.Manga;
+import manga_up.manga_up.projection.MangaProjection;
 import manga_up.manga_up.service.MangaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,16 +32,16 @@ public class MangaController {
     @Operation(summary = "All Mangas with pagination")
     @ApiResponse(responseCode =  "201", description = "All manga have been retrieved")
     @GetMapping
-    public ResponseEntity<Page<Manga>> getAllManga(
+    public ResponseEntity<Page<MangaProjection>> getAllManga(
             @PageableDefault(
                     page = 0,
                     size = 10,
-                    sort = "createdAt",
+                    sort = "id",
                     direction = Sort.Direction.DESC
             ) @ParameterObject Pageable pageable
     ) {
         LOGGER.info("Find all addresses with pagination");
-        Page<Manga> mangas = mangaService.findAllByPage(pageable);
+        Page<MangaProjection> mangas = mangaService.findAllByPage(pageable);
         LOGGER.info("Found {} addresses", mangas.getTotalElements());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }

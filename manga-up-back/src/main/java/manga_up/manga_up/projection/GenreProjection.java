@@ -7,6 +7,6 @@ public interface GenreProjection {
     Integer getId();
     String getLabel();
     LocalDateTime getCreatedAt();
-    Set<MangaProjection> getMangas();
+    Set<MangaLittleProjection> getMangas();
 }
 
