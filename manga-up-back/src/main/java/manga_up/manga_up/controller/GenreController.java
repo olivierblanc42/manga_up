@@ -48,7 +48,7 @@ public class GenreController {
 
     @Operation(summary = "Adding a gender")
     @PostMapping("/add")
-    public ResponseEntity<?> addGenre(@ParameterObject GenreDto genre) {
+    public ResponseEntity<?> addGenre(@RequestBody GenreDto genre) {
         LOGGER.info("Adding a genre");
         return ResponseEntity.ok(genreService.save(genre));
     }
