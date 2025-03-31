@@ -15,6 +15,9 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     Page<Manga> findMangasByPage(Pageable pageable);
 
 
-    @Query("SELECT m FROM Manga  m LEFT JOIN m.authors ")
+    @Query("SELECT DISTINCT m FROM Manga m " +
+            "JOIN m.authors a " +
+            "JOIN m.genres g " +
+            "JOIN m.idCategories  c")
     Page<MangaProjection> findAllMangas(Pageable pageable);
 }

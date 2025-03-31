@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.projection.AuthorProjection;
@@ -17,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +51,13 @@ public class AuthorController {
         Page<AuthorProjection> authors = authorService.getAllAuthors(pageable);
         LOGGER.info("Found {} addresses", authors.getTotalElements());
         return new ResponseEntity<>(authors, HttpStatus.OK);
-
     }
+
+  @Operation(summary = "Adding Author")
+  @PostMapping("/add")
+  public ResponseEntity<AuthorDto> addAuthor(@ParameterObject AuthorDto authorDto) {
+        LOGGER.info("Adding Author");
+        return ResponseEntity.ok(authorService.save(authorDto));
+  }
+
 }
