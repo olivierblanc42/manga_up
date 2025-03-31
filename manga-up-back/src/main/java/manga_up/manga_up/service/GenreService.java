@@ -42,14 +42,14 @@ public class GenreService {
     public GenreDto save(GenreDto genreDto) {
         LOGGER.info("genre genreDto : {}", genreDto);
         Genre genre = genderMangaMapper.toEntity(genreDto);
-        LOGGER.info("genre genreDto : {}", genre);
+        LOGGER.info("genre genre : {}", genre);
         genre.setCreatedAt(Instant.now());
         try{
             genre = genreDao.save(genre);
 
         }catch(Exception e){
-            LOGGER.error("Erreur lors de la sauvegarde du genre: ", e);
-            throw new RuntimeException("Erreur lors de la sauvegarde d'u genre'", e);
+            LOGGER.error("Error saving genre: ", e);
+            throw new RuntimeException("Error saving genre'", e);
         }
 
         GenreDto gDto = genderMangaMapper.toDtoGenre(genre);

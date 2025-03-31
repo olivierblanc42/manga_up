@@ -32,9 +32,8 @@ public class GenderMangaMapper {
            //     .map(manga -> new MangaLightDto(manga.getId(), manga.getTitle())) // Utilisation du DTO allégé
              //   .collect(Collectors.toSet());
         return new GenreDto(
-                genre.getId(),
-                genre.getLabel(),
-                genre.getCreatedAt()
+                genre.getLabel()
+
                // mangaDtos
         );
     }
@@ -43,9 +42,7 @@ public class GenderMangaMapper {
 
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
-        genre.setId(genreDto.getId());
         genre.setLabel(genreDto.getLabel());
-        genre.setCreatedAt(genreDto.getCreatedAt());
 
       //  Set<Manga> mangas = genreDto.getMangas().stream()
         //         .map(mangaDto -> {

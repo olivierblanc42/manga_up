@@ -13,31 +13,26 @@ import java.util.Set;
  * DTO for {@link manga_up.manga_up.model.Genre}
  */
 public class GenreDto implements Serializable {
-    private final Integer id;
     @NotNull
     @Size(max = 50)
     private final String label;
-    private final Instant createdAt;
+   //private final Instant createdAt;
     //  private final Set<MangaLightDto> mangas;
 
-    public GenreDto(Integer id, String label, Instant createdAt) {
-        this.id = id;
+    public GenreDto( String label) {
+
         this.label = label;
-        this.createdAt = createdAt;
+
 
     }
 
-    public Integer getId() {
-        return id;
-    }
+
 
     public String getLabel() {
         return label;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
+
 
 
 
@@ -46,21 +41,19 @@ public class GenreDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenreDto entity = (GenreDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.label, entity.label) &&
-                Objects.equals(this.createdAt, entity.createdAt);
+        return
+                Objects.equals(this.label, entity.label) ;
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, label, createdAt);
+        return Objects.hash( label);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "label = " + label + ", " +
-                "createdAt = " + createdAt + ", " ;
+        return getClass().getSimpleName() +
+                "label = " + label + ", " ;
     }
 }

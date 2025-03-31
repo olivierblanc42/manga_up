@@ -40,17 +40,18 @@ public class AuthorService {
 
     public AuthorDto save(AuthorDto authorDto) {
         LOGGER.info("Saving author");
+        LOGGER.info("author authorDto : {}", authorDto);
         Author author = authorMapper.toEntity(authorDto);
-        LOGGER.info("genre genreDto : {}", author);
+        LOGGER.info("author author : {}", author);
         author.setCreatedAt(LocalDate.now());
         try {
             authorDao.save(author);
         } catch (Exception e) {
-            LOGGER.error("Error saving author");
-            throw new RuntimeException("Error saving author");
+            LOGGER.error("Error saving author", e);
+            throw new RuntimeException("Error saving author",e);
         }
-        AuthorDto gDto = authorMapper.toDtoAuthor(author);
-        return gDto;
+        AuthorDto aDto = authorMapper.toDtoAuthor(author);
+        return aDto;
 
     }
 }
