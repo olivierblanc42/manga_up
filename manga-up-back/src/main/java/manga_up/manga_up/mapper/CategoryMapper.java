@@ -2,6 +2,7 @@ package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
+import manga_up.manga_up.dto.CategoryLittleDto;
 import manga_up.manga_up.model.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,5 +31,23 @@ public class CategoryMapper {
         category.setDescription(categoryDto.getDescription());
         return category;
     }
+
+
+
+
+ public CategoryLittleDto toLittleDtoCategory(Category category) {
+        return new CategoryLittleDto(
+                category.getId()
+        );
+ }
+
+
+
+
+ public Category categoryLittleDto(CategoryLittleDto categoryLittleDto) {
+        Category category = new Category();
+        category.setId(categoryLittleDto.getId());
+        return category;
+ }
 
 }

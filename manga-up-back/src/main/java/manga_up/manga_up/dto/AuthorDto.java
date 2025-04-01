@@ -25,12 +25,9 @@ public class AuthorDto implements Serializable {
 
 
     public AuthorDto( String lastname, String firstname, String description) {
-
         this.lastname = lastname;
         this.firstname = firstname;
         this.description = description;
-
-
     }
 
 

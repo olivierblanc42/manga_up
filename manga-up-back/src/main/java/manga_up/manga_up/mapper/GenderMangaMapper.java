@@ -3,6 +3,7 @@ package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.dto.GenreLightDto;
 import manga_up.manga_up.dto.MangaLightDto;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.model.Manga;
@@ -28,9 +29,7 @@ public class GenderMangaMapper {
 
     public GenreDto toDtoGenre(Genre genre) {
         LOGGER.info("Mangas size before mapping: {}", genre.getMangas().size());
-       // Set<MangaLightDto> mangaDtos = genre.getMangas().stream()
-           //     .map(manga -> new MangaLightDto(manga.getId(), manga.getTitle())) // Utilisation du DTO allégé
-             //   .collect(Collectors.toSet());
+
         return new GenreDto(
                 genre.getLabel()
 
@@ -43,17 +42,32 @@ public class GenderMangaMapper {
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
         genre.setLabel(genreDto.getLabel());
-
-      //  Set<Manga> mangas = genreDto.getMangas().stream()
-        //         .map(mangaDto -> {
-        //           return mangaDao.findById(mangaDto.getId()).orElseThrow(() ->
-        //                 new RuntimeException("Manga not found for id: " + mangaDto.getId()));
-        //       })
-        //       .collect(Collectors.toSet());
-
-
-        //    genre.setMangas(mangas);
         return genre;
     }
+
+
+
+
+    public GenreLightDto toGenreLightDto(Genre genre) {
+        return new GenreLightDto(genre.getId());
+    }
+
+    public Genre toEntityGenre(GenreLightDto genreLightDto) {
+        Genre genre = new Genre();
+        genre.setId(genreLightDto.getId());
+        return genre;
+    }
+
+    public Set<GenreLightDto> toLightDtoGenres(Set<Genre> genres) {
+        return genres.stream()
+                .map(this::toGenreLightDto)
+                .collect(Collectors.toSet());
+    }
+    public Set<Genre> toEntityGenres(Set<GenreLightDto> genreLightDtos) {
+        return genreLightDtos.stream()
+                .map(this::toEntityGenre)
+                .collect(Collectors.toSet());
+    }
+
 
 }
