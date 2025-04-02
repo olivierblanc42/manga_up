@@ -1,6 +1,7 @@
 package manga_up.manga_up.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
 
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Tag(name = "1. Auth", description = "Operations related to authentication")
 @RestController
 @RequestMapping("api/auth")
 

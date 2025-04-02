@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.UserAddressProjection;
 import manga_up.manga_up.service.UserAddressService;
@@ -15,15 +16,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/addresses")
 public class AddressController {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(AddressController.class);
+    private static final Logger LOGGER =  LoggerFactory.getLogger(AddressController.class);
 
     private final UserAddressService addressService;
 
@@ -47,6 +46,13 @@ public class AddressController {
         Page<UserAddressProjection> addresses = addressService.findAllByPage(pageable);
         LOGGER.info("Found {} addresses", addresses.getTotalElements());
         return new ResponseEntity<>(addresses, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Adding address")
+    @PostMapping("/add")
+    public ResponseEntity<UserAddressDto> addAddress(@RequestBody UserAddressDto userAddressDto) {
+        LOGGER.info("Adding address");
+        return ResponseEntity.ok(addressService.save(userAddressDto));
     }
 
 }
