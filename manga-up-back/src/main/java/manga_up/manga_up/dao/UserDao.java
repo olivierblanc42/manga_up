@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UserDao extends JpaRepository<AppUser, Integer> {
@@ -18,4 +21,7 @@ public interface UserDao extends JpaRepository<AppUser, Integer> {
     @Query("SELECT u FROM AppUser u LEFT JOIN FETCH u.idUserAddress")
     Page<AppUserProjection> FindAllUser(Pageable pageable);
 
+
+   @Query("SELECT u FROM AppUser u LEFT JOIN FETCH u.idUserAddress ua WHERE ua = :userAddressId")
+   List<AppUser> findUsersByAddressId(@Param("userAddressId") Integer userAddressId);
 }

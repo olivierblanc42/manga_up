@@ -26,8 +26,10 @@ public class AddressController {
 
     private final UserAddressService addressService;
 
+
     public AddressController(UserAddressService addressService) {
         this.addressService = addressService;
+
     }
 
 
@@ -55,4 +57,12 @@ public class AddressController {
         return ResponseEntity.ok(addressService.save(userAddressDto));
     }
 
+
+
+   // @Operation(summary = "delete address by id ")
+   // @DeleteMapping("/{id}")
+   // public void deleteAddress(@PathVariable Integer id) {
+     //   LOGGER.info("Deleting address by id");
+       // addressService.deleteUserAddress(id);
+   // }
 }

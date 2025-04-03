@@ -1,9 +1,12 @@
 package manga_up.manga_up.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.AddressDao;
 
+import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.mapper.UserAddressMapper;
+import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.UserAddressProjection;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UserAddressService {
@@ -22,12 +26,13 @@ public class UserAddressService {
 
     private final AddressDao addressDao;
     private final UserAddressMapper userAddressMapper;
+    private final UserDao userDao;
 
 
-
-    public UserAddressService(AddressDao addressDao, UserAddressMapper userAddressMapper) {
+    public UserAddressService(AddressDao addressDao, UserAddressMapper userAddressMapper, UserDao userDao) {
         this.addressDao = addressDao;
         this.userAddressMapper = userAddressMapper;
+        this.userDao = userDao;
     }
 
     /**
@@ -57,5 +62,31 @@ public class UserAddressService {
         return userAddressMapper.toDto(userAddress);
     }
 
+
+    public void deleteUserAddress(Integer userAddress) {
+        LOGGER.info("Delete address");
+        LOGGER.info("userAddress: {}", userAddress);
+
+        if(!addressDao.existsById(userAddress)){
+            LOGGER.warn("Address not found");
+            throw new EntityNotFoundException("Address not found");
+        }
+        UserAddress address = addressDao.findById(userAddress)
+                .orElseThrow(() -> new EntityNotFoundException("Address not found"));
+
+        List<AppUser> usersWithAddress = userDao.findUsersByAddressId(userAddress);
+
+        if (usersWithAddress.isEmpty()) {
+            LOGGER.info("No users associated with this address.");
+        } else {
+
+            for (AppUser user : usersWithAddress) {
+                user.setIdUserAddress(null);
+                userDao.save(user);
+            }
+            LOGGER.info("Address detached from all users successfully.");
+        }
+        addressDao.deleteById(userAddress);
+    }
 
 }
