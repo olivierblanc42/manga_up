@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/mangas")
 public class MangaController {
@@ -31,7 +33,7 @@ public class MangaController {
 
     @Operation(summary = "All Mangas with pagination")
     @ApiResponse(responseCode =  "201", description = "All manga have been retrieved")
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<Page<MangaProjection>> getAllManga(
             @PageableDefault(
                     page = 0,
@@ -46,6 +48,24 @@ public class MangaController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
+
+
+    @Operation(summary ="Get Random Four Mangas")
+     @GetMapping("/four")
+       public ResponseEntity<List<MangaProjection>> getRandomFourMangas(Pageable pageable){
+          LOGGER.info("Get six Mangas");
+          List<MangaProjection> mangas = mangaService.getRandomFourMangas(pageable);
+         LOGGER.info("Found {} mangas", mangas.size());
+          return new ResponseEntity<>(mangas, HttpStatus.OK);
+      }
+
+    @Operation(summary ="Get Random Manga")
+    @GetMapping("/one")
+    public ResponseEntity<List<MangaProjection>> getRandomManga(Pageable pageable){
+        LOGGER.info("Get  Manga");
+        List<MangaProjection> mangas = mangaService.getRandomManga(pageable);
+        return new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
 
     @Operation(summary = "Adding Manga")
     @PostMapping("/add")

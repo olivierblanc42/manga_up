@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MangaDao extends JpaRepository<Manga, Integer> {
 
@@ -16,8 +18,17 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
 
 
     @Query("SELECT DISTINCT m FROM Manga m " +
-            "JOIN m.authors a " +
-            "JOIN m.genres g " +
-            "JOIN m.idCategories  c")
+            "LEFT JOIN FETCH  m.authors a " +
+            "LEFT JOIN FETCH  m.genres g " +
+            "LEFT JOIN FETCH  m.idCategories  c")
     Page<MangaProjection> findAllMangas(Pageable pageable);
+
+
+    @Query("SELECT DISTINCT m FROM Manga m " +
+            "LEFT JOIN FETCH m.authors a " +
+            "LEFT JOIN FETCH m.genres g " +
+            "LEFT JOIN FETCH m.idCategories c " +
+            "ORDER BY FUNCTION('RAND') ")
+    List<MangaProjection> findRandomMangas(Pageable pageable);
+
 }

@@ -13,7 +13,7 @@ public interface MangaProjection {
     BigDecimal getPriceHt();
     Boolean getInStock();
     Boolean getActive();
-    CategoryLittleProjection getCategory();
+    CategoryLittleProjection getIdCategories();
     Set<GenreLittleProjection> getGenres();
     Set<AuthorLittleProjection> getAuthors();
 }

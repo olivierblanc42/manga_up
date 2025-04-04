@@ -11,10 +11,12 @@ import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class MangaService {
@@ -75,9 +77,26 @@ public class MangaService {
             LOGGER.error("Error saving manga", e);
             throw new RuntimeException("Error saving manga",e);
         }
-        MangaDto mDto = mangaMapper.mangaToMangaDto(manga);
-        return mDto;
+        return mangaMapper.mangaToMangaDto(manga);
     }
 
+
+
+    /**
+     * Retrieve Four mangas
+     * return a list of four mangas
+     */
+    public List<MangaProjection> getRandomFourMangas(Pageable pageable){
+
+        return mangaDao.findRandomMangas(PageRequest.of(0, 4));
+    }
+
+    /**
+     * Retrieve a Random manga
+     * return a list of one manga
+     */
+    public List<MangaProjection> getRandomManga(Pageable pageable){
+        return mangaDao.findRandomMangas(PageRequest.of(0, 1));
+    }
 
 }
