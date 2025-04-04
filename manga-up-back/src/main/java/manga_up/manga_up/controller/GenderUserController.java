@@ -51,4 +51,19 @@ public class GenderUserController {
         return ResponseEntity.ok(genreUserService.saveGenreUser(genreUserDto));
     }
 
+
+    @Operation(summary = "update Gender user")
+    @PutMapping("/update")
+    public ResponseEntity<GenderUserDto> updateGenreUser(@ParameterObject Integer id,   @RequestBody GenderUserDto genreUserDto) {
+        LOGGER.info("Updating genreUser");
+        try{
+            GenderUserDto genreUser = genreUserService.updateGenreUser(id, genreUserDto);
+            return new ResponseEntity<>(genreUser, HttpStatus.OK);
+        }catch (Exception e){
+            LOGGER.error("Error updating gender user", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
 }

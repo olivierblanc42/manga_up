@@ -43,4 +43,16 @@ public class GenreUserService {
            return genderUserMapper.toDto(genderUser);
     }
 
+
+    public GenderUserDto updateGenreUser( Integer genderId ,GenderUserDto genreUserDto) {
+        LOGGER.info("Updating genreUser");
+        GenderUser genderUser = genderUserDao.findGenderById(genderId).
+                orElseThrow(() -> new RuntimeException("Genre with ID " + genderId + " not found"));
+
+        genderUser.setLabel(genreUserDto.getLabel());
+        genderUserDao.save(genderUser);
+        return genderUserMapper.toDto(genderUser);
+    }
+
+
 }
