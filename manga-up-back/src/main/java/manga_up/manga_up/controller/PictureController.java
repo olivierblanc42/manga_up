@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.service.PictureService;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@Tag(name = "3.Images", description = "Operations related to manga pictures")
 @RestController
 @RequestMapping("/api/picture")
 public class PictureController {

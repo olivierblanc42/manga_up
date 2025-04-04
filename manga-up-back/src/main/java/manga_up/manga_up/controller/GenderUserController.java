@@ -1,0 +1,47 @@
+package manga_up.manga_up.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import manga_up.manga_up.projection.GenderUserProjection;
+import manga_up.manga_up.service.GenreUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/gendersUser")
+public class GenderUserController {
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(GenderUserController .class);
+
+
+    private final GenreUserService genreUserService;
+
+    public GenderUserController(GenreUserService genreUserService) {
+        this.genreUserService = genreUserService;
+    }
+
+    @Operation(summary = "All genreUsers with pagination")
+    @GetMapping
+    public ResponseEntity<Page<GenderUserProjection>> getAllGenreUsers(
+            @PageableDefault(
+                    page = 0,
+                    size = 10,
+                    sort = "label",
+                    direction = Sort.Direction.DESC
+            ) @ParameterObject Pageable pageable
+    ) {
+        LOGGER.info("Getting genreUsers");
+        Page<GenderUserProjection> genderUserProjections = genreUserService.getGenreUsers(pageable);
+        return new ResponseEntity<>(genderUserProjections, HttpStatus.OK);
+    }
+
+}

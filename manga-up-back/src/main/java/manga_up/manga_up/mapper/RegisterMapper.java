@@ -1,16 +1,10 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dao.AddressDao;
-
-import manga_up.manga_up.dao.GenderUserDao;
 import manga_up.manga_up.dto.RegisterDto;
 import manga_up.manga_up.model.AppUser;
-import manga_up.manga_up.model.GenderUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
 
 @Component
 public class RegisterMapper {

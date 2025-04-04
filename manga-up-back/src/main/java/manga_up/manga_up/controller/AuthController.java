@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
-@Tag(name = "1. Auth", description = "Operations related to authentication")
+@Tag(name = "1.Auth", description = "Operations related to authentication")
 @RestController
 @RequestMapping("api/auth")
 
