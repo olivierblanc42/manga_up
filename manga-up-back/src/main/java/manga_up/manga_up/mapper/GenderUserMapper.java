@@ -12,7 +12,6 @@ public class GenderUserMapper {
 
     public GenderUserDto toDto( GenderUser genderUser) {
         return new GenderUserDto(
-                genderUser.getId(),
                 genderUser.getLabel()
         );
     }
@@ -20,7 +19,7 @@ public class GenderUserMapper {
 
     public GenderUser toEntity( GenderUserDto genderUserDto) {
         GenderUser genderUser = new GenderUser();
-        genderUser.setId(genderUserDto.getId());
+
         genderUser.setLabel(genderUserDto.getLabel());
         return genderUser;
     }

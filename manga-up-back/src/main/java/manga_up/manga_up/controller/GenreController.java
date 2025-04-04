@@ -65,5 +65,19 @@ public class GenreController {
         return new ResponseEntity<>(genres, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update manga genre")
+    @PutMapping("/update")
+    public ResponseEntity<GenreDto> updateGenre(@ParameterObject Integer genreId, @RequestBody GenreDto genreDto) {
+        LOGGER.info("Update manga genre");
+        try{
+            GenreDto genre = genreService.updateGenre(genreId, genreDto);
+            return new ResponseEntity<>(genre, HttpStatus.OK);
+        }catch (Exception e){
+            LOGGER.error("Error updating genre", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
 
 }

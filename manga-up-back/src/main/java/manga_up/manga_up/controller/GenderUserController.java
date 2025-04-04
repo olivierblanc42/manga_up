@@ -1,6 +1,7 @@
 package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import manga_up.manga_up.dto.GenderUserDto;
 import manga_up.manga_up.projection.GenderUserProjection;
 import manga_up.manga_up.service.GenreUserService;
 import org.slf4j.Logger;
@@ -12,9 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/gendersUser")
@@ -42,6 +41,14 @@ public class GenderUserController {
         LOGGER.info("Getting genreUsers");
         Page<GenderUserProjection> genderUserProjections = genreUserService.getGenreUsers(pageable);
         return new ResponseEntity<>(genderUserProjections, HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Add one genre User")
+    @PostMapping("add")
+    public ResponseEntity<GenderUserDto> addGenreUser(@RequestBody GenderUserDto genreUserDto) {
+        LOGGER.info("Adding genreUser");
+        return ResponseEntity.ok(genreUserService.saveGenreUser(genreUserDto));
     }
 
 }

@@ -10,7 +10,6 @@ import java.util.Objects;
  * DTO for {@link manga_up.manga_up.model.GenderUser}
  */
 public class GenderUserDto implements Serializable {
-    private Integer id;
     @NotNull
     @Size(max = 50)
     private String label;
@@ -18,18 +17,12 @@ public class GenderUserDto implements Serializable {
     public GenderUserDto() {
     }
 
-    public GenderUserDto(Integer id, String label) {
-        this.id = id;
+    public GenderUserDto( String label) {
+
         this.label = label;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getLabel() {
         return label;
@@ -44,19 +37,18 @@ public class GenderUserDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenderUserDto entity = (GenderUserDto) o;
-        return Objects.equals(this.id, entity.id) &&
+        return
                 Objects.equals(this.label, entity.label);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, label);
+        return Objects.hash( label);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
                 "label = " + label + ")";
     }
 }

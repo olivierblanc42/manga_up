@@ -50,8 +50,7 @@ public class AuthorService {
             LOGGER.error("Error saving author", e);
             throw new RuntimeException("Error saving author",e);
         }
-        AuthorDto aDto = authorMapper.toDtoAuthor(author);
-        return aDto;
+        return authorMapper.toDtoAuthor(author);
 
     }
 }

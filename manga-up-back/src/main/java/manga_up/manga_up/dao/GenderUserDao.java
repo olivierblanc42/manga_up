@@ -14,4 +14,7 @@ public interface GenderUserDao extends JpaRepository<GenderUser, Integer> {
    @Query("SELECT g FROM GenderUser g LEFT JOIN FETCH g.appUsers")
    Page<GenderUserProjection> getGenderUser(Pageable pageable);
 
+
+   
+
 }

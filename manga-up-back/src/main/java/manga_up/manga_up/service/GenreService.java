@@ -68,4 +68,21 @@ public class GenreService {
         return genreDao.findRandomGenres(PageRequest.of(0, 4));
     }
 
+
+    /**
+     * Updates a manga genre.
+     *
+     * @param genreId the ID of the genre to update
+     * @param genreDto the {@link GenreDto} containing the updated genre information
+     * @return the updated genre
+     */
+    public GenreDto updateGenre(Integer genreId, GenreDto genreDto) {
+        Genre genre = genreDao.findGenreById(genreId).
+                orElseThrow(() -> new RuntimeException("Genre with ID " + genreId + " not found"));
+        genre.setLabel(genreDto.getLabel());
+        genreDao.save(genre);
+        return genderMangaMapper.toDtoGenre(genre);
+     }
+
+
 }
