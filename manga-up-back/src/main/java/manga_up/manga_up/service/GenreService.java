@@ -6,14 +6,17 @@ import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.GenreProjection;
+import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class GenreService {
@@ -56,5 +59,13 @@ public class GenreService {
         return gDto;
     }
 
+    /**
+     * Retrieve Four Genres
+     * return a list of four genres
+     */
+    public List<GenreProjection> getRandomFourGenres(Pageable pageable){
+
+        return genreDao.findRandomGenres(PageRequest.of(0, 4));
+    }
 
 }

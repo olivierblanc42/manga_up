@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/genres")
 public class GenreController {
@@ -52,5 +54,16 @@ public class GenreController {
         LOGGER.info("Adding a genre");
         return ResponseEntity.ok(genreService.save(genre));
     }
+
+
+    @Operation(summary = "Get Four Random Genres")
+    @GetMapping("four")
+    public ResponseEntity<List<GenreProjection>> getRandomFourGenres(Pageable pageable){
+        LOGGER.info("Get Four Random Genres");
+        List<GenreProjection> genres = genreService.getRandomFourGenres(pageable);
+        LOGGER.info("Found {} genres ", genres.size());
+        return new ResponseEntity<>(genres, HttpStatus.OK);
+    }
+
 
 }
