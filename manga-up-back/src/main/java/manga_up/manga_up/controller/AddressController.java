@@ -65,4 +65,19 @@ public class AddressController {
      //   LOGGER.info("Deleting address by id");
        // addressService.deleteUserAddress(id);
    // }
+
+
+    @Operation(summary = "Update UserAddress")
+    @PutMapping("{id}")
+    public ResponseEntity<UserAddressDto>  updateAddress(@PathVariable Integer id, @RequestBody UserAddressDto userAddressDto) {
+        LOGGER.info("Updating address");
+        try{
+            UserAddressDto userAddress = addressService.updateUserAddress(id ,userAddressDto);
+            return new ResponseEntity<>(userAddress, HttpStatus.OK);
+        }catch (Exception e) {
+            LOGGER.error("Error updating userAddress", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

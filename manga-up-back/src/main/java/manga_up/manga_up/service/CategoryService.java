@@ -51,4 +51,14 @@ public class CategoryService {
         return categoryMapper.toDtoCategory(category);
     }
 
+
+
+    public CategoryDto update( Integer id, CategoryDto categoryDto) {
+       Category category = categoryDao.findCategoryById(id).
+               orElseThrow(() -> new RuntimeException("category not found"));
+       category.setLabel(categoryDto.getLabel());
+       categoryDao.save(category);
+       return categoryMapper.toDtoCategory(category);
+    }
+
 }

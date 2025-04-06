@@ -53,8 +53,8 @@ public class GenderUserController {
 
 
     @Operation(summary = "update Gender user")
-    @PutMapping("/update")
-    public ResponseEntity<GenderUserDto> updateGenreUser(@ParameterObject Integer id,   @RequestBody GenderUserDto genreUserDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<GenderUserDto> updateGenreUser( @RequestBody GenderUserDto genreUserDto, @PathVariable Integer id) {
         LOGGER.info("Updating genreUser");
         try{
             GenderUserDto genreUser = genreUserService.updateGenreUser(id, genreUserDto);

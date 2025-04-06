@@ -51,6 +51,18 @@ public class AuthorService {
             throw new RuntimeException("Error saving author",e);
         }
         return authorMapper.toDtoAuthor(author);
-
     }
+
+    public AuthorDto updateAuthor(Integer authorId, AuthorDto authorDto) {
+        Author author = authorDao.findAuthorById(authorId).
+                orElseThrow(() -> new RuntimeException("Author not found"));
+        LOGGER.info("Updating author");
+        author.setFirstname(authorDto.getFirstname());
+        author.setLastname(authorDto.getLastname());
+        author.setDescription(authorDto.getDescription());
+        authorDao.save(author);
+        return authorMapper.toDtoAuthor(author);
+    }
+
+
 }

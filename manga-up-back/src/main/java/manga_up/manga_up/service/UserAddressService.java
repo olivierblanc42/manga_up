@@ -7,6 +7,7 @@ import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.model.Author;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.UserAddressProjection;
 import org.slf4j.Logger;
@@ -88,5 +89,21 @@ public class UserAddressService {
         }
         addressDao.deleteById(userAddress);
     }
+
+
+
+ public UserAddressDto updateUserAddress(Integer userAddressId, UserAddressDto userAddressDto) {
+        LOGGER.info("Update address");
+     UserAddress userAddress = addressDao.findUserAddressById(userAddressId).
+             orElseThrow(() -> new RuntimeException("Author not found"));
+
+     userAddress.setLine1(userAddressDto.getLine1());
+     userAddress.setLine2(userAddressDto.getLine2());
+     userAddress.setLine3(userAddressDto.getLine3());
+     userAddress.setCity(userAddressDto.getCity());
+     userAddress.setPostalCode(userAddressDto.getPostalCode());
+     addressDao.save(userAddress);
+     return userAddressMapper.toDto(userAddress);
+ }
 
 }

@@ -57,4 +57,19 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.save(authorDto));
   }
 
+
+
+  @Operation(summary = "Update author")
+  @PutMapping("/{id}")
+  public ResponseEntity<AuthorDto> updateAuthor(@RequestBody AuthorDto authorDto, @PathVariable Integer id) {
+        LOGGER.info("Updating Author");
+        try {
+            AuthorDto author = authorService.updateAuthor(id, authorDto);
+            return new ResponseEntity<>(author, HttpStatus.OK);
+        }catch (Exception e) {
+            LOGGER.error("Error updating Author", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+  }
+
 }

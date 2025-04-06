@@ -66,11 +66,11 @@ public class GenreController {
     }
 
     @Operation(summary = "Update manga genre")
-    @PutMapping("/update")
-    public ResponseEntity<GenreDto> updateGenre(@ParameterObject Integer genreId, @RequestBody GenreDto genreDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<GenreDto> updateGenre( @PathVariable Integer id, @RequestBody GenreDto genreDto) {
         LOGGER.info("Update manga genre");
         try{
-            GenreDto genre = genreService.updateGenre(genreId, genreDto);
+            GenreDto genre = genreService.updateGenre(id, genreDto);
             return new ResponseEntity<>(genre, HttpStatus.OK);
         }catch (Exception e){
             LOGGER.error("Error updating genre", e);

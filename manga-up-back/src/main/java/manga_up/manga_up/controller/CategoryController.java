@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.CategoryProjection;
@@ -23,9 +24,11 @@ public class CategoryController {
     private static final Logger LOGGER= LoggerFactory.getLogger(CategoryController.class);
 
     private final CategoryService categoryService;
+    private final CategoryDao categoryDao;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, CategoryDao categoryDao) {
         this.categoryService = categoryService;
+        this.categoryDao = categoryDao;
     }
 
     @Operation(summary = "All Categories with pagination")
@@ -52,5 +55,19 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.save(category));
     }
 
+    @Operation(summary = "Update Category")
+    @PutMapping("{id}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Integer id, CategoryDto categoryDto) {
+        LOGGER.info("Update category: {}", categoryDto);
+       try{
+           CategoryDto category = categoryService.update( id , categoryDto );
+           return new ResponseEntity<>(category, HttpStatus.OK);
+
+       }catch (Exception e){
+           LOGGER.error("Error updating category", e);
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+       }
+
+    }
 
 }
