@@ -5,5 +5,5 @@ import java.util.Set;
 public interface PictureProjection {
     Integer getId();
     String getUrl();
-    MangaLittleProjection getManga();
+    MangaLittleProjection getIdMangas();
 }

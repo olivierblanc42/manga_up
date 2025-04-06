@@ -3,7 +3,9 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import manga_up.manga_up.dto.PictureDto;
 import manga_up.manga_up.model.Picture;
+import manga_up.manga_up.projection.PictureProjection;
 import manga_up.manga_up.service.PictureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,16 +16,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @Tag(name = "3.Images", description = "Operations related to manga pictures")
 @RestController
 @RequestMapping("/api/picture")
 public class PictureController {
     private static final Logger LOGGER= LoggerFactory.getLogger(PictureController.class);
 
-    private PictureService pictureService;
+    private final PictureService pictureService;
     public PictureController(PictureService pictureService) {
         this.pictureService = pictureService;
     }
@@ -31,18 +32,31 @@ public class PictureController {
     @Operation(summary = "All pictures with pagination")
     @ApiResponse(responseCode = "201", description = "All pictures have been retrived")
     @GetMapping
-    public ResponseEntity<Page<Picture>> getAllPicture(@PageableDefault(
+    public ResponseEntity<Page<PictureProjection>> getAllPicture(@PageableDefault(
             page = 0,
             size = 10,
-            sort = "createdAt",
+            sort = "url",
             direction = Sort.Direction.DESC
     ) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all pictures with pagination");
-        Page<Picture> pictures = pictureService.findAllByPage(pageable);
+        Page<PictureProjection> pictures = pictureService.findAllByPage(pageable);
         LOGGER.info("Found {} pictures", pictures.getTotalElements());
         return new ResponseEntity<>(pictures, HttpStatus.OK);
+    }
 
 
+
+    @Operation(summary ="Update url picture manga")
+    @PutMapping("{id}")
+    ResponseEntity<PictureDto> updatePicture(@PathVariable Integer id,@RequestBody PictureDto pictureDto) {
+        LOGGER.info("Updating picture");
+        try{
+            PictureDto picture = pictureService.UpdatePicture(id, pictureDto);
+            return new ResponseEntity<>(picture, HttpStatus.OK);
+        }catch (Exception e) {
+            LOGGER.error("Error updating picture", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 }
