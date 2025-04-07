@@ -43,6 +43,13 @@ public class GenderUserController {
         return new ResponseEntity<>(genderUserProjections, HttpStatus.OK);
     }
 
+    @Operation(summary = "Find a gender by id")
+    @GetMapping("{id}")
+    public ResponseEntity<GenderUserProjection> getGenderUserById(@PathVariable Integer id) {
+        LOGGER.info("Getting gender user with id {}", id);
+        return ResponseEntity.ok(genreUserService.getGenreUserById(id));
+    }
+
 
     @Operation(summary = "Add one genre User")
     @PostMapping("add")

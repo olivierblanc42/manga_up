@@ -24,6 +24,10 @@ public interface AddressDao extends JpaRepository<UserAddress, Integer> {
     Page<UserAddressProjection> findAllByPage(Pageable pageable);
 
     @Query("SELECT ad FROM UserAddress ad LEFT JOIN FETCH ad.appUsers WHERE ad.id = :id ")
-   Optional<UserAddress> findUserAddressById(@Param("id") Integer id);
+    Optional<UserAddress> findUserAddressById(@Param("id") Integer id);
+
+
+    @Query("SELECT ad FROM UserAddress ad LEFT JOIN FETCH ad.appUsers WHERE ad.id = :id ")
+    Optional<UserAddressProjection> findUserAddressProjectionById(@Param("id") Integer id);
 
 }

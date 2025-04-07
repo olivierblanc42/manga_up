@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserAddressService {
@@ -61,6 +62,12 @@ public class UserAddressService {
             throw new RuntimeException("Error saving user address",e);
         }
         return userAddressMapper.toDto(userAddress);
+    }
+
+    public UserAddressProjection findById(Integer id) {
+       LOGGER.info("Find address by id");
+       return addressDao.findUserAddressProjectionById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
     }
 
 

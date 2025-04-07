@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
@@ -49,6 +51,16 @@ public class AuthorController {
         LOGGER.info("Found {} addresses", authors.getTotalElements());
         return new ResponseEntity<>(authors, HttpStatus.OK);
     }
+
+
+    @Operation(summary = "Find author ")
+    @GetMapping("{id}")
+    public ResponseEntity<?> getAuthor(@PathVariable Integer id) {
+        LOGGER.info("Find author with id {}", id);
+      return ResponseEntity.ok(authorService.getAuthorById(id));
+    }
+
+
 
   @Operation(summary = "Adding Author")
   @PostMapping("/add")

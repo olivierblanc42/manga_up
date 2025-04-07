@@ -1,5 +1,6 @@
 package manga_up.manga_up.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenderUserDao;
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dto.GenderUserDto;
@@ -28,6 +29,14 @@ public class GenreUserService {
     public Page<GenderUserProjection> getGenreUsers(Pageable pageable) {
         LOGGER.info("Getting enderUser");
         return genderUserDao.getGenderUser(pageable);
+    }
+
+
+
+    public GenderUserProjection getGenreUserById(Integer id) {
+        LOGGER.info("Getting enderUser");
+        return  genderUserDao.findGenderUserProjectionById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
     }
 
 

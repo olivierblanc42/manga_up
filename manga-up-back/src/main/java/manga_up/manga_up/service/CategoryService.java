@@ -1,5 +1,6 @@
 package manga_up.manga_up.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
 import manga_up.manga_up.mapper.CategoryMapper;
@@ -35,6 +36,14 @@ public class CategoryService {
         LOGGER.info("findAllByPage");
         return categoryDao.FindAllCategorisByPage(pageable);
     }
+
+
+    public CategoryProjection FindCategoryById(Integer id) {
+        LOGGER.info("FindCategoryById");
+        return categoryDao.findCategoryProjectionById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
+    }
+
 
 
     public CategoryDto save(CategoryDto categoryDto) {

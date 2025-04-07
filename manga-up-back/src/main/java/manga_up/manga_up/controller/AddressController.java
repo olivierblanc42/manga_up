@@ -50,6 +50,15 @@ public class AddressController {
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
+
+
+    @Operation(summary=" One address")
+    @GetMapping("{id}")
+    public ResponseEntity<?> getAddressById(@PathVariable Integer id) {
+        LOGGER.info("Find address by id: {}", id);
+        return  ResponseEntity.ok(addressService.findById(id));
+    }
+
     @Operation(summary = "Adding address")
     @PostMapping("/add")
     public ResponseEntity<UserAddressDto> addAddress(@RequestBody UserAddressDto userAddressDto) {

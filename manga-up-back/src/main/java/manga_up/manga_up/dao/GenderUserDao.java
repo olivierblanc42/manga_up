@@ -20,4 +20,8 @@ public interface GenderUserDao extends JpaRepository<GenderUser, Integer> {
 
    @Query("SELECT g FROM GenderUser g LEFT JOIN FETCH g.appUsers WHERE g.id = :genderUserId")
   Optional<GenderUser> findGenderById(@ParameterObject Integer genderUserId);
+
+
+    @Query("SELECT g FROM GenderUser g LEFT JOIN FETCH g.appUsers WHERE g.id = :genderUserId")
+    Optional<GenderUserProjection> findGenderUserProjectionById(@ParameterObject Integer genderUserId);
 }

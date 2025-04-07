@@ -1,10 +1,12 @@
 package manga_up.manga_up.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
+import manga_up.manga_up.projection.GenderUserProjection;
 import manga_up.manga_up.projection.GenreProjection;
 import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
@@ -40,6 +42,12 @@ public class GenreService {
         return genreDao.findAllByPage(pageable);
     }
 
+    public GenreProjection findGenreUserById(Integer id) {
+        LOGGER.info("Find genre user by id");
+        return genreDao.findGenreProjectionById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+
+    }
 
     @Transactional
     public GenreDto save(GenreDto genreDto) {

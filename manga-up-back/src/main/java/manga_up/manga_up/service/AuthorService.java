@@ -1,5 +1,6 @@
 package manga_up.manga_up.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 @Service
@@ -38,6 +40,15 @@ public class AuthorService {
         return authorDao.findAllByPage(pageable);
     }
 
+    public AuthorProjection getAuthorById(Integer id) {
+        LOGGER.info("Getting author by id");
+        return authorDao.findAuthorProjectionById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+    }
+
+
+
+
     public AuthorDto save(AuthorDto authorDto) {
         LOGGER.info("Saving author");
         LOGGER.info("author authorDto : {}", authorDto);
@@ -55,7 +66,7 @@ public class AuthorService {
 
     public AuthorDto updateAuthor(Integer authorId, AuthorDto authorDto) {
         Author author = authorDao.findAuthorById(authorId).
-                orElseThrow(() -> new RuntimeException("Author not found"));
+                orElseThrow(() -> new RuntimeException("Author with id " + authorId + " not found"));
         LOGGER.info("Updating author");
         author.setFirstname(authorDto.getFirstname());
         author.setLastname(authorDto.getLastname());

@@ -48,6 +48,15 @@ public class CategoryController {
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
+    @Operation(summary = "Find category by id ")
+    @GetMapping("{id}")
+    public ResponseEntity<CategoryProjection> getCategory(@PathVariable Integer id) {
+        LOGGER.info("Find category by id {}", id);
+        return ResponseEntity.ok(categoryService.FindCategoryById(id));
+    }
+
+
+
     @Operation(summary = "Add category")
     @PostMapping("/add")
     public ResponseEntity<?> addCategory(@RequestBody CategoryDto category) {
@@ -67,7 +76,6 @@ public class CategoryController {
            LOGGER.error("Error updating category", e);
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
        }
-
     }
 
 }

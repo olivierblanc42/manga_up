@@ -47,6 +47,14 @@ public class GenreController {
     }
 
 
+    @Operation(summary = "Find genre with id")
+    @GetMapping("{id}")
+    public ResponseEntity<GenreProjection> getGenreById(@PathVariable Integer id) {
+        LOGGER.info("Find genre with id");
+        return ResponseEntity.ok(genreService.findGenreUserById(id));
+    }
+
+
 
     @Operation(summary = "Adding a gender")
     @PostMapping("/add")

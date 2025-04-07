@@ -23,4 +23,9 @@ public interface AuthorDao extends JpaRepository<Author, Integer> {
     @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
     Optional<Author> findAuthorById(@Param("idAuthor") Integer idAuthor);
 
+
+    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
+    Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
+
+
 }

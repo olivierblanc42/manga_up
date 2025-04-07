@@ -29,5 +29,6 @@ public interface GenreDao extends JpaRepository<Genre, Integer> {
     @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas WHERE g.id = :genreId ")
     Optional<Genre> findGenreById(@ParameterObject Integer genreId);
 
-
+    @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas WHERE g.id = :genreId ")
+    Optional<GenreProjection> findGenreProjectionById(@ParameterObject Integer genreId);
 }

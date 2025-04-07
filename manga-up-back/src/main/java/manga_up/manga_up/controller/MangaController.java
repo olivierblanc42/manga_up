@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import manga_up.manga_up.dto.MangaDto;
+import manga_up.manga_up.dto.MangaDtoRandom;
 import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.MangaProjection;
 import manga_up.manga_up.service.MangaService;
@@ -52,22 +53,22 @@ public class MangaController {
 
 
 
-    @Operation(summary ="Get Random Four Mangas")
-     @GetMapping("/four")
-       public ResponseEntity<List<MangaProjection>> getRandomFourMangas(Pageable pageable){
-          LOGGER.info("Get six Mangas");
-          List<MangaProjection> mangas = mangaService.getRandomFourMangas(pageable);
-         LOGGER.info("Found {} mangas", mangas.size());
-          return new ResponseEntity<>(mangas, HttpStatus.OK);
-      }
-
-    @Operation(summary ="Get Random Manga")
-    @GetMapping("/one")
-    public ResponseEntity<List<MangaProjection>> getRandomManga(Pageable pageable){
-        LOGGER.info("Get  Manga");
-        List<MangaProjection> mangas = mangaService.getRandomManga(pageable);
+  @Operation(summary ="Get Random Four Mangas")
+   @GetMapping("/four")
+     public ResponseEntity<List<MangaDtoRandom>> getRandomFourMangas(){
+        LOGGER.info("Get six Mangas");
+        List<MangaDtoRandom> mangas = mangaService.getRandomFourMangas();
+       LOGGER.info("Found {} mangas", mangas.size());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
+
+   // @Operation(summary ="Get Random Manga")
+   // @GetMapping("/one")
+   // public ResponseEntity<List<MangaProjection>> getRandomManga(Pageable pageable){
+     //   LOGGER.info("Get  Manga");
+       // List<MangaProjection> mangas = mangaService.getRandomManga(pageable);
+      //  return new ResponseEntity<>(mangas, HttpStatus.OK);
+   // }
 
     @Operation(summary = "Adding Manga")
     @PostMapping("/add")

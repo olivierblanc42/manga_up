@@ -4,6 +4,7 @@ package manga_up.manga_up.service;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
 import manga_up.manga_up.dto.MangaDto;
+import manga_up.manga_up.dto.MangaDtoRandom;
 import manga_up.manga_up.dto.PictureLightDto;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Manga;
@@ -83,20 +84,20 @@ public class MangaService {
 
 
     /**
-     * Retrieve Four mangas
+     * Retrieve Four mangas aleatoire
      * return a list of four mangas
      */
-    public List<MangaProjection> getRandomFourMangas(Pageable pageable){
+    public List<MangaDtoRandom> getRandomFourMangas(){
 
-        return mangaDao.findRandomMangas(PageRequest.of(0, 4));
+        return mangaDao.findRandomMangas();
     }
 
     /**
      * Retrieve a Random manga
      * return a list of one manga
      */
-    public List<MangaProjection> getRandomManga(Pageable pageable){
-        return mangaDao.findRandomMangas(PageRequest.of(0, 1));
+    public List<MangaDtoRandom> getRandomManga(Pageable pageable){
+        return mangaDao.findRandomMangas();
     }
 
 }

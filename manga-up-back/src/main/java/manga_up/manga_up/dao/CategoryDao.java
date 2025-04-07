@@ -24,5 +24,6 @@ public interface CategoryDao extends JpaRepository<Category, Integer> {
     @Query("SELECT c FROM Category c LEFT JOIN FETCH c.mangas WHERE c.id = :idCategory")
     Optional<Category> findCategoryById(@Param("idCategory") Integer idCategory);
 
-
+    @Query("SELECT c FROM Category c LEFT JOIN FETCH c.mangas WHERE c.id = :idCategory")
+    Optional<CategoryProjection> findCategoryProjectionById(@Param("idCategory") Integer idCategory);
 }
