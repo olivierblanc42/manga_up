@@ -44,7 +44,14 @@ public class PictureController {
         return new ResponseEntity<>(pictures, HttpStatus.OK);
     }
 
-
+  @Operation(summary = "Get picture with her id")
+  @GetMapping("{id}")
+  public ResponseEntity<PictureDto> findById(@PathVariable Integer id) {
+        LOGGER.info("Find picture with id {}", id);
+        PictureDto pictureDto = pictureService.findById(id);
+        LOGGER.info("Found picture with id {}", id);
+        return new ResponseEntity<>(pictureDto, HttpStatus.OK);
+  }
 
     @Operation(summary ="Update url picture manga")
     @PutMapping("{id}")

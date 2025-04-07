@@ -1,5 +1,7 @@
 package manga_up.manga_up.dao;
 
+import manga_up.manga_up.dto.PictureDto;
+import manga_up.manga_up.dto.PictureLightDto;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.PictureProjection;
 import org.springframework.data.domain.Page;
@@ -21,5 +23,6 @@ public interface PictureDao extends JpaRepository<Picture, Integer> {
     @Query("SELECT p FROM Picture p LEFT JOIN FETCH p.idMangas WHERE p.id = :id")
     Optional<Picture> findPictureById(@Param("id") Integer id);
 
-
+    @Query("SELECT p FROM Picture p LEFT JOIN FETCH p.idMangas WHERE p.id = :id")
+    Optional<PictureDto> findPictureDtoById(@Param("id") Integer id);
 }

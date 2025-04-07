@@ -38,7 +38,12 @@ public class PictureService {
     }
 
 
-
+    public PictureDto findById(Integer id) {
+        Picture picture = pictureDao.findById(id).orElse(null);
+        LOGGER.info("Found picture with id {}", id);
+        assert picture != null;
+        return pictureMapper.toPictureDto(picture);
+    }
 
 
     public PictureDto UpdatePicture(Integer id, PictureDto pictureDto) {
