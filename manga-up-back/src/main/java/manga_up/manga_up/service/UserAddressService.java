@@ -71,31 +71,15 @@ public class UserAddressService {
     }
 
 
-    public void deleteUserAddress(Integer userAddress) {
-        LOGGER.info("Delete address");
-        LOGGER.info("userAddress: {}", userAddress);
-
-        if(!addressDao.existsById(userAddress)){
-            LOGGER.warn("Address not found");
-            throw new EntityNotFoundException("Address not found");
-        }
-        UserAddress address = addressDao.findById(userAddress)
-                .orElseThrow(() -> new EntityNotFoundException("Address not found"));
-
-        List<AppUser> usersWithAddress = userDao.findUsersByAddressId(userAddress);
-
-        if (usersWithAddress.isEmpty()) {
-            LOGGER.info("No users associated with this address.");
-        } else {
-
-            for (AppUser user : usersWithAddress) {
-                user.setIdUserAddress(null);
-                userDao.save(user);
-            }
-            LOGGER.info("Address detached from all users successfully.");
-        }
-        addressDao.deleteById(userAddress);
-    }
+   public void  deleteUserAddress(Integer id) {
+        LOGGER.info("Delete address by id");
+      UserAddress userAddress = addressDao.findUserAddressById(id)
+              .orElseThrow(() -> new EntityNotFoundException("Address with id " + id + " not found"));
+      if(!userAddress.getAppUsers().isEmpty()) {
+        throw new EntityNotFoundException("The address is linked to a user it cannot be deleted");
+      }
+      addressDao.delete(userAddress);
+   }
 
 
 
@@ -103,7 +87,6 @@ public class UserAddressService {
         LOGGER.info("Update address");
      UserAddress userAddress = addressDao.findUserAddressById(userAddressId).
              orElseThrow(() -> new RuntimeException("Author not found"));
-
      userAddress.setLine1(userAddressDto.getLine1());
      userAddress.setLine2(userAddressDto.getLine2());
      userAddress.setLine3(userAddressDto.getLine3());

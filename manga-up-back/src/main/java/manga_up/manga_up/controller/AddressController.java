@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.UserAddressProjection;
@@ -68,12 +69,17 @@ public class AddressController {
 
 
 
-   // @Operation(summary = "delete address by id ")
-   // @DeleteMapping("/{id}")
-   // public void deleteAddress(@PathVariable Integer id) {
-     //   LOGGER.info("Deleting address by id");
-       // addressService.deleteUserAddress(id);
-   // }
+    @Operation(summary = "delete address by id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Address deleted"),
+            @ApiResponse(responseCode = "400", description = "Address used by users"),
+            @ApiResponse(responseCode = "404", description = "Address not found")
+    })
+    @DeleteMapping("/{id}")
+    public void deleteAddress(@PathVariable Integer id) {
+       LOGGER.info("Deleting address by id");
+        addressService.deleteUserAddress(id);
+    }
 
 
     @Operation(summary = "Update UserAddress")

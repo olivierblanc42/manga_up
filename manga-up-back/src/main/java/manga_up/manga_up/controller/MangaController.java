@@ -51,7 +51,12 @@ public class MangaController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-
+@Operation(summary ="Get one manga with her id")
+@GetMapping("{id}")
+public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
+        LOGGER.info("Find manga by id");
+        return  ResponseEntity.ok(mangaService.findMangaById(id));
+}
 
   @Operation(summary ="Get Random Four Mangas")
    @GetMapping("/four")
