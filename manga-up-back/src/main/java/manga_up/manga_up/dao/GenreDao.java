@@ -20,9 +20,11 @@ public interface GenreDao extends JpaRepository<Genre, Integer> {
 
 
 
-    @Query("SELECT g FROM Genre g  LEFT JOIN FETCH g.mangas " +
-            "ORDER BY FUNCTION('RAND') ")
-    List<GenreProjection> findRandomGenres(Pageable pageable);
+    @Query( value = "SELECT g.label " +
+    "FROM genre g " +
+    "ORDER BY RAND() " +
+    "LIMIT 4 " , nativeQuery = true)
+    List<GenreDto> findRandomGenres();
 
 
 

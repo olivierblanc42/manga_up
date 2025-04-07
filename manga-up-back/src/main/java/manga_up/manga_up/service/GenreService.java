@@ -71,9 +71,9 @@ public class GenreService {
      * Retrieve Four Genres
      * return a list of four genres
      */
-    public List<GenreProjection> getRandomFourGenres(Pageable pageable){
+    public List<GenreDto> getRandomFourGenres(){
 
-        return genreDao.findRandomGenres(PageRequest.of(0, 4));
+        return genreDao.findRandomGenres();
     }
 
 

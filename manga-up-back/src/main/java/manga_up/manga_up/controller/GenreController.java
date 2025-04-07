@@ -66,9 +66,9 @@ public class GenreController {
 
     @Operation(summary = "Get Four Random Genres")
     @GetMapping("four")
-    public ResponseEntity<List<GenreProjection>> getRandomFourGenres(Pageable pageable){
+    public ResponseEntity<List<GenreDto>> getRandomFourGenres(){
         LOGGER.info("Get Four Random Genres");
-        List<GenreProjection> genres = genreService.getRandomFourGenres(pageable);
+        List<GenreDto> genres = genreService.getRandomFourGenres();
         LOGGER.info("Found {} genres ", genres.size());
         return new ResponseEntity<>(genres, HttpStatus.OK);
     }
