@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.GenreProjection;
@@ -54,7 +55,17 @@ public class GenreController {
         return ResponseEntity.ok(genreService.findGenreUserById(id));
     }
 
-
+    @Operation(summary = "delete genre by id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Genre deleted"),
+            @ApiResponse(responseCode = "400", description = "Genre used by users"),
+            @ApiResponse(responseCode = "404", description = "Genre not found")
+    })
+    @DeleteMapping("{id}")
+    public void deleteGenreById(@PathVariable Integer id) {
+        LOGGER.info("Delete genre with id");
+        genreService.deleteGenre(id);
+    }
 
     @Operation(summary = "Adding a gender")
     @PostMapping("/add")

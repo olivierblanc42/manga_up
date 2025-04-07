@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
@@ -60,7 +61,17 @@ public class AuthorController {
       return ResponseEntity.ok(authorService.getAuthorById(id));
     }
 
-
+    @Operation(summary = "delete Author by id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author deleted"),
+            @ApiResponse(responseCode = "400", description = "Author used by users"),
+            @ApiResponse(responseCode = "404", description = "Author not found")
+    })
+    @DeleteMapping("{id}")
+    public void deleteAuthor(@PathVariable Integer id) {
+        LOGGER.info("Delete author with id {}", id);
+        authorService.deleteAuthorById(id);
+    }
 
   @Operation(summary = "Adding Author")
   @PostMapping("/add")

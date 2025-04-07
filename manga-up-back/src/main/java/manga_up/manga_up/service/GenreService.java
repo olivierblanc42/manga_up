@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.Instant;
 import java.util.List;
@@ -75,6 +76,20 @@ public class GenreService {
 
         return genreDao.findRandomGenres();
     }
+
+
+    public void deleteGenre(@PathVariable Integer id) {
+        LOGGER.info("Delete genre with id {}", id);
+        Genre genre = genreDao.findGenreById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Genre with id " + id + " not found"));
+
+        if(!genre.getMangas().isEmpty()){
+            throw new EntityNotFoundException("The genre is linked to a manga it cannot be deleted");
+        }
+        genreDao.delete(genre);
+    }
+
+
 
 
     /**

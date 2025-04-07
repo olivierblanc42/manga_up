@@ -46,7 +46,15 @@ public class AuthorService {
                 .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
     }
 
-
+   public void deleteAuthorById(Integer id) {
+        LOGGER.info("Deleting author by id");
+        Author author = authorDao.findAuthorById(id).
+                orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+        if(!author.getMangas().isEmpty()){
+            throw new EntityNotFoundException("The author is linked to mangas it cannot be deleted");
+        }
+        authorDao.delete(author);
+   }
 
 
     public AuthorDto save(AuthorDto authorDto) {

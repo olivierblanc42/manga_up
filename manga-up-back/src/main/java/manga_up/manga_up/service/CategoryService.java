@@ -44,6 +44,15 @@ public class CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
     }
 
+    public void deleteCategoryById(Integer id) {
+        LOGGER.info("deleteCategoryById");
+        Category category = categoryDao.findCategoryById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
+        if(!category.getMangas().isEmpty()) {
+            throw new EntityNotFoundException("The category is linked to many mangas it cannot be deleted");
+        }
+        categoryDao.delete(category);
+    }
 
 
     public CategoryDto save(CategoryDto categoryDto) {

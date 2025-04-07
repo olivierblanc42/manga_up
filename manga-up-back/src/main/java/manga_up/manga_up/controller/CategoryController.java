@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
 import manga_up.manga_up.model.Category;
@@ -56,6 +57,17 @@ public class CategoryController {
     }
 
 
+    @Operation(summary = "delete category by id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Category deleted"),
+            @ApiResponse(responseCode = "400", description = "Category used by users"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
+    @DeleteMapping("/{id}")
+    public void deleteCategory(@PathVariable Integer id) {
+        LOGGER.info("Deleting address by id");
+        categoryService.deleteCategoryById(id
+    }
 
     @Operation(summary = "Add category")
     @PostMapping("/add")

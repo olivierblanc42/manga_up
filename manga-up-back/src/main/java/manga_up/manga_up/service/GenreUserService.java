@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class GenreUserService {
@@ -37,6 +38,18 @@ public class GenreUserService {
         LOGGER.info("Getting enderUser");
         return  genderUserDao.findGenderUserProjectionById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
+    }
+
+
+
+    public void deleteGenreUserById(@PathVariable Integer id) {
+        LOGGER.info("Deleting enderUser");
+          GenderUser genderUser = genderUserDao.findGenderById(id)
+                  .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
+          if(!genderUser.getAppUsers().isEmpty()) {
+              throw new EntityNotFoundException("The Gender user is linked to a user it cannot be deleted");
+          }
+          genderUserDao.delete(genderUser);
     }
 
 
