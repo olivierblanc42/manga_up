@@ -96,8 +96,8 @@ public class MangaService {
      * Retrieve a Random manga
      * return a list of one manga
      */
-    public List<MangaDtoRandom> getRandomManga(Pageable pageable){
-        return mangaDao.findRandomMangas();
+    public List<MangaDtoRandom> getRandomManga(){
+        return mangaDao.findRandomOneMangas();
     }
 
 }

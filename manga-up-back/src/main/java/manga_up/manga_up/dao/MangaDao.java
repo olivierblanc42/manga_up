@@ -26,12 +26,23 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     Page<MangaProjection> findAllMangas(Pageable pageable);
 
 
-    @Query( value = "SELECT m.title,m.Id_mangas, ma.lastname,ma.firstname, pi.url " +
-            "FROM manga as m " +
-            "JOIN author as ma ON m.Id_mangas = ma.Id_authors  " +
-            "JOIN picture as pi On m.Id_categories = pi.Id_mangas   " +
+    @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +
+            "FROM manga m " +
+            "JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+            "JOIN author a ON ma.Id_authors = a.Id_authors  " +
+            "JOIN picture p on p.Id_mangas = m.Id_mangas  " +
             "ORDER BY RAND() " +
             "LIMIT 4 " , nativeQuery = true)
     List<MangaDtoRandom> findRandomMangas();
+
+
+    @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +
+            "FROM manga m " +
+            "JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+            "JOIN author a ON ma.Id_authors = a.Id_authors  " +
+            "JOIN picture p on p.Id_mangas = m.Id_mangas  " +
+            "ORDER BY RAND() " +
+            "LIMIT 1 " , nativeQuery = true)
+    List<MangaDtoRandom> findRandomOneMangas();
 
 }

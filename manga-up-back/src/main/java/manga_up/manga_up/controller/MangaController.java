@@ -62,13 +62,13 @@ public class MangaController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-   // @Operation(summary ="Get Random Manga")
-   // @GetMapping("/one")
-   // public ResponseEntity<List<MangaProjection>> getRandomManga(Pageable pageable){
-     //   LOGGER.info("Get  Manga");
-       // List<MangaProjection> mangas = mangaService.getRandomManga(pageable);
-      //  return new ResponseEntity<>(mangas, HttpStatus.OK);
-   // }
+    @Operation(summary ="Get Random Manga")
+    @GetMapping("/one")
+    public ResponseEntity<List<MangaDtoRandom>> getRandomManga(){
+       LOGGER.info("Get  Manga");
+        List<MangaDtoRandom> mangas = mangaService.getRandomManga();
+       return new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
 
     @Operation(summary = "Adding Manga")
     @PostMapping("/add")
