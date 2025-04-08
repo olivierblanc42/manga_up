@@ -1,7 +1,13 @@
 package manga_up.manga_up.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CommentDao;
+import manga_up.manga_up.dto.CommentDto;
+import manga_up.manga_up.dto.CommentLightDto;
+import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.model.Comment;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.CommentProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +20,7 @@ public class CommentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentService.class);
 
     private final CommentDao commentDao;
+
 
     public CommentService(CommentDao commentDao) {
         this.commentDao = commentDao;
@@ -28,6 +35,43 @@ public class CommentService {
      */
    public Page<CommentProjection> getAllComment(Pageable pageable) {
        return commentDao.findAllByPage(pageable);
+   }
+
+   public CommentProjection getComment(Integer id) {
+       LOGGER.info("Retrieving comment with id {}", id);
+       return commentDao.findCommentProjectionById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Comment with id " + id + " not found"));
+   }
+
+
+   public CommentLightDto updateComment(Integer id ,CommentLightDto commentDto) {
+       LOGGER.info("Update comment with id {}", id);
+       Comment comment = commentDao.findCommentById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Address with id " + id + " not found"));
+       comment.setComment(commentDto.getComment());
+       comment.setRating(commentDto.getRating());
+       commentDao.save(comment);
+       return commentDto;
+   }
+
+
+   public void deleteComment(Integer id) {
+       LOGGER.info("Deleting comment with id {}", id);
+       Comment comment = commentDao.findCommentById(id)
+               .orElseThrow(() -> new EntityNotFoundException("Comment with id " + id + " not found"));
+       if(!commentDao.existsById(comment.getId())) {
+           throw new EntityNotFoundException("Comment with id " + id + " not found");
+       }
+
+       Manga manga = comment.getIdMangas();
+       if(manga != null) {
+           manga.getComments().remove(comment);
+           comment.setIdMangas(manga);
+       }
+
+
+
+       commentDao.delete(comment);
    }
 
 

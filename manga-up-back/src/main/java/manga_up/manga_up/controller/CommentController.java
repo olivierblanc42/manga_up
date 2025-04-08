@@ -1,6 +1,11 @@
 package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import manga_up.manga_up.dto.CommentDto;
+import manga_up.manga_up.dto.CommentLightDto;
+import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.projection.CommentProjection;
 import manga_up.manga_up.projection.UserAddressProjection;
 import manga_up.manga_up.service.CommentService;
@@ -13,9 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -43,4 +46,42 @@ public class CommentController {
         LOGGER.info("Found {} addresses", comment.getTotalElements());
         return new  ResponseEntity<>(comment, HttpStatus.OK);
     }
+
+    @Operation(summary=" One comment")
+    @GetMapping("{id}")
+    public ResponseEntity<?> getCommentById(@PathVariable Integer id) {
+        LOGGER.info("Find comment by id: {}", id);
+        return  ResponseEntity.ok(commentService.getComment(id));
+    }
+
+
+    @Operation(summary = "Update Comment")
+    @PutMapping("{id}")
+    public ResponseEntity<CommentLightDto>  updateAddress(@PathVariable Integer id, @RequestBody CommentLightDto commentLightDto) {
+        LOGGER.info("Updating address");
+        try{
+            CommentLightDto commentDto = commentService.updateComment(id , commentLightDto) ;
+            return new ResponseEntity<>(commentDto, HttpStatus.OK);
+        }catch (Exception e) {
+            LOGGER.error("Error updating Comment", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+
+    @Operation(summary = "delete comment by id ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Comment deleted"),
+            @ApiResponse(responseCode = "400", description = "Comment used by users"),
+            @ApiResponse(responseCode = "404", description = "Comment not found")
+    })
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable Integer id) {
+        LOGGER.info("Deleting address by id");
+       commentService.deleteComment(id);
+    }
+
+
 }

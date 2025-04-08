@@ -66,7 +66,7 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategory(@PathVariable Integer id) {
         LOGGER.info("Deleting address by id");
-        categoryService.deleteCategoryById(id
+        categoryService.deleteCategoryById(id);
     }
 
     @Operation(summary = "Add category")
