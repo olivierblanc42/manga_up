@@ -2,8 +2,6 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import manga_up.manga_up.dto.UserResponseDto;
-import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.AppUserProjection;
 import manga_up.manga_up.service.UserService;
 import org.slf4j.Logger;

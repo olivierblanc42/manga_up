@@ -1,9 +1,7 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.dto.UserResponseDto;
 import manga_up.manga_up.mapper.UserResponseMapper;
-import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.AppUserProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

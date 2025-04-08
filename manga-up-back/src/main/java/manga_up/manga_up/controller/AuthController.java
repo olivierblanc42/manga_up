@@ -7,9 +7,7 @@ import manga_up.manga_up.dao.UserDao;
 
 import manga_up.manga_up.dto.LoginRequestDto;
 import manga_up.manga_up.dto.RegisterDto;
-import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.service.CustomUserDetailsService;
-import manga_up.manga_up.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,5 @@
 package manga_up.manga_up.projection;
 
-import manga_up.manga_up.model.AppUser;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 

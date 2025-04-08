@@ -5,12 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
-import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "app_user", schema = "manga_up", uniqueConstraints = {
-        @UniqueConstraint(name = "app_user_AK", columnNames = {"username"})
-})
+@Table(name = "app_user")
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,15 +54,22 @@ public class AppUser {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-   // @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Id_user_address", nullable = false)
     private UserAddress idUserAddress;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-   // @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Id_genders_user", nullable = false)
     private GenderUser idGendersUser;
+
+    @OneToMany(mappedBy = "idUsers")
+    private Set<Cart> carts = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idUsers")
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "idUsers")
+    private UserPicture userPicture;
 
     public Integer getId() {
         return id;
@@ -151,6 +157,30 @@ public class AppUser {
 
     public void setIdGendersUser(GenderUser idGendersUser) {
         this.idGendersUser = idGendersUser;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public UserPicture getUserPicture() {
+        return userPicture;
+    }
+
+    public void setUserPicture(UserPicture userPicture) {
+        this.userPicture = userPicture;
     }
 
 }

@@ -6,8 +6,6 @@ import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.mapper.UserAddressMapper;
-import manga_up.manga_up.model.AppUser;
-import manga_up.manga_up.model.Author;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.UserAddressProjection;
 import org.slf4j.Logger;
@@ -17,9 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserAddressService {
