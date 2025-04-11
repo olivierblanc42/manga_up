@@ -16,8 +16,6 @@ import java.util.Optional;
 @Repository
 public interface AddressDao extends JpaRepository<UserAddress, Integer> {
 
-   // @Query("From UserAddress ")
-   // Page<UserAddress> findAllByPage(Pageable pageable);
 
 
     @Query("SELECT ad FROM UserAddress ad LEFT JOIN FETCH ad.appUsers")

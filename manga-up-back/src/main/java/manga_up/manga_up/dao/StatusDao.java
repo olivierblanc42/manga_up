@@ -15,6 +15,6 @@ public interface StatusDao extends JpaRepository<Status, Integer> {
     Page<StatusProjection> findAllByPage(Pageable pageable);
 
 
-    
+
 
 }

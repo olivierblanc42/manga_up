@@ -14,8 +14,7 @@ import java.util.Optional;
 @Repository
 public interface CategoryDao extends JpaRepository<Category, Integer> {
 
- //   @Query("From Category ")
-//    Page<Category> findAllByPage(Pageable pageable);
+
 
     @Query ("SELECT c FROM Category as c LEFT JOIN FETCH c.mangas")
     Page<CategoryProjection> FindAllCategorisByPage(Pageable pageable);
