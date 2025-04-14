@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface CategoryProjection {
-    Integer id();
-    String label();
-    LocalDateTime createdAt();
-    Set<MangaLittleProjection> mangas();
+    Integer getId();
+    String getLabel();
+    LocalDateTime getCreatedAt();
+    Set<MangaLittleProjection> getMangas();
 }

@@ -37,13 +37,45 @@ class CategoryServiceTest {
     @Mock
     private CategoryMapper categoryMapper;
 
-    record TestCategoryProjection(
-            Integer id,
-            String label,
-            LocalDateTime createdAt,
-            Set<MangaLittleProjection> mangas
-    ) implements CategoryProjection {
+
+
+    private static class TestCategoryProjection implements CategoryProjection {
+        private final Integer id;
+        private final String label;
+        private final LocalDateTime createdAt;
+        private final Set<MangaLittleProjection> mangas;
+
+        private TestCategoryProjection(Integer id, String label, LocalDateTime createdAt, Set<MangaLittleProjection> mangas) {
+            this.id = id;
+            this.label = label;
+            this.createdAt = createdAt;
+            this.mangas = mangas;
+        }
+
+        @Override
+        public Integer getId() {
+            return id;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+
+        @Override
+        public LocalDateTime getCreatedAt() {
+            return createdAt;
+        }
+
+        @Override
+        public Set<MangaLittleProjection> getMangas() {
+            return mangas;
+        }
     }
+
+
+
+
 
     @Test
     void shouldReturnAllCategories() {

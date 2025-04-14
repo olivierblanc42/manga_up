@@ -3,7 +3,7 @@ package manga_up.manga_up.projection;
 import java.util.Set;
 
 public interface GenderUserProjection {
-      Integer id();
-      String label();
-      Set<AppUserLittleProjection> appUsers();
+      Integer getId();
+      String getLabel();
+      Set<AppUserLittleProjection> getAppUsers();
 }

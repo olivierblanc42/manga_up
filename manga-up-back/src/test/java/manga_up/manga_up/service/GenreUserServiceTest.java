@@ -41,11 +41,34 @@ private GenderUserMapper genderUserMapper;
 private GenreUserService genreUserService;
 
 
-    record TestGenderUserProjection(
-           Integer id,
-           String label,
-           Set<AppUserLittleProjection> appUsers
-   ) implements GenderUserProjection {}
+    private static class TestGenderUserProjection implements GenderUserProjection {
+        private final  Integer id;
+        private final String label;
+        private final Set<AppUserLittleProjection> appUsers;
+
+        private TestGenderUserProjection(Integer id, String label, Set<AppUserLittleProjection> appUsers) {
+            this.id = id;
+            this.label = label;
+            this.appUsers = appUsers;
+        }
+
+        @Override
+        public Integer getId() {
+            return id;
+        }
+
+        @Override
+        public String getLabel() {
+            return label;
+        }
+
+        @Override
+        public Set<AppUserLittleProjection> getAppUsers() {
+            return appUsers;
+        }
+    }
+
+
 
     @Test
     void shouldReturnAllGenreUsers() {

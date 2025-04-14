@@ -34,14 +34,50 @@ class AuthorServiceTest {
  @Mock
  private AuthorMapper authorMapper;
 
-    record TestAuthorProjection(
-            Integer id,
-            String firstname,
-            String lastname,
-            String description,
-            LocalDate createdAt,
-            Set<MangaLittleProjection> mangas
-    ) implements AuthorProjection {}
+
+ private static class TestAuthorProjection implements AuthorProjection{
+private final Integer id;
+private final String firstname;
+private final String lastname;
+private final String description;
+private final LocalDate createdAt;
+private final Set<MangaLittleProjection> mangas;
+
+public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt, Set<MangaLittleProjection> mangas ) {
+    this.id = id;
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.description = description;
+    this.createdAt = createdAt;
+    this.mangas = mangas;
+}
+
+     public Integer getId() {
+         return id;
+     }
+
+     public String getFirstname() {
+         return firstname;
+     }
+
+     public String getLastname() {
+         return lastname;
+     }
+
+     public String getDescription() {
+         return description;
+     }
+
+     public LocalDate getCreatedAt() {
+         return createdAt;
+     }
+
+     public Set<MangaLittleProjection> getMangas() {
+         return mangas;
+     }
+ }
+
+
 
 
     @Test
