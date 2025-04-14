@@ -32,13 +32,13 @@ public class CategoryService {
      * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
      * @return une page de résultats {@link Page < Address >} contenant les catégories
      */
-    public Page<CategoryProjection> FindAllCategorisByPage(Pageable pageable) {
+    public Page<CategoryProjection> findAllCategorisByPage(Pageable pageable) {
         LOGGER.info("findAllByPage");
-        return categoryDao.FindAllCategorisByPage(pageable);
+        return categoryDao.findAllCategorisByPage(pageable);
     }
 
 
-    public CategoryProjection FindCategoryById(Integer id) {
+    public CategoryProjection findCategoryById(Integer id) {
         LOGGER.info("FindCategoryById");
         return categoryDao.findCategoryProjectionById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));

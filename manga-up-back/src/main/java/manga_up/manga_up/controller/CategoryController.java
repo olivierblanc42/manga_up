@@ -44,7 +44,7 @@ public class CategoryController {
     ) @ParameterObject Pageable pageable)
     {
         LOGGER.info("Find all Categories with pagination");
-        Page<CategoryProjection> categories = categoryService.FindAllCategorisByPage(pageable);
+        Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
         LOGGER.info("Found {} addresses", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class CategoryController {
     @GetMapping("{id}")
     public ResponseEntity<CategoryProjection> getCategory(@PathVariable Integer id) {
         LOGGER.info("Find category by id {}", id);
-        return ResponseEntity.ok(categoryService.FindCategoryById(id));
+        return ResponseEntity.ok(categoryService.findCategoryById(id));
     }
 
 
