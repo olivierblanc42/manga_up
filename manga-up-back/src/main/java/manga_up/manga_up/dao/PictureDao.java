@@ -24,5 +24,5 @@ public interface PictureDao extends JpaRepository<Picture, Integer> {
     Optional<Picture> findPictureById(@Param("id") Integer id);
 
     @Query("SELECT p FROM Picture p LEFT JOIN FETCH p.idMangas WHERE p.id = :id")
-    Optional<PictureDto> findPictureDtoById(@Param("id") Integer id);
+    Optional<PictureProjection> findPictureProjectionById(@Param("id") Integer id);
 }

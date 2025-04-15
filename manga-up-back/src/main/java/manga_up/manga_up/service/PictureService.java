@@ -1,5 +1,6 @@
 package manga_up.manga_up.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.PictureDao;
 import manga_up.manga_up.dto.PictureDto;
 import manga_up.manga_up.mapper.PictureMapper;
@@ -38,11 +39,9 @@ public class PictureService {
     }
 
 
-    public PictureDto findById(Integer id) {
-        Picture picture = pictureDao.findById(id).orElse(null);
-        LOGGER.info("Found picture with id {}", id);
-        assert picture != null;
-        return pictureMapper.toPictureDto(picture);
+    public PictureProjection findById(Integer id) {
+        return  pictureDao.findPictureProjectionById(id).
+                 orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
     }
 
 

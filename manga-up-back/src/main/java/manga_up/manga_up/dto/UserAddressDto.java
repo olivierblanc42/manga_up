@@ -11,25 +11,23 @@ import java.util.Objects;
 /**
  * DTO for {@link manga_up.manga_up.model.UserAddress}
  */
-@Component
 public class UserAddressDto implements Serializable {
     @NotNull
     @Size(max = 50)
     private String line1;
     @Size(max = 50)
-    private String line2;
+    private  String line2;
     @Size(max = 50)
-    private String line3;
+    private  String line3;
     @NotNull
     @Size(max = 100)
-    private String city;
-    private Instant createdAt;
+    private  String city;
+    private  Instant createdAt;
     @NotNull
     @Size(max = 5)
-    private String postalCode;
+    private  String postalCode;
 
-    public UserAddressDto() {
-    }
+
 
     public UserAddressDto( String line1, String line2, String line3, String city, Instant createdAt, String postalCode) {
         this.line1 = line1;

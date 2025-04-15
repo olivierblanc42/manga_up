@@ -36,12 +36,12 @@ class AuthorServiceTest {
 
 
  private static class TestAuthorProjection implements AuthorProjection{
-private final Integer id;
-private final String firstname;
-private final String lastname;
-private final String description;
-private final LocalDate createdAt;
-private final Set<MangaLittleProjection> mangas;
+    private final Integer id;
+    private final String firstname;
+    private final String lastname;
+    private final String description;
+    private final LocalDate createdAt;
+    private final Set<MangaLittleProjection> mangas;
 
 public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt, Set<MangaLittleProjection> mangas ) {
     this.id = id;
@@ -55,23 +55,23 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
      public Integer getId() {
          return id;
      }
-
+     @Override
      public String getFirstname() {
          return firstname;
      }
-
+     @Override
      public String getLastname() {
          return lastname;
      }
-
+     @Override
      public String getDescription() {
          return description;
      }
-
+     @Override
      public LocalDate getCreatedAt() {
          return createdAt;
      }
-
+     @Override
      public Set<MangaLittleProjection> getMangas() {
          return mangas;
      }
@@ -132,7 +132,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
     @Test
     void shouldReturnAuthorSave() {
         // Arrange
-        AuthorDto authorDto = new AuthorDto("Akira", "Toriyama", "Takuchi");
+        AuthorDto authorDto = new AuthorDto("Akira1", "Toriyama", "Takuchi");
 
         Author authorEntity = new Author();
         authorEntity.setFirstname("Akira");
@@ -150,7 +150,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
         // Assert
         assertThat(result).isNotNull();
         assertThat(result.getFirstname()).isEqualTo("Toriyama");
-        assertThat(result.getLastname()).isEqualTo("Akira");
+        assertThat(result.getLastname()).isEqualTo("Akira1");
         assertThat(result.getDescription()).isEqualTo("Takuchi");
     }
 
