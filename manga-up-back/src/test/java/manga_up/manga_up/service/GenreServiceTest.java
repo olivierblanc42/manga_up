@@ -96,6 +96,7 @@ class GenreServiceTest {
 @Test
     void shouldSaveGenre() {
        GenreDto genreDto = new GenreDto(
+               1,
              "baston"
        );
 
@@ -119,7 +120,7 @@ class GenreServiceTest {
 void shouldUpdateGenre() {
     int id = 1;
 
-    GenreDto genreDto = new GenreDto("baston1");
+    GenreDto genreDto = new GenreDto(1,"baston1");
 
     Genre genreEntity = new Genre();
     genreEntity.setId(id);

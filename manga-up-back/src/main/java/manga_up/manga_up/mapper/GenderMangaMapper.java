@@ -31,6 +31,7 @@ public class GenderMangaMapper {
         LOGGER.info("Mangas size before mapping: {}", genre.getMangas().size());
 
         return new GenreDto(
+                genre.getId(),
                 genre.getLabel()
 
                // mangaDtos
@@ -41,6 +42,7 @@ public class GenderMangaMapper {
 
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
+        genre.setId(genreDto.getId());
         genre.setLabel(genreDto.getLabel());
         return genre;
     }

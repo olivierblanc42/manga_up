@@ -13,27 +13,25 @@ import java.util.Set;
  * DTO for {@link manga_up.manga_up.model.Genre}
  */
 public class GenreDto implements Serializable {
+
+    @NotNull
+    private final Integer id;
     @NotNull
     @Size(max = 50)
     private final String label;
-   //private final Instant createdAt;
-    //  private final Set<MangaLightDto> mangas;
 
-    public GenreDto( String label) {
-
+    public GenreDto(Integer id, String label) {
+        this.id = id;
         this.label = label;
-
-
     }
-
-
-
     public String getLabel() {
         return label;
     }
 
 
-
+    public Integer getId() {
+        return id;
+    }
 
 
     @Override
