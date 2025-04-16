@@ -2,13 +2,10 @@ package manga_up.manga_up.service;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import manga_up.manga_up.dao.MangaDao;
-import manga_up.manga_up.dao.PictureDao;
-import manga_up.manga_up.dto.MangaDto;
-import manga_up.manga_up.dto.MangaDtoRandom;
-import manga_up.manga_up.dto.PictureLightDto;
+import manga_up.manga_up.dao.*;
+import manga_up.manga_up.dto.*;
 import manga_up.manga_up.mapper.MangaMapper;
-import manga_up.manga_up.model.Manga;
+import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MangaService {
@@ -27,11 +28,17 @@ public class MangaService {
     private final MangaDao mangaDao;
     private final MangaMapper mangaMapper;
     private final PictureDao pictureDao;
+    private final CategoryDao categoryDao;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
 
-    public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao) {
+    public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao, CategoryDao categoryDao, AuthorDao authorDao, GenreDao genreDao) {
         this.mangaDao = mangaDao;
         this.mangaMapper = mangaMapper;
         this.pictureDao = pictureDao;
+        this.categoryDao = categoryDao;
+        this.authorDao = authorDao;
+        this.genreDao = genreDao;
     }
 
     /**
@@ -106,5 +113,84 @@ public class MangaService {
     public List<MangaDtoRandom> getRandomManga(){
         return mangaDao.findRandomOneMangas();
     }
+
+
+
+    @Transactional
+    public void deleteManga(Integer id) {
+        LOGGER.info("Deleting author by id");
+        Manga manga = mangaDao.findMangaId(id).
+                orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+
+        manga.setIdCategories(null);
+        for(Genre genre : manga.getGenres()){
+            genre.getMangas().remove(manga);
+        }
+        for(Author author : manga.getAuthors()   ){
+            author.getMangas().remove(manga);
+        }
+        manga.getGenres().clear();
+        manga.getAuthors().clear();
+        mangaDao.delete(manga);
+    }
+
+
+    public MangaDto updateManga(Integer id, MangaDto mangaDto) {
+
+        Manga manga = mangaDao.findMangaId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Manga with ID " + id + " not found"));
+
+        manga.setTitle(mangaDto.getTitle());
+        manga.setSummary(mangaDto.getSummary());
+        manga.setPriceHt(mangaDto.getPriceHt());
+
+        Integer categoryId = mangaDto.getIdCategories().getId();
+        Category category = categoryDao.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        manga.setIdCategories(category);
+        Set<Genre> updatedGenres = new HashSet<>();
+
+        if (mangaDto.getGenres() != null) {
+            for (GenreLightDto dto : mangaDto.getGenres()) {
+                Genre genre = genreDao.findById(dto.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Genre with ID " + dto.getId() + " not found"));
+
+                updatedGenres.add(genre);
+            }
+        }
+        manga.setGenres(updatedGenres);
+
+        Set<Author> updatedAuthors = mangaDto.getAuthors() == null ?
+                new HashSet<>() :
+                mangaDto.getAuthors().stream()
+                        .map(dto -> authorDao.findById(dto.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Genre with ID " + dto.getId() + " not found")))
+                        .collect(Collectors.toSet());
+     manga.setAuthors(updatedAuthors);
+
+        Set<Picture> updatedPictures = new HashSet<>();
+
+        if (mangaDto.getPictures() != null) {
+            for (PictureLightDto dto : mangaDto.getPictures()) {
+                Picture picture = pictureDao.findById(dto.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Picture with ID " + dto.getId() + " not found"));
+
+                picture.setIdMangas(manga);
+                updatedPictures.add(picture);
+            }
+        }
+
+        manga.getPictures().clear();
+        manga.getPictures().addAll(updatedPictures);
+
+        manga.getPictures().clear();
+        manga.getPictures().addAll(updatedPictures);
+
+
+        manga = mangaDao.save(manga);
+        return mangaMapper.mangaToMangaDto(manga);
+    }
+
 
 }

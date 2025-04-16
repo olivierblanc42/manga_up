@@ -3,6 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import manga_up.manga_up.dto.MangaDto;
 import manga_up.manga_up.dto.MangaDtoRandom;
@@ -81,4 +82,23 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
         LOGGER.info("Adding Manga");
         return  ResponseEntity.ok(mangaService.save(mangaDto));
     }
+
+    @Operation(summary = "delete manga")
+    @DeleteMapping("/{id}")
+    public void deleteManga( Integer mangaId) {
+        LOGGER.info("Deleting manga by id");
+        mangaService.deleteManga( mangaId);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MangaDto> updateManga(@PathVariable Integer id, @RequestBody MangaDto mangaUpdateDto) {
+        try{
+            MangaDto updateManga = mangaService.updateManga(id ,mangaUpdateDto) ;
+            return ResponseEntity.ok(updateManga);
+        }catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 }

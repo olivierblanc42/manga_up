@@ -1,6 +1,7 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.dto.GenreLightDto;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.GenreProjection;
 import org.springdoc.core.annotations.ParameterObject;
@@ -33,4 +34,7 @@ public interface GenreDao extends JpaRepository<Genre, Integer> {
 
     @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas WHERE g.id = :genreId ")
     Optional<GenreProjection> findGenreProjectionById(@ParameterObject Integer genreId);
+
+
+
 }

@@ -2,6 +2,8 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.mapper.MangaMapper;
+import manga_up.manga_up.model.Author;
+import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.*;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -278,12 +281,33 @@ private static class TestGenreLittleProjection implements GenreLittleProjection 
   }
 
 
-
-
-
-
   @Test
     void ShouldDeleteManga(){
+      int id = 1;
+      Genre genre = new Genre();
+      genre.setId(id);
+      Author author = new Author();
+      author.setId(id);
 
+      Set<Author> authors = new HashSet<>();
+      authors.add(author);
+      Set<Genre> genres = new HashSet<>();
+      genres.add(genre);
+
+      Manga manga = new Manga();
+    manga.setId(id);
+    manga.setPrice(new BigDecimal("44"));
+    manga.setTitle("Test");
+    manga.setSummary("Test");
+    manga.setPriceHt(new BigDecimal("44"));
+    manga.setGenres(genres);
+    manga.setAuthors(authors);
+
+    when(mangaDao.findMangaId(id)).thenReturn(Optional.of(manga));
+    mangaService.deleteManga(id);
+    verify(mangaDao).delete(manga);
   }
+
+
+
 }

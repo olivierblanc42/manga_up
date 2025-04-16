@@ -30,12 +30,20 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "WHERE m.id = :idManga ")
     Optional<MangaProjection> findMangaById(@Param("idManga") Integer idManga);
 
+    @Query("SELECT DISTINCT m FROM Manga m " +
+            "LEFT JOIN FETCH  m.authors a " +
+            "LEFT JOIN FETCH  m.genres g " +
+            "LEFT JOIN FETCH  m.idCategories  c " +
+            "LEFT JOIN FETCH   m.pictures p " +
+            "WHERE m.id = :idManga ")
+    Optional<Manga> findMangaId(@Param("idManga") Integer idManga);
 
     @Query("SELECT DISTINCT m FROM Manga m " +
             "LEFT JOIN FETCH  m.authors a " +
             "LEFT JOIN FETCH  m.genres g " +
             "LEFT JOIN FETCH  m.idCategories  c")
     Page<MangaProjection> findAllMangas(Pageable pageable);
+
 
 
     @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +
