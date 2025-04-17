@@ -46,14 +46,20 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
 
 
 
-    @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +
+    @Query(value = "SELECT " +
+            "m.Id_mangas, " +
+            "m.title, " +
+            "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, " +
+            "GROUP_CONCAT(DISTINCT CASE WHEN p.is_main = 1 THEN CONCAT(p.Id_picture, ':', p.url) ELSE NULL END SEPARATOR '|') AS pictures " +
             "FROM manga m " +
-            "JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
-            "JOIN author a ON ma.Id_authors = a.Id_authors  " +
-            "JOIN picture p on p.Id_mangas = m.Id_mangas  " +
+            "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+            "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
+            "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
+            "GROUP BY m.Id_mangas, m.title " +
             "ORDER BY RAND() " +
-            "LIMIT 4 " , nativeQuery = true)
-    List<MangaDtoRandom> findRandomMangas();
+            "LIMIT 4",
+            nativeQuery = true)
+    List<Object[]> findRandomMangasRaw();
 
 
     @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +

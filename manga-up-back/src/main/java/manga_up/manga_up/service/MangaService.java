@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -101,9 +102,54 @@ public class MangaService {
      * Retrieve Four mangas aleatoire
      * return a list of four mangas
      */
-    public List<MangaDtoRandom> getRandomFourMangas(){
+    public List<MangaDtoRandom> getRandomMangas() {
+        List<Object[]> rawMangas = mangaDao.findRandomMangasRaw();
 
-        return mangaDao.findRandomMangas();
+        return rawMangas.stream()
+                .map(this::mapToMangaDtoRandom)
+                .collect(Collectors.toList());
+    }
+
+    private MangaDtoRandom mapToMangaDtoRandom(Object[] row) {
+        Integer idMangas = (Integer) row[0];
+        String title = (String) row[1];
+        String authorsString = (String) row[2];
+        String picturesString = (String) row[3];
+
+        Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
+        PictureDtoRandom pictures = parsePictures(picturesString);
+
+        return new MangaDtoRandom(idMangas, title, authors, pictures);
+    }
+
+    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
+        if (authorsString == null || authorsString.isEmpty()) {
+            return Set.of();
+        }
+
+        return Arrays.stream(authorsString.split("\\|"))
+                .map(authorData -> {
+                    String[] parts = authorData.split(":");
+                    return new AuthorDtoRandom(
+                            Integer.parseInt(parts[0]),
+                            parts[2],
+                            parts[1]
+                    );
+                })
+                .collect(Collectors.toSet());
+    }
+
+
+    private PictureDtoRandom parsePictures(String picturesString) {
+        if (picturesString == null || picturesString.isEmpty()) {
+            return null ;
+        }
+
+        String[] parts = picturesString.split(":");
+        return new PictureDtoRandom(
+                Integer.parseInt(parts[0]),
+                parts[1]
+        );
     }
 
     /**

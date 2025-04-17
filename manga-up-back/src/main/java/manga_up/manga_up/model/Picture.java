@@ -13,6 +13,8 @@ public class Picture {
     @Column(name = "Id_picture", nullable = false)
     private Integer id;
 
+    @Column(name = "is_main")
+    private Boolean isMain;
 
     @Size(max = 255)
     @Column(name = "url")
@@ -48,4 +50,11 @@ public class Picture {
         this.idMangas = idMangas;
     }
 
+    public Boolean getMain() {
+        return isMain;
+    }
+
+    public void setMain(Boolean main) {
+        isMain = main;
+    }
 }

@@ -63,7 +63,7 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
    @GetMapping("/four")
      public ResponseEntity<List<MangaDtoRandom>> getRandomFourMangas(){
         LOGGER.info("Get six Mangas");
-        List<MangaDtoRandom> mangas = mangaService.getRandomFourMangas();
+        List<MangaDtoRandom> mangas = mangaService.getRandomMangas();
        LOGGER.info("Found {} mangas", mangas.size());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
