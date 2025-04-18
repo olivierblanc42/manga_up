@@ -212,6 +212,7 @@ export type MangaProjection = {
     id: number;
     title: string;
     subtitle: string;
+    summary: string;
     releaseDate: Date;
     price: number;
     priceHt: number;
@@ -230,7 +231,7 @@ export type MangaProjections = {
 }
 
 export type MangaDtoRandom = {
-    id: number;
+    id_mangas: number;
     title: string;
     authors: AuthorDtoRandom[];
     picture: PictureDtoRandom | undefined;

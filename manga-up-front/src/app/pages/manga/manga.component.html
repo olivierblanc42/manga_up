@@ -1,7 +1,7 @@
 <article class="section">
     <div class="card card-single-manga">
         <div class="card-single-manga__title">
-            <h1>Naruto</h1>
+            <h1>{{manga?.title}}</h1>
         </div>
         <div class="card-padding">
             <div class="card-single-manga__content">
@@ -17,10 +17,10 @@
                         <p>information</p>
                     </div>
                     <div class="card-content__infos">
-                        <div><span>Titre:</span> Naruto</div>
+                        <div><span>Titre:</span> {{manga?.title}}</div>
                         <div><span>Auteurs:</span> Kishimoto Masashi</div>
                         <div><span>Année de sortie:</span> 2002</div>
-                        <div><span>Prix:</span> 7,30 €</div>
+                        <div><span>Prix:</span> {{manga?.price}} €</div>
                         <div><span>France:</span> Oui</div>
                     </div>
                 </div>
@@ -32,12 +32,7 @@
                     <p>summary</p>
                 </div>
                 <div class="card-single__summary-content">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui tempora ducimus corrupti
-                        dolorum,
-                        tempore adipisci dolore dicta repudiandae. Consequatur quas ipsam similique dignissimos
-                        quod!
-                        Quia
-                        laboriosam ullam alias repudiandae rerum!</p>
+                    <p>{{manga?.summary}}</p>
                 </div>
             </div>
         </div>

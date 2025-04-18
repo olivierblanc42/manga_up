@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { MangaDtoRandom, MangaOne,MangaProjections } from '../type';
+import { MangaDtoRandom, MangaOne,MangaProjection,MangaProjections } from '../type';
 
 
 @Injectable({
@@ -12,6 +12,7 @@ export class MangaService{
     urlOne = "api/mangas/one";
     urlFourDate= "api/mangas/four";
     urlPagination = "api/mangas/pagination";
+    url = "/api/mangas/manga/"
     options = {
         headers: new HttpHeaders({
             "Content-Type": "application/json",
@@ -35,7 +36,8 @@ export class MangaService{
     currentMangaPagination = this.mangaPagination.asObservable();
 
 
-
+    mangaProjection = new BehaviorSubject<MangaProjection | null>(null);
+    currentMangaProjection = this.mangaProjection.asObservable();
 
 
     async getMangaOne() {
@@ -60,6 +62,15 @@ export class MangaService{
         }
     }
 
-
+    async  getManga(id:number){
+         try {
+             const r = await lastValueFrom(this.http.get<MangaProjection>(`${this.url}${id}`));
+             if (!r) return;
+             console.log(r)
+             this.mangaProjection.next(r);
+         } catch (err) {
+             console.error('Erreur lors de la récupération du manga :', err);
+         }
+     }
 
 }

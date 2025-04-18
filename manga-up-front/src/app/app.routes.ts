@@ -37,7 +37,7 @@ export const routes: Routes = [
     { path: 'auteur', component: AuteurComponent },
 
     { path: 'privacy', component: PrivacyPolicyComponent },
-    { path: 'manga', component: MangaComponent },
+    { path: 'manga/:id', component: MangaComponent },
 
     {
         path: 'admin', component: AdminLayoutComponent,

@@ -19,10 +19,13 @@ export class HomeComponent implements OnInit{
   genres!: GenreDto[];
   mangaOne: MangaOne[] = [];
   mangaDtoRandom: MangaDtoRandom[] = [];
+ 
 
   constructor(
     private genreService : GenreService,
-    private mangaService : MangaService
+    private mangaService : MangaService,
+    private activatedRoute: ActivatedRoute,
+
   ) { }
 
   ngOnInit(): void {
@@ -51,4 +54,9 @@ export class HomeComponent implements OnInit{
     
 
   }
+
+  logMangaUrl(mangaId: number): void {
+    console.log('/manga/' + mangaId);
+  }
+
 }
