@@ -1,4 +1,4 @@
-import { CategoriesProjections } from './../type.d';
+import { CategoriesProjections, CategoryProjection } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
@@ -12,6 +12,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 export class CategoryService {
     url = "/api/categories/pagination";
+    urlCategori = "/api/categories/"; 
 
 
     options = {
@@ -29,6 +30,9 @@ export class CategoryService {
     categoriesProjections = new BehaviorSubject<CategoriesProjections | null>(null);
     currentCategoriesProjection = this.categoriesProjections.asObservable();
 
+    categoriesProjection = new BehaviorSubject<CategoryProjection | null>(null);
+    currentCategorieProjection = this.categoriesProjection.asObservable();
+
 
     async getAllGenreWithPagination() {
         try {
@@ -41,6 +45,14 @@ export class CategoryService {
         }
     }
 
-
-
+    async getCategory(id: number) {
+        try {
+            const r = await lastValueFrom(this.http.get<CategoryProjection>(`${this.urlCategori}${id}`));
+            if (!r) return;
+            this.categoriesProjection.next(r);
+            console.log('Genres récupérés avec succès :', r);
+        } catch (err) {
+            console.error('Erreur lors de la récupération des genres :', err);
+        }
+    }
 }

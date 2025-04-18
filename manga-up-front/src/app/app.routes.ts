@@ -31,7 +31,7 @@ export const routes: Routes = [
     { path: 'genres', component: GenresComponent },
     { path: 'genre', component: GenreComponent },
     { path: 'categories', component: CategoriesComponent },
-    { path: 'categorie', component: CategorieComponent },
+    { path: 'categorie/:id', component: CategorieComponent },
 
     { path: 'auteurs', component: AuteursComponent },
     { path: 'auteur', component: AuteurComponent },
