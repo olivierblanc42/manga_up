@@ -33,11 +33,23 @@ export class MangaService{
     currentfour = this.mangaFour.asObservable();
     
     mangaPagination = new BehaviorSubject<MangaProjections | null>(null);
-    currentMangaPagination = this.mangaPagination.asObservable();
+    currentMangaPaginations = this.mangaPagination.asObservable();
 
 
     mangaProjection = new BehaviorSubject<MangaProjection | null>(null);
     currentMangaProjection = this.mangaProjection.asObservable();
+
+
+    async getMangas() {
+        try {
+            const r = await lastValueFrom(this.http.get<MangaProjections>(this.urlPagination));
+            if (!r) return;
+            this.mangaPagination.next(r);
+        } catch (err) {
+            console.error('Erreur lors de la récupération du manga :', err);
+        }
+    }
+
 
 
     async getMangaOne() {

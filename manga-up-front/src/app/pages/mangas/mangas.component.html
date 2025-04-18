@@ -1,6 +1,8 @@
 <section class="section">
     <div class="section__title">
         <h1>Mangas</h1>
-   
+     @for (item of mangas?.content; track $index) {
+        {{item.priceHt}}
+     }
     </div>
    </section>

@@ -20,8 +20,12 @@ export class MangasComponent implements OnInit{
   ) { }
   ngOnInit(): void { 
    
- 
+    this.mangaservice.getMangas();
+    this.mangaservice.currentMangaPaginations.subscribe((data) => {
+      this.mangas = data;
+      console.log("manga récupérés :", this.mangas);
 
+    })
   }
 
 }

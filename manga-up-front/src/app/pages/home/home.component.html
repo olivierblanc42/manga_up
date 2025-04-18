@@ -339,7 +339,7 @@
             Duis ut tristique nulla lacinia ullamcorper curabitur nibh ipsum. Purus vestibulum ...</p>
     </div>
 
-    <a class="btn btn-card" href=""><i class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
+    <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne[0].id" ><i class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
 </div>
 } @else {
 <p>Chargement du manga...</p>
