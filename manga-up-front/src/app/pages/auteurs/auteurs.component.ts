@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorProjections } from '../../type';
 import { AuthorService } from '../../service/author.service';
 import { CardComponent } from "../../components/card/card.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-auteurs',
-  imports: [CardComponent],
+  imports: [CardComponent, RouterModule],
   standalone: true,
   templateUrl: './auteurs.component.html',
   styleUrl: './auteurs.component.scss'

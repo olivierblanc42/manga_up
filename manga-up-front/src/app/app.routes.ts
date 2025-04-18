@@ -34,7 +34,7 @@ export const routes: Routes = [
     { path: 'categorie/:id', component: CategorieComponent },
 
     { path: 'auteurs', component: AuteursComponent },
-    { path: 'auteur', component: AuteurComponent },
+    { path: 'auteur/:id', component: AuteurComponent },
 
     { path: 'privacy', component: PrivacyPolicyComponent },
     { path: 'manga/:id', component: MangaComponent },
