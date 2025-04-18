@@ -29,7 +29,7 @@ export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
     { path: 'mangas', component: MangasComponent },
     { path: 'genres', component: GenresComponent },
-    { path: 'genre', component: GenreComponent },
+    { path: 'genre/:id', component: GenreComponent },
     { path: 'categories', component: CategoriesComponent },
     { path: 'categorie/:id', component: CategorieComponent },
 

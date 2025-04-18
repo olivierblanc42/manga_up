@@ -12,7 +12,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 export class GenreService {
     url = "/api/genres/pagination";
     urlFour = "api/genres/four";
-    
+    urlGenre= "/api/genres/"
 
 
 
@@ -33,6 +33,9 @@ export class GenreService {
    
     genreFour = new BehaviorSubject<GenreDto[] >([]);
     currentGenreFour = this.genreFour.asObservable();
+
+    genreSolo = new BehaviorSubject<GenreProjection | null>(null);
+    curentGenreSolo = this.genreSolo.asObservable();
 
     async getAllGenreWithPagination() {
         try {
@@ -57,4 +60,18 @@ export class GenreService {
                 console.error('Erreur lors de la récupération des genres :', err);
             });
     }
+
+
+   async getGenreManga(id: number) {
+        try {
+            const r = await lastValueFrom(this.http.get<GenreProjection>(`${this.urlGenre}${id}`));
+            if (!r) return;
+            this.genreSolo.next(r);
+            console.log('Genres récupérés avec succès :', r);
+        } catch (err) {
+            console.error('Erreur lors de la récupération des genres :', err);
+        }
+    }
+
+    
 }

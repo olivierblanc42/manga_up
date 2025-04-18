@@ -11,7 +11,7 @@
                 <div>
                     <h3 class="card-genre__title">{{genre.label}}</h3>
 
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
+                    <a [routerLink]="'/genre/' + genre.id" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
                         <p>voir plus</p>
                     </a>
                 </div>

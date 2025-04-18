@@ -13,7 +13,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 export class CategoryService {
     url = "/api/categories/pagination";
     urlCategori = "/api/categories/"; 
-
+    
 
     options = {
         headers: new HttpHeaders({

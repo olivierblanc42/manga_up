@@ -251,6 +251,12 @@ export interface MangaOne {
     picture: PictureDtoRandom | undefined;
 }
 
+
+export type MangaLittleProjection = {
+    id: number;
+    title: string;
+}
+
 //UserAddress
 export type UserAddress = {
     id: number;
