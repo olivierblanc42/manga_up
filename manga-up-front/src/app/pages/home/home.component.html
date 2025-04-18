@@ -218,8 +218,10 @@
 <div class="infos infos-avis"> <img src="images/trust.webp" alt=""> </div>
 
 <section class="section">
+    
     <div class="section__title">
-        <h2>Genres</h2>
+        <a [routerLink]="'/genres/'"><h2>Genres</h2></a>
+        
     </div>
     <swiper-container navigation="true" class="swiper-genre" >
         <swiper-slide> <ui-card size="card-genre">
@@ -269,54 +271,24 @@
     </swiper-container>
 
 
-
-    <div class="section__grid">
+<div class="section__grid">
+    @for (genre of genres; track $index) {
+       
         <ui-card size="card-genre">
-            <img src="images/test_card_genre.webp" alt="">
-
+            <img src="{{genre.url}}" alt="{{genre.label}}">
+        
             <div>
-                <h3 class="card-genre__title">Baston</h3>
-
+                <h3 class="card-genre__title">{{genre.label}}</h3>
+        
                 <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
                     <p>voir plus</p>
                 </a>
             </div>
         </ui-card>
-        <ui-card size="card-genre">
-            <img src="images/test_card_genre.webp" alt="">
 
-            <div>
-                <h3 class="card-genre__title">Baston</h3>
-
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-genre">
-            <img src="images/test_card_genre.webp" alt="">
-
-            <div>
-                <h3 class="card-genre__title">Baston</h3>
-
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-genre">
-            <img src="images/test_card_genre.webp" alt="">
-
-            <div>
-                <h3 class="card-genre__title">Baston</h3>
-
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
+    }
     </div>
-    
+
 
 </section>
 
@@ -350,29 +322,45 @@
         <h2>Manga du moment</h2>
     </div>
     <div class="card single-card">
-        <img src="images/naruto.webp" alt="naruto">
 
-
-        <div class="single-card__content">
-            <div class="single-card__infos">
-                <div class="title__infos">
-                    <p>Information</p>
-                </div>
-                <p><span>Titre :</span> Naruto</p>
-                <p><span>Auteur:</span> Kishimoto Masashi</p>
-                <p><span>ANNÉE DE SORTIE:</span> 2002</p>
-                <p><span>PRIX:</span> 7,30€</p>
-            </div>
-            <div class="single-card__summary">
-                <div class="title__summary">
-                    <p>Résumé</p>
-                </div>
-                <p>Lorem ipsum dolor sit amet consectetur. Fermentum nunc id eu id phasellus sed leo etiam enim.
-                    Duis ut tristique nulla lacinia ullamcorper curabitur nibh ipsum. Purus vestibulum ...</p>
-            </div>
-            <a class="btn btn-card" href=""><i class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
-
+        @if (mangaOne.length > 0) {
+        @for ( manga of mangaOne; track manga.id) {
+        @if (manga.picture) {
+        <img [src]="manga.picture.url" alt="Manga picture" />
+        } @else {
+        <img src="assets/default-picture.jpg" alt="Image non disponible" />
+        }
+        }
+        } @else {
+        <p>Chargement en cours...</p>
+        }
+      
+    
+@if (mangaOne.length > 0 && mangaOne[0]) {
+<div class="single-card__content">
+    <div class="single-card__infos">
+        <div class="title__infos">
+            <p>Information</p>
         </div>
+        <p><span>Titre :</span> {{ mangaOne[0].title }}</p>
+        <p><span>Auteur :</span> {{ mangaOne[0].authors?.[0]?.firstname }} {{ mangaOne[0].authors?.[0]?.lastname }}</p>
+        <p><span>ANNÉE DE SORTIE :</span> 2002</p>
+        <p><span>PRIX :</span> {{ mangaOne[0].price }} €</p>
+    </div>
+
+    <div class="single-card__summary">
+        <div class="title__summary">
+            <p>Résumé</p>
+        </div>
+        <p>Lorem ipsum dolor sit amet consectetur. Fermentum nunc id eu id phasellus sed leo etiam enim.
+            Duis ut tristique nulla lacinia ullamcorper curabitur nibh ipsum. Purus vestibulum ...</p>
+    </div>
+
+    <a class="btn btn-card" href=""><i class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
+</div>
+} @else {
+<p>Chargement du manga...</p>
+}
 
 
 

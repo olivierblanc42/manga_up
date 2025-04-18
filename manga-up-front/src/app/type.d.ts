@@ -13,10 +13,10 @@ export type User = {
     createdAt: Date;
     role?: string;
 
-    address: Address; 
-    gender: Gender;   
+    address: Address;
+    gender: Gender;
 
-    picture?: UserPicture; 
+    picture?: UserPicture;
     comments?: Comment[];
     carts?: Cart[];
 };
@@ -88,6 +88,12 @@ export type AuthorLigthDto = {
     id: number;
 }
 
+export type AuthorDtoRandom = {
+    id: number;
+    lastname: string;
+    firstname: string;
+}
+
 
 //Category
 export type Category = {
@@ -95,7 +101,7 @@ export type Category = {
     label: string;
     description: string;
     createdAt: Date;
-    mangas:Manga[];
+    mangas: Manga[];
 }
 
 export type CategoryDto = {
@@ -134,14 +140,17 @@ export type CategoryLittleProjection = {
 
 //Genre
 export type Genre = {
-    id:number;
-    label:string;
+    id: number;
+    label: string;
     createdAt: Date;
     mangas: Manga[]
 }
 
 export type GenreDto = {
+    id: number;
+    url: string;
     label: string;
+
 }
 export type GenreLightDto = {
     id: number;
@@ -153,8 +162,11 @@ export type GenreProjection = {
     createdAt: Date;
     mangas: MangaLittleProjection[]
 }
-export type GenreProjections = {
+export type GenreProjections  = {
     content: GenreProjection[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
 }
 
 export type GenreLittleProjection = {
@@ -185,6 +197,29 @@ export type GenderUserProjections = {
     size: number;
     totalElements: number;
     totalPages: number;
+}
+
+
+//Manga
+export type MangaDtoRandom = {
+    id: number;
+    title: string;
+    authors: AuthorDtoRandom[];
+    picture: PictureDtoRandom | undefined;
+}
+export interface MangaOne {
+    id: number;
+    title: string;
+    subtitle: string | null;
+    summary: string;
+    price: number;
+    idCategories: {
+        label: string;
+        description: string;
+    };
+    genres: GenreDto[];
+    authors: AuthorDtoRandom[] | undefined;
+    picture: PictureDtoRandom | undefined;
 }
 
 //UserAddress
@@ -235,3 +270,7 @@ export type UserAddressLittleProjection = {
     postalCode: string;
 }
 
+export interface PictureDtoRandom {
+    id: number;
+    url: string;
+}

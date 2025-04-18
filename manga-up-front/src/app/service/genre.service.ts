@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { GenreProjections, GenreProjection } from '../type';
+import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 @Injectable({
@@ -10,8 +10,11 @@ import { GenreProjections, GenreProjection } from '../type';
 
 
 export class GenreService {
-    url = "/api/genres";
+    url = "/api/genres/pagination";
     urlFour = "api/genres/four";
+    
+
+
 
     options = {
         headers: new HttpHeaders({
@@ -28,16 +31,25 @@ export class GenreService {
     genresProjectionPaginations = new BehaviorSubject< GenreProjections | null>(null);
     currentGenresProjectionPaginations = this.genresProjectionPaginations.asObservable();
    
-    genreFour = new BehaviorSubject< GenreProjection[] >([]);
+    genreFour = new BehaviorSubject<GenreDto[] >([]);
     currentGenreFour = this.genreFour.asObservable();
 
+getAllGenreWithPagination(){
+    lastValueFrom(this.http.get<GenreProjections>(this.url))
+        .then((r) => {
+            if (!r) return;
+            this.genresProjectionPaginations.next(r);
+        })
+        .catch((err) => {
+            console.error('Erreur lors de la récupération des genres :', err);
+        });
+}
 
 
     getFourGenre() {
-        console.log('Request to fetch four genres is being sent...');
-        lastValueFrom(this.http.get<GenreProjection[]>(this.urlFour))
+       // console.log('Request to fetch four genres is being sent...');
+        lastValueFrom(this.http.get<GenreDto[]>(this.urlFour))
             .then((r) => {
-                console.log('Data received from backend:', r); 
                 if (!r) return;
                 this.genreFour.next(r);
             })
