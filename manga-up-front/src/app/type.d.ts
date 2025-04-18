@@ -94,6 +94,11 @@ export type AuthorDtoRandom = {
     firstname: string;
 }
 
+export type AuthorLittleProjection = {
+    id: number;
+    lastname: string;
+    firstname: string;
+}
 
 //Category
 export type Category = {
@@ -201,6 +206,29 @@ export type GenderUserProjections = {
 
 
 //Manga
+
+
+export type MangaProjection = {
+    id: number;
+    title: string;
+    subtitle: string;
+    releaseDate: Date;
+    price: number;
+    priceHt: number;
+    inStock: boolean;
+    active: boolean;
+    idCategories: CategoryLittleProjection;
+    genres: GenreLittleProjection[];
+    authors: AuthorLittleProjection[];
+}
+
+export type MangaProjections = {
+    content: MangaProjection[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
+
 export type MangaDtoRandom = {
     id: number;
     title: string;

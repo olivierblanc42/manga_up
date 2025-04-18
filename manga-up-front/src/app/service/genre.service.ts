@@ -34,16 +34,16 @@ export class GenreService {
     genreFour = new BehaviorSubject<GenreDto[] >([]);
     currentGenreFour = this.genreFour.asObservable();
 
-getAllGenreWithPagination(){
-    lastValueFrom(this.http.get<GenreProjections>(this.url))
-        .then((r) => {
+    async getAllGenreWithPagination() {
+        try {
+            const r = await lastValueFrom(this.http.get<GenreProjections>(this.url));
             if (!r) return;
             this.genresProjectionPaginations.next(r);
-        })
-        .catch((err) => {
+            console.log('Genres récupérés avec succès :', r);
+        } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
-        });
-}
+        }
+    }
 
 
     getFourGenre() {

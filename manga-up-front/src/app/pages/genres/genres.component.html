@@ -2,8 +2,24 @@
     <div class="section__title">
         <h1>Genres</h1>
 
+        <div class="section__grid">
+            @for (genre of genres?.content; track genre.id) {
+
+            <ui-card size="card-genre">
+                <img src="" alt="{{genre.label}}">
+
+                <div>
+                    <h3 class="card-genre__title">{{genre.label}}</h3>
+
+                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
+                        <p>voir plus</p>
+                    </a>
+                </div>
+            </ui-card>
+
+            }
+        </div>
 
 
-        
     </div>
-   </section>
+</section>

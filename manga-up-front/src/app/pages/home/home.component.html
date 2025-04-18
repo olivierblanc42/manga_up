@@ -9,7 +9,9 @@
 
 <section class="section">
     <div class="section__title">
-        <h2>Nouveauté Mangas</h2>
+        <a  [routerLink]="'/mangas/'">
+            <h2>Nouveauté Mangas</h2>
+        </a>
     </div>
     <swiper-container class="swiper-manga" navigation="true">
         <swiper-slide> <ui-card size="card-manga">
@@ -54,46 +56,25 @@
             </ui-card></swiper-slide>
     </swiper-container>
     <div class="section__grid">
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
+        @for (manga of mangaDtoRandom; track $index) {
+                    <ui-card size="card-manga">
+                        <img src="{{manga.picture?.url}}" alt="{{manga.title}}">
+                        <div>
+                            <h3 class="card-manga__title">{{manga.title}}</h3>
+                            <p class="card-manga__autor">@for (author of manga.authors; track $index) {
+                            {{author.firstname}} {{author.lastname}} 
+                            @if (author !== manga.authors[manga.authors.length - 1]) {
+                            , 
+                            }
+                            }</p>
+                            <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
+                                <p>voir plus</p>
+                            </a>
+                        </div>
+                    </ui-card>
+        }
+
+    
     </div>
     
 </section>
