@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import manga_up.manga_up.dto.MangaDto;
+import manga_up.manga_up.dto.MangaDtoOne;
 import manga_up.manga_up.dto.MangaDtoRandom;
 import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.MangaProjection;
@@ -22,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @Tag(name = "2.Mangas", description = "Operations related to mangas")
 
 @RestController
@@ -37,7 +40,7 @@ public class MangaController {
 
     @Operation(summary = "All Mangas with pagination")
     @ApiResponse(responseCode =  "201", description = "All manga have been retrieved")
-    @GetMapping()
+    @GetMapping("pagination")
     public ResponseEntity<Page<MangaProjection>> getAllManga(
             @PageableDefault(
                     page = 0,
@@ -53,7 +56,7 @@ public class MangaController {
     }
 
 @Operation(summary ="Get one manga with her id")
-@GetMapping("{id}")
+@GetMapping("manga/{id}")
 public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
         LOGGER.info("Find manga by id");
         return  ResponseEntity.ok(mangaService.findMangaById(id));
@@ -70,9 +73,9 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
 
     @Operation(summary ="Get Random Manga")
     @GetMapping("/one")
-    public ResponseEntity<List<MangaDtoRandom>> getRandomManga(){
+    public ResponseEntity<List<MangaDtoOne>> getRandomManga(){
        LOGGER.info("Get  Manga");
-        List<MangaDtoRandom> mangas = mangaService.getRandomManga();
+        List<MangaDtoOne> mangas = mangaService.getRandomManga();
        return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 

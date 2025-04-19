@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -202,4 +205,18 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
 
         verify(authorDao).delete(a);
     }
+
+    @Test
+    void shouldRollbackTransactionOnError() {
+        AuthorDto authorDto = new AuthorDto("Erreur", "Test", "Test");
+
+        assertThrows(RuntimeException.class, () -> {
+            authorService.save(authorDto);
+        });
+
+        long count = authorDao.count(); 
+        assertEquals(0, count); 
+    }
+
+
 }

@@ -51,7 +51,17 @@ public class SecurityConfig {
                                         "/api/auth/register",
                                         "/api/auth/login",
                                         "/api/addresses",
-                                        "/api/genres/four"
+                                        "/api/genres/four",
+                                        "/api/genres/{id}",
+                                        "/api/genres/pagination",
+                                        "/api/mangas/one",
+                                        "/api/mangas/four",
+                                        "/api/mangas/pagination",
+                                        "/api/mangas/manga/{id}",
+                                        "/api/categories/{id}",
+                                        "/api/categories/pagination",
+                                        "/api/authors/{id}",
+                                        "/api/authors/pagination"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils), UsernamePasswordAuthenticationFilter.class)

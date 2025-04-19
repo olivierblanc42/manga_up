@@ -31,8 +31,8 @@ public class Manga {
     @Column(name = "release_date")
     private Instant releaseDate;
 
-    @Size(max =  500)
-    @Column(name = "summary", length =  500)
+    @Lob
+    @Column(name = "summary", columnDefinition = "TEXT")
     private String summary;
 
     @Column(name = "price", precision = 5, scale = 2)

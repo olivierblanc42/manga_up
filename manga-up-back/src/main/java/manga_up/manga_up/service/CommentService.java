@@ -44,6 +44,7 @@ public class CommentService {
    }
 
 
+  @Transactional
    public CommentLightDto updateComment(Integer id ,CommentLightDto commentDto) {
        LOGGER.info("Update comment with id {}", id);
        Comment comment = commentDao.findCommentById(id)

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
@@ -23,13 +24,12 @@ public class UserAddressService {
 
     private final AddressDao addressDao;
     private final UserAddressMapper userAddressMapper;
-    private final UserDao userDao;
 
 
     public UserAddressService(AddressDao addressDao, UserAddressMapper userAddressMapper, UserDao userDao) {
         this.addressDao = addressDao;
         this.userAddressMapper = userAddressMapper;
-        this.userDao = userDao;
+       
     }
 
     /**
@@ -44,7 +44,7 @@ public class UserAddressService {
     }
 
 
-
+@Transactional
     public UserAddressDto save(UserAddressDto userAddressDto) {
         LOGGER.info("Save address");
         LOGGER.info("userAddressDto: {}", userAddressDto);
@@ -77,7 +77,7 @@ public class UserAddressService {
    }
 
 
-
+@Transactional
  public UserAddressDto updateUserAddress(Integer userAddressId, UserAddressDto userAddressDto) {
         LOGGER.info("Update address");
      UserAddress userAddress = addressDao.findUserAddressById(userAddressId).

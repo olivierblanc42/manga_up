@@ -34,7 +34,7 @@ public class CategoryController {
 
     @Operation(summary = "All Categories with pagination")
     @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
-    @GetMapping
+    @GetMapping("pagination")
     public ResponseEntity<Page<CategoryProjection>> getCategories(
             @PageableDefault(
             page = 0,

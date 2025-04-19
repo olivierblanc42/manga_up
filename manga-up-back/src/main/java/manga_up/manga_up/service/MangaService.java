@@ -10,7 +10,6 @@ import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,7 @@ public class MangaService {
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
     }
 
-
+@Transactional
     public MangaDto save(MangaDto mangaDto) {
         LOGGER.info("Save manga");
         LOGGER.info("manga mangaDto : {}", mangaDto);
@@ -103,14 +102,14 @@ public class MangaService {
      * return a list of four mangas
      */
     public List<MangaDtoRandom> getRandomMangas() {
-        List<Object[]> rawMangas = mangaDao.findRandomMangasRaw();
+        List<Object[]> rawMangas = mangaDao.findMangasReleaseDateRaw();
 
         return rawMangas.stream()
-                .map(this::mapToMangaDtoRandom)
+                .map(this::mapToMangasReleaseDate)
                 .collect(Collectors.toList());
     }
 
-    private MangaDtoRandom mapToMangaDtoRandom(Object[] row) {
+    private MangaDtoRandom mapToMangasReleaseDate(Object[] row) {
         Integer idMangas = (Integer) row[0];
         String title = (String) row[1];
         String authorsString = (String) row[2];
@@ -145,7 +144,7 @@ public class MangaService {
             return null ;
         }
 
-        String[] parts = picturesString.split(":");
+        String[] parts = picturesString.split("@");
         return new PictureDtoRandom(
                 Integer.parseInt(parts[0]),
                 parts[1]
@@ -156,10 +155,62 @@ public class MangaService {
      * Retrieve a Random manga
      * return a list of one manga
      */
-    public List<MangaDtoRandom> getRandomManga(){
-        return mangaDao.findRandomOneMangas();
+    public List<MangaDtoOne> getRandomManga(){
+        List<Object[]> rawMangas = mangaDao.findRandomOneMangas();
+
+        return rawMangas.stream()
+                .map(this::mapToMangasRandom)
+                .collect(Collectors.toList());
+    }
+    private MangaDtoOne mapToMangasRandom(Object[] row) {
+        Integer idMangas = (Integer) row[0];
+        String title = (String) row[1];
+        String subtitle = (String) row[2];
+        String summary = (String) row[3];
+        BigDecimal price = (BigDecimal) row[4];
+        String categoryString = (String) row[5];
+        String genresString = (String) row[6];
+        String authorsString = (String) row[7];
+        String picturesString = (String) row[8];
+
+        CategoryDto category = parseCategory(categoryString);
+        Set<GenreDto> genres = parseGenre(genresString);
+        Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
+        PictureDtoRandom picture = parsePictures(picturesString);
+
+        return new MangaDtoOne(idMangas, title,subtitle,summary,price,category,genres,authors,picture);
     }
 
+    private CategoryDto parseCategory(String categoryString) {
+        if (categoryString == null || categoryString.isEmpty()) {
+            return null ;
+        }
+
+        String[] parts = categoryString.split(":");
+        return new CategoryDto(
+               parts[0], parts[1]
+        );
+    }
+
+
+
+
+    private Set<GenreDto> parseGenre(String GenreDto) {
+        if (GenreDto == null || GenreDto.isEmpty()) {
+            return Set.of();
+        }
+
+        return Arrays.stream(GenreDto.split("\\|"))
+                .map(authorData -> {
+                    String[] parts = authorData.split("@");
+                    return new GenreDto(
+                            Integer.parseInt(parts[0]),
+                            parts[1],
+                            parts[2]
+                    );
+                })
+                .collect(Collectors.toSet());
+    }
 
 
     @Transactional
@@ -180,7 +231,7 @@ public class MangaService {
         mangaDao.delete(manga);
     }
 
-
+@Transactional
     public MangaDto updateManga(Integer id, MangaDto mangaDto) {
 
         Manga manga = mangaDao.findMangaId(id)

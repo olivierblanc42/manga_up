@@ -1,6 +1,7 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.dto.MangaDto;
+import manga_up.manga_up.dto.MangaDtoOne;
 import manga_up.manga_up.dto.MangaDtoRandom;
 import manga_up.manga_up.dto.MangaLightDto;
 import manga_up.manga_up.model.Manga;
@@ -50,25 +51,43 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "m.Id_mangas, " +
             "m.title, " +
             "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, " +
-            "GROUP_CONCAT(DISTINCT CASE WHEN p.is_main = 1 THEN CONCAT(p.Id_picture, ':', p.url) ELSE NULL END SEPARATOR '|') AS pictures " +
+            "GROUP_CONCAT(DISTINCT CASE WHEN p.is_main = 1 THEN CONCAT(p.Id_picture, '@', p.url) ELSE NULL END SEPARATOR '|') AS pictures " +
             "FROM manga m " +
             "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
             "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
             "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
             "GROUP BY m.Id_mangas, m.title " +
-            "ORDER BY RAND() " +
+            "ORDER BY m.release_date DESC " +
             "LIMIT 4",
             nativeQuery = true)
-    List<Object[]> findRandomMangasRaw();
+    List<Object[]> findMangasReleaseDateRaw();
 
 
-    @Query( value = "SELECT m.Id_mangas, m.title,a.Id_authors, a.firstname, a.lastname,p.Id_picture,p.url " +
+    @Query( value =  "SELECT " +
+            "m.Id_mangas, " +
+            "m.title, " +
+            "m.subtitle, " +
+            "m.summary, " +
+            "m.price, " +
+            "GROUP_CONCAT(DISTINCT CONCAT(c.Id_categories, ':', c.label) SEPARATOR '|') AS categories, " +
+            "GROUP_CONCAT(DISTINCT CONCAT(g.Id_gender_mangas, '@' ,g.url, '@', g.label) SEPARATOR '|') AS genres, " +
+            "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, " +
+            "GROUP_CONCAT(DISTINCT CASE WHEN p.is_main = 1 THEN CONCAT(p.Id_picture, '@', p.url) ELSE NULL END SEPARATOR '|') AS pictures " +
             "FROM manga m " +
-            "JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
-            "JOIN author a ON ma.Id_authors = a.Id_authors  " +
-            "JOIN picture p on p.Id_mangas = m.Id_mangas  " +
+            "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+            "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
+            "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
+            "LEFT JOIN category c ON c.Id_categories = m.Id_categories " +
+            "LEFT JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas " +
+            "LEFT JOIN genre g ON g.Id_gender_mangas = gm.Id_gender_mangas " +
+            "GROUP BY m.Id_mangas, m.title " +
             "ORDER BY RAND() " +
-            "LIMIT 1 " , nativeQuery = true)
-    List<MangaDtoRandom> findRandomOneMangas();
+            "LIMIT 1",
+            nativeQuery = true)
+    List<Object[]> findRandomOneMangas();
+
+
+
+
 
 }

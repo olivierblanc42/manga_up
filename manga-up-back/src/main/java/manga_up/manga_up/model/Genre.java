@@ -16,6 +16,10 @@ public class Genre {
     @Column(name = "Id_gender_mangas", nullable = false)
     private Integer id;
 
+    @Size(max = 255)
+    @Column(name = "url")
+    private String url;
+
     @Size(max = 50)
     @NotNull
     @Column(name = "label", nullable = false, length = 50)
@@ -62,4 +66,11 @@ public class Genre {
         this.mangas = mangas;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

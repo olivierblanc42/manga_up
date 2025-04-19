@@ -32,7 +32,7 @@ public class GenreController {
     }
     @Operation(summary = "All genres with pagination")
     @ApiResponse(responseCode =  "201", description = "All genres have been retrieved")
-    @GetMapping
+    @GetMapping("pagination")
     public ResponseEntity<Page<GenreProjection>> getAllGenres(
             @PageableDefault(
                     page = 0,

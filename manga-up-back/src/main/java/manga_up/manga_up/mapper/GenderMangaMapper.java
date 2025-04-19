@@ -32,6 +32,7 @@ public class GenderMangaMapper {
 
         return new GenreDto(
                 genre.getId(),
+                genre.getUrl(),
                 genre.getLabel()
 
                // mangaDtos
@@ -43,6 +44,7 @@ public class GenderMangaMapper {
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
         genre.setId(genreDto.getId());
+        genre.setUrl(genreDto.getUrl());
         genre.setLabel(genreDto.getLabel());
         return genre;
     }

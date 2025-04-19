@@ -15,11 +15,11 @@ public class UserService {
     private static final Logger LOGGER= LoggerFactory.getLogger(UserAddressService.class);
 
     private final UserDao userdao;
-    private final UserResponseMapper userResponseMapper;
+   
 
     public UserService(UserDao userdao, UserResponseMapper userResponseMapper) {
         this.userdao = userdao;
-        this.userResponseMapper = userResponseMapper;
+        
     }
 
 
@@ -32,7 +32,6 @@ public class UserService {
     public Page<AppUserProjection> findAllByPage(Pageable pageable) {
         LOGGER.info("Find all users by Pageable");
        return userdao.FindAllUser(pageable);
-
     }
 
 

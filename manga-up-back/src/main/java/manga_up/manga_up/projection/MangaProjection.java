@@ -8,6 +8,7 @@ public interface MangaProjection {
     Integer getId();
     String getTitle();
     String getSubtitle();
+    String getSummary();
     LocalDateTime getReleaseDate();
     BigDecimal getPrice();
     BigDecimal getPriceHt();

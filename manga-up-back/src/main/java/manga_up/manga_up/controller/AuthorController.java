@@ -38,7 +38,7 @@ public class AuthorController {
 
     @Operation(summary = "All Authors with pagination")
     @ApiResponse(responseCode =  "201", description = "All Authors have been retrived")
-    @GetMapping
+    @GetMapping("pagination")
     public ResponseEntity<Page<AuthorProjection>> getAllAuthors(
             @PageableDefault(
                     page = 0,

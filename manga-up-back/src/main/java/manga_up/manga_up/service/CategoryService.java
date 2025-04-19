@@ -1,5 +1,5 @@
 package manga_up.manga_up.service;
-
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
@@ -54,7 +54,7 @@ public class CategoryService {
         categoryDao.delete(category);
     }
 
-
+@Transactional
     public CategoryDto save(CategoryDto categoryDto) {
         LOGGER.info("categoryDto : {}", categoryDto);
         Category category = categoryMapper.toEntity(categoryDto);
@@ -70,7 +70,7 @@ public class CategoryService {
     }
 
 
-
+@Transactional
     public CategoryDto update( Integer id, CategoryDto categoryDto) {
        Category category = categoryDao.findCategoryById(id).
                orElseThrow(() -> new RuntimeException("category not found"));

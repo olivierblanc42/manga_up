@@ -28,7 +28,7 @@ public class Author {
 
     @NotNull
     @Lob
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
     @Column(name = "created_at")

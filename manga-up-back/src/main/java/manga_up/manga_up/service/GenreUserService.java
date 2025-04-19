@@ -2,7 +2,6 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenderUserDao;
-import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dto.GenderUserDto;
 import manga_up.manga_up.mapper.GenderUserMapper;
 import manga_up.manga_up.model.GenderUser;
@@ -13,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GenreUserService {
@@ -41,7 +41,7 @@ public class GenreUserService {
     }
 
 
-
+@Transactional
     public void deleteGenreUserById(@PathVariable Integer id) {
         LOGGER.info("Deleting enderUser");
           GenderUser genderUser = genderUserDao.findGenderById(id)
@@ -52,7 +52,7 @@ public class GenreUserService {
           genderUserDao.delete(genderUser);
     }
 
-
+@Transactional
     public GenderUserDto saveGenreUser(GenderUserDto genreUserDto) {
         LOGGER.info("Saving genreUser");
         GenderUser genderUser = genderUserMapper.toEntity(genreUserDto) ;
@@ -65,7 +65,7 @@ public class GenreUserService {
            return genderUserMapper.toDto(genderUser);
     }
 
-
+@Transactional
     public GenderUserDto updateGenreUser( Integer genderId ,GenderUserDto genreUserDto) {
         LOGGER.info("Updating genreUser");
         GenderUser genderUser = genderUserDao.findGenderById(genderId).

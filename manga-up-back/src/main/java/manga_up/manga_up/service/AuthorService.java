@@ -1,6 +1,7 @@
 package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 
 @Service
@@ -46,6 +46,7 @@ public class  AuthorService {
                 .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
     }
 
+@Transactional
    public void deleteAuthorById(Integer id) {
         LOGGER.info("Deleting author by id");
         Author author = authorDao.findAuthorById(id).
@@ -56,7 +57,7 @@ public class  AuthorService {
         authorDao.delete(author);
    }
 
-
+@Transactional
     public AuthorDto save(AuthorDto authorDto) {
         LOGGER.info("Saving author");
         LOGGER.info("author authorDto : {}", authorDto);
@@ -69,9 +70,11 @@ public class  AuthorService {
             LOGGER.error("Error saving author", e);
             throw new RuntimeException("Error saving author",e);
         }
+        
         return authorMapper.toDtoAuthor(author);
     }
 
+@Transactional
     public AuthorDto updateAuthor(Integer authorId, AuthorDto authorDto) {
         Author author = authorDao.findAuthorById(authorId).
                 orElseThrow(() -> new RuntimeException("Author with id " + authorId + " not found"));
@@ -82,8 +85,4 @@ public class  AuthorService {
         authorDao.save(author);
         return authorMapper.toDtoAuthor(author);
     }
-
-
-
-
 }

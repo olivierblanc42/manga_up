@@ -40,6 +40,7 @@ private static class TestMangaProjection implements MangaProjection {
     private final  Integer id;
     private final    String title;
     private final   String subtitle;
+    private final   String summary;
     private final   LocalDateTime releaseDate;
     private final   BigDecimal price;
     private final  BigDecimal priceHt;
@@ -49,10 +50,11 @@ private static class TestMangaProjection implements MangaProjection {
     private final  Set<GenreLittleProjection> genres;
     private final Set<AuthorLittleProjection> authors;
 
-    private TestMangaProjection(Integer id, String title, String subtitle, LocalDateTime releaseDate, BigDecimal price, BigDecimal priceHt, Boolean inStock, Boolean active, CategoryLittleProjection idCategories, Set<GenreLittleProjection> genres, Set<AuthorLittleProjection> authors) {
+    private TestMangaProjection(Integer id, String title, String subtitle, String summary, LocalDateTime releaseDate, BigDecimal price, BigDecimal priceHt, Boolean inStock, Boolean active, CategoryLittleProjection idCategories, Set<GenreLittleProjection> genres, Set<AuthorLittleProjection> authors) {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
+        this.summary = summary;
         this.releaseDate = releaseDate;
         this.price = price;
         this.priceHt = priceHt;
@@ -77,6 +79,12 @@ private static class TestMangaProjection implements MangaProjection {
     public String getSubtitle() {
         return subtitle;
     }
+
+    @Override
+    public String getSummary() {
+        return "";
+    }
+
 
     @Override
     public LocalDateTime getReleaseDate() {
@@ -217,6 +225,7 @@ private static class TestGenreLittleProjection implements GenreLittleProjection 
           1,
           "Naruto",
           "Test",
+          "test",
           LocalDateTime.now(),
           new BigDecimal("44"),
           new BigDecimal("50"),
@@ -231,6 +240,7 @@ private static class TestGenreLittleProjection implements GenreLittleProjection 
             1,
             "Naruto",
             "Test",
+            "test",
             LocalDateTime.now(),
             new BigDecimal("44"),
             new BigDecimal("50"),
@@ -265,6 +275,7 @@ private static class TestGenreLittleProjection implements GenreLittleProjection 
               1,
               "Naruto",
               "Test",
+              "test",
               LocalDateTime.now(),
               new BigDecimal("44"),
               new BigDecimal("50"),
