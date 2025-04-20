@@ -155,6 +155,11 @@ export type GenreDto = {
     id: number;
     url: string;
     label: string;
+    createdAt: Date;
+
+}
+
+export type genreDtos = {
 
 }
 export type GenreLightDto = {
@@ -164,9 +169,10 @@ export type GenreLightDto = {
 export type GenreProjection = {
     id: number;
     label: string;
+    url: string;        
     createdAt: Date;
-    mangas: MangaLittleProjection[]
-}
+    mangas: MangaLittleProjection[];
+};
 export type GenreProjections  = {
     content: GenreProjection[];
     size: number;

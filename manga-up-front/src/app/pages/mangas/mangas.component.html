@@ -1,8 +1,28 @@
 <section class="section">
     <div class="section__title">
         <h1>Mangas</h1>
-     @for (item of mangas?.content; track $index) {
-        {{item.priceHt}}
-     }
     </div>
+      <div class="section__grid">
+         @for (manga of mangas?.content; track $index) {
+         <ui-card size="card-manga">
+            <img src="" alt="{{manga.title}}">
+            <div>
+               <h3 class="card-manga__title">{{manga.title}}</h3>
+               <p class="card-manga__autor">
+                  @for (author of manga.authors; track $index) {
+                  {{author.firstname}} {{author.lastname}}
+                  @if (author !== manga.authors[manga.authors.length - 1]) {
+                  ,
+                  }
+                  }
+               </p>
+               <a [routerLink]="'/manga/' + manga.id" class="btn btn-card">
+                  <p>voir plus</p>
+               </a>
+            </div>
+         </ui-card>
+         }
+      
+      
+      </div>
    </section>

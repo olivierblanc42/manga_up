@@ -34,7 +34,7 @@ export class GenreService {
     genreFour = new BehaviorSubject<GenreDto[] >([]);
     currentGenreFour = this.genreFour.asObservable();
 
-    genreSolo = new BehaviorSubject<GenreProjection | null>(null);
+    genreSolo = new BehaviorSubject<GenreProjection>({ id: 0, label: '',url:'', createdAt: new Date(), mangas: [] });
     curentGenreSolo = this.genreSolo.asObservable();
 
     async getAllGenreWithPagination() {

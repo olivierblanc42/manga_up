@@ -2,10 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { GenreProjection } from '../../type';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenreService } from '../../service/genre.service';
+import { CardComponent } from "../../components/card/card.component";
 
 @Component({
   selector: 'app-genre',
-  imports: [],
+  imports: [CardComponent],
   standalone: true,
   templateUrl: './genre.component.html',
   styleUrl: './genre.component.scss'
@@ -13,7 +14,13 @@ import { GenreService } from '../../service/genre.service';
 export class GenreComponent implements OnInit {
   id: string | null = null; 
   idOfUrl!: number; 
-  genre: GenreProjection | null = null;
+  genre: GenreProjection = {
+    id: 0,
+    label: '',
+    url:'',
+    createdAt: new Date(),
+    mangas: []  
+  };
 
 
   constructor(
