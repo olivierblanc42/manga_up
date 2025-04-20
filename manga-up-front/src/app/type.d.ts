@@ -69,7 +69,10 @@ export type AuthorProjection = {
     firstname: string;
     description: string;
     createdAt: Date;
-    mangas: MangasProjection[]
+    birthdate: Date;
+    url:string;
+    genre:string
+    mangas: MangaLittleProjection[]
 }
 export type AuthorProjections = {
     content: AuthorProjection[];

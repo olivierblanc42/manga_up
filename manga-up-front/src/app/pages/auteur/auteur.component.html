@@ -2,23 +2,21 @@
 <article class="section">
     <div class="card card-single-auteur">
         <div class="card-single-auteur__title">
-            <h1>Naruto</h1>
+            <h1>{{author.firstname}} {{author.lastname}}</h1>
         </div>
         <div class="card-padding">
             <div class="card-single-auteur__content">
                 <div class="card-single-auteur__img">
-                    <img src="images\kishimoto_masashi.webp" alt="">
+                    <img src="{{author.url}}" alt="{{author.firstname}} {{author.lastname}}">
                 </div>
                 <div class="card card-content">
                     <div class="card-content__title">
                         <p>information</p>
                     </div>
                     <div class="card-content__infos">
-                        <div><span>Titre:</span> Naruto</div>
-                        <div><span>Auteurs:</span> Kishimoto Masashi</div>
-                        <div><span>Année de sortie:</span> 2002</div>
-                        <div><span>Prix:</span> 7,30 €</div>
-                        <div><span>France:</span> Oui</div>
+                        <div><span>Nom:</span>{{author.firstname}} {{author.lastname}}</div>
+                        <div><span>Genre:</span>{{author.genre}}</div>
+                        <div><span>Date de naissance: </span>{{author.birthdate}}</div>
                     </div>
                 </div>
             </div>
@@ -29,12 +27,7 @@
                     <p>summary</p>
                 </div>
                 <div class="card-single__summary-content">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui tempora ducimus corrupti
-                        dolorum,
-                        tempore adipisci dolore dicta repudiandae. Consequatur quas ipsam similique dignissimos
-                        quod!
-                        Quia
-                        laboriosam ullam alias repudiandae rerum!</p>
+                    <p>{{author.description}}</p>
                 </div>
             </div>
         </div>
@@ -48,4 +41,26 @@
         <h2>Mangas de l'auteur</h2>
     </div>
 
+@if(author.mangas.length >0){
+@for (manga of author.mangas; track $index) {
+<div class="section__grid">
+    <ui-card size="card-manga">
+        <img src="" alt="{{manga.title}}">
+        <div>
+            <h3 class="card-manga__title">{{manga.title}}</h3>
+            <p class="card-manga__autor">
+
+            </p>
+            <a class="btn btn-card">
+                <p>voir plus</p>
+            </a>
+        </div>
+    </ui-card>
+</div>
+}
+}@else {
+<p>Il n'y a pas encore de mangas pour cette auteur</p>
+}
+
+    
 </section>

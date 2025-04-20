@@ -30,7 +30,15 @@ export class AuthorService {
     authorProjection = new BehaviorSubject<AuthorProjections | null>(null)
     currentauthorProjection = this.authorProjection.asObservable();
 
-    authorOneProjection = new BehaviorSubject<AuthorProjection | null>(null)
+    authorOneProjection = new BehaviorSubject<AuthorProjection>({id:0,
+    lastname: "",
+    firstname: "",
+    description: "",
+    createdAt: new Date(),
+    birthdate: new Date(),
+    url: "",
+    genre: "",
+    mangas: []})
     currentAuthorOneProjection = this.authorOneProjection.asObservable();
 
 

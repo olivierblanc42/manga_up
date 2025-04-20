@@ -2,10 +2,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Author, AuthorProjection } from './../../type.d';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AuthorService } from '../../service/author.service';
+import { CardComponent } from "../../components/card/card.component";
 
 @Component({
   selector: 'app-auteur',
-  imports: [],
+  imports: [CardComponent],
   standalone: true,
   templateUrl: './auteur.component.html',
   styleUrl: './auteur.component.scss'
@@ -14,7 +15,17 @@ export class AuteurComponent implements OnInit {
 
   id: string | null = null; 
   idOfUrl!: number; 
-  author: AuthorProjection | null = null;
+  author: AuthorProjection  = {
+    id: 0,
+    lastname: "",
+    firstname: "",
+    description: "",
+    createdAt: new Date(),
+    birthdate: new Date(),
+    url: "",
+    genre: "",
+    mangas: []
+  };
   constructor(
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(Router) private router: Router,

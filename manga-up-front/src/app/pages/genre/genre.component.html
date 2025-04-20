@@ -34,9 +34,10 @@
         <h2>Mangas dans le {{genre.label}}</h2>
     </div>
 
+
+    @if (genre.mangas.length > 0 ) {
+    @for (manga of genre.mangas; track $index) {
     <div class="section__grid">
-        @if (genre.mangas.length > 0 ) {
-        @for (manga of genre.mangas; track $index) {
         <ui-card size="card-manga">
             <img src="" alt="{{manga.title}}">
             <div>
@@ -49,14 +50,14 @@
                 </a>
             </div>
         </ui-card>
-
-        }
-
-        }@else {
-        <p>Il n'y a pas encore de mangas dans le genre</p>
-        }
-
     </div>
+    }
+
+    }@else {
+    <p>Il n'y a pas encore de mangas dans le genre</p>
+    }
+
+
 
 
 </section>
