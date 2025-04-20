@@ -26,6 +26,11 @@ public class Category {
     @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    @Size(max = 255)
+    @Column(name = "url")
+    private String url;
+
+
     @Column(name = "created_at")
     private Instant createdAt;
 

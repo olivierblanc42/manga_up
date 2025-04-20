@@ -38,10 +38,12 @@ class GenreServiceTest {
     private final class TestGenreProjection implements GenreProjection {
         private Integer id;
         private String label;
+        private String url;
         private LocalDateTime created;
-        public TestGenreProjection(Integer id, String label, LocalDateTime created) {
+        public TestGenreProjection(Integer id, String label, String url, LocalDateTime created) {
             this.id = id;
             this.label = label;
+            this.url =url;
             this.created = created;
         }
 
@@ -55,6 +57,12 @@ class GenreServiceTest {
             return "";
         }
 
+     @Override
+        public String getUrl() {
+            return "";
+        }
+
+        
         @Override
         public LocalDateTime getCreatedAt() {
             return null;
@@ -70,8 +78,8 @@ class GenreServiceTest {
     void shouldGetAllGenres() {
      Pageable pageable = PageRequest.of(0, 5);
 
-     GenreProjection genreProjection1 = new TestGenreProjection(1, "Genre1", LocalDateTime.now());
-        GenreProjection genreProjection2 = new TestGenreProjection(2, "Genre2", LocalDateTime.now());
+     GenreProjection genreProjection1 = new TestGenreProjection(1, "Genre1","url", LocalDateTime.now());
+        GenreProjection genreProjection2 = new TestGenreProjection(2, "Genre2","url", LocalDateTime.now());
 
      Page<GenreProjection> page = new PageImpl<>(List.of(genreProjection1, genreProjection2));
      when(genreDao.findAllByPage(pageable)).thenReturn(page);
@@ -85,7 +93,7 @@ class GenreServiceTest {
 
  @Test
     void shouldGetGenreById() {
-     GenreProjection g = new TestGenreProjection(1, "Genre1", LocalDateTime.now());
+     GenreProjection g = new TestGenreProjection(1, "Genre1","url", LocalDateTime.now());
 
      when(genreDao.findGenreProjectionById(1)).thenReturn(Optional.of(g));
 

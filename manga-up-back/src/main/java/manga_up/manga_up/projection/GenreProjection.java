@@ -6,6 +6,7 @@ import java.util.Set;
 public interface GenreProjection {
     Integer getId();
     String getLabel();
+    String getUrl();
     LocalDateTime getCreatedAt();
     Set<MangaLittleProjection> getMangas();
 }
