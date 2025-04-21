@@ -40,9 +40,9 @@ export class MangaService{
     currentMangaProjection = this.mangaProjection.asObservable();
 
 
-    async getMangas() {
+    async getMangas(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<MangaProjections>(this.urlPagination));
+            const r = await lastValueFrom(this.http.get<MangaProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.mangaPagination.next(r);
         } catch (err) {

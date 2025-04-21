@@ -42,12 +42,12 @@ export class CategoryService {
     currentCategorieProjection = this.categoriesProjection.asObservable();
 
 
-    async getAllGenreWithPagination() {
+    async getAllCategoriesWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<CategoriesProjections>(this.url));
+            const r = await lastValueFrom(this.http.get<CategoriesProjections>(`${this.url}?page=${page}`));
             if (!r) return;
             this.categoriesProjections.next(r);
-            console.log('Genres récupérés avec succès :', r);
+            console.log('Categories récupérés avec succès :', r);
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
         }

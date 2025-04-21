@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { GenreProjection } from '../../type';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GenreService } from '../../service/genre.service';
 import { CardComponent } from "../../components/card/card.component";
 
 @Component({
   selector: 'app-genre',
-  imports: [CardComponent],
+  imports: [CardComponent, RouterModule],
   standalone: true,
   templateUrl: './genre.component.html',
   styleUrl: './genre.component.scss'

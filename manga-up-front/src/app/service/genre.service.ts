@@ -37,9 +37,9 @@ export class GenreService {
     genreSolo = new BehaviorSubject<GenreProjection>({ id: 0, label: '',url:'', createdAt: new Date(), mangas: [] });
     curentGenreSolo = this.genreSolo.asObservable();
 
-    async getAllGenreWithPagination() {
+    async getAllGenreWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<GenreProjections>(this.url));
+            const r = await lastValueFrom(this.http.get<GenreProjections>(`${this.url}?page=${page}`));
             if (!r) return;
             this.genresProjectionPaginations.next(r);
             console.log('Genres récupérés avec succès :', r);

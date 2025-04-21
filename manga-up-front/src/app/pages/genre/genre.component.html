@@ -36,23 +36,28 @@
 
 
     @if (genre.mangas.length > 0 ) {
+            <div class="section__grid">
     @for (manga of genre.mangas; track $index) {
-    <div class="section__grid">
+
         <ui-card size="card-manga">
-            <img src="" alt="{{manga.title}}">
+
+         @for (picture of manga.pictures; track $index) {
+         <img src="{{picture.url}}" alt="{{manga.title}}">
+         }   
+           
             <div>
                 <h3 class="card-manga__title">{{manga.title}}</h3>
                 <p class="card-manga__autor">
 
                 </p>
-                <a class="btn btn-card">
+                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id "   >
                     <p>voir plus</p>
                 </a>
             </div>
         </ui-card>
-    </div>
+   
     }
-
+</div>
     }@else {
     <p>Il n'y a pas encore de mangas dans le genre</p>
     }

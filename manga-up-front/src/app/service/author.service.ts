@@ -42,9 +42,9 @@ export class AuthorService {
     currentAuthorOneProjection = this.authorOneProjection.asObservable();
 
 
-    async getAllAuthorWithPagination() {
+    async getAllAuthorWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<AuthorProjections>(this.url));
+            const r = await lastValueFrom(this.http.get<AuthorProjections>(`${this.url}?page=${page}`));
             if (!r) return;
             this.authorProjection.next(r);
             console.log('Genres récupérés avec succès :', r);
