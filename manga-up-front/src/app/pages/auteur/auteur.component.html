@@ -45,7 +45,10 @@
 @for (manga of author.mangas; track $index) {
 <div class="section__grid">
     <ui-card size="card-manga">
-        <img src="" alt="{{manga.title}}">
+        @for (item of manga.pictures; track $index) {
+            <img src="{{item.url}}" alt="{{manga.title}}">
+        }
+        
         <div>
             <h3 class="card-manga__title">{{manga.title}}</h3>
             <p class="card-manga__autor">

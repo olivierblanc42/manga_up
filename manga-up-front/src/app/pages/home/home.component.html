@@ -13,48 +13,30 @@
             <h2>Nouveauté Mangas</h2>
         </a>
     </div>
-    <swiper-container class="swiper-manga" navigation="true">
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-    </swiper-container>
+<swiper-container class="swiper-manga" navigation="true">
+    @for (manga of mangaDtoRandom; track manga.id_mangas) {
+    <swiper-slide>
+        <ui-card size="card-manga">
+            <img [src]="manga.picture?.url" [alt]="manga.title">
+            <div>
+                <h3 class="card-manga__title">{{ manga.title }}</h3>
+                <p class="card-manga__autor">
+                    @for (author of manga.authors; track author.id) {
+                    {{ author.firstname }} {{ author.lastname }}
+                    @if (author !== manga.authors[manga.authors.length - 1]) {
+                    ,
+                    }
+                    }
+                </p>
+                <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card">
+                    <p>voir plus</p>
+                </a>
+            </div>
+        </ui-card>
+    </swiper-slide>
+    }
+</swiper-container>
+
     <div class="section__grid">
         @for (manga of mangaDtoRandom; track $index) {
                     <ui-card size="card-manga">
@@ -206,52 +188,25 @@
         <a [routerLink]="'/genres/'"><h2>Genres</h2></a>
         
     </div>
-    <swiper-container navigation="true" class="swiper-genre" >
-        <swiper-slide> <ui-card size="card-genre">
-                <img src="images/test_card_genre.webp" alt="">
+    <swiper-container navigation="true" class="swiper-genre">
 
-                <div>
-                    <h3 class="card-genre__title">Baston</h3>
+    @for (genre of genres; track $index) {
+<swiper-slide>
+    <ui-card size="card-genre">
+        <img src="{{genre.url}}" alt="{{genre.label}}">
+    
+        <div>
+            <h3 class="card-genre__title">{{genre.label}}</h3>
+    
+            <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
+                <p>voir plus</p>
+            </a>
+        </div>
+    </ui-card>
+    </swiper-slide>
+    }
+</swiper-container>
 
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-genre">
-                <img src="images/test_card_genre.webp" alt="">
-
-                <div>
-                    <h3 class="card-genre__title">Baston</h3>
-
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-genre">
-                <img src="images/test_card_genre.webp" alt="">
-
-                <div>
-                    <h3 class="card-genre__title">Baston</h3>
-
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-genre">
-                <img src="images/test_card_genre.webp" alt="">
-
-                <div>
-                    <h3 class="card-genre__title">Baston</h3>
-
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-    </swiper-container>
 
 
 <div class="section__grid">

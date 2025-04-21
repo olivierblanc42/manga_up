@@ -1,4 +1,4 @@
-import { UserAddressLittleProjection } from './type.d';
+import { UserAddressLittleProjection, PictureDtoRandom } from './type.d';
 import { Manga } from './types.d';
 
 //AppUser
@@ -264,6 +264,7 @@ export interface MangaOne {
 export type MangaLittleProjection = {
     id: number;
     title: string;
+    pictures: Picture[];
 }
 
 //UserAddress
@@ -315,6 +316,11 @@ export type UserAddressLittleProjection = {
 }
 
 export interface PictureDtoRandom {
+    id: number;
+    url: string;
+}
+
+export type Picture = {
     id: number;
     url: string;
 }
