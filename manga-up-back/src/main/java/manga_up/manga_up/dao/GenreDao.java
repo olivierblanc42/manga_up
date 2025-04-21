@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface GenreDao extends JpaRepository<Genre, Integer> {
-    @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas")
+    @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas m LEFT JOIN FETCH m.pictures")
     Page<GenreProjection> findAllByPage(Pageable pageable);
 
 

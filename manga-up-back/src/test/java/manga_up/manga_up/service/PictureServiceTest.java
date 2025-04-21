@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,10 +64,12 @@ class PictureServiceTest {
 private static class TestLittleMangaProjection implements MangaLittleProjection {
      private final Integer id;
      private final  String title;
+     private final Set<PictureProjection> pictures;
 
     private TestLittleMangaProjection(Integer id, String title) {
         this.id = id;
         this.title = title;
+        this.pictures = null;
     }
 
     @Override
@@ -77,6 +80,12 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public Set<PictureProjection> getPictures() {
+        return pictures;
+
     }
 }
     @Test

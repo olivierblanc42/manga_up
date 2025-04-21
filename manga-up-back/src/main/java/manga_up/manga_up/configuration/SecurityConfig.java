@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
+                                      "/api/authors/pagination",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui.html",
@@ -60,8 +61,7 @@ public class SecurityConfig {
                                         "/api/mangas/manga/{id}",
                                         "/api/categories/{id}",
                                         "/api/categories/pagination",
-                                        "/api/authors/{id}",
-                                        "/api/authors/pagination"
+                                        "/api/authors/{id}"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils), UsernamePasswordAuthenticationFilter.class)

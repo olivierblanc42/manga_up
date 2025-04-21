@@ -10,5 +10,8 @@ public interface AuthorProjection {
     String getLastname();
     String getDescription();
     LocalDate getCreatedAt();
+    LocalDate getBirthdate();
+    String getUrl();
+    String getGenre();
     Set<MangaLittleProjection> getMangas();
 }

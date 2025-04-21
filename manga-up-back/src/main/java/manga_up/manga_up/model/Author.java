@@ -31,8 +31,20 @@ public class Author {
     @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    @Size(max = 255)
+    @Column(name = "url")
+    private String url;
+
+   @Column(name = "birthdate")
+    private LocalDate birthdate;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
+
+    @Size(max = 50)
+    @Column(name = "genre", nullable = false, length = 50)
+    private String genre;
+
 
     @ManyToMany
     @JoinTable(name = "mangas_authors",

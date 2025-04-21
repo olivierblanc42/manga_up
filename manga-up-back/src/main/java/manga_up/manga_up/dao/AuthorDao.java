@@ -15,16 +15,18 @@ import java.util.Optional;
 @Repository
 public interface AuthorDao extends JpaRepository<Author, Integer> {
 
-    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas")
+    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas m LEFT JOIN FETCH m.pictures")
     Page<AuthorProjection> findAllByPage(Pageable pageable);
 
     @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
     Optional<Author> findAuthorById(@Param("idAuthor") Integer idAuthor);
 
 
-    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
-    Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
+   // @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
+//    Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
 
+@Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas m LEFT JOIN FETCH m.pictures WHERE a.id = :idAuthor")
+Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
 
 
 

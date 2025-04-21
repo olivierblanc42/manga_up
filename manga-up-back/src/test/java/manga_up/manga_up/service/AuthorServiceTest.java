@@ -24,7 +24,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,14 +43,20 @@ class AuthorServiceTest {
     private final String lastname;
     private final String description;
     private final LocalDate createdAt;
+    private final  LocalDate birthdate;
+    private final String url;
+    private final String genre;
     private final Set<MangaLittleProjection> mangas;
 
-public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt, Set<MangaLittleProjection> mangas ) {
+public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt,LocalDate birthdate,String url,String genre, Set<MangaLittleProjection> mangas ) {
     this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
     this.description = description;
     this.createdAt = createdAt;
+    this.birthdate =birthdate;
+    this.url = url;
+    this.genre =genre;
     this.mangas = mangas;
 }
 
@@ -74,6 +79,19 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
      public LocalDate getCreatedAt() {
          return createdAt;
      }
+          @Override
+     public LocalDate getBirthdate() {
+         return birthdate;
+     }
+
+          @Override
+     public String getUrl() {
+         return url;
+     }
+              @Override
+     public String getGenre() {
+         return genre;
+     }
      @Override
      public Set<MangaLittleProjection> getMangas() {
          return mangas;
@@ -93,6 +111,9 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
           "Toriyama",
           "Mangaka japonais, créateur de Dragon Ball.",
           LocalDate.of(2023, 5, 12),
+           LocalDate.of(2023, 5, 12),
+           "url",
+           "Homme",
           Set.of()
   );
   AuthorProjection author2 = new TestAuthorProjection(
@@ -101,6 +122,9 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
           "Takeuchi",
           "Autrice de Sailor Moon.",
           LocalDate.of(2022, 9, 27),
+                   LocalDate.of(2023, 5, 12),
+           "url",
+           "Homme",
           Set.of()
   );
      Page<AuthorProjection> page = new PageImpl<>(List.of(author1, author2));
@@ -120,6 +144,9 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
                 "Toriyama",
                 "Mangaka japonais, créateur de Dragon Ball.",
                 LocalDate.of(2023, 5, 12),
+                LocalDate.of(2023, 5, 12),
+            "url",
+            "Homme",
                 Set.of()
         );
 
@@ -218,5 +245,10 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
         assertEquals(0, count); 
     }
 
+
+
+
+
+    
 
 }
