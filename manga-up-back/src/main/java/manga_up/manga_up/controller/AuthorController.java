@@ -42,7 +42,7 @@ public class AuthorController {
     public ResponseEntity<Page<AuthorProjection>> getAllAuthors(
             @PageableDefault(
                     page = 0,
-                    size = 10,
+                    size = 8,
                     sort = "createdAt",
                     direction = Sort.Direction.DESC
             ) @ParameterObject Pageable pageable

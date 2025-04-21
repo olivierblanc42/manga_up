@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dto.CategoryDto;
-import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryProjection>> getCategories(
             @PageableDefault(
             page = 0,
-            size = 10,
+            size = 8,
             sort = "createdAt",
             direction = Sort.Direction.DESC
     ) @ParameterObject Pageable pageable)

@@ -36,7 +36,7 @@ public class GenreController {
     public ResponseEntity<Page<GenreProjection>> getAllGenres(
             @PageableDefault(
                     page = 0,
-                    size = 10,
+                    size = 12,
                     sort = "createdAt",
                     direction = Sort.Direction.DESC
             ) @ParameterObject Pageable pageable

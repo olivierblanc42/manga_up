@@ -44,7 +44,7 @@ public class MangaController {
     public ResponseEntity<Page<MangaProjection>> getAllManga(
             @PageableDefault(
                     page = 0,
-                    size = 10,
+                    size = 8,
                     sort = "id",
                     direction = Sort.Direction.DESC
             ) @ParameterObject Pageable pageable
