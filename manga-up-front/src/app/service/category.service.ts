@@ -30,7 +30,15 @@ export class CategoryService {
     categoriesProjections = new BehaviorSubject<CategoriesProjections | null>(null);
     currentCategoriesProjection = this.categoriesProjections.asObservable();
 
-    categoriesProjection = new BehaviorSubject<CategoryProjection | null>(null);
+    categoriesProjection = new BehaviorSubject<CategoryProjection >(
+        { 
+        id:0,
+        label:"",
+        description:"",
+        createdAt: new Date(),
+        mangas: []
+        }
+    );
     currentCategorieProjection = this.categoriesProjection.asObservable();
 
 

@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CategoryProjection } from '../../type';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CategoryService } from '../../service/category.service';
+import { CardComponent } from "../../components/card/card.component";
 
 @Component({
   selector: 'app-categorie',
-  imports: [],
+  imports: [CardComponent, RouterModule],
   standalone: true,
   templateUrl: './categorie.component.html',
   styleUrl: './categorie.component.scss'
@@ -14,7 +15,15 @@ export class CategorieComponent implements OnInit {
 
   id: string | null = null; 
   idOfUrl!: number; 
-  category: CategoryProjection | null = null;
+  category: CategoryProjection = 
+    {
+      id: 0,
+      label: "",
+      description: "",
+      createdAt: new Date(),
+      mangas: []
+    }
+  ;
 
   constructor(
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
