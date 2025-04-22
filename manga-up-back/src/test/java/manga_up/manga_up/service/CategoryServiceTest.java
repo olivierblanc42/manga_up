@@ -5,7 +5,6 @@ import manga_up.manga_up.dto.CategoryDto;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.CategoryProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -16,15 +15,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import static org.mockito.Mockito.any;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
@@ -43,13 +39,12 @@ class CategoryServiceTest {
         private final Integer id;
         private final String label;
         private final LocalDateTime createdAt;
-        private final Set<MangaLittleProjection> mangas;
 
-        private TestCategoryProjection(Integer id, String label, LocalDateTime createdAt, Set<MangaLittleProjection> mangas) {
+        private TestCategoryProjection(Integer id, String label, LocalDateTime createdAt) {
             this.id = id;
             this.label = label;
             this.createdAt = createdAt;
-            this.mangas = mangas;
+           
         }
 
         @Override
@@ -67,10 +62,7 @@ class CategoryServiceTest {
             return createdAt;
         }
 
-        @Override
-        public Set<MangaLittleProjection> getMangas() {
-            return mangas;
-        }
+   
     }
 
 
@@ -84,14 +76,12 @@ class CategoryServiceTest {
         CategoryProjection c1 = new TestCategoryProjection(
                 1,
                 "Baston",
-                LocalDateTime.of(2023, 5, 12, 14, 30),
-                Set.of()
+                LocalDateTime.of(2023, 5, 12, 14, 30)
         );
         CategoryProjection c2 = new TestCategoryProjection(
                 2,
                 "Comédie",
-                LocalDateTime.of(2023, 5, 12, 14, 30),
-                Set.of()
+                LocalDateTime.of(2023, 5, 12, 14, 30)
         );
         Page<CategoryProjection> page = new PageImpl<>(List.of(c1, c2));
         when(categoryDao.findAllCategorisByPage(pageable)).thenReturn(page);
@@ -105,8 +95,7 @@ class CategoryServiceTest {
         CategoryProjection c1 = new TestCategoryProjection(
                 1,
                 "Baston",
-                LocalDateTime.of(2023, 5, 12, 14, 30),
-                Set.of()
+                LocalDateTime.of(2023, 5, 12, 14, 30)
         );
         when(categoryDao.findCategoryProjectionById(1)).thenReturn(Optional.of(c1));
         CategoryProjection categoryProjection = categoryService.findCategoryById(1);

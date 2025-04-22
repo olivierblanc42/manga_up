@@ -7,16 +7,14 @@ import manga_up.manga_up.projection.MangaBaseProjection;
 
 
 public class AuthorWithMangasResponse {
-    private AuthorProjection author; // Projection de l'auteur
-    private Page<MangaBaseProjection> mangas; // Page de mangas associés
+    private AuthorProjection author; 
+    private Page<MangaBaseProjection> mangas; 
 
-    // Constructeur
     public AuthorWithMangasResponse(AuthorProjection author, Page<MangaBaseProjection> mangas) {
         this.author = author;
         this.mangas = mangas;
     }
 
-    // Getters et Setters
     public AuthorProjection getAuthor() {
         return author;
     }

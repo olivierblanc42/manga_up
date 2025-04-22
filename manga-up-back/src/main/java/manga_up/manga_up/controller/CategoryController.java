@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dao.CategoryDao;
+import manga_up.manga_up.dto.AuthorWithMangasResponse;
 import manga_up.manga_up.dto.CategoryDto;
+import manga_up.manga_up.dto.CategoryWithMangaResponse;
 import manga_up.manga_up.projection.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
 import org.slf4j.Logger;
@@ -87,6 +89,19 @@ public class CategoryController {
            LOGGER.error("Error updating category", e);
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
        }
+    }
+
+
+    @Operation(summary = "Get category with mangas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author with mangas retrieved"),
+            @ApiResponse(responseCode = "404", description = "Author not found")
+    })
+    
+    @GetMapping("/{categoryId}/mangas")
+    public CategoryWithMangaResponse getAuthorWithMangas(@PathVariable Integer categoryId,  
+            @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) { 
+        return categoryService.getCategoryWithMangas(categoryId, pageable);  
     }
 
 }

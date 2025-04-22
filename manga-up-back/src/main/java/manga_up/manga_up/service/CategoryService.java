@@ -2,10 +2,14 @@ package manga_up.manga_up.service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CategoryDao;
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.CategoryDto;
+import manga_up.manga_up.dto.CategoryWithMangaResponse;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.CategoryProjection;
+import manga_up.manga_up.projection.MangaBaseProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,7 +25,10 @@ public class CategoryService {
 
     private final CategoryDao categoryDao;
     private final CategoryMapper categoryMapper;
-    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper) {
+        private final MangaDao mangaDao;
+
+    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper,MangaDao mangaDao) {
+        this.mangaDao = mangaDao;
         this.categoryDao = categoryDao;
         this.categoryMapper = categoryMapper;
     }
@@ -78,5 +85,15 @@ public class CategoryService {
        categoryDao.save(category);
        return categoryMapper.toDtoCategory(category);
     }
+
+
+
+public CategoryWithMangaResponse getCategoryWithMangas(Integer categoryId, Pageable pageable)
+{
+    CategoryProjection category = categoryDao.findCategoryProjectionById(categoryId)
+            .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found"));
+    Page<MangaBaseProjection> mangas = mangaDao.findMangasByCategory(categoryId, pageable);
+    return new CategoryWithMangaResponse(category, mangas);
+}
 
 }
