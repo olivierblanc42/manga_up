@@ -1,4 +1,4 @@
-import { AuthorProjection, AuthorProjections, CategoriesProjections } from './../type.d';
+import { AuthorProjection, AuthorProjections, AuthorWithMangas, CategoriesProjections, MangasWithImages, MangaWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 export class AuthorService {
     url = "/api/authors/pagination";
     urlOne = "/api/authors/"
-
+    
     options = {
         headers: new HttpHeaders({
             "Content-Type": "application/json",
@@ -30,15 +30,9 @@ export class AuthorService {
     authorProjection = new BehaviorSubject<AuthorProjections | null>(null)
     currentauthorProjection = this.authorProjection.asObservable();
 
-    authorOneProjection = new BehaviorSubject<AuthorProjection>({id:0,
-    lastname: "",
-    firstname: "",
-    description: "",
-    createdAt: new Date(),
-    birthdate: new Date(),
-    url: "",
-    genre: "",
-    mangas: []})
+    authorOneProjection = new BehaviorSubject<AuthorWithMangas | null>(null);
+
+
     currentAuthorOneProjection = this.authorOneProjection.asObservable();
 
 
@@ -54,17 +48,26 @@ export class AuthorService {
     }
 
 
-
-    async getAuthor(id: number) {
+    async getAuthor(id: number, page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<AuthorProjection>(`${this.urlOne}${id}`));
-            if (!r) return;
-            this.authorOneProjection.next(r);
-            console.log('author récupérés avec succès :', r);
+            const response = await lastValueFrom(this.http.get<{ author: AuthorWithMangas, mangas: MangasWithImages }>(`${this.urlOne}${id}/mangas?page=${page}`));
+
+            if (response) {
+                const authorWithMangas: AuthorWithMangas = {
+                    ...response.author, 
+                    mangasWithImages: response.mangas 
+                };
+
+                this.authorOneProjection.next(authorWithMangas);
+
+                console.log('Auteur récupérés avec succès :', authorWithMangas);
+            }
         } catch (err) {
-            console.error('Erreur lors de la récupération de author :', err);
+            console.error('Erreur lors de la récupération de l\'auteur :', err);
         }
     }
+
+
 
 
 }

@@ -103,6 +103,20 @@ export type AuthorLittleProjection = {
     firstname: string;
 }
 
+
+export type AuthorWithMangas = {
+    id: number;
+    lastname: string;
+    firstname: string;
+    description: string;
+    createdAt: Date;
+    birthdate: Date;
+    url: string;
+    genre: string ;
+    mangasWithImages: MangasWithImages;
+}
+
+
 //Category
 export type Category = {
     id: number;
@@ -266,6 +280,22 @@ export type MangaLittleProjection = {
     title: string;
     pictures: Picture[];
 }
+
+export type MangaWithImages = {
+    id: number;
+    pictureId: string;
+    pictureUrl:string;
+    title: string;
+}
+
+export type MangasWithImages = {
+    content: MangaWithImages[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
+
+
 
 //UserAddress
 export type UserAddress = {
