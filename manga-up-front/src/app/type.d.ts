@@ -158,6 +158,13 @@ export type CategoryLittleProjection = {
     createdAt: Date;
 }
 
+export type CategoryWithMangas = {
+    id: number;
+    label: string;
+    description: string;
+    createdAt: Date;
+    mangasWithImages: MangasWithImages;
+}
 
 
 //Genre

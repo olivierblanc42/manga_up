@@ -1,7 +1,7 @@
 <article class="section">
     <div class="card card-single-other">
         <div class="card-single-other__title">
-            <h1>{{category.label}}</h1>
+            <h1>{{category?.label}}</h1>
         </div>
         <div class="card-single-other__content">
             <img src="images/test_card_genre.webp" alt="">
@@ -31,17 +31,17 @@
 
 <section class="section">
     <div class="section__title">
-        <h2>Mangas dans la categorie {{category.label}}</h2>
+        <h2>Mangas dans la categorie {{category?.label}}</h2>
     </div>
 
-@if (category.mangas.length > 0) {
+@if ((category?.mangasWithImages?.content?.length ?? 0) > 0) {
         <div class="section__grid">
-   @for (manga of category.mangas; track $index) {
+   @for (manga of category?.mangasWithImages?.content; track $index) {
             <ui-card size="card-manga">
 
-        @for (picture of manga.pictures; track $index) {
-        <img src="{{picture.url}}" alt="{{manga.title}}">
-        }
+       
+        <img src="{{manga.pictureUrl}}" alt="{{manga.title}}">
+        
 
         <div>
             <h3 class="card-manga__title">{{manga.title}}</h3>

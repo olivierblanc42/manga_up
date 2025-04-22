@@ -1,4 +1,4 @@
-import { CategoriesProjections, CategoryProjection } from './../type.d';
+import { CategoriesProjections, CategoryProjection, CategoryWithMangas, MangasWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
@@ -30,16 +30,8 @@ export class CategoryService {
     categoriesProjections = new BehaviorSubject<CategoriesProjections | null>(null);
     currentCategoriesProjection = this.categoriesProjections.asObservable();
 
-    categoriesProjection = new BehaviorSubject<CategoryProjection >(
-        { 
-        id:0,
-        label:"",
-        description:"",
-        createdAt: new Date(),
-        mangas: []
-        }
-    );
-    currentCategorieProjection = this.categoriesProjection.asObservable();
+    categoriesWithManga = new BehaviorSubject<CategoryWithMangas | null>(null );
+    currentcategoriesWithManga = this.categoriesWithManga.asObservable();
 
 
     async getAllCategoriesWithPagination(page: number = 0) {
@@ -53,12 +45,16 @@ export class CategoryService {
         }
     }
 
-    async getCategory(id: number) {
+    async getCategory(id: number, page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<CategoryProjection>(`${this.urlCategori}${id}`));
-            if (!r) return;
-            this.categoriesProjection.next(r);
-            console.log('Genres récupérés avec succès :', r);
+            const r = await lastValueFrom(this.http.get<{ category: CategoryWithMangas, mangas: MangasWithImages }>(`${this.urlCategori}${id}/mangas?page=${page}`));
+            if (r) {
+                const categoryWithMangas: CategoryWithMangas = {
+                    ...r.category,
+                    mangasWithImages: r.mangas
+                };
+                this.categoriesWithManga.next(categoryWithMangas);
+            }
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
         }

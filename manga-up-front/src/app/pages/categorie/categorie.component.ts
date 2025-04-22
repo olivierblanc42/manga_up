@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { CategoryProjection } from '../../type';
+import { CategoryProjection, CategoryWithMangas } from '../../type';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CategoryService } from '../../service/category.service';
 import { CardComponent } from "../../components/card/card.component";
@@ -15,15 +15,7 @@ export class CategorieComponent implements OnInit {
 
   id: string | null = null; 
   idOfUrl!: number; 
-  category: CategoryProjection = 
-    {
-      id: 0,
-      label: "",
-      description: "",
-      createdAt: new Date(),
-      mangas: []
-    }
-  ;
+  category: CategoryWithMangas | null = null;
 
   constructor(
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
@@ -40,8 +32,9 @@ export class CategorieComponent implements OnInit {
       }
     }
 
-    this.categoriService.currentCategorieProjection.subscribe((data) => {
+    this.categoriService.currentcategoriesWithManga.subscribe((data) => {
       this.category = data
+      console.log('category', this.category);
     })
 
   }
