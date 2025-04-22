@@ -22,8 +22,7 @@ Page<AuthorProjection> findAllByPage(Pageable pageable);
     Optional<Author> findAuthorById(@Param("idAuthor") Integer idAuthor);
 
 
-   // @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
-//    Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
+
 
 @Query("SELECT a.id AS id, a.firstname AS firstname, a.lastname AS lastname, a.description AS description, " +
        "a.createdAt AS createdAt, a.birthdate AS birthdate, a.url AS url, a.genre AS genre " +

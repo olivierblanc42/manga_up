@@ -93,9 +93,14 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
   }
-    @GetMapping("/authors/{authorId}/mangas")
-    public AuthorWithMangasResponse getAuthorWithMangas
-    (@PathVariable Integer authorId,  
+  
+    @Operation(summary = "Get author with mangas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author with mangas retrieved"),
+            @ApiResponse(responseCode = "404", description = "Author not found")
+    })
+    @GetMapping("/{authorId}/mangas")
+    public AuthorWithMangasResponse getAuthorWithMangas(@PathVariable Integer authorId,  
             @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) { 
         return authorService.getAuthorWithMangas(authorId, pageable);  
     }
