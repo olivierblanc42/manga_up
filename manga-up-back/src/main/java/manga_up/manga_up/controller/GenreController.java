@@ -19,6 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/genres")
@@ -97,6 +100,21 @@ public class GenreController {
         }
     }
 
-
+    @Operation(summary = "Get genre with mangas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Genre with mangas retrieved"),
+            @ApiResponse(responseCode = "404", description = "Genre not found")
+    })
+    @GetMapping("/{genreId}/mangas")
+    public ResponseEntity<?> getGenreWithMangas(@PathVariable Integer genreId,
+                                                @PageableDefault(
+                                                        page = 0,
+                                                        size = 12,
+                                                        sort = "title",
+                                                        direction = Sort.Direction.DESC
+                                                ) @ParameterObject Pageable pageable) {
+        LOGGER.info("Get genre with mangas");
+        return ResponseEntity.ok(genreService.getGenreWithMangas(genreId, pageable));
+                                                }
 
 }

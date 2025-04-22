@@ -130,11 +130,32 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                 SELECT COUNT(*)
                 FROM manga m
                 JOIN picture p ON m.Id_mangas = p.Id_mangas
-                JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
+                JOIN category c ON c.Id_categories = m.Id_categories
                 WHERE p.is_main = 1
                   AND  c.Id_categories = :categoryId
             """, nativeQuery = true)
         Page<MangaBaseProjection> findMangasByCategory(@Param("categoryId") Integer categoryId, Pageable pageable);
+
+
+        @Query(value = """
+            SELECT m.Id_mangas AS id,
+                         m.title AS title,
+                         p.Id_picture AS pictureId,
+                         p.url AS pictureUrl
+                  FROM manga m
+                  JOIN picture p ON m.Id_mangas = p.Id_mangas
+                  JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
+                          WHERE p.is_main = 1
+                          AND  gm.Id_mangas = :genreId
+            """, countQuery = """
+                SELECT COUNT(*)
+                FROM manga m
+                  JOIN picture p ON m.Id_mangas = p.Id_mangas
+                  JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
+                WHERE p.is_main = 1
+                   AND  gm.Id_mangas = :genreId
+            """, nativeQuery = true)
+        Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer categoryId, Pageable pageable);
 
 
 

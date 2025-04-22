@@ -3,10 +3,14 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenreDao;
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.dto.GenreWithMangasResponse;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.GenreProjection;
+import manga_up.manga_up.projection.MangaBaseProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,9 +29,12 @@ public class GenreService {
     private static final Logger LOGGER= LoggerFactory.getLogger(GenreService.class);
     private final GenreDao genreDao;
     private final GenderMangaMapper genderMangaMapper;
-    public GenreService(GenreDao genreDao, GenderMangaMapper genderMangaMapper) {
+    private final MangaDao mangaDao;
+
+    public GenreService(GenreDao genreDao, GenderMangaMapper genderMangaMapper, MangaDao mangaDao) {
         this.genreDao = genreDao;
         this.genderMangaMapper = genderMangaMapper;
+        this.mangaDao = mangaDao;
     }
 
     /**
@@ -107,4 +114,11 @@ public class GenreService {
      }
 
 
+
+public GenreWithMangasResponse getGenreWithMangas(Integer genreId, Pageable pageable) {
+    GenreProjection genre = genreDao.findGenreProjectionById(genreId)
+            .orElseThrow(() -> new EntityNotFoundException("Genre with id " + genreId + " not found"));
+    Page<MangaBaseProjection> mangas = mangaDao.findMangasByGenre(genreId, pageable);
+    return new GenreWithMangasResponse(genre, mangas);
+}
 }
