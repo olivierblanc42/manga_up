@@ -3,8 +3,7 @@ package manga_up.manga_up.mapper;
 import manga_up.manga_up.dto.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
 import org.mapstruct.Mapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -12,7 +11,6 @@ import java.time.Instant;
 @Component
 @Mapper(componentModel = "spring")
 public class UserAddressMapper {
-    private static final Logger LOGGER= LoggerFactory.getLogger(UserAddressMapper.class);
 
 public UserAddressDto toDto(UserAddress userAddress) {
     return new UserAddressDto(

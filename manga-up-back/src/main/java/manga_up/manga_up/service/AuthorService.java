@@ -3,10 +3,14 @@ package manga_up.manga_up.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import manga_up.manga_up.dto.AuthorDto;
+import manga_up.manga_up.dto.AuthorWithMangasResponse;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.projection.AuthorProjection;
+import manga_up.manga_up.projection.MangaBaseProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,10 +27,12 @@ public class  AuthorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorService.class);
     private final AuthorDao authorDao;
     private final AuthorMapper authorMapper;
+    private final MangaDao mangaDao;
 
-    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper) {
+    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper,MangaDao mangaDao) {
         this.authorDao = authorDao;
         this.authorMapper = authorMapper;
+        this.mangaDao = mangaDao;
     }
 
     /**
@@ -85,4 +91,15 @@ public class  AuthorService {
         authorDao.save(author);
         return authorMapper.toDtoAuthor(author);
     }
+
+
+    public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
+        AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
+            .orElseThrow(() -> new RuntimeException("Author not found"));
+
+        Page<MangaBaseProjection> mangas = mangaDao.findMangasByAuthor(authorId, pageable);
+
+        return new AuthorWithMangasResponse(author, mangas);
+    }
+
 }

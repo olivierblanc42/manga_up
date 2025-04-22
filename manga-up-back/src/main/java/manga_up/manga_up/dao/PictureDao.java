@@ -1,7 +1,5 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.dto.PictureDto;
-import manga_up.manga_up.dto.PictureLightDto;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.PictureProjection;
 import org.springframework.data.domain.Page;
@@ -11,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

@@ -2,14 +2,12 @@ package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dto.RegisterDto;
 import manga_up.manga_up.model.AppUser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class RegisterMapper {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(RegisterMapper.class);
     private final UserAddressMapper userAddressMapper;
     private final GenderUserMapper genderUserMapper;
 

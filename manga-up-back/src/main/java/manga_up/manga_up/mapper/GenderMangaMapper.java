@@ -1,18 +1,14 @@
 package manga_up.manga_up.mapper;
 
 
-import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.GenreDto;
 import manga_up.manga_up.dto.GenreLightDto;
-import manga_up.manga_up.dto.MangaLightDto;
 import manga_up.manga_up.model.Genre;
-import manga_up.manga_up.model.Manga;
-import manga_up.manga_up.service.GenreService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,12 +16,7 @@ import java.util.stream.Collectors;
 public class GenderMangaMapper {
     private static final Logger LOGGER= LoggerFactory.getLogger(GenderMangaMapper.class);
 
-    private final MangaDao mangaDao;
 
-    public GenderMangaMapper(MangaDao mangaDao) {
-
-        this.mangaDao = mangaDao;
-    }
 
     public GenreDto toDtoGenre(Genre genre) {
         LOGGER.info("Mangas size before mapping: {}", genre.getMangas().size());

@@ -2,7 +2,6 @@ package manga_up.manga_up.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.time.Instant;

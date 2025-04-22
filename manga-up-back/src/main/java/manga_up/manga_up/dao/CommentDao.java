@@ -1,7 +1,6 @@
 package manga_up.manga_up.dao;
 
 
-import manga_up.manga_up.dto.CommentLightDto;
 import manga_up.manga_up.model.Comment;
 import manga_up.manga_up.projection.CommentProjection;
 import org.springframework.data.domain.Page;

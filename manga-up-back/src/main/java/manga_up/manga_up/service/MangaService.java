@@ -6,6 +6,9 @@ import manga_up.manga_up.dao.*;
 import manga_up.manga_up.dto.*;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.*;
+import manga_up.manga_up.projection.AuthorProjection;
+import manga_up.manga_up.projection.MangaBaseProjection;
+import manga_up.manga_up.projection.MangaLittleProjection;
 import manga_up.manga_up.projection.MangaProjection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -289,5 +292,12 @@ public class MangaService {
         return mangaMapper.mangaToMangaDto(manga);
     }
 
+
+
+
+    public Page<MangaBaseProjection> getTest(Pageable pageable){
+        return mangaDao.findMangasWithMainPictures(pageable);
+    }
+    
 
 }

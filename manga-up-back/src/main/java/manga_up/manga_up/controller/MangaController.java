@@ -8,7 +8,8 @@ import jakarta.validation.Valid;
 import manga_up.manga_up.dto.MangaDto;
 import manga_up.manga_up.dto.MangaDtoOne;
 import manga_up.manga_up.dto.MangaDtoRandom;
-import manga_up.manga_up.model.Manga;
+import manga_up.manga_up.projection.MangaBaseProjection;
+import manga_up.manga_up.projection.MangaLittleProjection;
 import manga_up.manga_up.projection.MangaProjection;
 import manga_up.manga_up.service.MangaService;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Tag(name = "2.Mangas", description = "Operations related to mangas")
 
@@ -103,5 +103,20 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+
+
+
+    @Operation(summary = "All Mangas with pagination")
+    @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
+    @GetMapping("paginations")
+    public ResponseEntity<Page<MangaBaseProjection>> getAllMangaPicture(
+            @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+        LOGGER.info("Find all addresses with pagination");
+        Page<MangaBaseProjection> mangas = mangaService.getTest(pageable);
+        LOGGER.info("Found {} addresses", mangas.getTotalElements());
+        return new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
+
 
 }

@@ -6,6 +6,7 @@ import manga_up.manga_up.mapper.PictureMapper;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.AuthorProjection;
 import manga_up.manga_up.projection.MangaLittleProjection;
+import manga_up.manga_up.projection.PictureLittleProjection;
 import manga_up.manga_up.projection.PictureProjection;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -37,12 +38,14 @@ class PictureServiceTest {
  private static class TestPictureProjection implements PictureProjection {
      private final   Integer id;
      private final  String url;
+     private final Boolean isMain;
      private final  MangaLittleProjection idMangas;
 
-     private TestPictureProjection(Integer id, String url, MangaLittleProjection idMangas) {
+     private TestPictureProjection(Integer id, String url, Boolean isMain , MangaLittleProjection idMangas) {
          this.id = id;
          this.url = url;
          this.idMangas = idMangas;
+         this.isMain =isMain;
      }
 
      @Override
@@ -54,6 +57,11 @@ class PictureServiceTest {
      public String getUrl() {
          return url;
      }
+     
+     @Override
+     public Boolean getIsMain() {
+         return isMain;
+     }
 
      @Override
      public MangaLittleProjection getIdMangas() {
@@ -64,12 +72,11 @@ class PictureServiceTest {
 private static class TestLittleMangaProjection implements MangaLittleProjection {
      private final Integer id;
      private final  String title;
-     private final Set<PictureProjection> pictures;
+    
 
-    private TestLittleMangaProjection(Integer id, String title) {
+    private TestLittleMangaProjection(Integer id, String title, Set<PictureLittleProjection> pictures) {
         this.id = id;
         this.title = title;
-        this.pictures = null;
     }
 
     @Override
@@ -82,11 +89,7 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
         return title;
     }
 
-    @Override
-    public Set<PictureProjection> getPictures() {
-        return pictures;
-
-    }
+   
 }
     @Test
     void shouldReturnAllPicturesByPage() {
@@ -94,20 +97,25 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
         MangaLittleProjection mangaLittleProjection1 =  new TestLittleMangaProjection(
                 1
                 , "Naruto"
+                ,Set.of()
+                
         );
         MangaLittleProjection mangaLittleProjection2 =  new TestLittleMangaProjection(
                 2
-                , "Bleach"
+                , "Bleach",
+                Set.of()
         );
 
         PictureProjection pictureProjection1 = new TestPictureProjection(
                 1,
                 "www.picture.com",
+                true,
                 mangaLittleProjection2
         ) ;
         PictureProjection pictureProjection2 = new TestPictureProjection(
                 2,
                 "www.picture.fr",
+                true,
                 mangaLittleProjection1
         ) ;
         Page<PictureProjection> page = new PageImpl<>(List.of(pictureProjection1, pictureProjection2));
@@ -124,11 +132,13 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
     void findById() {
         MangaLittleProjection mangaLittleProjection1 =  new TestLittleMangaProjection(
                 1
-                , "Naruto"
+                , "Naruto",
+                Set.of()
         );
         PictureProjection pictureProjection = new TestPictureProjection(
                 1,
                 "www.picture.com",
+                true,
                 mangaLittleProjection1
         ) ;
         when(pictureDao.findPictureProjectionById(1)).thenReturn(Optional.of(pictureProjection));

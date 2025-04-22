@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.AuthorDto;
+import manga_up.manga_up.dto.AuthorWithMangasResponse;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.projection.AuthorProjection;
@@ -28,11 +29,9 @@ public class AuthorController {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(AuthorController .class);
 
-    private final AuthorDao authorDao;
     private final AuthorService authorService;
 
     public AuthorController(AuthorDao authorDao, AuthorService authorService) {
-        this.authorDao = authorDao;
         this.authorService = authorService;
     }
 
@@ -94,5 +93,10 @@ public class AuthorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
   }
-
+    @GetMapping("/authors/{authorId}/mangas")
+    public AuthorWithMangasResponse getAuthorWithMangas
+    (@PathVariable Integer authorId,  
+            @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) { 
+        return authorService.getAuthorWithMangas(authorId, pageable);  
+    }
 }

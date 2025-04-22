@@ -1,17 +1,14 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.CategoryLittleDto;
 import manga_up.manga_up.dto.MangaDto;
 import manga_up.manga_up.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
 public class MangaMapper {
-    private static final Logger LOGGER= LoggerFactory.getLogger(MangaMapper.class);
 
  private final   CategoryMapper categoryMapper;
     private final   GenderMangaMapper genderMapper;

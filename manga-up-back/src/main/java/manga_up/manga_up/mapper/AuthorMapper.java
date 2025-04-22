@@ -1,6 +1,5 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.dto.AuthorLigthDto;
 import manga_up.manga_up.model.Author;
@@ -8,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,11 +14,8 @@ import java.util.stream.Collectors;
 public class AuthorMapper {
     private static final Logger LOGGER= LoggerFactory.getLogger(AuthorMapper.class);
 
-    private final AuthorDao authorDao;
 
-    public AuthorMapper(AuthorDao authorDao) {
-        this.authorDao = authorDao;
-    }
+  
 
     public AuthorDto toDtoAuthor(Author author) {
         LOGGER.info("AuthorDto size before mapping: {}", author.getMangas().size());

@@ -1,6 +1,5 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.dto.AuthorLigthDto;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.projection.AuthorProjection;
 import org.springframework.data.domain.Page;
@@ -15,8 +14,9 @@ import java.util.Optional;
 @Repository
 public interface AuthorDao extends JpaRepository<Author, Integer> {
 
-    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas m LEFT JOIN FETCH m.pictures")
-    Page<AuthorProjection> findAllByPage(Pageable pageable);
+@Query("SELECT a FROM Author a")
+Page<AuthorProjection> findAllByPage(Pageable pageable);
+
 
     @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
     Optional<Author> findAuthorById(@Param("idAuthor") Integer idAuthor);
@@ -25,7 +25,9 @@ public interface AuthorDao extends JpaRepository<Author, Integer> {
    // @Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas WHERE a.id = :idAuthor")
 //    Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
 
-@Query("SELECT a FROM Author a LEFT JOIN FETCH a.mangas m LEFT JOIN FETCH m.pictures WHERE a.id = :idAuthor")
+@Query("SELECT a.id AS id, a.firstname AS firstname, a.lastname AS lastname, a.description AS description, " +
+       "a.createdAt AS createdAt, a.birthdate AS birthdate, a.url AS url, a.genre AS genre " +
+       "FROM Author a WHERE a.id = :idAuthor")
 Optional<AuthorProjection> findAuthorProjectionById(@Param("idAuthor") Integer idAuthor);
 
 

@@ -1,8 +1,6 @@
 package manga_up.manga_up.dto;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import manga_up.manga_up.model.Manga;
 
 import java.io.Serializable;
 import java.util.Objects;

@@ -5,7 +5,6 @@ import manga_up.manga_up.dto.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.projection.AuthorProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -46,9 +45,9 @@ class AuthorServiceTest {
     private final  LocalDate birthdate;
     private final String url;
     private final String genre;
-    private final Set<MangaLittleProjection> mangas;
+   
 
-public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt,LocalDate birthdate,String url,String genre, Set<MangaLittleProjection> mangas ) {
+public TestAuthorProjection( Integer id, String firstname, String lastname,String description ,LocalDate createdAt,LocalDate birthdate,String url,String genre ) {
     this.id = id;
     this.firstname = firstname;
     this.lastname = lastname;
@@ -57,7 +56,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
     this.birthdate =birthdate;
     this.url = url;
     this.genre =genre;
-    this.mangas = mangas;
+ 
 }
 
      public Integer getId() {
@@ -92,10 +91,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
      public String getGenre() {
          return genre;
      }
-     @Override
-     public Set<MangaLittleProjection> getMangas() {
-         return mangas;
-     }
+
  }
 
 
@@ -113,8 +109,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
           LocalDate.of(2023, 5, 12),
            LocalDate.of(2023, 5, 12),
            "url",
-           "Homme",
-          Set.of()
+           "Homme"
   );
   AuthorProjection author2 = new TestAuthorProjection(
           2,
@@ -124,8 +119,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
           LocalDate.of(2022, 9, 27),
                    LocalDate.of(2023, 5, 12),
            "url",
-           "Homme",
-          Set.of()
+           "Homme"
   );
      Page<AuthorProjection> page = new PageImpl<>(List.of(author1, author2));
      when(authorDao.findAllByPage(pageable)).thenReturn(page);
@@ -146,8 +140,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
                 LocalDate.of(2023, 5, 12),
                 LocalDate.of(2023, 5, 12),
             "url",
-            "Homme",
-                Set.of()
+            "Homme"
         );
 
         when(authorDao.findAuthorProjectionById(1)).thenReturn(Optional.of(a));

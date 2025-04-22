@@ -3,8 +3,7 @@ package manga_up.manga_up.mapper;
 import manga_up.manga_up.dto.PictureDto;
 import manga_up.manga_up.dto.PictureLightDto;
 import manga_up.manga_up.model.Picture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class PictureMapper {
-    private static final Logger LOGGER= LoggerFactory.getLogger(PictureMapper.class);
 
 
     public PictureDto toPictureDto(Picture picture) {

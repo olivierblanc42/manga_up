@@ -1,8 +1,6 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.dto.CategoryLittleDto;
 import manga_up.manga_up.model.Category;
-import manga_up.manga_up.projection.CategoryLittleProjection;
 import manga_up.manga_up.projection.CategoryProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

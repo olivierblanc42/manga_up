@@ -1,14 +1,10 @@
 package manga_up.manga_up.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import manga_up.manga_up.model.Manga;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * DTO for {@link manga_up.manga_up.model.Genre}

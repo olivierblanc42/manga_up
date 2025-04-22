@@ -1,7 +1,6 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.dto.GenreDto;
-import manga_up.manga_up.dto.GenreLightDto;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.GenreProjection;
 import org.springdoc.core.annotations.ParameterObject;
