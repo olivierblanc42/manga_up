@@ -1,4 +1,4 @@
-import { MangaProjections } from './../../type.d';
+import { MangaPaginations, MangaProjections } from './../../type.d';
 import { MangaService } from './../../service/manga.service';
 import { Component, OnInit } from '@angular/core';
 import { CardComponent } from '../../components/card/card.component';
@@ -14,7 +14,7 @@ import { NgClass } from '@angular/common';
 })
 export class MangasComponent implements OnInit{
 
-  mangas: MangaProjections | null = null;
+  mangas: MangaPaginations | null = null;
   pages!: number[];
   lastPage!: number;
   currentPage!: number;

@@ -1,54 +1,48 @@
 <section class="section">
-    <div class="section__title">
-        <h1>Mangas</h1>
-    </div>
-      <div class="section__grid">
-         @for (manga of mangas?.content; track $index) {
-         <ui-card size="card-manga">
-            <img src="" alt="{{manga.title}}">
-            <div>
-               <h3 class="card-manga__title">{{manga.title}}</h3>
-               <p class="card-manga__autor">
-                  @for (author of manga.authors; track $index) {
-                  {{author.firstname}} {{author.lastname}}
-                  @if (author !== manga.authors[manga.authors.length - 1]) {
-                  ,
-                  }
-                  }
-               </p>
-               <a [routerLink]="'/manga/' + manga.id" class="btn btn-card">
-                  <p>voir plus</p>
-               </a>
-            </div>
-         </ui-card>
-         }
-      
-      
-      </div>
-      <div class="pagination">
-      
-         @for(page of pages; track page; let count=$index){
-         @if(count===0){
-         <li>
-            <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
-               class="previous">Previous</button>
-         </li>
-         }
-         <li>
-      
-            <button (click)="pageMangas(page)"
-               class=""
-               [ngClass]="currentPage===page ? 'bg-yellow-100':'background-color-pagination-yellow'">
-               {{count+1}}
-            </button>
-         </li>
-         @if(count===lastPage-1){
-         <li>
-            <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
-               class="next">Next</button>
-         </li>
-         }
-         }
-      
-      </div>
-   </section>
+   <div class="section__title">
+      <h1>Mangas</h1>
+   </div>
+   <div class="section__grid">
+      @for (manga of mangas?.content; track $index) {
+      <ui-card size="card-manga">
+               <img src="{{manga.pictureUrl}}" alt="{{manga.title}}">
+         <div>
+            <h3 class="card-manga__title">{{manga.title}}</h3>
+             
+         </div>
+
+         <a [routerLink]="'/manga/' + manga.id" class="btn btn-card">
+            <img src="svg/mdi_magnify.svg">
+            <p>voir plus</p>
+         </a>
+      </ui-card>
+      }
+
+
+   </div>
+   <div class="pagination">
+
+      @for(page of pages; track page; let count=$index){
+      @if(count===0){
+      <li>
+         <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+            class="previous">Previous</button>
+      </li>
+      }
+      <li>
+
+         <button (click)="pageMangas(page)" class=""
+            [ngClass]="currentPage===page ? 'bg-yellow-100':'background-color-pagination-yellow'">
+            {{count+1}}
+         </button>
+      </li>
+      @if(count===lastPage-1){
+      <li>
+         <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+            class="next">Next</button>
+      </li>
+      }
+      }
+
+   </div>
+</section>

@@ -577,7 +577,7 @@ body.home-page .breadcrumb {
 
         .section__grid {
             display: grid;
-            grid-template-columns: repeat(4, 25%);
+            grid-template-columns: repeat(2, 50%);
             row-gap: $margin;
 
             ui-card {
@@ -690,6 +690,27 @@ body.home-page .breadcrumb {
         flex-direction: column;
         margin: $margin-section 158px;
     }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            margin: $margin-section 140px;
+    
+    
+    
+            .section__grid {
+                display: grid;
+                grid-template-columns: repeat(4, 25%);
+                row-gap: $margin;
+    
+                ui-card {
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            }
+        }
+
+
 
     .breadcrumb {
         margin-left: 158px !important;

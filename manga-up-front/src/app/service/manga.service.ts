@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { MangaDtoRandom, MangaOne,MangaProjection,MangaProjections } from '../type';
+import { MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
 
 
 @Injectable({
@@ -32,7 +32,7 @@ export class MangaService{
     mangaFour = new BehaviorSubject<MangaDtoRandom[]>([])
     currentfour = this.mangaFour.asObservable();
     
-    mangaPagination = new BehaviorSubject<MangaProjections | null>(null);
+    mangaPagination = new BehaviorSubject<MangaPaginations | null>(null);
     currentMangaPaginations = this.mangaPagination.asObservable();
 
 
@@ -42,7 +42,7 @@ export class MangaService{
 
     async getMangas(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<MangaProjections>(`${this.urlPagination}?page=${page}`));
+            const r = await lastValueFrom(this.http.get<MangaPaginations>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.mangaPagination.next(r);
         } catch (err) {

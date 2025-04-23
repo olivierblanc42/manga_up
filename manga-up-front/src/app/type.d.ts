@@ -308,7 +308,18 @@ export type MangasWithImages = {
     totalPages: number;
 }
 
-
+export type MangaPagination = {
+    id: number;
+    pictureId: string;
+    pictureUrl: string;
+    title: string;
+}
+export type MangaPaginations = {
+    content: MangaPagination[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
 
 //UserAddress
 export type UserAddress = {
