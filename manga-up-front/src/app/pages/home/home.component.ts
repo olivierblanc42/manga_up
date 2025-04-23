@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit{
     this.mangaService.getMangaOne();
     this.mangaService.currentMangaOne.subscribe((data) =>{
       this.mangaOne = data;
-     // console.log("manga récupérés :", this.mangaOne);
+      console.log("manga récupérés :", this.mangaOne);
 
     })
 

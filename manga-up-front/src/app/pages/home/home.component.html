@@ -281,7 +281,11 @@
             <p>Information</p>
         </div>
         <p><span>Titre :</span> {{ mangaOne[0].title }}</p>
-        <p><span>Auteur :</span> {{ mangaOne[0].authors?.[0]?.firstname }} {{ mangaOne[0].authors?.[0]?.lastname }}</p>
+        <p><span>Auteur :</span>
+            @for (author of mangaOne[0].authors; track $index) {
+             <a [routerLink]="'/auteur/' + author.id">{{author?.firstname}} {{author?.lastname}}</a> 
+            }
+           </p>
         <p><span>ANNÉE DE SORTIE :</span> 2002</p>
         <p><span>PRIX :</span> {{ mangaOne[0].price }} €</p>
     </div>

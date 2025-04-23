@@ -8,36 +8,36 @@
 
 }
 
- .pagination {
-     display: flex;
-     flex-direction: row;
-     justify-content: left;
-     gap: 1rem;
-     padding: 1rem;
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 1rem;
+    padding: 1rem;
 
-     li {
-         list-style: none;
+    li {
+        list-style: none;
 
-         button {
-             border: none;
-             padding: 10px 15px;
-             color: white;
-             background: #496677;
-             border-radius: 4px;
-             -webkit-border-radius: 4px;
-             -moz-border-radius: 4px;
-             -ms-border-radius: 4px;
-             -o-border-radius: 4px;
-             transition: transform 0.1s ease, box-shadow 0.1s ease;
-         }
+        button {
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            background: #496677;
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -ms-border-radius: 4px;
+            -o-border-radius: 4px;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
 
-         .next:active,
-         .previous:active {
-             transform: translateY(2px);
-             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
-         }
-     }
- }
+        .next:active,
+        .previous:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
+        }
+    }
+}
 
 body {
     font-family: $font-primary;
@@ -260,6 +260,16 @@ body {
             margin-right: auto;
         }
 
+        p {
+            a {
+                text-decoration: none;
+            }
+
+            a:visited {
+                color: #496677;
+            }
+        }
+
         span {
             text-transform: uppercase;
             font-weight: $font-bold;
@@ -323,7 +333,7 @@ body.home-page .breadcrumb {
     display: none !important;
 }
 
-.breadcrumb{
+.breadcrumb {
     margin-left: $margin-content-mobile !important;
     margin-right: $margin-content-mobile !important;
     color: $secondary !important;
@@ -338,28 +348,32 @@ body.home-page .breadcrumb {
 }
 
 
-.card-padding{
-    padding:$padding;
+.card-padding {
+    padding: $padding;
 }
 
 // Partie Admin
-.section-admin{
-    >div{
-        .section-admin__title{
+.section-admin {
+    >div {
+        .section-admin__title {
             background: $tertiary;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
-           h1{
-            font-size: $font-h2;
-            padding: $padding-s  ;
-            margin: 0px;
-           }
-        
+
+            h1 {
+                font-size: $font-h2;
+                padding: $padding-s ;
+                margin: 0px;
+            }
+
         }
+
         table {
             border: 2px solid black;
             width: 100%;
-            th, td {
+
+            th,
+            td {
                 padding: 8px 10px;
                 border: 2px solid black;
             }
@@ -514,15 +528,17 @@ body.home-page .breadcrumb {
 
         }
     }
+
     .section {
         display: flex;
         flex-direction: column;
         margin: $margin-section 112px;
     }
-    .breadcrumb{
-        margin-left:112px !important ;
-        margin-right: 112px!important;  
-      }
+
+    .breadcrumb {
+        margin-left: 112px !important;
+        margin-right: 112px !important;
+    }
 
 }
 
@@ -570,16 +586,17 @@ body.home-page .breadcrumb {
             }
         }
     }
-    .breadcrumb{
-        margin-left:140px !important ;
-        margin-right: 140px!important;  
-      }
+
+    .breadcrumb {
+        margin-left: 140px !important;
+        margin-right: 140px !important;
+    }
 
     .icons {
         width: 32px;
         height: 32px;
     }
- 
+
     .single-card {
         width: 1040px;
         height: 950px;
@@ -674,10 +691,10 @@ body.home-page .breadcrumb {
         margin: $margin-section 158px;
     }
 
-    .breadcrumb{
-        margin-left:158px !important ;
-        margin-right: 158px!important;  
-      }
+    .breadcrumb {
+        margin-left: 158px !important;
+        margin-right: 158px !important;
+    }
 
 }
 
@@ -689,10 +706,10 @@ body.home-page .breadcrumb {
         margin: $margin-section $margin-content;
     }
 
-.breadcrumb{
-  margin-left:$margin-content !important ;
-  margin-right: $margin-content!important;  
-}
+    .breadcrumb {
+        margin-left: $margin-content !important;
+        margin-right: $margin-content !important;
+    }
 
 
 
