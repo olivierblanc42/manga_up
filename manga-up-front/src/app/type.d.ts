@@ -255,6 +255,7 @@ export type MangaProjection = {
     inStock: boolean;
     active: boolean;
     idCategories: CategoryLittleProjection;
+    pictures: PictureSoloManga[];
     genres: GenreLittleProjection[];
     authors: AuthorLittleProjection[];
 }
@@ -378,3 +379,10 @@ export type Picture = {
     id: number;
     url: string;
 }
+
+export type PictureSoloManga = {
+    id: number;
+    url: string;
+    isMain: Boolean;
+}
+
