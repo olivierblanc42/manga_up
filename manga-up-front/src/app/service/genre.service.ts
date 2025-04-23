@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { GenreProjections, GenreProjection, GenreDto } from '../type';
+import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWithImages, MangasWithImages } from '../type';
 
 
 @Injectable({
@@ -34,7 +34,7 @@ export class GenreService {
     genreFour = new BehaviorSubject<GenreDto[] >([]);
     currentGenreFour = this.genreFour.asObservable();
 
-    genreSolo = new BehaviorSubject<GenreProjection>({ id: 0, label: '',url:'', createdAt: new Date(), mangas: [] });
+    genreSolo = new BehaviorSubject<GenreWithMangas | null>(null);
     curentGenreSolo = this.genreSolo.asObservable();
 
     async getAllGenreWithPagination(page: number = 0) {
@@ -62,12 +62,19 @@ export class GenreService {
     }
 
 
-   async getGenreManga(id: number) {
+    async getGenreManga(id: number, page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<GenreProjection>(`${this.urlGenre}${id}`));
-            if (!r) return;
-            this.genreSolo.next(r);
-            console.log('Genres récupérés avec succès :', r);
+            const r = await lastValueFrom(this.http.get<{ genre: GenreWithMangas, mangas: MangasWithImages }>(`${this.urlGenre}${id}/mangas?page=${page}`));
+          if(r){
+            const genreWithMangas: GenreWithMangas = {
+                ...r.genre,
+                mangasWithImages: r.mangas
+            };
+            
+            this.genreSolo.next(genreWithMangas);
+            console.log('Genre récupéré avec succès :', genreWithMangas);
+          }
+
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
         }

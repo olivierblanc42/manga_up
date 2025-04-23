@@ -8,7 +8,36 @@
 
 }
 
+ .pagination {
+     display: flex;
+     flex-direction: row;
+     justify-content: left;
+     gap: 1rem;
+     padding: 1rem;
 
+     li {
+         list-style: none;
+
+         button {
+             border: none;
+             padding: 10px 15px;
+             color: white;
+             background: #496677;
+             border-radius: 4px;
+             -webkit-border-radius: 4px;
+             -moz-border-radius: 4px;
+             -ms-border-radius: 4px;
+             -o-border-radius: 4px;
+             transition: transform 0.1s ease, box-shadow 0.1s ease;
+         }
+
+         .next:active,
+         .previous:active {
+             transform: translateY(2px);
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
+         }
+     }
+ }
 
 body {
     font-family: $font-primary;

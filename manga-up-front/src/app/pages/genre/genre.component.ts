@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { GenreProjection } from '../../type';
+import { GenreProjection, GenreWithMangas } from '../../type';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GenreService } from '../../service/genre.service';
 import { CardComponent } from "../../components/card/card.component";
@@ -14,13 +14,7 @@ import { CardComponent } from "../../components/card/card.component";
 export class GenreComponent implements OnInit {
   id: string | null = null; 
   idOfUrl!: number; 
-  genre: GenreProjection = {
-    id: 0,
-    label: '',
-    url:'',
-    createdAt: new Date(),
-    mangas: []  
-  };
+  genre: GenreWithMangas | null = null;
 
 
   constructor(

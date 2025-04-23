@@ -210,7 +210,13 @@ export type GenreLittleProjection = {
     createdAt: Date;
 }
 
-
+export type GenreWithMangas = {
+    id: number;
+    label: string;
+    url: string;
+    createdAt: Date;
+    mangasWithImages: MangasWithImages;
+}
 //GenderUser
 export type GenderUser = {
     id: number;
