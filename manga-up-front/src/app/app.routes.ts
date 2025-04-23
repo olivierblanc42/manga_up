@@ -25,6 +25,7 @@ import { GenresAdminComponent } from './pages/admin/genres/genres.component';
 
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CartComponent } from './pages/cart/cart.component';
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
     { path: 'mangas', component: MangasComponent },
@@ -38,6 +39,7 @@ export const routes: Routes = [
 
     { path: 'privacy', component: PrivacyPolicyComponent },
     { path: 'manga/:id', component: MangaComponent },
+    { path: "cart", component: CartComponent },
 
     {
         path: 'admin', component: AdminLayoutComponent,
