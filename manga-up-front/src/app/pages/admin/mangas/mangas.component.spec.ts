@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MangasAdminComponent } from './mangas.component';
 
-import { MangasComponent } from './mangas.component';
-
-describe('MangasComponent', () => {
-  let component: MangasComponent;
-  let fixture: ComponentFixture<MangasComponent>;
+describe('MangasAdminComponent', () => {
+  let component: MangasAdminComponent;
+  let fixture: ComponentFixture<MangasAdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MangasComponent]
+      imports: [MangasAdminComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MangasComponent);
+    fixture = TestBed.createComponent(MangasAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

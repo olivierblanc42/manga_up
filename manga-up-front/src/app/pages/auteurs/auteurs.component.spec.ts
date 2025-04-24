@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AuteursComponent } from './auteurs.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('AuteursComponent', () => {
   let component: AuteursComponent;
@@ -8,7 +10,11 @@ describe('AuteursComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuteursComponent]
+      imports: [AuteursComponent],
+            providers: [
+                    provideHttpClient(), 
+                    provideHttpClientTesting(),
+                  ]
     })
     .compileComponents();
 
