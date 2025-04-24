@@ -12,6 +12,7 @@
         h1 {
             margin: 0px;
             padding: $padding-s;
+            color: black;
         }
     }
 
@@ -24,6 +25,12 @@
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
 
+                h2{
+                    margin: 0px;
+                    padding-top: $padding-s;
+                    padding-bottom: $padding-s;
+                    color: black;
+                }
                 p {
                     margin: 0px;
 
@@ -112,9 +119,12 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 
-        h2 {
-            margin: 0;
-        }
+                h2 {
+                        margin: 0px;
+                        padding-top: $padding-s;
+                        padding-bottom: $padding-s;
+                        color: black;
+                    }
     }
 
     .card-padding {
@@ -127,6 +137,7 @@
                     padding: 5px;
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
+                    color: white;
 
                     span {
                         color: $button-color;
@@ -211,6 +222,12 @@
                         border-top-left-radius: 5px;
                         border-top-right-radius: 5px;
 
+                        h2{
+                            margin: 0px;
+                            padding-top: $padding-s;
+                            padding-bottom: $padding-s;
+                            color: black;
+                        }
                         p {
                             margin: 0px;
 

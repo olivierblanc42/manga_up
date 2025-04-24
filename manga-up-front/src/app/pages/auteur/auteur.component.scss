@@ -86,10 +86,10 @@
                     padding-bottom: $padding;
                     row-gap: 20px;
 
-                    span {
+
+                    dt {
                         text-transform: uppercase;
                         font-weight: $font-bold;
-
                     }
                 }
             }
@@ -168,7 +168,7 @@
                         border-top-left-radius: 5px;
                         border-top-right-radius: 5px;
 
-                        p {
+                        h2 {
                             margin: 0px;
 
                         }

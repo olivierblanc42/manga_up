@@ -4,26 +4,14 @@
             <h1>{{genre?.label}}</h1>
         </div>
         <div class="card-single-other__content">
-            <img src="{{genre?.url}}" alt="{{genre?.label}}">
+            <img src="{{genre?.url}}" alt="Image de présentaion du genre{{genre?.label}}">
             <div class=" card card-single-other__info">
                 <div class="card-single-other__info-title">
-                    <p>Résumé</p>
+                    <h2>Résumé</h2>
                 </div>
-                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia, veritatis? Ipsum, soluta et nisi
-                    tempore doloribus sed nihil quasi omnis voluptatem dolor repellendus eius commodi optio eum
-                    repudiandae autem unde.
-                    Tempora ipsa ducimus distinctio quaerat exercitationem natus fugiat iusto veritatis, illo omnis
-                    maiores ratione cumque nulla incidunt ipsam voluptatem rerum quod alias repellat iure
-                    consequatur consectetur reiciendis, facilis voluptates. Sapiente!
-                    Sunt incidunt dolorem, doloribus aliquid culpa corporis, ipsa excepturi, distinctio eius atque
-                    architecto adipisci odit. Adipisci quasi qui doloremque ducimus eveniet soluta maxime officia
-                    natus, repudiandae molestiae quod, architecto totam.</p>
+                <p></p>
             </div>
         </div>
-
-
-
-
     </div>
 
 </article>
@@ -42,20 +30,16 @@
         <ui-card size="card-manga">
 
        
-         <img src="{{manga.pictureUrl}}" alt="{{manga.title}}">
-          
-           
+         <img src="{{manga.pictureUrl}}" alt="{{manga.title}}">  
             <div>
                 <h3 class="card-manga__title">{{manga.title}}</h3>
                 <p class="card-manga__autor">
-
                 </p>
-                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id "   >
+                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id "     [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title"   >
                     <p>voir plus</p>
                 </a>
             </div>
         </ui-card>
-   
     }
 </div>
     }@else {

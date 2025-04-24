@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
 import { NavigationEnd, RouterModule, RouterOutlet,Router } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
 import { CardComponent } from "./components/card/card.component";
+import { AuthService } from './service/auth.service';
 import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',

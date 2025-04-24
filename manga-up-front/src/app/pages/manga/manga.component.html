@@ -8,7 +8,7 @@
                 <div class="card-single-manga__img">
                     @for (picture of manga?.pictures; track $index) {
                     @if (picture.isMain == true) {
-                    <img src="{{picture.url}}" alt="">
+                    <img src="{{picture.url}}" alt="Image principaelle du manga {{manga?.title}}">
                     }
                     }
 
@@ -19,7 +19,7 @@
                 </div>
                 <div class="card card-content">
                     <div class="card-content__title">
-                        <p>information</p>
+                        <h2>information</h2>
                     </div>
                     <div class="card-content__infos">
                         <div><span>Titre:</span> {{manga?.title}}</div>
@@ -38,7 +38,7 @@
         <div class="card-padding">
             <div class=" card card-single__summary">
                 <div class="card-single__summary-title">
-                    <p>summary</p>
+                    <h2>summary</h2>
                 </div>
                 <div class="card-single__summary-content">
                     <p>{{manga?.summary}}</p>
@@ -61,7 +61,7 @@
                     <img src="images/profil_test.webp" alt="">
                     <div class="card card-comment">
                         <div class="card-comment__user">
-                            <strong>#1</strong> - Par <span>lorem</span> le 26/12/2000
+                            <p><strong>#1</strong> - Par <span>lorem</span> le 26/12/2000</p>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur...</p>
                     </div>

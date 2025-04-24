@@ -19,6 +19,7 @@
             h1 {
                 margin: 0px;
                 padding: $padding-s;
+                color: black;
             }
         }
     
@@ -30,6 +31,12 @@
                 margin-left: auto;
                 margin-right: auto;
     
+                h2{
+                margin: 0px;
+                padding-top: $padding-s;
+                padding-bottom: $padding-s;
+                color: black;
+                }
                 p {
                     margin: 0px;
     

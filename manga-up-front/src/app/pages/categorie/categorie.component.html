@@ -4,10 +4,10 @@
             <h1>{{category?.label}}</h1>
         </div>
         <div class="card-single-other__content">
-            <img src="images/test_card_genre.webp" alt="">
+            <img src="images/test_card_genre.webp" alt="Image de presentation de la catégorie {{category?.label}}"  >
             <div class=" card card-single-other__info">
                 <div class="card-single-other__info-title">
-                    <p>Résumé</p>
+                    <h2>Présentation</h2>
                 </div>
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia, veritatis? Ipsum, soluta et nisi
                     tempore doloribus sed nihil quasi omnis voluptatem dolor repellendus eius commodi optio eum
@@ -40,12 +40,12 @@
             <ui-card size="card-manga">
 
        
-        <img src="{{manga.pictureUrl}}" alt="{{manga.title}}">
+        <img src="{{manga.pictureUrl}}" alt="image manga {{manga.title}}">
         
 
         <div>
             <h3 class="card-manga__title">{{manga.title}}</h3>
-            <a class="btn btn-card" [routerLink]="'/manga/' + manga.id "   >
+            <a class="btn btn-card" [routerLink]="'/manga/' + manga.id " [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title"  >
                 <p>voir plus</p>
             </a>
         </div>

@@ -1,12 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app/app.component';
-// import function to register Swiper custom elements
+import { authInterceptor } from './app/auth.interceptor';
+import { routes } from './app/app.routes';
 import { register } from 'swiper/element/bundle';
-// register Swiper custom elements
 register();
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes), 
+    provideHttpClient(withInterceptors([authInterceptor])), 
+  ],
+}).catch((err) => console.error(err));
 
 
-  

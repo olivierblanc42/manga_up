@@ -8,6 +8,8 @@
 
 }
 
+
+
 .pagination {
     display: flex;
     flex-direction: row;
@@ -77,6 +79,7 @@ body {
     p {
         padding-left: $padding-xs;
         margin: 0;
+        color: black ;
     }
 
     i {
