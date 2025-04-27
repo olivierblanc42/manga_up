@@ -9,7 +9,7 @@ import { GenreComponent } from './pages/genre/genre.component';
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { CategorieComponent } from './pages/categorie/categorie.component';
 
-
+import { AccountComponent } from './pages/account/account.component';
 import { AuteursComponent } from './pages/auteurs/auteurs.component';
 import { AuteurComponent } from './pages/auteur/auteur.component';
 
@@ -34,10 +34,10 @@ export const routes: Routes = [
     { path: 'genre/:id', component: GenreComponent },
     { path: 'categories', component: CategoriesComponent },
     { path: 'categorie/:id', component: CategorieComponent },
-
+    {path: 'account', component: AccountComponent},
     { path: 'auteurs', component: AuteursComponent },
     { path: 'auteur/:id', component: AuteurComponent },
-
+    
     { path: 'privacy', component: PrivacyPolicyComponent },
     { path: 'manga/:id', component: MangaComponent },
     { path: "cart", component: CartComponent },
@@ -53,7 +53,7 @@ export const routes: Routes = [
         ]
     },
 
-
+    
     { path: '404', component: NotFoundComponent },
     { path: '**', redirectTo: '/404' }
 ];

@@ -19,7 +19,7 @@ export class AppComponent  implements OnInit {
   constructor(private router: Router) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
+    ).subscribe((event: NavigationEnd) => {
       if (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home') {
         document.body.classList.add('home-page');
       } else {

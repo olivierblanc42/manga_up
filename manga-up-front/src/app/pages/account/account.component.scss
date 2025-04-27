@@ -1,0 +1,224 @@
+@use '../../../variables.scss' as *;
+
+.card-single-account {
+    width: 100%;
+
+    .card-single-account__title {
+        text-transform: uppercase;
+        background: $tertiary ;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+        h1 {
+            margin: 0px;
+            padding: $padding-s;
+        }
+    }
+
+    .card-padding {
+        .card-single__summary {
+            .card-single__summary-title {
+                text-transform: uppercase;
+                background: $tertiary ;
+                padding: $padding-xs;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+
+                p {
+                    margin: 0px;
+
+                }
+            }
+
+            .card-single__summary-content {
+                padding: $padding-xs;
+            }
+        }
+
+        .card-single-account__content {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: 60px;
+
+            .card-single-account__img {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+
+                .card-single-account__icons {
+                    background: $secondary;
+                    display: flex;
+                    justify-content: center;
+                    gap: $gap;
+                    border-bottom-left-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+            }
+
+            .card-content {
+                display: flex;
+                flex-direction: column;
+
+                .card-content__title {
+                    text-transform: uppercase;
+                    background: $tertiary ;
+                    padding: $padding-xs;
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+
+                    p {
+                        margin: 0px;
+
+                    }
+                }
+
+
+
+                .card-content__infos {
+                    padding: $padding-xs;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    padding-top: $padding;
+                    padding-bottom: $padding;
+                    row-gap: 20px;
+
+
+                    dt {
+                        text-transform: uppercase;
+                        font-weight: $font-bold;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}
+
+
+
+@media (min-width: 1024px) {
+
+    .card-single-account {
+
+
+
+
+        .card-padding {
+            padding-left: 115px;
+            padding-right: 115px;
+
+            .card-single__summary {
+                .card-single__summary-title {
+                    background: $tertiary ;
+                    padding: $padding-xs;
+
+                    p {
+                        margin: 0px;
+
+                    }
+                }
+
+                .card-single__summary-content {
+                    padding: $padding-xs;
+                }
+            }
+
+            .card-single-account__content {
+
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                row-gap: 60px;
+
+                .card-single-account__img {
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 200px;
+                    max-width: 200px;
+                    width: 30%;
+
+                    .card-single-account__icons {
+                        background: $secondary;
+                        display: flex;
+                        justify-content: center;
+                        gap: $gap;
+                        border-bottom-left-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                    }
+                }
+
+                .card-content {
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 200px;
+                    max-width: 200px;
+                    width: 30%;
+
+                    .card-content__title {
+                        text-transform: uppercase;
+                        background: $tertiary ;
+                        padding: $padding-xs;
+                        border-top-left-radius: 5px;
+                        border-top-right-radius: 5px;
+
+                        h2 {
+                            margin: 0px;
+
+                        }
+                    }
+
+
+
+                    .card-content__infos {
+                        padding: $padding-xs;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding-top: $padding;
+                        padding-bottom: $padding;
+                        row-gap: 20px;
+
+                        span {
+                            text-transform: uppercase;
+                            font-weight: $font-bold;
+
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+
+}
+
+@media (min-width: 1280px) {
+    .card-single-account {
+        .card-padding {
+            .card-single-account__content {
+                .card-single-account__img {
+                    min-width: 320px;
+                    max-width: 320px;
+                    width: 30%;
+                }
+
+                .card-content {
+                    min-width: 320px;
+                    max-width: 320px;
+                    width: 30%;
+                }
+            }
+        }
+    }
+}
