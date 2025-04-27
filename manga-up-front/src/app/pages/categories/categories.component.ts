@@ -13,24 +13,30 @@ import { NgClass } from '@angular/common';
   styleUrl: './categories.component.scss'
 })
 export class CategoriesComponent implements OnInit {
+  categoriesProjection(categoriesProjection: any) {
+    throw new Error('Method not implemented.');
+  }
   categories: CategoriesProjections | null = null;
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
 
  constructor(
-    private categoryService : CategoryService,
+   public categoryService : CategoryService,
     
  ) { this.currentPage = 0; }
 
 
   ngOnInit(): void {
+    console.log("in ngOnInit");
+
     this.categoryService.getAllCategoriesWithPagination();
     
     this.categoryService.currentCategoriesProjection.subscribe((data)=>{
       this.categories = data;
       this.pages = this.convertNumberToArray(this.categories?.totalPages!)
       this.lastPage = this.categories?.totalPages!;
+      console.log("categories : ", this.categories);
     })
   }
   convertNumberToArray(size: number) {

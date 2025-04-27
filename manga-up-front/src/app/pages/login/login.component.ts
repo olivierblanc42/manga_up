@@ -20,8 +20,9 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
         this.authService.saveToken(response.token); 
-        console.log('Token JWT enregistré :', response.token); // Affiche le token JWT
-        console.log('Utilisateur connecté :', this.authService.isAuthenticated()); // Affiche true ou false
+        console.log('Token JWT enregistré :', response.token); 
+        console.log('Utilisateur connecté :', this.authService.isAuthenticated());
+        console.log('Identifiants de l\'utilisateur :', this.credentials); 
         this.router.navigate(['/']); 
       },
       error: () => {
