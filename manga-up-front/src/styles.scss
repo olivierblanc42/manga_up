@@ -123,9 +123,23 @@ body {
     }
 }
 
-.section__grid {
+.section__grid--home {
     display: none;
 }
+
+.section__grid{
+    display: grid;
+    grid-template-columns: repeat(1, 100%);
+    row-gap: $margin;
+    margin-left: $margin-content-mobile;
+    margin-right: $margin-content-mobile;
+
+    ui-card {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 
 .card {
     box-shadow: $shadow;

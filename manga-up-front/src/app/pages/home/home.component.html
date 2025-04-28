@@ -39,7 +39,7 @@
         }
     </swiper-container>
 
-    <div class="section__grid">
+    <div class="section__grid section__grid--home">
         @for (manga of mangaDtoRandom; track $index) {
         <ui-card size="card-manga">
             <img src="{{manga.picture?.url}}" [alt]="'images du manga'+manga.title">
@@ -138,7 +138,7 @@
             </ui-card></swiper-slide>
     </swiper-container>
 
-    <div class="section__grid">
+    <div class="section__grid section__grid--home">
         <ui-card size="card-manga">
             <img src="images/bleach_44.webp" alt="">
             <div>
@@ -217,7 +217,7 @@
 
 
 
-    <div class="section__grid">
+    <div class="section__grid section__grid--home">
         @for (genre of genres; track $index) {
 
         <ui-card size="card-genre">
