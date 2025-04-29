@@ -6,7 +6,7 @@
             @for (category of categories?.content; track category.id) {
 
             <ui-card size="card-genre">
-                <img src="" alt="{{category.label}}">
+                <img src="{{category.url}}" alt="{{category.label}}" title="{{category.label}}">
 
                 <div>
                     <h3 class="card-genre__title">{{category.label}}</h3>
@@ -14,7 +14,7 @@
                     <a [routerLink]="'/categorie/' + category.id" class="btn btn-card"> <img src="svg/mdi_magnify.svg"
                          alt=""   
                           [attr.aria-label]="'Voir la fiche de ' + category.label">
-                         >
+                         
                         <p>voir plus</p>
                     </a>
                 </div>
