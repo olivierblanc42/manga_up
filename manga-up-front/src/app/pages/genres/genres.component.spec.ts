@@ -7,7 +7,7 @@ import { GenreService } from '../../service/genre.service';
 import { GenreProjections } from '../../type';
 import { BehaviorSubject, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-
+import { fakeAsync, tick } from '@angular/core/testing';
 describe('GenresComponent', () => {
   let component: GenresComponent;
   let fixture: ComponentFixture<GenresComponent>;
@@ -172,7 +172,27 @@ describe('GenresComponent', () => {
 
   });
 
+  it('should display category images correctly', () => {
+    component.genres = {
+      content: [
+        {
+          "url": "https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp",
+          "id": 12,
+          "label": "Romance",
+          "createdAt": new Date("2025-04-17T15:43:41")
+        },
+      ],
+      size: 8,
+      totalElements: 2,
+      totalPages: 1
+    };
 
+    fixture.detectChanges();
+      // Simule l'attente des changements asynchrones.
+
+    const img = fixture.nativeElement.querySelector('.image');
+    expect(img.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
+  });
 
 
   it('should create', () => {

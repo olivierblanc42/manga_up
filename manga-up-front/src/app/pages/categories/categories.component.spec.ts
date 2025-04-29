@@ -22,30 +22,14 @@ describe('CategoriesComponent', () => {
             label: "Naruto",
             description: "Un manga Shonen populaire",
             createdAt: new Date("2025-04-17T15:43:41"),
-            mangas: [
-              {
-                id: 1,
-                title: "Naruto - Manga",
-                pictures: [
-                  { id: 1, url: "https://example.com/naruto.jpg" }
-                ]
-              }
-            ]
+            url: "test",
           },
           {
             id: 14,
             label: "Bleach",
             description: "Un manga avec des combats d'épées",
             createdAt: new Date("2025-04-17T15:43:41"),
-            mangas: [
-              {
-                id: 2,
-                title: "Bleach - Manga",
-                pictures: [
-                  { id: 2, url: "https://example.com/bleach.jpg" }
-                ]
-              }
-            ]
+            url: "test",
           }
         ],
         size: 8,
@@ -98,18 +82,15 @@ describe('CategoriesComponent', () => {
           label: "Naruto",
           description: "Un manga Shonen populaire",
           createdAt: new Date("2025-04-17T15:43:41"),
-          mangas: [
-            { id: 1, title: "Naruto - Manga", pictures: [{ id: 1, url: "https://example.com/naruto.jpg" }] }
-          ]
+          url:"test"
+     
         },
         {
           id: 14,
           label: "Bleach",
           description: "Un manga avec des combats d'épées",
           createdAt: new Date("2025-04-17T15:43:41"),
-          mangas: [
-            { id: 2, title: "Bleach - Manga", pictures: [{ id: 2, url: "https://example.com/bleach.jpg" }] }
-          ]
+          url:"test"
         }
       ],
       size: 8,
@@ -127,18 +108,16 @@ describe('CategoriesComponent', () => {
           label: "Naruto",
           description: "Un manga Shonen populaire",
           createdAt: new Date("2025-04-17T15:43:41"),
-          mangas: [
-            { id: 1, title: "Naruto - Manga", pictures: [{ id: 1, url: "https://example.com/naruto.jpg" }] }
-          ]
+          url: "test"
+
         },
         {
           id: 14,
           label: "Bleach",
           description: "Un manga avec des combats d'épées",
           createdAt: new Date("2025-04-17T15:43:41"),
-          mangas: [
-            { id: 2, title: "Bleach - Manga", pictures: [{ id: 2, url: "https://example.com/bleach.jpg" }] }
-          ]
+          url: "test"
+
         }
       ],
       size: 8,
@@ -146,6 +125,41 @@ describe('CategoriesComponent', () => {
       totalPages: 1
     });
   });
+  it('should display categories with correct data', () => {
+    // Simuler l'arrivée des catégories
+    component.categories = {
+      content: [
+        {
+          id: 13,
+          label: 'Naruto',
+          description: 'Un manga Shonen populaire',
+          createdAt: new Date(),
+          url: "test"
+        },
+        {
+          id: 14,
+          label: 'Bleach',
+          description: 'Un manga avec des combats d\'épées',
+          createdAt: new Date(),
+          url: "test"
+        }
+      ],
+      size: 8,
+      totalElements: 2,
+      totalPages: 1
+    };
+
+    fixture.detectChanges();  // Mettre à jour la vue
+
+    // Vérifier que les catégories sont bien affichées
+    const cards = fixture.nativeElement.querySelectorAll('ui-card');
+    expect(cards.length).toBe(2);  // On a 2 catégories, donc 2 cards
+
+    const titles = fixture.nativeElement.querySelectorAll('.card-genre__title');
+    expect(titles[0].textContent).toBe('Naruto');
+    expect(titles[1].textContent).toBe('Bleach');
+  });
+
 
 
 

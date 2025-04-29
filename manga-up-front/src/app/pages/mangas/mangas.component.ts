@@ -13,6 +13,9 @@ import { NgClass } from '@angular/common';
   styleUrl: './mangas.component.scss'
 })
 export class MangasComponent implements OnInit{
+  mangaPagination(mangaPagination: any) {
+    throw new Error("Method not implemented.");
+  }
 
   mangas: MangaPaginations | null = null;
   pages!: number[];
