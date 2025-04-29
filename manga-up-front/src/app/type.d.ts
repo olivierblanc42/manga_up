@@ -141,7 +141,7 @@ export type CategoryProjection = {
     label: string;
     description: string;
     createdAt: Date;
-    mangas: MangaLittleProjection[];
+    url: string;
 }
 
 export type CategoriesProjections = {
@@ -163,6 +163,7 @@ export type CategoryWithMangas = {
     label: string;
     description: string;
     createdAt: Date;
+    url:string
     mangasWithImages: MangasWithImages;
 }
 
