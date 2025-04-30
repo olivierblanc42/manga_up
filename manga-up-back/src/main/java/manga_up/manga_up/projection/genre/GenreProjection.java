@@ -6,6 +6,7 @@ public interface GenreProjection {
     Integer getId();
     String getLabel();
     String getUrl();
+    String getDescription();
     LocalDateTime getCreatedAt();
 }
 
