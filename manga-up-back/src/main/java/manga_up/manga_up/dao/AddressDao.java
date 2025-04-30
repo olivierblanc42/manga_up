@@ -1,7 +1,8 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.model.UserAddress;
-import manga_up.manga_up.projection.UserAddressProjection;
+import manga_up.manga_up.projection.userAdress.UserAddressProjection;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

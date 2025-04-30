@@ -3,11 +3,12 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CommentDao;
-import manga_up.manga_up.dto.CommentLightDto;
+import manga_up.manga_up.dto.comment.CommentLightDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.Comment;
 import manga_up.manga_up.model.Manga;
-import manga_up.manga_up.projection.CommentProjection;
+import manga_up.manga_up.projection.comment.CommentProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

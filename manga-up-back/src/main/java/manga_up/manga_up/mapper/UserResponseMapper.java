@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.UserResponseDto;
+import manga_up.manga_up.dto.appUser.UserResponseDto;
 import manga_up.manga_up.model.AppUser;
 
 import org.springframework.stereotype.Component;

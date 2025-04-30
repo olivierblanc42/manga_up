@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import manga_up.manga_up.dto.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
-import manga_up.manga_up.projection.UserAddressProjection;
+import manga_up.manga_up.projection.userAdress.UserAddressProjection;
 import manga_up.manga_up.service.UserAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

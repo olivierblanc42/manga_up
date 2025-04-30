@@ -2,7 +2,7 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.dto.RegisterDto;
+import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.mapper.RegisterMapper;
 import manga_up.manga_up.model.AppUser;
 import org.slf4j.Logger;

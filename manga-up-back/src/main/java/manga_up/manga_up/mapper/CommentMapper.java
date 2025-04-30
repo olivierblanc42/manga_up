@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.CommentLightDto;
+import manga_up.manga_up.dto.comment.CommentLightDto;
 import manga_up.manga_up.model.Comment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

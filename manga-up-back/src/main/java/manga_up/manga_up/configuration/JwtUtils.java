@@ -23,8 +23,9 @@ public class JwtUtils {
     @Value("${app.expiration-time}")
     private long expirationTime;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role); 
         return createToken(claims, username);
     }
 
@@ -37,6 +38,7 @@ public class JwtUtils {
                 .signWith(getSignKey(), SignatureAlgorithm.HS256 )
                 .compact();
     }
+    
     private Key getSignKey() {
         byte[] keyBytes = secretKey.getBytes();
         return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
@@ -55,6 +57,11 @@ public class JwtUtils {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+    
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("role", String.class);
+    }
 
     private Date extractExpirationDate(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -64,6 +71,7 @@ public class JwtUtils {
      final Claims claims = extractAllClaims(token);
      return claimsResolver.apply(claims);
     }
+
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()

@@ -2,10 +2,11 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenderUserDao;
-import manga_up.manga_up.dto.GenderUserDto;
+import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.mapper.GenderUserMapper;
 import manga_up.manga_up.model.GenderUser;
-import manga_up.manga_up.projection.GenderUserProjection;
+import manga_up.manga_up.projection.genderUser.GenderUserProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

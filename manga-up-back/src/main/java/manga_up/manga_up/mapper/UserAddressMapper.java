@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
 import org.mapstruct.Mapper;
 

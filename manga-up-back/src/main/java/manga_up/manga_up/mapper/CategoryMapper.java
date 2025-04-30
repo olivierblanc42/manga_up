@@ -1,7 +1,7 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.CategoryDto;
-import manga_up.manga_up.dto.CategoryLittleDto;
+import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.category.CategoryLittleDto;
 import manga_up.manga_up.model.Category;
 
 import org.springframework.stereotype.Component;

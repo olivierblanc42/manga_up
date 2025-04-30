@@ -2,10 +2,11 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.PictureDao;
-import manga_up.manga_up.dto.PictureDto;
+import manga_up.manga_up.dto.picture.PictureDto;
 import manga_up.manga_up.mapper.PictureMapper;
 import manga_up.manga_up.model.Picture;
-import manga_up.manga_up.projection.PictureProjection;
+import manga_up.manga_up.projection.pictureProjection.PictureProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

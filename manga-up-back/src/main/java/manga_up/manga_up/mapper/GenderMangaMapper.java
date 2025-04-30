@@ -1,8 +1,8 @@
 package manga_up.manga_up.mapper;
 
 
-import manga_up.manga_up.dto.GenreDto;
-import manga_up.manga_up.dto.GenreLightDto;
+import manga_up.manga_up.dto.genre.GenreDto;
+import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.model.Genre;
 
 import org.slf4j.Logger;

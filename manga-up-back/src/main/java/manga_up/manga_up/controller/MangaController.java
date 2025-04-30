@@ -5,12 +5,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
-import manga_up.manga_up.dto.MangaDto;
-import manga_up.manga_up.dto.MangaDtoOne;
-import manga_up.manga_up.dto.MangaDtoRandom;
-import manga_up.manga_up.projection.MangaBaseProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
-import manga_up.manga_up.projection.MangaProjection;
+import manga_up.manga_up.dto.manga.MangaDto;
+import manga_up.manga_up.dto.manga.MangaDtoOne;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaProjection;
 import manga_up.manga_up.service.MangaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @Tag(name = "2.Mangas", description = "Operations related to mangas")
 
@@ -41,7 +41,7 @@ public class MangaController {
     @Operation(summary = "All Mangas with pagination")
     @ApiResponse(responseCode =  "201", description = "All manga have been retrieved")
     @GetMapping("pagination")
-    public ResponseEntity<Page<MangaProjection>> getAllManga(
+    public ResponseEntity<Page<MangaBaseProjection>> getAllManga(
             @PageableDefault(
                     page = 0,
                     size = 8,
@@ -50,7 +50,7 @@ public class MangaController {
             ) @ParameterObject Pageable pageable
     ) {
         LOGGER.info("Find all addresses with pagination");
-        Page<MangaProjection> mangas = mangaService.findAllByPage(pageable);
+        Page<MangaBaseProjection> mangas = mangaService.findAllByPage(pageable);
         LOGGER.info("Found {} addresses", mangas.getTotalElements());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
    @GetMapping("/four")
      public ResponseEntity<List<MangaDtoRandom>> getRandomFourMangas(){
         LOGGER.info("Get six Mangas");
-        List<MangaDtoRandom> mangas = mangaService.getRandomMangas();
+        List<MangaDtoRandom> mangas = mangaService.getReleaseDateRaw();
        LOGGER.info("Found {} mangas", mangas.size());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
@@ -118,5 +118,15 @@ public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
+
+
+
+    @Operation(summary = "All Mangas with pagination")
+    @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
+    @GetMapping("randomFour")
+    public ResponseEntity<List<MangaDtoRandom>> getAllTest(){
+        List<MangaDtoRandom> mangas = mangaService.getFourMangaRandom();
+        return new ResponseEntity<>(mangas, HttpStatus.OK);
+    }
 
 }

@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.StatusDto;
+import manga_up.manga_up.dto.status.StatusDto;
 import manga_up.manga_up.model.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

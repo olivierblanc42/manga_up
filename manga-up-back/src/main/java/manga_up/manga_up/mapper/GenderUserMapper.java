@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.GenderUserDto;
+import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.model.GenderUser;
 
 import org.springframework.stereotype.Component;

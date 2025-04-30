@@ -1,13 +1,14 @@
 package manga_up.manga_up.controller;
 
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
-
-import manga_up.manga_up.dto.LoginRequestDto;
-import manga_up.manga_up.dto.RegisterDto;
+import manga_up.manga_up.dto.login.LoginRequestDto;
+import manga_up.manga_up.dto.register.RegisterDto;
+import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.service.CustomUserDetailsService;
+import manga_up.manga_up.service.LoginService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -23,25 +24,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @Tag(name = "1.Auth", description = "Operations related to authentication")
 @RestController
 @RequestMapping("api/auth")
-
 public class AuthController {
     private final UserDao userDao;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
+    private final LoginService loginService;
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
-    public AuthController(UserDao userDao, PasswordEncoder passwordEncoder, JwtUtils jwtUtils, AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService) {
+
+    public AuthController(UserDao userDao, PasswordEncoder passwordEncoder, JwtUtils jwtUtils,
+            AuthenticationManager authenticationManager, CustomUserDetailsService customUserDetailsService,
+            LoginService loginService) {
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
         this.customUserDetailsService = customUserDetailsService;
+        this.loginService = loginService;
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDTO) {
@@ -54,19 +59,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto user) {
-        try{
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-            if (authentication.isAuthenticated()) {
-                Map<String, Object> authDate = new HashMap<>();
-                authDate.put("token", jwtUtils.generateToken(user.getUsername()));
-                authDate.put("type", "Bearer");
-                return ResponseEntity.ok(authDate);
-            }
-            return ResponseEntity.badRequest().body("Invalid username or password");
-        }catch (AuthenticationException e){
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body("Invalid username or password");
-        }
+        return loginService.login(user);
     }
 
 }

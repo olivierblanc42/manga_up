@@ -4,12 +4,12 @@ package manga_up.manga_up.service;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dao.MangaDao;
-import manga_up.manga_up.dto.GenreDto;
-import manga_up.manga_up.dto.GenreWithMangasResponse;
+import manga_up.manga_up.dto.genre.GenreDto;
+import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
-import manga_up.manga_up.projection.GenreProjection;
-import manga_up.manga_up.projection.MangaBaseProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,9 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.model.Genre;
-import manga_up.manga_up.projection.GenreProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
+
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,25 +16,19 @@ import java.util.Optional;
 
 @Repository
 public interface GenreDao extends JpaRepository<Genre, Integer> {
-    @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas m LEFT JOIN FETCH m.pictures")
+    @Query("SELECT g FROM Genre g")
     Page<GenreProjection> findAllByPage(Pageable pageable);
 
-
-
-    @Query( value = "SELECT  genre.Id_gender_mangas ,genre.url, genre.label " +
-    "FROM genre  " +
-    "ORDER BY RAND() " +
-    "LIMIT 4 " , nativeQuery = true)
+    @Query(value = "SELECT  genre.Id_gender_mangas ,genre.url, genre.label " +
+            "FROM genre  " +
+            "ORDER BY RAND() " +
+            "LIMIT 4 ", nativeQuery = true)
     List<GenreDto> findRandomGenres();
-
-
 
     @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas WHERE g.id = :genreId ")
     Optional<Genre> findGenreById(@ParameterObject Integer genreId);
 
     @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas m LEFT JOIN FETCH m.pictures WHERE g.id = :genreId ")
     Optional<GenreProjection> findGenreProjectionById(@ParameterObject Integer genreId);
-
-
 
 }

@@ -3,9 +3,10 @@ package manga_up.manga_up.service;
 import manga_up.manga_up.dao.CommentDao;
 import manga_up.manga_up.mapper.CommentMapper;
 import manga_up.manga_up.model.Comment;
-import manga_up.manga_up.projection.AppUserLittleProjection;
-import manga_up.manga_up.projection.CommentProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
+import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
+import manga_up.manga_up.projection.comment.CommentProjection;
+import manga_up.manga_up.projection.manga.MangaLittleProjection;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

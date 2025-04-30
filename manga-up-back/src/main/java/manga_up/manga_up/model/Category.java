@@ -20,7 +20,7 @@ public class Category {
     @NotNull
     @Column(name = "label", nullable = false, length = 50)
     private String label;
-
+     
     @NotNull
     @Lob
     @Column(name = "description", columnDefinition = "TEXT", nullable = false)

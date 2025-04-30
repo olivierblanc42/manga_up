@@ -1,15 +1,16 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.GenderUserDao;
-import manga_up.manga_up.dto.GenderUserDto;
+import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.GenderUserMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.GenderUser;
-import manga_up.manga_up.projection.AppUserLittleProjection;
-import manga_up.manga_up.projection.AuthorProjection;
-import manga_up.manga_up.projection.GenderUserProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
+import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
+import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.genderUser.GenderUserProjection;
+import manga_up.manga_up.projection.manga.MangaLittleProjection;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

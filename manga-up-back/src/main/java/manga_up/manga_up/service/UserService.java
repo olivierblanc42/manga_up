@@ -2,7 +2,8 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.mapper.UserResponseMapper;
-import manga_up.manga_up.projection.AppUserProjection;
+import manga_up.manga_up.projection.appUser.AppUserProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

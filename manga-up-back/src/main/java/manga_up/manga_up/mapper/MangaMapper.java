@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.MangaDto;
+import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.model.*;
 
 import org.springframework.stereotype.Component;
@@ -60,4 +60,8 @@ public class MangaMapper {
 
         return manga;
  }
+
+
+
+ 
 }

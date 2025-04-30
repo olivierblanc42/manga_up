@@ -1,7 +1,7 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.AuthorDto;
-import manga_up.manga_up.dto.AuthorLigthDto;
+import manga_up.manga_up.dto.author.AuthorDto;
+import manga_up.manga_up.dto.author.AuthorLigthDto;
 import manga_up.manga_up.model.Author;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

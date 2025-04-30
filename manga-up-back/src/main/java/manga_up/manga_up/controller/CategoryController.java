@@ -4,10 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dao.CategoryDao;
-import manga_up.manga_up.dto.AuthorWithMangasResponse;
-import manga_up.manga_up.dto.CategoryDto;
-import manga_up.manga_up.dto.CategoryWithMangaResponse;
-import manga_up.manga_up.projection.CategoryProjection;
+import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
+import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
+import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class CategoryController {
     {
         LOGGER.info("Find all Categories with pagination");
         Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
-        LOGGER.info("Found {} addresses", categories.getTotalElements());
+        LOGGER.info("Found {} categories", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 

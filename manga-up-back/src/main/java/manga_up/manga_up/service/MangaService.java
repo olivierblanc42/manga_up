@@ -1,15 +1,25 @@
 package manga_up.manga_up.service;
 
-
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.*;
 import manga_up.manga_up.dto.*;
+import manga_up.manga_up.dto.author.AuthorDtoRandom;
+import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.genre.GenreDto;
+import manga_up.manga_up.dto.genre.GenreLightDto;
+import manga_up.manga_up.dto.manga.MangaDto;
+import manga_up.manga_up.dto.manga.MangaDtoOne;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
+import manga_up.manga_up.dto.picture.PictureDtoRandom;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.*;
-import manga_up.manga_up.projection.AuthorProjection;
-import manga_up.manga_up.projection.MangaBaseProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
-import manga_up.manga_up.projection.MangaProjection;
+import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaLittleProjection;
+import manga_up.manga_up.projection.manga.MangaProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -26,7 +36,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class MangaService {
-    private static final Logger LOGGER= LoggerFactory.getLogger(MangaService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MangaService.class);
 
     private final MangaDao mangaDao;
     private final MangaMapper mangaMapper;
@@ -35,7 +45,8 @@ public class MangaService {
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
 
-    public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao, CategoryDao categoryDao, AuthorDao authorDao, GenreDao genreDao) {
+    public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao, CategoryDao categoryDao,
+            AuthorDao authorDao, GenreDao genreDao) {
         this.mangaDao = mangaDao;
         this.mangaMapper = mangaMapper;
         this.pictureDao = pictureDao;
@@ -47,22 +58,22 @@ public class MangaService {
     /**
      * Récupère une page paginée de mangas.
      *
-     * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
+     * @param pageable un objet {@link Pageable} qui contient les informations de
+     *                 pagination et de tri
      * @return une page de résultats {@link Page < Manga >} contenant les mangas
      */
-    public Page<MangaProjection> findAllByPage(Pageable pageable) {
+    public Page<MangaBaseProjection> findAllByPage(Pageable pageable) {
         LOGGER.info("Find all mangas by Pageable");
         return mangaDao.findAllMangas(pageable);
     }
 
-
-    public  MangaProjection findMangaById(Integer id) {
+    public MangaProjection findMangaById(Integer id) {
         LOGGER.info("Find manga by id");
         return mangaDao.findMangaById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
     }
 
-@Transactional
+    @Transactional
     public MangaDto save(MangaDto mangaDto) {
         LOGGER.info("Save manga");
         LOGGER.info("manga mangaDto : {}", mangaDto);
@@ -85,44 +96,56 @@ public class MangaService {
             BigDecimal TVAmount = priceHt.multiply(multiplier);
             manga.setPriceHt(priceHt.add(TVAmount));
             LOGGER.info("Price adjusted with TVA (10%): {} → {}", priceHt, manga.getPriceHt());
-        }else {
+        } else {
             LOGGER.warn("The price excluding TVA is NULL, no TVA calculation carried out!");
         }
 
-        try{
+        try {
             mangaDao.save(manga);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Error saving manga", e);
-            throw new RuntimeException("Error saving manga",e);
+            throw new RuntimeException("Error saving manga", e);
         }
         return mangaMapper.mangaToMangaDto(manga);
     }
 
-
-
     /**
-     * Retrieve Four mangas aleatoire
+     * Retrieve a list of four mangas
      * return a list of four mangas
      */
-    public List<MangaDtoRandom> getRandomMangas() {
-        List<Object[]> rawMangas = mangaDao.findMangasReleaseDateRaw();
+    public List<MangaDtoRandom> getFourMangaRandom() {
+        List<MangaProjectionWithAuthor> projections = mangaDao.findFourMangasRandom();
+        return projections.stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+       
+    }
 
-        return rawMangas.stream()
-                .map(this::mapToMangasReleaseDate)
+    /**
+     * Retrieve
+     * return a list of four mangas
+     */
+    public List<MangaDtoRandom> getReleaseDateRaw() {
+        List<MangaProjectionWithAuthor> projections = mangaDao.findMangasReleaseDateRaw();
+        return projections.stream()
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
-    private MangaDtoRandom mapToMangasReleaseDate(Object[] row) {
-        Integer idMangas = (Integer) row[0];
-        String title = (String) row[1];
-        String authorsString = (String) row[2];
-        String picturesString = (String) row[3];
 
-        Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
-        PictureDtoRandom pictures = parsePictures(picturesString);
 
-        return new MangaDtoRandom(idMangas, title, authors, pictures);
+    private MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
+        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+
+        return new MangaDtoRandom(
+                projection.getMangaId(),
+                projection.getTitle(),
+                authors,
+                projection.getPicture());
     }
+
+
+
 
     private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
         if (authorsString == null || authorsString.isEmpty()) {
@@ -135,36 +158,34 @@ public class MangaService {
                     return new AuthorDtoRandom(
                             Integer.parseInt(parts[0]),
                             parts[2],
-                            parts[1]
-                    );
+                            parts[1]);
                 })
                 .collect(Collectors.toSet());
     }
 
-
     private PictureDtoRandom parsePictures(String picturesString) {
         if (picturesString == null || picturesString.isEmpty()) {
-            return null ;
+            return null;
         }
 
         String[] parts = picturesString.split("@");
         return new PictureDtoRandom(
                 Integer.parseInt(parts[0]),
-                parts[1]
-        );
+                parts[1]);
     }
 
     /**
      * Retrieve a Random manga
      * return a list of one manga
      */
-    public List<MangaDtoOne> getRandomManga(){
+    public List<MangaDtoOne> getRandomManga() {
         List<Object[]> rawMangas = mangaDao.findRandomOneMangas();
 
         return rawMangas.stream()
                 .map(this::mapToMangasRandom)
                 .collect(Collectors.toList());
     }
+
     private MangaDtoOne mapToMangasRandom(Object[] row) {
         Integer idMangas = (Integer) row[0];
         String title = (String) row[1];
@@ -181,22 +202,18 @@ public class MangaService {
         Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
         PictureDtoRandom picture = parsePictures(picturesString);
 
-        return new MangaDtoOne(idMangas, title,subtitle,summary,price,category,genres,authors,picture);
+        return new MangaDtoOne(idMangas, title, subtitle, summary, price, category, genres, authors, picture);
     }
 
     private CategoryDto parseCategory(String categoryString) {
         if (categoryString == null || categoryString.isEmpty()) {
-            return null ;
+            return null;
         }
 
         String[] parts = categoryString.split(":");
         return new CategoryDto(
-               parts[0], parts[1]
-        );
+                parts[0], parts[1]);
     }
-
-
-
 
     private Set<GenreDto> parseGenre(String GenreDto) {
         if (GenreDto == null || GenreDto.isEmpty()) {
@@ -209,24 +226,22 @@ public class MangaService {
                     return new GenreDto(
                             Integer.parseInt(parts[0]),
                             parts[1],
-                            parts[2]
-                    );
+                            parts[2]);
                 })
                 .collect(Collectors.toSet());
     }
 
-
     @Transactional
     public void deleteManga(Integer id) {
         LOGGER.info("Deleting author by id");
-        Manga manga = mangaDao.findMangaId(id).
-                orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+        Manga manga = mangaDao.findMangaId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
 
         manga.setIdCategories(null);
-        for(Genre genre : manga.getGenres()){
+        for (Genre genre : manga.getGenres()) {
             genre.getMangas().remove(manga);
         }
-        for(Author author : manga.getAuthors()   ){
+        for (Author author : manga.getAuthors()) {
             author.getMangas().remove(manga);
         }
         manga.getGenres().clear();
@@ -234,7 +249,7 @@ public class MangaService {
         mangaDao.delete(manga);
     }
 
-@Transactional
+    @Transactional
     public MangaDto updateManga(Integer id, MangaDto mangaDto) {
 
         Manga manga = mangaDao.findMangaId(id)
@@ -261,20 +276,21 @@ public class MangaService {
         }
         manga.setGenres(updatedGenres);
 
-        Set<Author> updatedAuthors = mangaDto.getAuthors() == null ?
-                new HashSet<>() :
-                mangaDto.getAuthors().stream()
+        Set<Author> updatedAuthors = mangaDto.getAuthors() == null ? new HashSet<>()
+                : mangaDto.getAuthors().stream()
                         .map(dto -> authorDao.findById(dto.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Genre with ID " + dto.getId() + " not found")))
+                                .orElseThrow(() -> new EntityNotFoundException(
+                                        "Genre with ID " + dto.getId() + " not found")))
                         .collect(Collectors.toSet());
-     manga.setAuthors(updatedAuthors);
+        manga.setAuthors(updatedAuthors);
 
         Set<Picture> updatedPictures = new HashSet<>();
 
         if (mangaDto.getPictures() != null) {
             for (PictureLightDto dto : mangaDto.getPictures()) {
                 Picture picture = pictureDao.findById(dto.getId())
-                        .orElseThrow(() -> new EntityNotFoundException("Picture with ID " + dto.getId() + " not found"));
+                        .orElseThrow(
+                                () -> new EntityNotFoundException("Picture with ID " + dto.getId() + " not found"));
 
                 picture.setIdMangas(manga);
                 updatedPictures.add(picture);
@@ -287,17 +303,12 @@ public class MangaService {
         manga.getPictures().clear();
         manga.getPictures().addAll(updatedPictures);
 
-
         manga = mangaDao.save(manga);
         return mangaMapper.mangaToMangaDto(manga);
     }
 
-
-
-
-    public Page<MangaBaseProjection> getTest(Pageable pageable){
+    public Page<MangaBaseProjection> getTest(Pageable pageable) {
         return mangaDao.findMangasWithMainPictures(pageable);
     }
-    
 
 }

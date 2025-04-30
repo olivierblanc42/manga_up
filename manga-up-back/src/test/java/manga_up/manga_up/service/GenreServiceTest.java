@@ -1,11 +1,11 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.GenreDao;
-import manga_up.manga_up.dto.GenreDto;
+import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
-import manga_up.manga_up.projection.GenreProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -68,10 +68,7 @@ class GenreServiceTest {
             return null;
         }
 
-        @Override
-        public Set<MangaLittleProjection> getMangas() {
-            return Set.of();
-        }
+     
     }
 
  @Test

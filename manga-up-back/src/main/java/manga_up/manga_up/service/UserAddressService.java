@@ -4,10 +4,11 @@ import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.AddressDao;
 
 import manga_up.manga_up.dao.UserDao;
-import manga_up.manga_up.dto.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.UserAddress;
-import manga_up.manga_up.projection.UserAddressProjection;
+import manga_up.manga_up.projection.userAdress.UserAddressProjection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;

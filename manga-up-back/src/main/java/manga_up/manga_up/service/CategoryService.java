@@ -3,12 +3,12 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dao.MangaDao;
-import manga_up.manga_up.dto.CategoryDto;
-import manga_up.manga_up.dto.CategoryWithMangaResponse;
+import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.model.Category;
-import manga_up.manga_up.projection.CategoryProjection;
-import manga_up.manga_up.projection.MangaBaseProjection;
+import manga_up.manga_up.projection.category.CategoryProjection;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

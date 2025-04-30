@@ -1,13 +1,14 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.PictureDao;
-import manga_up.manga_up.dto.PictureDto;
+import manga_up.manga_up.dto.picture.PictureDto;
 import manga_up.manga_up.mapper.PictureMapper;
 import manga_up.manga_up.model.Picture;
-import manga_up.manga_up.projection.AuthorProjection;
-import manga_up.manga_up.projection.MangaLittleProjection;
-import manga_up.manga_up.projection.PictureLittleProjection;
-import manga_up.manga_up.projection.PictureProjection;
+import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.manga.MangaLittleProjection;
+import manga_up.manga_up.projection.pictureProjection.PictureLittleProjection;
+import manga_up.manga_up.projection.pictureProjection.PictureProjection;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

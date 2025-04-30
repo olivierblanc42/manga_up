@@ -2,14 +2,15 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import manga_up.manga_up.dto.AuthorDto;
-import manga_up.manga_up.dto.AuthorWithMangasResponse;
+
+import manga_up.manga_up.dto.author.AuthorDto;
+import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dao.MangaDao;
-import manga_up.manga_up.projection.AuthorProjection;
-import manga_up.manga_up.projection.MangaBaseProjection;
+import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

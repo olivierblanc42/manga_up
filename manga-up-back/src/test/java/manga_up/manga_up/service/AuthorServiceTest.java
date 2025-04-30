@@ -1,10 +1,11 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.AuthorDao;
-import manga_up.manga_up.dto.AuthorDto;
+import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
-import manga_up.manga_up.projection.AuthorProjection;
+import manga_up.manga_up.projection.author.AuthorProjection;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

@@ -1,6 +1,6 @@
 package manga_up.manga_up.mapper;
 
-import manga_up.manga_up.dto.RegisterDto;
+import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.model.AppUser;
 
 import org.springframework.stereotype.Component;
