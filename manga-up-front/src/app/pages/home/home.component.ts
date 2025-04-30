@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit{
   genres!: GenreDto[];
   mangaOne: MangaOne[] = [];
   mangaDtoRandom: MangaDtoRandom[] = [];
+  mangaDtoRandomFour: MangaDtoRandom[] = [];
+  trackByManga: any;
  
 
   constructor(
@@ -51,7 +53,12 @@ export class HomeComponent implements OnInit{
       //console.log("mangas récupérés :", this.mangaDtoRandom);
 
     })
-    
+    this.mangaService.getMangaFourRandom()
+    this.mangaService.currentfourRandom.subscribe((data) => {
+      this.mangaDtoRandomFour = data;
+     // console.log("Random récupérés :", this.mangaDtoRandom);
+
+    })
 
   }
 

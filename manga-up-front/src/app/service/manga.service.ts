@@ -13,6 +13,8 @@ export class MangaService{
     urlFourDate= "api/mangas/four";
     urlPagination = "api/mangas/pagination";
     url = "/api/mangas/manga/"
+    urlRandom ="/api/mangas/randomFour"
+
     options = {
         headers: new HttpHeaders({
             "Content-Type": "application/json",
@@ -31,6 +33,10 @@ export class MangaService{
 
     mangaFour = new BehaviorSubject<MangaDtoRandom[]>([])
     currentfour = this.mangaFour.asObservable();
+
+
+    mangaFourRandom = new BehaviorSubject<MangaDtoRandom[]>([])
+    currentfourRandom = this.mangaFourRandom.asObservable();
     
     mangaPagination = new BehaviorSubject<MangaPaginations | null>(null);
     currentMangaPaginations = this.mangaPagination.asObservable();
@@ -73,6 +79,19 @@ export class MangaService{
             console.error('Erreur lors de la récupération du manga :', err);
         }
     }
+
+    async getMangaFourRandom() {
+        try {
+            const r = await lastValueFrom(this.http.get<MangaDtoRandom[]>(this.urlRandom));
+            if (!r) return;
+            console.log(r)
+            this.mangaFourRandom.next(r);
+        } catch (err) {
+            console.error('Erreur lors de la récupération du manga :', err);
+        }
+    }
+
+
 
     async  getManga(id:number){
          try {

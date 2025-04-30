@@ -272,7 +272,7 @@ export type MangaDtoRandom = {
     id_mangas: number;
     title: string;
     authors: AuthorDtoRandom[];
-    picture: PictureDtoRandom | undefined;
+    picture: string;
 }
 export interface MangaOne {
     id: number;

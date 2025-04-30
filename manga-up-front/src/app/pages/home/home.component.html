@@ -14,14 +14,14 @@
         </a>
     </div>
     <swiper-container class="swiper-manga" navigation="true">
-        @for (manga of mangaDtoRandom; track manga.id_mangas) {
+        @for (manga of mangaDtoRandom; track $index) {
         <swiper-slide>
             <ui-card size="card-manga">
-                <img [src]="manga.picture?.url" [alt]="'images du manga'+manga.title">
+                <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
                 <div>
                     <h3 class="card-manga__title">{{ manga.title }}</h3>
                     <p class="card-manga__autor">
-                        @for (author of manga.authors; track author.id) {
+                        @for (author of manga.authors; track $index) {
                         {{ author.firstname }} {{ author.lastname }}
                         @if (author !== manga.authors[manga.authors.length - 1]) {
                         ,
@@ -42,7 +42,7 @@
     <div class="section__grid section__grid--home">
         @for (manga of mangaDtoRandom; track $index) {
         <ui-card size="card-manga">
-            <img src="{{manga.picture?.url}}" [alt]="'images du manga'+manga.title">
+            <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
             <div>
                 <h3 class="card-manga__title">{{manga.title}}</h3>
                 <p class="card-manga__autor">
@@ -96,89 +96,56 @@
         <h2>Mangas populaires</h2>
     </div>
     <swiper-container class="swiper-manga" navigation="true">
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
+        @for (manga of mangaDtoRandomFour; track $index) {
+        <swiper-slide>
+            <ui-card size="card-manga">
+                <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
                 <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
+                    <h3 class="card-manga__title">{{ manga.title }}</h3>
+                    <p class="card-manga__autor">
+                        @for (author of manga.authors; track $index) {
+                        {{ author.firstname }} {{ author.lastname }}
+                        @if (author !== manga.authors[manga.authors.length - 1]) {
+                        ,
+                        }
+                        }
+                    </p>
                 </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
-        <swiper-slide> <ui-card size="card-manga">
-                <img src="images/bleach_44.webp" alt="">
-                <div>
-                    <h3 class="card-manga__title">Bleach</h3>
-                    <p class="card-manga__autor">kubo tite</p>
-                    <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                        <p>voir plus</p>
-                    </a>
-                </div>
-            </ui-card></swiper-slide>
+                <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                    [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
+                </a>
+            </ui-card>
+        </swiper-slide>
+        }
     </swiper-container>
 
     <div class="section__grid section__grid--home">
+        @for (manga of mangaDtoRandomFour; track $index) {
         <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
+            <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
             <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+                <p class="card-manga__autor">
+                    @for (author of manga.authors; track $index) {
+                    {{author.firstname}} {{author.lastname}}
+                    @if (author !== manga.authors[manga.authors.length - 1]) {
+                    ,
+                    }
+                    }
+                </p>
+    
             </div>
+            <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                <img src="svg/mdi_magnify.svg" alt="">
+                <p>voir plus</p>
+            </a>
         </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
-        <ui-card size="card-manga">
-            <img src="images/bleach_44.webp" alt="">
-            <div>
-                <h3 class="card-manga__title">Bleach</h3>
-                <p class="card-manga__autor">kubo tite</p>
-                <a href="" class="btn btn-card"> <img src="svg/mdi_magnify.svg" alt="">
-                    <p>voir plus</p>
-                </a>
-            </div>
-        </ui-card>
+        }
+    
+    
     </div>
 
 
@@ -205,7 +172,7 @@
                 <div>
                     <h3 class="card-genre__title">{{genre.label}}</h3>
 
-                    <a href="" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
+                    <a [routerLink]="'/genre/' + genre.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
                         <img src="svg/mdi_magnify.svg" alt="">
                         <p>voir plus</p>
                     </a>
@@ -226,7 +193,7 @@
             <div>
                 <h3 class="card-genre__title">{{genre.label}}</h3>
 
-                <a href="" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
+                <a [routerLink]="'/genre/' + genre.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
                     <img src="svg/mdi_magnify.svg" alt="">
                     <p>voir plus</p>
                 </a>
