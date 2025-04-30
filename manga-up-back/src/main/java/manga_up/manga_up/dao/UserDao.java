@@ -19,6 +19,11 @@ public interface UserDao extends JpaRepository<AppUser, Integer> {
     @Query("From AppUser ")
     Page<AppUser> findAllByPage(Pageable pageable);
 
+     @Query("SELECT u FROM AppUser u LEFT JOIN FETCH u.idUserAddress WHERE u.username = :username")
+     AppUserProjection findByUsernameProjection(@Param("username") String username);
+
+
+
     @Query("SELECT u FROM AppUser u LEFT JOIN FETCH u.idUserAddress")
     Page<AppUserProjection> FindAllUser(Pageable pageable);
 

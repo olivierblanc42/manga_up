@@ -71,6 +71,9 @@ public class Manga {
     @OneToMany(mappedBy = "idMangas")
     private Set<Picture> pictures = new LinkedHashSet<>();
 
+    @ManyToMany(mappedBy = "mangas")
+    private Set<AppUser> users = new LinkedHashSet<>();
+
     public Integer getId() {
         return id;
     }

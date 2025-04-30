@@ -71,6 +71,10 @@ public class AppUser {
     @OneToOne(mappedBy = "idUsers")
     private UserPicture userPicture;
 
+    @ManyToMany
+    @JoinTable(name = "appuser_manga", joinColumns = @JoinColumn(name = "Id_users"), inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
+    private Set<Manga> mangas = new LinkedHashSet<>();
+
     public Integer getId() {
         return id;
     }
