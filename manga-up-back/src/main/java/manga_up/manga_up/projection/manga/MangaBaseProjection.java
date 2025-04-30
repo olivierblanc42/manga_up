@@ -6,4 +6,5 @@ public interface MangaBaseProjection {
     String getTitle();
     Integer getPictureId();
     String getPictureUrl();
+    String getAuthorFullName();
 }
