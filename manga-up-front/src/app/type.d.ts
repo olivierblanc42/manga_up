@@ -216,6 +216,7 @@ export type GenreWithMangas = {
     label: string;
     url: string;
     createdAt: Date;
+    description: string;
     mangasWithImages: MangasWithImages;
 }
 //GenderUser
