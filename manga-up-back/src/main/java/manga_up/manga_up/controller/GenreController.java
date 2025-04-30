@@ -22,34 +22,28 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 @RequestMapping("/api/genres")
 public class GenreController {
-    private static final Logger LOGGER= LoggerFactory.getLogger(GenreController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenreController.class);
 
     private final GenreService genreService;
+
     public GenreController(GenreService genreService) {
         this.genreService = genreService;
 
     }
+
     @Operation(summary = "All genres with pagination")
-    @ApiResponse(responseCode =  "201", description = "All genres have been retrieved")
+    @ApiResponse(responseCode = "201", description = "All genres have been retrieved")
     @GetMapping("pagination")
     public ResponseEntity<Page<GenreProjection>> getAllGenres(
-            @PageableDefault(
-                    page = 0,
-                    size = 12,
-                    sort = "createdAt",
-                    direction = Sort.Direction.DESC
-            ) @ParameterObject Pageable pageable
-    ) {
+            @PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all genres with pagination");
         Page<GenreProjection> genres = genreService.findAllByGenre(pageable);
         LOGGER.info("Found {} genres", genres.getTotalElements());
         return new ResponseEntity<>(genres, HttpStatus.OK);
     }
-
 
     @Operation(summary = "Find genre with id")
     @GetMapping("{id}")
@@ -77,10 +71,9 @@ public class GenreController {
         return ResponseEntity.ok(genreService.save(genre));
     }
 
-
     @Operation(summary = "Get Four Random Genres")
     @GetMapping("four")
-    public ResponseEntity<List<GenreDto>> getRandomFourGenres(){
+    public ResponseEntity<List<GenreDto>> getRandomFourGenres() {
         LOGGER.info("Get Four Random Genres");
         List<GenreDto> genres = genreService.getRandomFourGenres();
         LOGGER.info("Found {} genres ", genres.size());
@@ -89,12 +82,12 @@ public class GenreController {
 
     @Operation(summary = "Update manga genre")
     @PutMapping("/{id}")
-    public ResponseEntity<GenreDto> updateGenre( @PathVariable Integer id, @RequestBody GenreDto genreDto) {
+    public ResponseEntity<GenreDto> updateGenre(@PathVariable Integer id, @RequestBody GenreDto genreDto) {
         LOGGER.info("Update manga genre");
-        try{
+        try {
             GenreDto genre = genreService.updateGenre(id, genreDto);
             return new ResponseEntity<>(genre, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error("Error updating genre", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -107,14 +100,9 @@ public class GenreController {
     })
     @GetMapping("/{genreId}/mangas")
     public ResponseEntity<?> getGenreWithMangas(@PathVariable Integer genreId,
-                                                @PageableDefault(
-                                                        page = 0,
-                                                        size = 12,
-                                                        sort = "title",
-                                                        direction = Sort.Direction.DESC
-                                                ) @ParameterObject Pageable pageable) {
+            @PageableDefault(page = 0, size = 12, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Get genre with mangas");
         return ResponseEntity.ok(genreService.getGenreWithMangas(genreId, pageable));
-                                                }
+    }
 
 }
