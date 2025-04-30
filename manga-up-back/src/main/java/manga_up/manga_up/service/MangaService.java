@@ -163,16 +163,6 @@ public class MangaService {
                 .collect(Collectors.toSet());
     }
 
-    private PictureDtoRandom parsePictures(String picturesString) {
-        if (picturesString == null || picturesString.isEmpty()) {
-            return null;
-        }
-
-        String[] parts = picturesString.split("@");
-        return new PictureDtoRandom(
-                Integer.parseInt(parts[0]),
-                parts[1]);
-    }
 
     /**
      * Retrieve a Random manga
@@ -195,12 +185,11 @@ public class MangaService {
         String categoryString = (String) row[5];
         String genresString = (String) row[6];
         String authorsString = (String) row[7];
-        String picturesString = (String) row[8];
+        String picture = (String) row[8];
 
         CategoryDto category = parseCategory(categoryString);
         Set<GenreDto> genres = parseGenre(genresString);
         Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
-        PictureDtoRandom picture = parsePictures(picturesString);
 
         return new MangaDtoOne(idMangas, title, subtitle, summary, price, category, genres, authors, picture);
     }
