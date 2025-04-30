@@ -287,7 +287,7 @@ export interface MangaOne {
     };
     genres: GenreDto[];
     authors: AuthorDtoRandom[] | undefined;
-    picture: PictureDtoRandom | undefined;
+    picture: string;
 }
 
 

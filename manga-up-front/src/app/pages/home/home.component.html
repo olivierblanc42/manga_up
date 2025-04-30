@@ -240,7 +240,7 @@
         @if (mangaOne.length > 0) {
         @for ( manga of mangaOne; track manga.id) {
         @if (manga.picture) {
-        <img [src]="manga.picture.url" alt="image du manga {{manga.title}}" />
+        <img [src]="manga.picture" alt="image du manga {{manga.title}}" />
         } @else {
         <img src="assets/default-picture.jpg" alt="Image non disponible" />
         }
