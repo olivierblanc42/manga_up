@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.genre.GenreDto;
-import manga_up.manga_up.dto.picture.PictureDtoRandom;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,9 +27,9 @@ public class MangaDtoOne implements Serializable {
     private final CategoryDto idCategories;
     private final Set<GenreDto> genres;
     private final Set<AuthorDtoRandom> authors;
-    private final PictureDtoRandom picture;
+    private final String picture;
 
-    public MangaDtoOne(Integer id, String title, String subtitle,  String summary, BigDecimal price, CategoryDto idCategories, Set<GenreDto> genres, Set<AuthorDtoRandom> authors, PictureDtoRandom picture) {
+    public MangaDtoOne(Integer id, String title, String subtitle,  String summary, BigDecimal price, CategoryDto idCategories, Set<GenreDto> genres, Set<AuthorDtoRandom> authors, String picture) {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
@@ -76,7 +75,7 @@ public class MangaDtoOne implements Serializable {
         return authors;
     }
 
-    public PictureDtoRandom getPicture() {
+    public String getPicture() {
         return picture;
     }
 
