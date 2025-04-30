@@ -19,6 +19,11 @@ public class Genre {
     @Size(max = 255)
     @Column(name = "url")
     private String url;
+    
+    @NotNull
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
+    private String description;
 
     @Size(max = 50)
     @NotNull
