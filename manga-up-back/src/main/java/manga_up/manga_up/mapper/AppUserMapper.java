@@ -32,7 +32,7 @@ public class AppUserMapper {
                 appUser.getCreatedAt(),
                 UserAddressMapper.toDto(appUser.getIdUserAddress()),
                 GenderUserMapper.toDto(appUser.getIdGendersUser()),
-                mangaMapper.toMangaDtoRandomSet(appUser.getMangas())
+                mangaMapper.toMangaLightDtoSet(appUser.getMangas())
                 );
 
     }

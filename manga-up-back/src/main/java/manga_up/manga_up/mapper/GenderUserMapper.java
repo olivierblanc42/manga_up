@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenderUserMapper {
 
-    public GenderUserDto toDto( GenderUser genderUser) {
+    public static GenderUserDto toDto( GenderUser genderUser) {
         return new GenderUserDto(
                 genderUser.getLabel()
         );
     }
 
 
-    public GenderUser toEntity( GenderUserDto genderUserDto) {
+    public static GenderUser toEntity( GenderUserDto genderUserDto) {
         GenderUser genderUser = new GenderUser();
 
         genderUser.setLabel(genderUserDto.getLabel());

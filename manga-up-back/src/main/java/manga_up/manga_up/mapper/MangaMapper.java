@@ -1,11 +1,13 @@
 package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dto.manga.MangaDto;
+import manga_up.manga_up.dto.manga.MangaLightDto;
 import manga_up.manga_up.model.*;
 
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class MangaMapper {
@@ -61,7 +63,28 @@ public class MangaMapper {
         return manga;
  }
 
+ public MangaLightDto toMangaLightDto(Manga manga) {
+     return new MangaLightDto(
+             manga.getId(),
+             manga.getTitle());
+ }
+ public Set<MangaLightDto> toMangaLightDtoSet(Set<Manga> mangas) {
+     return mangas.stream()
+             .map(this::toMangaLightDto)
+             .collect(Collectors.toSet());
+ }
 
+public Manga toEntityManga(MangaLightDto mangaLightDto) {
+     Manga manga = new Manga();
+     manga.setId(mangaLightDto.getId());
+     manga.setTitle(mangaLightDto.getTitle());
+     return manga;
+ }
 
+ public Set<Manga> toEntityMangas(Set<MangaLightDto> mangas) {
+     return mangas.stream()
+             .map(this::toEntityManga)
+             .collect(Collectors.toSet());
+ }
  
 }

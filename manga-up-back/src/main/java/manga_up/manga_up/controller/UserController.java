@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.transaction.Transactional;
 import manga_up.manga_up.dao.UserDao;
+import manga_up.manga_up.dto.appUser.UserProfilDto;
+import manga_up.manga_up.dto.appUser.UserResponseDto;
+import manga_up.manga_up.mapper.AppUserMapper;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.service.UserService;
@@ -32,10 +35,12 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final UserDao userDao;
+    private final AppUserMapper userMapper;
 
-    public UserController(UserService userService, UserDao userDao) {
+    public UserController(UserService userService, UserDao userDao, AppUserMapper userMapper) {
         this.userService = userService;
         this.userDao = userDao;
+        this.userMapper = userMapper;
     }
 
     @Operation(summary = "All users with pagination")
@@ -49,26 +54,10 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<AppUserProjection> getCurrentUser() {
-        // Récupérer l'authentification du contexte de sécurité
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+@GetMapping("/me")
+public ResponseEntity<UserProfilDto> getCurrentUser() {
+  return userService.getCurrentUser();
+}
 
-        // Vérifier si l'utilisateur est authentifié
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-
-            // Charger l'utilisateur depuis la base de données
-            AppUserProjection user = userDao.findByUsernameProjection(username);
-
-            if (user == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.ok(user);
-        }
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
 
 }
