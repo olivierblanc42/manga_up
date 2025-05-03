@@ -72,7 +72,9 @@ public class AppUser {
     private UserPicture userPicture;
 
     @ManyToMany
-    @JoinTable(name = "appuser_manga", joinColumns = @JoinColumn(name = "Id_users"), inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
+    @JoinTable(name = "appuser_manga",
+        joinColumns = @JoinColumn(name = "Id_users"),
+        inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
     private Set<Manga> mangas = new LinkedHashSet<>();
 
     public Integer getId() {
@@ -187,4 +189,11 @@ public class AppUser {
         this.userPicture = userPicture;
     }
 
+    public Set<Manga> getMangas() {
+        return mangas;
+    }
+
+    public void setMangas(Set<Manga> mangas) {
+        this.mangas = mangas;
+    }
 }
