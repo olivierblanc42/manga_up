@@ -71,8 +71,10 @@ public class Manga {
     @OneToMany(mappedBy = "idMangas")
     private Set<Picture> pictures = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "mangas")
-    private Set<AppUser> users = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "mangas") 
+    private Set<AppUser> appUsers = new LinkedHashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -184,6 +186,15 @@ public class Manga {
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
+    }
+
+
+    public Set<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUsers(Set<AppUser> appUsers) {
+        this.appUsers = appUsers;
     }
 
 }
