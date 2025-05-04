@@ -19,11 +19,8 @@ export class LoginComponent {
   login(): void {
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
-        this.authService.saveToken(response.token); 
-        console.log('Token JWT enregistré :', response.token); 
-        console.log('Utilisateur connecté :', this.authService.isAuthenticated());
-        console.log('Identifiants de l\'utilisateur :', this.credentials); 
-        this.router.navigate(['/']); 
+        console.log('Utilisateur connecté avec succès :');
+        this.router.navigate(['/']);  // Redirection après un login réussi
       },
       error: () => {
         this.errorMessage = 'Échec de la connexion. Vérifiez vos identifiants.';

@@ -1,7 +1,9 @@
+
+<app-logout></app-logout>
 <article class="section">
     <div class="card card-single-account">
         <div class="card-single-account__title">
-            <h1>Utilisateur</h1>
+            <h1>{{user?.username}}</h1>
         </div>
 
         <div class="card-padding">
@@ -18,23 +20,23 @@
                         <div>
 
                             <dt>Nom d'utilisateur :</dt>
-                            <dd></dd>
+                            <dd>{{user?.username}}</dd>
                         </div>
                         <div>
                             <dt>Nom :</dt>
-                            <dd></dd>
+                            <dd>{{user?.lastname}}</dd>
                         </div>
                         <div>
                             <dt>Prénom :</dt>
-                            <dd></dd>
+                            <dd>{{user?.firstname}}</dd>
                         </div>
                         <div>
                             <dt>Email :</dt>
-                            <dd></dd>
+                            <dd>{{user?.email}}</dd>
                         </div>
                         <div>
                             <dt>Numéro :</dt>
-                            <dd></dd>
+                            <dd>{{user?.phoneNumber}}</dd>
                         </div>
                         <div>
                             <dt>Date de création du compte : </dt>
@@ -51,7 +53,7 @@
 
 <section class="section">
     <div class="section__title">
-        <h2>Mangas de l'account</h2>
+        <h2>Mangas favoris de {{user?.username}}</h2>
     </div>
 
 

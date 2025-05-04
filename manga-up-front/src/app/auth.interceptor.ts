@@ -4,15 +4,11 @@ import { AuthService } from './service/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authService = inject(AuthService);
-    const token = authService.getToken();
 
-    if (token) {
-        // Clone la requête en ajoutant l'en-tête Authorization avec le token JWT
-        const cloned = req.clone({
-            headers: req.headers.set('Authorization', `Bearer ${token}`),
-        });
-        return next(cloned);
-    }
+    // On s'assure que le cookie est envoyé avec chaque requête
+    const cloned = req.clone({
+        withCredentials: true  // Envoie automatiquement les cookies avec la requête
+    });
 
-    return next(req); // Si pas de token, passe la requête sans modification
+    return next(cloned);  // Passe la requête sans ajouter d'en-têtes supplémentaires
 };

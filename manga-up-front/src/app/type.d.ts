@@ -22,6 +22,17 @@ export type User = {
 };
 
 
+export type UserTest ={
+    id: number;
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber: string;
+    userAddressLitle: UserAddressLitle;
+};
+
+
 export type UserResponse = {
     id: number;
     username: string;
@@ -371,6 +382,18 @@ export type UserAddressLittleProjection = {
     createdAt: Date;
     postalCode: string;
 }
+
+export type UserAddressLitle = {
+    
+    line1: string;
+    line2: string;
+    line3: string;
+    city: string;
+    createdAt: Date;
+    postalCode: string;
+}
+
+
 
 export interface PictureDtoRandom {
     id: number;

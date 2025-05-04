@@ -6,30 +6,31 @@ import { Observable } from 'rxjs';
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = 'http://localhost:8080/api/auth'; 
+    private apiUrl = 'http://localhost:8080/api/auth';
 
     constructor(private http: HttpClient) { }
 
     login(credentials: { username: string; password: string }): Observable<any> {
-        return this.http.post(`${this.apiUrl}/login`, credentials);
-    }
-
-    saveToken(token: string): void {
-        localStorage.setItem('jwt_token', token);
-    }
-
-    getToken(): string | null {
-        return localStorage.getItem('jwt_token');
+        // Ajout de `withCredentials: true`
+        return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true });  
     }
 
     logout(): void {
-        localStorage.removeItem('jwt_token');
+        // Appel HTTP vers l'endpoint de déconnexion du backend
+        this.http.post('http://localhost:8080/api/auth/logout', {}, { withCredentials: true })
+            .subscribe({
+                next: () => {
+                    console.log('Déconnecté avec succès.');
+                    // Rediriger ou mettre à jour l'état du client si besoin
+                },
+           
+            });
     }
 
-    isAuthenticated(): boolean {
-        const tokenExists = !!this.getToken();
-        console.log('Utilisateur connecté :', tokenExists); 
-        return tokenExists;
 
+    isAuthenticated(): boolean {
+        // L'authentification dépend désormais des cookies, pas du localStorage
+        // Si un cookie "jwt" est présent, l'utilisateur est authentifié
+        return true;  // Le serveur gère l'authentification via cookies
     }
 }
