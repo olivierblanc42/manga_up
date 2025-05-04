@@ -17,15 +17,6 @@ public class SwaggerConfig {
                         .title("MangaUp API")
                         .version("1.0")
                         .description("Documentation MangaUp API"))
-                .addSecurityItem(new SecurityRequirement().addList("JWT"))
-                .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("JWT", new SecurityScheme()
-                                .name("JWT")
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                                .in(SecurityScheme.In.HEADER)
-                                .description("Entrez votre JWT dans le champ 'Authorization' sous la forme: Bearer {votre_token}")
-                        ));
+              ;
     }
 }

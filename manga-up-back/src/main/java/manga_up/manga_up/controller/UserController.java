@@ -54,10 +54,9 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-@GetMapping("/me")
-public ResponseEntity<UserProfilDto> getCurrentUser() {
-  return userService.getCurrentUser();
-}
-
+    @GetMapping("/me")
+    public ResponseEntity<UserProfilDto> getCurrentUser() {
+        return userService.getCurrentUser();
+    }
 
 }

@@ -1,6 +1,7 @@
 package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.login.LoginRequestDto;
@@ -11,6 +12,7 @@ import manga_up.manga_up.service.LoginService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,9 +60,24 @@ public class AuthController {
         return ResponseEntity.ok(customUserDetailsService.saveUserDtoRegister(registerDTO));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto user) {
-        return loginService.login(user);
-    }
+ @PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody LoginRequestDto user, HttpServletResponse response) {
+    return loginService.login(user, response);
+}
+
+@PostMapping("/logout")
+public ResponseEntity<?> logout(HttpServletResponse response) {
+    ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
+            .httpOnly(true)
+            .secure(false) // true en production (HTTPS)
+            .path("/")
+            .maxAge(0) // Supprime immédiatement le cookie
+            .build();
+
+    response.addHeader("Set-Cookie", deleteCookie.toString());
+
+    return ResponseEntity.ok("Déconnecté avec succès");
+}
+
 
 }
