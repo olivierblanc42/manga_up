@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.http.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Tag(name = "1.Auth", description = "Operations related to authentication")
 @RestController
@@ -81,6 +84,11 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
     responseBody.put("message", "Déconnecté avec succès");
 
     return ResponseEntity.ok(responseBody);
+}
+
+@GetMapping("/check")
+public ResponseEntity<?> checkAuth(){
+    return ResponseEntity.ok().build();
 }
 
 

@@ -34,10 +34,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Vérification des URI à ne pas filtrer (comme Swagger)
         String requestURI = request.getRequestURI();
+
+
+
         if (requestURI.startsWith("/v3/api-docs") ||
                 requestURI.startsWith("/swagger-ui") ||
                 requestURI.startsWith("/swagger-resources") ||
-                requestURI.startsWith("/webjars")) {
+                requestURI.startsWith("/webjars")|| 
+                requestURI.startsWith("/api/public")) {
             filterChain.doFilter(request, response);
             return;
         }

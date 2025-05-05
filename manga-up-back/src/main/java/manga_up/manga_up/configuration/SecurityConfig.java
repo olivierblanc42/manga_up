@@ -43,7 +43,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
-                                      "/api/authors/pagination",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui.html",
@@ -51,21 +50,7 @@ public class SecurityConfig {
                                         "/my-api-docs/**",
                                         "/api/auth/register",
                                         "/api/auth/login",
-                                        "/api/addresses",
-                                        "/api/genres/four",
-                                        "/api/genres/{id}",
-                                        "/api/genres/pagination",
-                                        "/api/mangas/one",
-                                        "/api/mangas/four",
-                                        "/api/mangas/pagination",
-                                        "/api/mangas/manga/{id}",
-                                        "/api/categories/{id}",
-                                        "/api/categories/pagination",
-                                        "/api/authors/{id}/mangas",
-                                        "/api/categories/{id}/mangas",
-                                        "/api/genres/{id}/mangas",
-                                        "/api/mangas/randomFour",
-                                        "/api/public/**"
+                                     "/api/public/**"
                                 ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils), UsernamePasswordAuthenticationFilter.class)
