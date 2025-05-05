@@ -34,16 +34,7 @@ public class GenreController {
 
     }
 
-    @Operation(summary = "All genres with pagination")
-    @ApiResponse(responseCode = "201", description = "All genres have been retrieved")
-    @GetMapping("pagination")
-    public ResponseEntity<Page<GenreProjection>> getAllGenres(
-            @PageableDefault(page = 0, size = 12, sort = "createdAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
-        LOGGER.info("Find all genres with pagination");
-        Page<GenreProjection> genres = genreService.findAllByGenre(pageable);
-        LOGGER.info("Found {} genres", genres.getTotalElements());
-        return new ResponseEntity<>(genres, HttpStatus.OK);
-    }
+
 
     @Operation(summary = "Find genre with id")
     @GetMapping("{id}")
@@ -71,14 +62,7 @@ public class GenreController {
         return ResponseEntity.ok(genreService.save(genre));
     }
 
-    @Operation(summary = "Get Four Random Genres")
-    @GetMapping("four")
-    public ResponseEntity<List<GenreDto>> getRandomFourGenres() {
-        LOGGER.info("Get Four Random Genres");
-        List<GenreDto> genres = genreService.getRandomFourGenres();
-        LOGGER.info("Found {} genres ", genres.size());
-        return new ResponseEntity<>(genres, HttpStatus.OK);
-    }
+
 
     @Operation(summary = "Update manga genre")
     @PutMapping("/{id}")
@@ -93,16 +77,16 @@ public class GenreController {
         }
     }
 
-    @Operation(summary = "Get genre with mangas")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Genre with mangas retrieved"),
-            @ApiResponse(responseCode = "404", description = "Genre not found")
-    })
-    @GetMapping("/{genreId}/mangas")
-    public ResponseEntity<?> getGenreWithMangas(@PathVariable Integer genreId,
-            @PageableDefault(page = 0, size = 12, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
-        LOGGER.info("Get genre with mangas");
-        return ResponseEntity.ok(genreService.getGenreWithMangas(genreId, pageable));
-    }
+    // @Operation(summary = "Get genre with mangas")
+    // @ApiResponses(value = {
+    //         @ApiResponse(responseCode = "200", description = "Genre with mangas retrieved"),
+    //         @ApiResponse(responseCode = "404", description = "Genre not found")
+    // })
+    // @GetMapping("/{genreId}/mangas")
+    // public ResponseEntity<?> getGenreWithMangas(@PathVariable Integer genreId,
+    //         @PageableDefault(page = 0, size = 12, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+    //     LOGGER.info("Get genre with mangas");
+    //     return ResponseEntity.ok(genreService.getGenreWithMangas(genreId, pageable));
+    // }
 
 }

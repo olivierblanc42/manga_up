@@ -26,36 +26,33 @@ public class CategoryController {
     private static final Logger LOGGER= LoggerFactory.getLogger(CategoryController.class);
 
     private final CategoryService categoryService;
-    private final CategoryDao categoryDao;
-
     public CategoryController(CategoryService categoryService, CategoryDao categoryDao) {
         this.categoryService = categoryService;
-        this.categoryDao = categoryDao;
     }
 
-    @Operation(summary = "All Categories with pagination")
-    @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
-    @GetMapping("pagination")
-    public ResponseEntity<Page<CategoryProjection>> getCategories(
-            @PageableDefault(
-            page = 0,
-            size = 8,
-            sort = "createdAt",
-            direction = Sort.Direction.DESC
-    ) @ParameterObject Pageable pageable)
-    {
-        LOGGER.info("Find all Categories with pagination");
-        Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
-        LOGGER.info("Found {} categories", categories.getTotalElements());
-        return new ResponseEntity<>(categories, HttpStatus.OK);
-    }
+    // @Operation(summary = "All Categories with pagination")
+    // @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
+    // @GetMapping("pagination")
+    // public ResponseEntity<Page<CategoryProjection>> getCategories(
+    //         @PageableDefault(
+    //         page = 0,
+    //         size = 8,
+    //         sort = "createdAt",
+    //         direction = Sort.Direction.DESC
+    // ) @ParameterObject Pageable pageable)
+    // {
+    //     LOGGER.info("Find all Categories with pagination");
+    //     Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
+    //     LOGGER.info("Found {} categories", categories.getTotalElements());
+    //     return new ResponseEntity<>(categories, HttpStatus.OK);
+    // }
 
-    @Operation(summary = "Find category by id ")
-    @GetMapping("{id}")
-    public ResponseEntity<CategoryProjection> getCategory(@PathVariable Integer id) {
-        LOGGER.info("Find category by id {}", id);
-        return ResponseEntity.ok(categoryService.findCategoryById(id));
-    }
+    // @Operation(summary = "Find category by id ")
+    // @GetMapping("{id}")
+    // public ResponseEntity<CategoryProjection> getCategory(@PathVariable Integer id) {
+    //     LOGGER.info("Find category by id {}", id);
+    //     return ResponseEntity.ok(categoryService.findCategoryById(id));
+    // }
 
 
     @Operation(summary = "delete category by id ")
@@ -92,16 +89,15 @@ public class CategoryController {
     }
 
 
-    @Operation(summary = "Get category with mangas")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Author with mangas retrieved"),
-            @ApiResponse(responseCode = "404", description = "Author not found")
-    })
-    
-    @GetMapping("/{categoryId}/mangas")
-    public CategoryWithMangaResponse getAuthorWithMangas(@PathVariable Integer categoryId,  
-            @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) { 
-        return categoryService.getCategoryWithMangas(categoryId, pageable);  
-    }
+    // @Operation(summary = "Get category with mangas")
+    // @ApiResponses(value = {
+    //         @ApiResponse(responseCode = "200", description = "Author with mangas retrieved"),
+    //         @ApiResponse(responseCode = "404", description = "Author not found")
+    // })
+    // @GetMapping("/{categoryId}/mangas")
+    // public CategoryWithMangaResponse getAuthorWithMangas(@PathVariable Integer categoryId,  
+    //         @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) { 
+    //     return categoryService.getCategoryWithMangas(categoryId, pageable);  
+    // }
 
 }
