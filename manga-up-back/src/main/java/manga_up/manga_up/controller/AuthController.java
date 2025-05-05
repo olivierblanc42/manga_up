@@ -76,7 +76,11 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
 
     response.addHeader("Set-Cookie", deleteCookie.toString());
 
-    return ResponseEntity.ok("Déconnecté avec succès");
+
+    Map<String, String> responseBody = new HashMap<>();
+    responseBody.put("message", "Déconnecté avec succès");
+
+    return ResponseEntity.ok(responseBody);
 }
 
 

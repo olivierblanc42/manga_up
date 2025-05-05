@@ -57,8 +57,13 @@ public ResponseEntity<?> login(LoginRequestDto user, HttpServletResponse respons
                     .build();
 
             response.setHeader("Set-Cookie", cookie.toString());
+            
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Login successful");
+            responseBody.put("username", appUser.getUsername());
+            responseBody.put("role", appUser.getRole());
 
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok(responseBody);
         }
         return ResponseEntity.badRequest().body("Invalid username or password");
     } catch (AuthenticationException e) {
