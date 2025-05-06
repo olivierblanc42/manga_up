@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   standalone: true,
   imports: [NgIf, FormsModule],
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   credentials = { username: '', password: '' };
