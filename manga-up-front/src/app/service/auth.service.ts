@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -28,9 +28,10 @@ export class AuthService {
     }
 
 
-    isAuthenticated(): boolean {
-        // L'authentification dépend désormais des cookies, pas du localStorage
-        // Si un cookie "jwt" est présent, l'utilisateur est authentifié
-        return true;  // Le serveur gère l'authentification via cookies
+    isLoggedIn(): Observable<boolean> {
+        return this.http.get('/api/auth/check', { withCredentials: true }).pipe(
+            map(() => true),
+            catchError(() => of(false))
+        );
     }
 }

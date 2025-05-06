@@ -27,6 +27,7 @@ import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.co
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './service/auth.guard';
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
     { path: 'mangas', component: MangasComponent },
@@ -34,7 +35,9 @@ export const routes: Routes = [
     { path: 'genre/:id', component: GenreComponent },
     { path: 'categories', component: CategoriesComponent },
     { path: 'categorie/:id', component: CategorieComponent },
-    {path: 'account', component: AccountComponent},
+
+    { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+
     { path: 'auteurs', component: AuteursComponent },
     { path: 'auteur/:id', component: AuteurComponent },
     

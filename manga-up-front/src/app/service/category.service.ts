@@ -11,8 +11,8 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 export class CategoryService {
-    url = "/api/categories/pagination";
-    urlCategori = "/api/categories/"; 
+    url = "/api/public/categories/pagination";
+    urlCategori = "/api/public/category/"; 
     
 
     options = {

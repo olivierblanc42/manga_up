@@ -9,11 +9,11 @@ import { MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjecti
 })
 
 export class MangaService{
-    urlOne = "api/mangas/one";
-    urlFourDate= "api/mangas/four";
-    urlPagination = "api/mangas/pagination";
-    url = "/api/mangas/manga/"
-    urlRandom ="/api/mangas/randomFour"
+    urlOne = "api/public/one";
+    urlFourDate= "api/public/four";
+    urlPagination = "api/public/mangas/pagination";
+    url = "/api/public/manga/"
+    urlRandom ="/api/public/randomFour"
 
     options = {
         headers: new HttpHeaders({

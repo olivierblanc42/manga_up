@@ -10,9 +10,9 @@ import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWith
 
 
 export class GenreService {
-    url = "/api/genres/pagination";
-    urlFour = "api/genres/four";
-    urlGenre= "/api/genres/"
+    url = "/api/public/genres/pagination";
+    urlFour = "api/public/genres/four";
+    urlGenre= "/api/public/genres/"
 
 
 

@@ -11,7 +11,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 export class AuthorService {
-    url = "/api/authors/pagination";
+    url = "/api/public/authors/pagination";
     urlOne = "/api/authors/"
     
     options = {
