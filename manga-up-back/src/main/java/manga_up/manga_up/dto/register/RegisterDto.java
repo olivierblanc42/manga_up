@@ -1,5 +1,6 @@
 package manga_up.manga_up.dto.register;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,16 +26,13 @@ public class RegisterDto implements Serializable {
     @Size(max = 10)
     private String role;
     @Size(max = 15)
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Numéro de téléphone invalide")
     private String phoneNumber;
     @NotNull
-    @Pattern( regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @Size(max = 320)
     private String email;
 
     @NotNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{4,20}$",
-            message = "password must be min 4 and max 12 length containing atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+  
     @Size(max = 128)
     private String password;
     private UserAddressDto address;

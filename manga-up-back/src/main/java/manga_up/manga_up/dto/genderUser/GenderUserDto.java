@@ -1,5 +1,6 @@
 package manga_up.manga_up.dto.genderUser;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -11,14 +12,17 @@ import java.util.Objects;
  */
 public class GenderUserDto implements Serializable {
     @NotNull
+    private  Integer id;
+
+    @NotNull
     @Size(max = 50)
     private String label;
 
-    public GenderUserDto() {
-    }
+ 
 
-    public GenderUserDto( String label) {
+    public GenderUserDto(Integer id, String label) {
 
+        this.id = id;
         this.label = label;
     }
 
@@ -31,6 +35,15 @@ public class GenderUserDto implements Serializable {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     @Override
     public boolean equals(Object o) {

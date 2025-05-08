@@ -1,7 +1,9 @@
 package manga_up.manga_up.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
@@ -34,11 +36,13 @@ public class AppUser {
     @Size(max = 10)
     @Column(name = "role", length = 10)
     private String role;
-
+    
+    @Pattern(regexp = "^(\\+33|0)[1-9](\\d{2}){4}$", message = "Numéro de téléphone invalide")
     @Size(max = 15)
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
+    @Email(message = "Email invalide")
     @Size(max = 320)
     @NotNull
     @Column(name = "email", nullable = false, length = 320)
@@ -47,7 +51,9 @@ public class AppUser {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    @Size(max = 128)
+
+    @Size(min = 6, max = 20, message = "Le mot de passe doit contenir entre 6 et 20 caractères")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{6,20}$", message = "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial")
     @NotNull
     @Column(name = "password", nullable = false, length = 128)
     private String password;
@@ -72,9 +78,7 @@ public class AppUser {
     private UserPicture userPicture;
 
     @ManyToMany
-    @JoinTable(name = "appuser_manga",
-        joinColumns = @JoinColumn(name = "Id_users"),
-        inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
+    @JoinTable(name = "appuser_manga", joinColumns = @JoinColumn(name = "Id_users"), inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
     private Set<Manga> mangas = new LinkedHashSet<>();
 
     public Integer getId() {

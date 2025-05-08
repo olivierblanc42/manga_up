@@ -75,8 +75,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             appUser.setIdUserAddress(addressDao.findById(appUser.getIdUserAddress().getId()).orElse(null));
         }
 
-        appUser.setIdGendersUser(appUser.getIdGendersUser());
-
         appUser.setCreatedAt(Instant.now());
         appUser.setRole("ROLE_USER");
 
