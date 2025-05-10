@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 @Component
 public class PictureMapper {
 
-
     public PictureDto toPictureDto(Picture picture) {
         return new PictureDto(
-                picture.getUrl()
-        );
+                picture.getUrl());
     }
 
     public Picture toEntity(PictureDto pictureDto) {
@@ -25,26 +23,26 @@ public class PictureMapper {
         return picture;
     }
 
+    public PictureLightDto toPictureLightDto(Picture picture) {
+        return new PictureLightDto(
+                picture.getId(),
+                picture.getUrl(),
+                picture.getMain());
+    }
 
+    public Picture toEntityPicture(PictureLightDto pictureLightDto) {
+        Picture picture = new Picture();
+        picture.setId(pictureLightDto.getId());
+        picture.setUrl(pictureLightDto.getUrl());
+        picture.setMain(pictureLightDto.getIsMain());
+        return picture;
+    }
 
-
-   public PictureLightDto toPictureLightDto(Picture picture) {
-       return new PictureLightDto(
-               picture.getId()
-       );
-   }
-
-   public Picture toEntityPicture(PictureLightDto pictureLightDto) {
-       Picture picture = new Picture();
-       picture.setId(pictureLightDto.getId());
-       return picture;
-   }
-
-   public Set<PictureLightDto> toPictureLightDtoSet(Set<Picture> pictures) {
-       return pictures.stream()
-               .map(this::toPictureLightDto)
-               .collect(Collectors.toSet());
-   }
+    public Set<PictureLightDto> toPictureLightDtoSet(Set<Picture> pictures) {
+        return pictures.stream()
+                .map(this::toPictureLightDto)
+                .collect(Collectors.toSet());
+    }
 
     public Set<Picture> toEntityPictures(Set<PictureLightDto> pictureLightDtos) {
         return pictureLightDtos.stream()
