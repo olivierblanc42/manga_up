@@ -23,6 +23,7 @@ import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
 import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.genre.GenreDto;
+import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.author.AuthorProjection;
@@ -95,9 +96,9 @@ public class PublicController {
 
     @Operation(summary = "Get one manga with her id")
     @GetMapping("manga/{id}")
-    public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
+    public ResponseEntity<MangaDto> getMangaById(@PathVariable Integer id) {
         LOGGER.info("Find manga by id");
-        return ResponseEntity.ok(mangaService.findMangaById(id));
+        return ResponseEntity.ok(mangaService.findMangaDtoById(id));
     }
 
     @Operation(summary = "All Mangas with pagination")

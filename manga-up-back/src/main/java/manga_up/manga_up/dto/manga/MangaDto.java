@@ -2,6 +2,7 @@ package manga_up.manga_up.dto.manga;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import manga_up.manga_up.dto.appUser.UserFavoriteDto;
 import manga_up.manga_up.dto.author.AuthorLigthDto;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
 import manga_up.manga_up.dto.genre.GenreLightDto;
@@ -35,8 +36,9 @@ public class MangaDto implements Serializable {
     @NotNull(message = "A manga must have at least one image.")
     @Size(min = 1, message = "A manga must contain at least one image.")
     private final Set<PictureLightDto> pictures;
+    private final Set<UserFavoriteDto> usersFavorites;
 
-    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<GenreLightDto> genres, Set<AuthorLigthDto> authors, Set<PictureLightDto> pictures) {
+    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<GenreLightDto> genres, Set<AuthorLigthDto> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
         this.title = title;
         this.subtitle = subtitle;
         this.releaseDate = releaseDate;
@@ -48,6 +50,7 @@ public class MangaDto implements Serializable {
         this.genres = genres;
         this.authors = authors;
         this.pictures = pictures;
+        this.usersFavorites = usersFavorites;
     }
 
     public String getTitle() {
@@ -92,6 +95,10 @@ public class MangaDto implements Serializable {
 
     public Set<PictureLightDto> getPictures() {
         return pictures;
+    }
+
+    public Set<UserFavoriteDto> getUsersFavorites() {
+        return usersFavorites;
     }
 
     @Override

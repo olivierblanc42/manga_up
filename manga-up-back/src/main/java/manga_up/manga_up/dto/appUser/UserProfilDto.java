@@ -15,7 +15,7 @@ import manga_up.manga_up.dto.manga.MangaLightDto;
  * DTO for {@link manga_up.manga_up.model.AppUser}
  */
 public class UserProfilDto implements Serializable {
-  private Integer id;
+    private Integer id;
     @NotNull
     @Size(max = 50)
     private String username;

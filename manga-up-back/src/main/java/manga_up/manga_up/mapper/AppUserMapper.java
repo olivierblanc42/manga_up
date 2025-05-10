@@ -1,11 +1,17 @@
 package manga_up.manga_up.mapper;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import manga_up.manga_up.dto.appUser.UserFavoriteDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.model.Picture;
 
 @Component
 public class AppUserMapper {
@@ -56,4 +62,8 @@ public class AppUserMapper {
         appUser.setMangas(mangaMapper.toEntityMangas(userProfilDto.getMangas()));
         return appUser;
     }
+
+
+
+
 }

@@ -67,6 +67,16 @@ public class MangaService {
         return mangaDao.findAllMangas(pageable);
     }
 
+
+    public MangaDto findMangaDtoById(Integer id) {
+        LOGGER.info("Find manga by id");
+        Manga manga = mangaDao.findManga2ById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Manga with ID " + id + " not found"));
+        return mangaMapper.mangaToMangaDto(manga);
+    }
+
+
+
     public MangaProjection findMangaById(Integer id) {
         LOGGER.info("Find manga by id");
         return mangaDao.findMangaById(id)

@@ -16,12 +16,15 @@ public class MangaMapper {
     private final   GenderMangaMapper genderMapper;
     private final   AuthorMapper authorMapper;
     private final   PictureMapper pictureMapper;
+    private final   FavoriteMapper appUserMapper;
 
-    public MangaMapper(CategoryMapper categoryMapper, GenderMangaMapper genderMapper, AuthorMapper authorMapper, PictureMapper pictureMapper) {
+    public MangaMapper(CategoryMapper categoryMapper, GenderMangaMapper genderMapper, AuthorMapper authorMapper, PictureMapper pictureMapper, 
+            FavoriteMapper appUserMapper) {
         this.categoryMapper = categoryMapper;
         this.genderMapper = genderMapper;
         this.authorMapper = authorMapper;
         this.pictureMapper = pictureMapper;
+        this.appUserMapper = appUserMapper;
     }
 
 
@@ -37,7 +40,9 @@ public class MangaMapper {
                 categoryMapper.toLittleDtoCategory(manga.getIdCategories()),
                 genderMapper.toLightDtoGenres(manga.getGenres()),
                 authorMapper.toLigthDtoAuthorSet(manga.getAuthors()),
-                pictureMapper.toPictureLightDtoSet(manga.getPictures())
+                pictureMapper.toPictureLightDtoSet(manga.getPictures()),
+                appUserMapper.toUserFavoriteDtoSet(manga.getAppUsers())
+
         );
     }
 
@@ -59,6 +64,9 @@ public class MangaMapper {
         manga.setAuthors(authors);
         Set<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
         manga.setPictures(pictures);
+
+        Set<AppUser> appUsers = appUserMapper.toEntityAppUserFavorite(mangaDto.getUsersFavorites());
+        manga.setAppUsers(appUsers);
 
         return manga;
  }

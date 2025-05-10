@@ -29,6 +29,17 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
       """, nativeQuery = true)
   Page<MangaBaseProjection> findMangasWithMainPictures(Pageable pageable);
 
+
+  @Query("SELECT DISTINCT m FROM Manga m " +
+      "LEFT JOIN FETCH m.authors a " +
+      "LEFT JOIN FETCH m.genres g " +
+      "LEFT JOIN FETCH m.idCategories c " +
+      "LEFT JOIN FETCH m.pictures p " +
+      "LEFT JOIN FETCH m.appUsers u " +
+      "WHERE m.id = :idManga")
+  Optional<Manga> findManga2ById(@Param("idManga") Integer idManga);
+
+
   @Query("SELECT DISTINCT m FROM Manga m " +
       "LEFT JOIN FETCH m.authors a " +
       "LEFT JOIN FETCH m.genres g " +
