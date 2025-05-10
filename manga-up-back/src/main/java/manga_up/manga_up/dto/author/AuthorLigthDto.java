@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.author;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,15 +12,27 @@ import java.util.Objects;
 public class AuthorLigthDto implements Serializable {
     @NotNull
     private final Integer id;
-
-    public AuthorLigthDto(Integer id) {
+        @Size(max = 100)
+    private final String lastname;
+    @NotNull
+    @Size(max = 50)
+    private final String firstname;
+    public AuthorLigthDto(Integer id, String lastname, String firstname) {
         this.id = id;
+        this.lastname = lastname;
+        this.firstname = firstname;
     }
 
     public Integer getId() {
         return id;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+    public String getFirstname() {
+        return firstname;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
