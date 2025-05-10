@@ -64,6 +64,18 @@ export type AppUserProjections = {
 }
 
 
+
+export type AppUserRegister ={
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber?: string;
+    password: string;
+    userAddressLitle: UserRegister;
+    genderRegister: GenderRegister;
+}
+
 //Author
 export type Author = {
     id: number;
@@ -252,7 +264,10 @@ export type GenderUserProjections = {
     totalElements: number;
     totalPages: number;
 }
-
+export type GenderRegister = {
+    id: number;
+    label: string;
+}
 
 //Manga
 
@@ -384,7 +399,6 @@ export type UserAddressLittleProjection = {
 }
 
 export type UserAddressLitle = {
-    
     line1: string;
     line2: string;
     line3: string;
@@ -393,7 +407,14 @@ export type UserAddressLitle = {
     postalCode: string;
 }
 
-
+export type UserRegister = {
+    line1: string;
+    line2: string;
+    line3: string;
+    city: string;
+    createdAt: Date;
+    postalCode: string;
+}
 
 export interface PictureDtoRandom {
     id: number;

@@ -22,7 +22,7 @@ import { CategoriesAdminComponent } from './pages/admin/categories/categories.co
 import { GenresAdminComponent } from './pages/admin/genres/genres.component';
 
 
-
+import { UsersRegisterComponent } from './pages/users-register/users-register.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CartComponent } from './pages/cart/cart.component';
@@ -35,8 +35,10 @@ export const routes: Routes = [
     { path: 'genre/:id', component: GenreComponent },
     { path: 'categories', component: CategoriesComponent },
     { path: 'categorie/:id', component: CategorieComponent },
-
     { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
+    {path: 'register', component: UsersRegisterComponent},
+
+
 
     { path: 'auteurs', component: AuteursComponent },
     { path: 'auteur/:id', component: AuteurComponent },

@@ -1,0 +1,78 @@
+@use '../../../variables.scss' as *;
+
+section {
+    margin-bottom: 100px;
+
+    .card-single-other {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+
+        .card-single-other__title {
+            text-transform: uppercase;
+            background: $tertiary ;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            text-align: center;
+
+            h1 {
+                margin: 0px;
+                padding: $padding-s;
+            }
+        }
+
+        .login-register{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+
+            form {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                row-gap: 30px;
+
+                .form-group {
+                    display: flex;
+                    flex-direction: column;
+                    input {
+                        border-color: $secondary;
+                        padding: 14px;
+                        border-radius: 13px;
+                        -webkit-border-radius: 13px;
+                        -moz-border-radius: 13px;
+                        -ms-border-radius: 13px;
+                        -o-border-radius: 13px;
+                        color: $secondary;
+                        min-width: 300px;
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+input::placeholder {
+    font-weight: bold;
+    opacity: 0.5;
+    color: $secondary !important;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 10px;
+    border-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}

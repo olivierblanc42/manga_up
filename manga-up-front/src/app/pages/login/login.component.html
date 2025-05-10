@@ -1,4 +1,3 @@
-
 <section class="section-login">
 
     <div class="card card-single-other">
@@ -18,6 +17,7 @@
                 <button class="btn btn-card" type="submit">Se connecter</button>
                 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
             </form>
+            <a [routerLink]="'/register/'"   class="btn btn-card" >créé un nouveau compte</a>
         </div>
     </div>
 
