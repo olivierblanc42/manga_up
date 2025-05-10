@@ -2,6 +2,7 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.login.LoginRequestDto;
@@ -55,12 +56,16 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDto registerDTO) {
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterDto registerDTO) {
         if (userDao.findByUsername(registerDTO.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username is already in use");
         }
-        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-        return ResponseEntity.ok(customUserDetailsService.saveUserDtoRegister(registerDTO));
+
+   
+
+        RegisterDto resultDto = customUserDetailsService.saveUserDtoRegister(registerDTO);
+
+        return ResponseEntity.ok(resultDto);
     }
 
  @PostMapping("/login")

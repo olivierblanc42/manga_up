@@ -51,10 +51,7 @@ public class AppUser {
     @Column(name = "created_at")
     private Instant createdAt;
 
-
-    @Size(min = 6, max = 20, message = "Le mot de passe doit contenir entre 6 et 20 caractères")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{6,20}$", message = "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial")
-    @NotNull
+    // @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Mot de passe invalide")
     @Column(name = "password", nullable = false, length = 128)
     private String password;
 

@@ -7,6 +7,8 @@ import manga_up.manga_up.mapper.GenderUserMapper;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.genderUser.GenderUserProjection;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -76,6 +78,13 @@ public class GenreUserService {
         genderUserDao.save(genderUser);
         return genderUserMapper.toDto(genderUser);
     }
+
+
+
+public List<GenderUserDto> getAllGenreUsers() {
+    LOGGER.info("Getting all genre users");
+    return genderUserDao.getGenderUserDto();  
+ } 
 
 
 }

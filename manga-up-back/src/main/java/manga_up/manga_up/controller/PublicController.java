@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
 import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
+import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
@@ -32,6 +33,7 @@ import manga_up.manga_up.projection.manga.MangaProjection;
 import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CategoryService;
 import manga_up.manga_up.service.GenreService;
+import manga_up.manga_up.service.GenreUserService;
 import manga_up.manga_up.service.MangaService;
 
 @RestController
@@ -43,11 +45,13 @@ public class PublicController {
     private final AuthorService authorService;
     private final GenreService genreService;
     private final CategoryService categoryService;
-       public PublicController(MangaService mangaService, AuthorService authorService, GenreService genreService, CategoryService categoryService) {
+    private final GenreUserService genderUserService;
+       public PublicController(MangaService mangaService, AuthorService authorService, GenreService genreService, CategoryService categoryService , GenreUserService genderUserService) {
         this.mangaService = mangaService;
         this.authorService = authorService;
         this.genreService = genreService;
         this.categoryService = categoryService;
+        this.genderUserService = genderUserService;
     }
 
 
@@ -178,6 +182,18 @@ public class PublicController {
         LOGGER.info("Get genre with mangas");
         return ResponseEntity.ok(genreService.getGenreWithMangas(genreId, pageable));
     }
+
+
+     // All public requests for GenderUser
+
+   // @GetMapping("categories")
+   @GetMapping("genderUser")
+   public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
+       LOGGER.info("Get GenderUserDto");
+       List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
+       LOGGER.info("Found {} genres ", genders.size());
+       return new ResponseEntity<>(genders, HttpStatus.OK);
+   }
 
 
     // All public requests for Categories
