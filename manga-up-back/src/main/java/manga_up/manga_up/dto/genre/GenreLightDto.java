@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.genre;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,15 +12,19 @@ import java.util.Objects;
 public class GenreLightDto implements Serializable {
     @NotNull
     private final Integer id;
-
-    public GenreLightDto(Integer id) {
+        @Size(max = 50)
+    private final String label;
+    public GenreLightDto(Integer id, String label) {
         this.id = id;
+        this.label = label;
     }
 
     public Integer getId() {
         return id;
     }
-
+    public String getLabel() {
+        return label;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
