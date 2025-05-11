@@ -7,6 +7,8 @@ import manga_up.manga_up.mapper.UserResponseMapper;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
+import java.nio.file.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -64,6 +66,29 @@ public ResponseEntity<UserProfilDto> getCurrentUser() {
     }
 
     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+}
+
+
+
+public AppUser getAuthenticatedUserEntity() throws AccessDeniedException {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication != null && authentication.isAuthenticated()) {
+        String username = authentication.getName();
+        // Retourne l'entité AppUser
+        return userdao.findAppUserByUsername(username); 
+    }
+
+    throw new AccessDeniedException("Utilisateur non authentifié");
+}
+
+
+public void addFavorite(Integer userId, Integer mangaId) {
+    userdao.addUserInFavorite(userId, mangaId); 
+}
+
+public void removeFavorite(Integer userId, Integer mangaId) {
+    userdao.removeUserInFavorite(userId, mangaId); 
 }
 
 }

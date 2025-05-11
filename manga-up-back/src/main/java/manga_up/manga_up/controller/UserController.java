@@ -10,6 +10,9 @@ import manga_up.manga_up.mapper.AppUserMapper;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.service.UserService;
+
+import java.nio.file.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,7 +23,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
@@ -58,5 +64,43 @@ public class UserController {
     public ResponseEntity<UserProfilDto> getCurrentUser() {
         return userService.getCurrentUser();
     }
+
+
+
+
+    @PostMapping("/manga/{mangaId}")
+    public ResponseEntity<?> addFavorite(@PathVariable Integer mangaId) {
+        try {
+            // Récupérer l'entité AppUser pour manipuler les données en backend
+            AppUser user = userService.getAuthenticatedUserEntity();
+
+            // Appel au service pour ajouter le manga aux favoris
+            userService.addFavorite(user.getId(), mangaId);
+
+            return ResponseEntity.ok("Manga ajouté aux favoris avec succès."); 
+        } catch (Exception e) {
+            // Si une exception se produit (par exemple si l'utilisateur n'est pas
+            // authentifié)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Erreur lors de l'ajout aux favoris.");
+        }
+    }
+
+    @DeleteMapping("/manga/{mangaId}")
+    public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
+        try {
+            // Récupérer l'entité AppUser pour manipuler les données en backend
+            AppUser user = userService.getAuthenticatedUserEntity();
+
+            // Appel au service pour supprimer le manga des favoris
+            userService.removeFavorite(user.getId(), mangaId);
+
+            return ResponseEntity.ok("Manga supprimé des favoris avec succès."); 
+        } catch (Exception e) {
+            // Si une exception se produit (par exemple si l'utilisateur n'est pas
+            // authentifié)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Erreur lors de la suppression des favoris.");
+        }
+    }    
+
 
 }

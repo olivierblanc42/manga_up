@@ -60,9 +60,6 @@ public class AuthController {
         if (userDao.findByUsername(registerDTO.getUsername()) != null) {
             return ResponseEntity.badRequest().body("Username is already in use");
         }
-
-   
-
         RegisterDto resultDto = customUserDetailsService.saveUserDtoRegister(registerDTO);
 
         return ResponseEntity.ok(resultDto);
