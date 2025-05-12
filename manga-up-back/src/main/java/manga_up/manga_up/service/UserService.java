@@ -91,4 +91,12 @@ public void removeFavorite(Integer userId, Integer mangaId) {
     userdao.removeUserInFavorite(userId, mangaId); 
 }
 
+
+public boolean isFavorite(Integer userId, Integer mangaId) {
+    LOGGER.info("[SERVICE] Vérifie si manga ID={} est favori de l'utilisateur ID={}", mangaId, userId);
+    int count = userdao.countFavorite(userId, mangaId);
+    LOGGER.info("[SERVICE] Résultat du COUNT = {}", count);
+    return count > 0;
+}
+
 }

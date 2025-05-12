@@ -12,6 +12,8 @@ import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.service.UserService;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,39 +70,51 @@ public class UserController {
 
 
 
-    @PostMapping("/manga/{mangaId}")
-    public ResponseEntity<?> addFavorite(@PathVariable Integer mangaId) {
+@PostMapping("/manga/{mangaId}")
+public ResponseEntity<?> addFavorite(@PathVariable Integer mangaId) {
+    try {
+        AppUser user = userService.getAuthenticatedUserEntity();
+        userService.addFavorite(user.getId(), mangaId);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Manga ajouté aux favoris avec succès.");
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Erreur lors de l'ajout aux favoris.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+}
+
+@DeleteMapping("/manga/{mangaId}")
+public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
+    try {
+        AppUser user = userService.getAuthenticatedUserEntity();
+        userService.removeFavorite(user.getId(), mangaId);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Manga supprimé des favoris avec succès.");
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Erreur lors de la suppression des favoris.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+}  
+
+    @GetMapping("/manga/{mangaId}/is-favorite")
+    public ResponseEntity<?> isFavorite(@PathVariable Integer mangaId) {
         try {
-            // Récupérer l'entité AppUser pour manipuler les données en backend
+            LOGGER.info("[CONTROLLER] Vérification si le manga ID={} est en favori", mangaId);
+
             AppUser user = userService.getAuthenticatedUserEntity();
+            boolean isFavorite = userService.isFavorite(user.getId(), mangaId);
+            LOGGER.info("[CONTROLLER] Résultat : isFavorite = {}", isFavorite);
 
-            // Appel au service pour ajouter le manga aux favoris
-            userService.addFavorite(user.getId(), mangaId);
-
-            return ResponseEntity.ok("Manga ajouté aux favoris avec succès."); 
+            return ResponseEntity.ok(Boolean.valueOf(isFavorite));
         } catch (Exception e) {
-            // Si une exception se produit (par exemple si l'utilisateur n'est pas
-            // authentifié)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Erreur lors de l'ajout aux favoris.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Utilisateur non authentifié");
         }
     }
-
-    @DeleteMapping("/manga/{mangaId}")
-    public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
-        try {
-            // Récupérer l'entité AppUser pour manipuler les données en backend
-            AppUser user = userService.getAuthenticatedUserEntity();
-
-            // Appel au service pour supprimer le manga des favoris
-            userService.removeFavorite(user.getId(), mangaId);
-
-            return ResponseEntity.ok("Manga supprimé des favoris avec succès."); 
-        } catch (Exception e) {
-            // Si une exception se produit (par exemple si l'utilisateur n'est pas
-            // authentifié)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Erreur lors de la suppression des favoris.");
-        }
-    }    
-
-
+    
 }

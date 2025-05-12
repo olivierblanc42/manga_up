@@ -3,6 +3,7 @@ package manga_up.manga_up.dao;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -49,5 +50,8 @@ public interface UserDao extends JpaRepository<AppUser, Integer> {
     @Query(value = "DELETE FROM appuser_manga WHERE id_users = :idUsers AND id_mangas = :idMangas", nativeQuery = true)
     void removeUserInFavorite(@Param("idUsers") Integer idUsers, @Param("idMangas") Integer idMangas);
 
+    
+    @Query(value = "SELECT COUNT(*) FROM appuser_manga WHERE id_users = :userId AND id_mangas = :mangaId", nativeQuery = true)
+    int countFavorite(@Param("userId") Integer userId, @Param("mangaId") Integer mangaId);    
 
 }
