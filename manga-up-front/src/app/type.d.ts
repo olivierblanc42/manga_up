@@ -271,6 +271,9 @@ export type GenderRegister = {
 
 //Manga
 
+export type FavoriteManga = {
+    favorite: boolean;
+}
 
 export type MangaProjection = {
     id: number;

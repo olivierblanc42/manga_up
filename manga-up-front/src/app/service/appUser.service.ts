@@ -9,6 +9,7 @@ import { UserTest } from '../type';
 export class AppUserService {
 
     private apiUrl = '/api/users/me';
+    
 
     options = {
         headers: new HttpHeaders({

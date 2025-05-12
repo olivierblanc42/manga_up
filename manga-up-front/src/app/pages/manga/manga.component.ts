@@ -2,12 +2,14 @@ import {  MangaProjection } from './../../type.d';
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MangaService } from './../../service/manga.service';
+import { FavoriteButtonComponent } from "../../components/favorite-button/favorite-button.component";
 
 @Component({
   selector: 'app-manga',
   standalone: true,
   templateUrl: './manga.component.html',
-  styleUrls: ['./manga.component.scss']
+  styleUrls: ['./manga.component.scss'],
+  imports: [FavoriteButtonComponent]
 })
 export class MangaComponent implements OnInit {
   id: string | null = null; 
