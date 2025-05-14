@@ -65,6 +65,14 @@ export type AppUserProjections = {
 
 
 
+export interface AuthUserInfo {
+    username: string;
+    role: string;
+}
+  
+
+
+
 export type AppUserRegister ={
     username: string;
     firstname: string;
@@ -74,6 +82,7 @@ export type AppUserRegister ={
     password: string;
     userAddressLitle: UserRegister;
     genderRegister: GenderRegister;
+    role: string | null;
 }
 
 //Author

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
+import { AuthUserInfo } from '../type'; // adapte le chemin si besoin
 
 @Injectable({
     providedIn: 'root',
@@ -18,6 +19,12 @@ export class AuthService {
 
        appUserGender = new BehaviorSubject<GenderRegister[]>([])
        currentappUserGenderProjection = this.appUserGender.asObservable();
+
+    userInfo = new BehaviorSubject<AuthUserInfo | null>(null);
+    currentUserInfo$ = this.userInfo.asObservable();
+       
+
+
 
     constructor(private http: HttpClient) { }
 
@@ -94,16 +101,35 @@ export class AuthService {
 
     
     clearAuthState(): void {
-        this.appUserRegister.next(null);
-        this.appUserGender.next([]);
+        this.userInfo.next(null);
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('username');
     }
       
 
-    loginAfterLogout(credentials: { username: string; password: string }) {
-        return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
-            catchError(() => of(null)), 
-            switchMap(() => this.login(credentials))
+
+      
+    loginAfterLogout(credentials: { username: string; password: string }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
+            map((response: any) => {
+                const userInfo: AuthUserInfo = {
+                    username: response.username,
+                    role: response.role
+                };
+                this.userInfo.next(userInfo);
+                localStorage.setItem('userRole', userInfo.role);
+                localStorage.setItem('username', userInfo.username);
+                return response;
+            })
         );
-      }
+    }
+      
+
+    getUserRole(): string | null {
+        const user = this.userInfo.value;
+        return user?.role ?? localStorage.getItem('userRole');
+    }
+      
+      
     
 }

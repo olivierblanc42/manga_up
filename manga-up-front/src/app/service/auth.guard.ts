@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
             map((loggedIn: boolean) => {
                 if (!loggedIn) {
                 
-                    return this.router.createUrlTree(['/login']);
+                    return this.router.createUrlTree(['/forbidden']);
                 }
                 return true;
             })
