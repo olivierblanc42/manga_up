@@ -10,17 +10,19 @@
         </form>
       </div>
       <div class="first-nav__icons">
-        <a [routerLink]="'/account/'" aria-label="Mon compte"><img src="svg/mdi_user.svg" alt="Icône utilisateur" class="icons"></a>
+        <a [routerLink]="'/account/'" aria-label="Mon compte"><img src="svg/mdi_user.svg" alt="Icône utilisateur"
+            class="icons"></a>
         <img src="svg/material-symbols_list.svg" class="icons menu" alt="Icône menu" (click)="openNav()"
           aria-label="Ouvrir le menu">
         <a aria-label="Mon panier"><img src="svg/mdi_cart-outline.svg" alt="Icône panier" class="icons"></a>
-        <a routerLink="admin" aria-label="Accès admin">admin</a>
+
+        <!-- Afficher le bouton admin seulement si isAdmin est true -->
+        <a routerLink="admin" *ngIf="isAdmin" aria-label="Accès admin">admin</a>
       </div>
     </div>
 
     <div class="secondary-nav">
       <div class="secondary-content">
-
         <div>
           <div>
             <a routerLink="mangas" aria-label="Voir les mangas">
@@ -61,6 +63,7 @@
     </div>
   </nav>
 </header>
+
 
 <div #mySidenav id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" (click)="closeNav()" aria-label="Fermer le menu">&times;</a>

@@ -4,9 +4,10 @@ import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
 import { CardComponent } from "./components/card/card.component";
 import { AuthService } from './service/auth.service';
 import { filter } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, BreadcrumbComponent],
+  imports: [RouterOutlet, RouterModule, BreadcrumbComponent,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true
@@ -14,9 +15,10 @@ import { filter } from 'rxjs/operators';
 export class AppComponent  implements OnInit {
   title = 'manga-up-front';
   sidenav = viewChild<ElementRef<HTMLElement>>('mySidenav');
-  
+  isAdmin: boolean = false;
 
-  constructor(private router: Router) {
+
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -28,7 +30,9 @@ export class AppComponent  implements OnInit {
     });
   }
     ngOnInit(): void {
-
+      this.authService.userRole$.subscribe(role => {
+        this.isAdmin = role === 'ADMIN_ROLE';
+      });
   }
 
    openNav() {

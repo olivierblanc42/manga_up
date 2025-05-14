@@ -12,7 +12,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 export class AuthorService {
     url = "/api/public/authors/pagination";
-    urlOne = "/api/authors/"
+    urlOne = "/api/public/author/"
     
     options = {
         headers: new HttpHeaders({

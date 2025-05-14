@@ -42,8 +42,8 @@ export const routes: Routes = [
     // Routes administratives protégées par RoleGuard
     {
         path: 'admin', component: AdminLayoutComponent,
-        canActivate: [AuthGuard, RoleGuard], // Ajout du RoleGuard
-        data: { role: 'ADMIN_ROLE' }, // Définit le rôle requis pour accéder à la route admin
+        canActivate: [AuthGuard, RoleGuard], 
+        data: { role: 'ADMIN_ROLE' }, 
         children: [
             { path: 'mangasAdmin', component: MangasAdminComponent },
             { path: 'genresAdmin', component: GenresAdminComponent },

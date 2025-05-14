@@ -28,12 +28,19 @@ export class FavorisService {
     async isFavorite(mangaId: number) {
         try {
             const isFav = await lastValueFrom(
-                this.http.get<boolean>(`${this.apiUrl}/manga/${mangaId}/is-favorite`)
+                this.http.get<boolean>(`${this.apiUrl}/manga/${mangaId}/is-favorite`, { withCredentials: true })
             );
             this.favorite.next(isFav);
             console.log('Manga favori :', isFav);
         } catch (err: any) {
-            console.error('Erreur lors de la vérification du favori :', err);
+            if (err.status === 403) {
+                console.warn('Accès interdit : vous devez être connecté pour ajouter en favoris.');
+                this.favorite.next(false); 
+            } else {
+                console.error('Erreur lors de la vérification du favori :', err.message || err);
+            }
         }
     }
+    
+
 }

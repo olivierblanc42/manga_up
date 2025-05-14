@@ -23,7 +23,9 @@ export class AuthService {
     userInfo = new BehaviorSubject<AuthUserInfo | null>(null);
     currentUserInfo$ = this.userInfo.asObservable();
        
-
+    private userRoleSubject = new BehaviorSubject<string | null>(this.getUserRole());
+    userRole$ = this.userRoleSubject.asObservable();
+    
 
 
     constructor(private http: HttpClient) { }
@@ -102,13 +104,13 @@ export class AuthService {
     
     clearAuthState(): void {
         this.userInfo.next(null);
-        localStorage.removeItem('userRole');
+        this.setUserRole(null); // met aussi à jour le BehaviorSubject
         localStorage.removeItem('username');
     }
       
-
-
       
+
+
     loginAfterLogout(credentials: { username: string; password: string }): Observable<any> {
         return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
             map((response: any) => {
@@ -117,8 +119,8 @@ export class AuthService {
                     role: response.role
                 };
                 this.userInfo.next(userInfo);
-                localStorage.setItem('userRole', userInfo.role);
                 localStorage.setItem('username', userInfo.username);
+                this.setUserRole(userInfo.role); // ici !
                 return response;
             })
         );
@@ -130,6 +132,14 @@ export class AuthService {
         return user?.role ?? localStorage.getItem('userRole');
     }
       
+    setUserRole(role: string | null): void {
+        if (role) {
+            localStorage.setItem('userRole', role);
+        } else {
+            localStorage.removeItem('userRole');
+        }
+        this.userRoleSubject.next(role);
+    }
       
     
 }
