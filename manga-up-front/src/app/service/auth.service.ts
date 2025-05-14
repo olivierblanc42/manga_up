@@ -1,7 +1,7 @@
 import { register } from 'swiper/element/bundle';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
 
 @Injectable({
@@ -40,16 +40,19 @@ export class AuthService {
     }
 
     logout(): void {
-        // Appel HTTP vers l'endpoint de déconnexion du backend
         this.http.post('http://localhost:8080/api/auth/logout', {}, { withCredentials: true })
             .subscribe({
                 next: () => {
                     console.log('Déconnecté avec succès.');
-                    // Rediriger ou mettre à jour l'état du client si besoin
+                    this.clearAuthState(); // Nettoie les données locales
+                    // Redirection ou autre ici si besoin
                 },
-           
+                error: (err) => {
+                    console.error('Erreur lors de la déconnexion :', err);
+                }
             });
     }
+      
 
 
     isLoggedIn(): Observable<boolean> {
@@ -90,8 +93,17 @@ export class AuthService {
     }
 
     
+    clearAuthState(): void {
+        this.appUserRegister.next(null);
+        this.appUserGender.next([]);
+    }
+      
 
-
-
+    loginAfterLogout(credentials: { username: string; password: string }) {
+        return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
+            catchError(() => of(null)), 
+            switchMap(() => this.login(credentials))
+        );
+      }
     
 }

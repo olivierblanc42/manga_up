@@ -28,4 +28,19 @@ export class LoginComponent {
       },
     });
   }
+
+
+loginTest(): void{
+  this.authService.loginAfterLogout(this.credentials).subscribe({
+    next: (res) => {
+      console.log('Connecté avec succès', res);
+      this.router.navigate(['/']); 
+    },
+    error: (err) => {
+      console.error('Erreur lors du login :', err);
+    }
+  });
+}
+
+  
 }
