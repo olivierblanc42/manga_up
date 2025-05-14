@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
         if (userRole === expectedRole) {
             return of(true);
         } else {
-            return of(this.router.createUrlTree(['/login'])); // ou une autre route d'erreur/accès refusé
+            return of(this.router.createUrlTree(['/forbidden'])); 
         }
     }
 }
