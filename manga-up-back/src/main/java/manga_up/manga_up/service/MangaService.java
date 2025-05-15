@@ -310,4 +310,9 @@ public class MangaService {
         return mangaDao.findMangasWithMainPictures(pageable);
     }
 
+    public Page<MangaBaseProjection> getTitle(String letter,Pageable pageable) {
+        return mangaDao.findByTitleWithGenres(letter,pageable);
+    }
+    
+
 }
