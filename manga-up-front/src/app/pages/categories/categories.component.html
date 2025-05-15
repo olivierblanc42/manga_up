@@ -1,12 +1,12 @@
 <section class="section">
     <div class="section__title">
-        <h1>Categories</h1>
+        <h1>Catégories</h1>
 
         <div class="section__grid">
             @for (category of categories?.content; track category.id) {
 
             <ui-card size="card-genre">
-                <img src="{{category.url}}" alt="{{category.label}}" title="{{category.label}}">
+                <img class="image" src="{{category.url}}" alt="{{category.label}}" title="{{category.label}}">
 
                 <div>
                     <h3 class="card-genre__title">{{category.label}}</h3>

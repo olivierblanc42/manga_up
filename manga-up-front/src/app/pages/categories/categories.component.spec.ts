@@ -10,26 +10,29 @@ import { ActivatedRoute } from '@angular/router';
 describe('CategoriesComponent', () => {
   let component: CategoriesComponent;
   let fixture: ComponentFixture<CategoriesComponent>;
-  let categoryService: Partial<CategoryService>;
-  let mockCategorySubject: BehaviorSubject<CategoriesProjections | null>;
+  let categoryService: {
+    categoriesProjections: BehaviorSubject<CategoriesProjections | null>,
+    currentCategoriesProjection: BehaviorSubject<CategoriesProjections | null>,
+    getAllCategoriesWithPagination: jasmine.Spy,
+  };
 
-  // Données par défaut pour les tests
-  const defaultCategories: CategoriesProjections = {
+  // Données simulées pour les tests
+  const mockCategories: CategoriesProjections = {
     content: [
       {
         id: 13,
         label: 'Naruto',
         description: 'Un manga Shonen populaire',
         createdAt: new Date('2025-04-17T15:43:41'),
-        url: 'test',
+        url: 'https://example.com/naruto.jpg',
       },
       {
         id: 14,
         label: 'Bleach',
         description: "Un manga avec des combats d'épées",
         createdAt: new Date('2025-04-17T15:43:41'),
-        url: 'test',
-      },
+        url: 'https://example.com/bleach.jpg',
+      }
     ],
     size: 8,
     totalElements: 2,
@@ -37,17 +40,13 @@ describe('CategoriesComponent', () => {
   };
 
   beforeEach(async () => {
-    // Initialisation du BehaviorSubject pour simuler l'observable categoriesProjections
-    mockCategorySubject = new BehaviorSubject<CategoriesProjections | null>(null);
-
-    // Mock partiel du service CategoryService
+    // Simulation du service avec BehaviorSubjects
     categoryService = {
-      categoriesProjections: mockCategorySubject,
-      currentCategoriesProjection: of(defaultCategories),
+      categoriesProjections: new BehaviorSubject<CategoriesProjections | null>(null),
+      currentCategoriesProjection: new BehaviorSubject<CategoriesProjections | null>(mockCategories),
       getAllCategoriesWithPagination: jasmine.createSpy('getAllCategoriesWithPagination').and.returnValue(of()),
     };
 
-    // Configuration du module de test
     await TestBed.configureTestingModule({
       imports: [CategoriesComponent],
       providers: [
@@ -58,117 +57,104 @@ describe('CategoriesComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             params: of({ id: '1' }),
-            snapshot: {
-              paramMap: {
-                get: (key: string) => '1',
-              },
-            },
-          },
-        },
-      ],
+            snapshot: { paramMap: { get: (key: string) => '1' } }
+          }
+        }
+      ]
     }).compileComponents();
 
-    // Création du composant et initialisation
     fixture = TestBed.createComponent(CategoriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
+  // Vérifie que le composant se crée sans erreur
   it('should create', () => {
-    // Vérifie que le composant est créé correctement
     expect(component).toBeTruthy();
   });
 
-  it('should fetch category on initialization', () => {
-    // Vérifie que la méthode getAllCategoriesWithPagination a été appelée lors de l'initialisation
+  // Vérifie que les données sont chargées à l'initialisation
+  it('should fetch categories on initialization', () => {
     expect(categoryService.getAllCategoriesWithPagination).toHaveBeenCalled();
   });
 
-  it('should have categories populated from observable', () => {
-    // Simule l'arrivée de données dans le BehaviorSubject
-    mockCategorySubject.next(defaultCategories);
+  // Vérifie que les catégories sont bien affectées au composant
+  it('should set categoriesProjection on initialization', () => {
+    categoryService.currentCategoriesProjection.next(mockCategories);
     fixture.detectChanges();
-
-    // Vérifie que la propriété categories du composant a bien été mise à jour
-    expect(component.categories).toEqual(defaultCategories);
+    expect(component.categories).toEqual(mockCategories);
   });
 
-  it('should display categories with correct data', () => {
-    // Assigne manuellement des catégories au composant
-    component.categories = defaultCategories;
-    fixture.detectChanges();
-
-    // Vérifie que les cartes affichées correspondent bien aux catégories
-    const cards = fixture.nativeElement.querySelectorAll('ui-card');
-    expect(cards.length).toBe(2);
-
-    // Vérifie que les titres affichés sont corrects
-    const titles = fixture.nativeElement.querySelectorAll('.card-genre__title');
-    expect(titles[0].textContent).toContain('Naruto');
-    expect(titles[1].textContent).toContain('Bleach');
-  });
-
-  it('should handle empty category list', async () => {
-    // Données avec liste vide
-    const emptyCategories: CategoriesProjections = {
-      content: [],
-      size: 0,
-      totalElements: 0,
-      totalPages: 0,
-    };
-
-    // Réinitialisation du TestBed pour tester le cas d'une liste vide
-    await TestBed.resetTestingModule().configureTestingModule({
-      imports: [CategoriesComponent],
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
+  // Vérifie l'affichage des images dans la carte
+  it('should display categories images correctly', () => {
+    component.categories = {
+      content: [
         {
-          provide: CategoryService,
-          useValue: {
-            categoriesProjections: new BehaviorSubject<CategoriesProjections | null>(null),
-            currentCategoriesProjection: of(emptyCategories),
-            getAllCategoriesWithPagination: jasmine.createSpy().and.returnValue(of()),
-          },
-        },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ id: '1' }),
-            snapshot: {
-              paramMap: {
-                get: () => '1',
-              },
-            },
-          },
-        },
+          id: 13,
+          label: 'Naruto',
+          description: 'Un manga Shonen populaire',
+          createdAt: new Date(),
+          url: 'https://example.com/naruto.jpg',
+        }
       ],
-    }).compileComponents();
-
-    // Création du composant dans ce nouveau contexte
-    fixture = TestBed.createComponent(CategoriesComponent);
-    component = fixture.componentInstance;
+      size: 8,
+      totalElements: 1,
+      totalPages: 1
+    };
     fixture.detectChanges();
-
-    // Vérifie que la liste des catégories est bien vide dans le composant
-    expect(component.categories?.content?.length).toBe(0);
-
-    // Vérifie que rien n'est affiché dans l'UI
-    const cards = fixture.nativeElement.querySelectorAll('ui-card');
-    expect(cards.length).toBe(0);
+    const img = fixture.nativeElement.querySelector('.image');
+    expect(img.src).toBe('https://example.com/naruto.jpg');
   });
 
+  // Vérifie la pagination : boutons, clics, méthodes appelées
+  it('should display pagination buttons and call the right methods', () => {
+    spyOn(component, 'pagePrevious');
+    spyOn(component, 'pageNext');
+    spyOn(component, 'pageCategories');
+
+    component.pages = [0, 1, 2];
+    component.currentPage = 0;
+    component.lastPage = 3;
+
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button');
+    expect(buttons.length).toBe(5);
+
+    expect(buttons[1].textContent.trim()).toBe('1');
+    expect(buttons[2].textContent.trim()).toBe('2');
+    expect(buttons[3].textContent.trim()).toBe('3');
+
+    buttons[0].click();
+    expect(component.pagePrevious).toHaveBeenCalled();
+
+    buttons[2].click();
+    expect(component.pageCategories).toHaveBeenCalledWith(1);
+
+    buttons[4].click();
+    expect(component.pageNext).toHaveBeenCalled();
+  });
+
+  // Vérifie le titre affiché
+  it('should have the correct title', () => {
+    const titleElement = fixture.nativeElement.querySelector('h1');
+    expect(titleElement.textContent).toBe('Catégories');
+  });
+
+  // Gère une erreur émise par le service
   it('should handle error from getAllCategoriesWithPagination', () => {
-    // Simule une erreur lors de l'appel à getAllCategoriesWithPagination
-    (categoryService.getAllCategoriesWithPagination as jasmine.Spy).and.returnValue(
+    categoryService.getAllCategoriesWithPagination.and.returnValue(
       throwError(() => new Error('Erreur'))
     );
-
-    // Appel manuel de ngOnInit pour déclencher la méthode
     component.ngOnInit();
     fixture.detectChanges();
-
-    // Vérifie que la méthode a bien été appelée
     expect(categoryService.getAllCategoriesWithPagination).toHaveBeenCalled();
+  });
+
+  // Gère le cas où aucune catégorie n’est retournée
+  it('should handle null currentCategoriesProjection gracefully', () => {
+    categoryService.currentCategoriesProjection.next(null);
+    fixture.detectChanges();
+    expect(component.categories).toBeNull();
   });
 });
