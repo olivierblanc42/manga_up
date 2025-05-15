@@ -163,6 +163,7 @@ describe('GenresComponent', () => {
     buttons[4].click();
     expect(component.pageNext).toHaveBeenCalled();
   });
+
   
    
 });

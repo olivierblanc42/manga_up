@@ -210,6 +210,9 @@ describe('AuteursComponent', () => {
   });
   
 
-
+  it('should have the correct title', () => {
+    const titleElement = fixture.nativeElement.querySelector('h1');
+    expect(titleElement.textContent).toBe('Auteurs');
+  });
  
 });
