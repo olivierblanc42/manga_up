@@ -4,31 +4,37 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { GenreService } from '../../service/genre.service';
 import { GenreProjections } from '../../type';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 describe('GenresComponent', () => {
   let component: GenresComponent;
   let fixture: ComponentFixture<GenresComponent>;
-  let genreService: Partial<GenreService>;
+  let genreService: {
+    genresProjectionPaginations: BehaviorSubject<GenreProjections | null>,
+    currentGenresProjectionPaginations: BehaviorSubject<GenreProjections | null>,
+    getAllGenreWithPagination: jasmine.Spy
+  };
+
+  // Données de test par défaut
+  const mockGenres: GenreProjections = {
+    content: [
+      {
+        id: 12,
+        label: 'Romance',
+        createdAt: new Date('2025-04-17T15:43:41'),
+        url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp'
+      }
+    ],
+    size: 8,
+    totalElements: 1,
+    totalPages: 1
+  };
 
   beforeEach(async () => {
-    // Mock du service avec les observables nécessaires
     genreService = {
       genresProjectionPaginations: new BehaviorSubject<GenreProjections | null>(null),
-      currentGenresProjectionPaginations: of({
-        content: [
-          {
-            url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp',
-            id: 12,
-            label: 'Romance',
-            createdAt: new Date('2025-04-17T15:43:41')
-          },
-        ],
-        size: 8,
-        totalElements: 2,
-        totalPages: 1
-      }),
+      currentGenresProjectionPaginations: new BehaviorSubject<GenreProjections | null>(mockGenres),
       getAllGenreWithPagination: jasmine.createSpy('getAllGenreWithPagination').and.returnValue(of())
     };
 
@@ -42,11 +48,7 @@ describe('GenresComponent', () => {
           provide: ActivatedRoute,
           useValue: {
             params: of({ id: '1' }),
-            snapshot: {
-              paramMap: {
-                get: (key: string) => '1'
-              }
-            }
+            snapshot: { paramMap: { get: () => '1' } }
           }
         }
       ]
@@ -57,81 +59,38 @@ describe('GenresComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should fetch genres on init', () => {
-    // Vérifie que la méthode de récupération des genres est bien appelée au démarrage
-    expect(genreService.getAllGenreWithPagination).toHaveBeenCalled();
-  });
-
-  it('should have genres populated from observable', () => {
-    // Simule l’arrivée de données dans le BehaviorSubject pour tester la mise à jour du composant
-    genreService.genresProjectionPaginations!.next({
-      content: [
-        {
-          url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp',
-          id: 12,
-          label: 'Romance',
-          createdAt: new Date('2025-04-17T15:43:41')
-        },
-      ],
-      size: 8,
-      totalElements: 2,
-      totalPages: 1
-    });
-    // On force Angular à détecter les changements
-    fixture.detectChanges(); 
-
-    // On s'assure que les genres dans le composant correspondent bien à ceux envoyés par le service
-    expect(component.genres).toEqual({
-      content: [
-        {
-          url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp',
-          id: 12,
-          label: 'Romance',
-          createdAt: new Date('2025-04-17T15:43:41')
-        },
-      ],
-      size: 8,
-      totalElements: 2,
-      totalPages: 1
-    });
-  });
-
-  it('should display genres images correctly', () => {
-    // On prépare le composant avec un genre pour tester l'affichage de l'image
-    component.genres = {
-      content: [
-        {
-          url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp',
-          id: 12,
-          label: 'Romance',
-          createdAt: new Date('2025-04-17T15:43:41')
-        }
-      ],
-      size: 8,
-      totalElements: 2,
-      totalPages: 1
-    };
-
-    fixture.detectChanges();
-
-    const img = fixture.nativeElement.querySelector('.image');
-    // Vérifie que la source de l'image correspond bien à l'URL attendue
-    expect(img.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
-  });
-
+  // Vérifie que le composant est bien créé
   it('should create', () => {
-    // Simple test de création du composant
     expect(component).toBeTruthy();
   });
 
+  // Vérifie que la récupération des genres est bien appelée à l'initialisation
+  it('should fetch genres on init', () => {
+    expect(genreService.getAllGenreWithPagination).toHaveBeenCalled();
+  });
 
-//Simple Test pour le titre de la page 
-   it('should have the correct title',()=>{
-     const titleElement = fixture.nativeElement.querySelector('h1');
-     expect(titleElement.textContent).toBe('Genres');
-   });
+  // Vérifie que les genres sont bien affectés via l'observable
+  it('should set genres from observable', () => {
+    genreService.currentGenresProjectionPaginations.next(mockGenres);
+    fixture.detectChanges();
+    expect(component.genres).toEqual(mockGenres);
+  });
 
-// Test de pagination 
+  // Vérifie que les images s'affichent correctement
+  it('should display genres images correctly', () => {
+    component.genres = mockGenres;
+    fixture.detectChanges();
+    const img = fixture.nativeElement.querySelector('.image');
+    expect(img.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
+  });
+
+  // Vérifie le titre de la page
+  it('should have the correct title', () => {
+    const titleElement = fixture.nativeElement.querySelector('h1');
+    expect(titleElement.textContent).toBe('Genres');
+  });
+
+  // Vérifie l'affichage de la pagination et les méthodes appelées
   it('should display pagination buttons and call the right methods', () => {
     spyOn(component, 'pagePrevious');
     spyOn(component, 'pageNext');
@@ -144,27 +103,36 @@ describe('GenresComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toBe(5); // 1 Previous + 3 pages + 1 Next
+    expect(buttons.length).toBe(5); // Previous + 3 pages + Next
 
-    // Vérifie que le texte des boutons de pages est correct
     expect(buttons[1].textContent.trim()).toBe('1');
     expect(buttons[2].textContent.trim()).toBe('2');
     expect(buttons[3].textContent.trim()).toBe('3');
 
-    // Clique sur Previous
     buttons[0].click();
     expect(component.pagePrevious).toHaveBeenCalled();
 
-    // Clique sur page 1 (qui est en fait index 0 dans le tableau)
-    buttons[2].click(); // page 2
+    buttons[2].click();
     expect(component.pageGenres).toHaveBeenCalledWith(1);
 
-    // Clique sur Next
     buttons[4].click();
     expect(component.pageNext).toHaveBeenCalled();
   });
 
-  
-   
-});
+  // Vérifie que l'absence de données ne casse pas le composant
+  it('should handle null currentGenresProjectionPaginations gracefully', () => {
+    genreService.currentGenresProjectionPaginations.next(null);
+    fixture.detectChanges();
+    expect(component.genres).toBeNull();
+  });
 
+  // Vérifie que le composant gère correctement une erreur du service
+  it('should handle error from getAllGenreWithPagination', () => {
+    genreService.getAllGenreWithPagination.and.returnValue(
+      throwError(() => new Error('Erreur'))
+    );
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(genreService.getAllGenreWithPagination).toHaveBeenCalled();
+  });
+});
