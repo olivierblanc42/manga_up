@@ -28,8 +28,7 @@
                             {{author.firstname}} {{author.lastname}}
                             }
                         </div>
-                        <div><span>Année de sortie:</span> {{manga?.releaseDate}}</div>
-                        <div><span>Prix:</span> {{manga?.price}} €</div>
+                        <p><span>Année de publication:</span> {{ getYearFromDate(manga?.releaseDate) }}</p>                        <div><span>Prix:</span> {{manga?.price}} €</div>
                         <div><span>France:</span> Oui</div>
                     </div>
                 </div>

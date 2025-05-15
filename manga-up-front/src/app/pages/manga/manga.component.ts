@@ -3,13 +3,15 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MangaService } from './../../service/manga.service';
 import { FavoriteButtonComponent } from "../../components/favorite-button/favorite-button.component";
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manga',
   standalone: true,
   templateUrl: './manga.component.html',
   styleUrls: ['./manga.component.scss'],
-  imports: [FavoriteButtonComponent]
+  imports: [FavoriteButtonComponent],
+  providers: [DatePipe]
 })
 export class MangaComponent implements OnInit {
   id: string | null = null; 
@@ -19,7 +21,9 @@ export class MangaComponent implements OnInit {
   constructor(
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
     @Inject(Router) private router: Router,
-    private mangaService: MangaService) { }
+    private mangaService: MangaService,
+    private datePipe: DatePipe
+  ) { }
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -35,4 +39,14 @@ export class MangaComponent implements OnInit {
     })
     
   }
+
+  getYearFromDate(dateString?: string | Date): string {
+    if (!dateString) {
+      return '';
+    }
+    return this.datePipe.transform(dateString, 'yyyy') || '';
+  }
+  
+
+
 }

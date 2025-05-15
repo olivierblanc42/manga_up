@@ -106,8 +106,8 @@ describe('AuteurComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should fetch author on initialization', async () => {
-  });
+  // it('should fetch author on initialization', async () => {
+  // });
 
 
   it('should create', () => {
