@@ -131,8 +131,39 @@ describe('GenresComponent', () => {
      expect(titleElement.textContent).toBe('Genres');
    });
 
+// Test de pagination 
+  it('should display pagination buttons and call the right methods', () => {
+    spyOn(component, 'pagePrevious');
+    spyOn(component, 'pageNext');
+    spyOn(component, 'pageGenres');
 
+    component.pages = [0, 1, 2];
+    component.currentPage = 0;
+    component.lastPage = 3;
 
+    fixture.detectChanges();
+
+    const buttons = fixture.nativeElement.querySelectorAll('button');
+    expect(buttons.length).toBe(5); // 1 Previous + 3 pages + 1 Next
+
+    // Vérifie que le texte des boutons de pages est correct
+    expect(buttons[1].textContent.trim()).toBe('1');
+    expect(buttons[2].textContent.trim()).toBe('2');
+    expect(buttons[3].textContent.trim()).toBe('3');
+
+    // Clique sur Previous
+    buttons[0].click();
+    expect(component.pagePrevious).toHaveBeenCalled();
+
+    // Clique sur page 1 (qui est en fait index 0 dans le tableau)
+    buttons[2].click(); // page 2
+    expect(component.pageGenres).toHaveBeenCalledWith(1);
+
+    // Clique sur Next
+    buttons[4].click();
+    expect(component.pageNext).toHaveBeenCalled();
+  });
+  
    
 });
 
