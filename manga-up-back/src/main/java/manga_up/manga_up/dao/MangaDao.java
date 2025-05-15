@@ -22,13 +22,20 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
   Page<Manga> findMangasByPage(Pageable pageable);
 
   @Query(value = """
-          SELECT m.Id_mangas AS id, m.title AS title, p.Id_picture AS pictureId, p.url AS pictureUrl
-          FROM manga m
-          JOIN picture p ON m.Id_mangas = p.Id_mangas
-          WHERE p.is_main = 1
+      SELECT
+          m.Id_mangas AS id,
+          m.title AS title,
+          p.Id_picture AS pictureId,
+          p.url AS pictureUrl,
+          GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
+      FROM manga m
+      JOIN picture p ON m.Id_mangas = p.Id_mangas
+      JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+      JOIN author a ON a.id_authors = ma.id_authors
+      WHERE p.is_main = 1
+      GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
       """, nativeQuery = true)
   Page<MangaBaseProjection> findMangasWithMainPictures(Pageable pageable);
-
 
   @Query("SELECT DISTINCT m FROM Manga m " +
       "LEFT JOIN FETCH m.authors a " +

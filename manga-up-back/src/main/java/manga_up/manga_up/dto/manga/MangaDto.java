@@ -27,6 +27,7 @@ public class MangaDto implements Serializable {
     @Size(max = 50)
     private final String summary;
     private final BigDecimal priceHt;
+    private final BigDecimal price;
     private final Boolean inStock;
     private final Boolean active;
     @NotNull
@@ -38,12 +39,13 @@ public class MangaDto implements Serializable {
     private final Set<PictureLightDto> pictures;
     private final Set<UserFavoriteDto> usersFavorites;
 
-    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<GenreLightDto> genres, Set<AuthorLigthDto> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
+    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt,BigDecimal price, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<GenreLightDto> genres, Set<AuthorLigthDto> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
         this.title = title;
         this.subtitle = subtitle;
         this.releaseDate = releaseDate;
         this.summary = summary;
         this.priceHt = priceHt;
+        this.price = price;
         this.inStock = inStock;
         this.active = active;
         this.idCategories = idCategories;
@@ -71,6 +73,10 @@ public class MangaDto implements Serializable {
 
     public BigDecimal getPriceHt() {
         return priceHt;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public Boolean getInStock() {

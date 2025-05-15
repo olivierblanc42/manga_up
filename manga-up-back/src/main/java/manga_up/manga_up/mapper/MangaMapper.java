@@ -35,6 +35,7 @@ public class MangaMapper {
                 manga.getReleaseDate(),
                 manga.getSummary(),
                 manga.getPriceHt(),
+                manga.getPrice(),
                 manga.getInStock(),
                 manga.getActive(),
                 categoryMapper.toLittleDtoCategory(manga.getIdCategories()),
@@ -53,6 +54,7 @@ public class MangaMapper {
         manga.setReleaseDate(mangaDto.getReleaseDate());
         manga.setSummary(mangaDto.getSummary());
         manga.setPriceHt(mangaDto.getPriceHt());
+        manga.setPrice(mangaDto.getPrice());
         manga.setInStock(mangaDto.getInStock());
         manga.setActive(mangaDto.getActive());
         manga.setIdCategories(categoryMapper.categoryLittleDto(mangaDto.getIdCategories()));
