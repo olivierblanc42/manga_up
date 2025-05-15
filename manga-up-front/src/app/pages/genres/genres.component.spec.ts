@@ -96,7 +96,7 @@ describe('GenresComponent', () => {
     });
   });
 
-  it('should display category images correctly', () => {
+  it('should display genres images correctly', () => {
     // On prépare le composant avec un genre pour tester l'affichage de l'image
     component.genres = {
       content: [
