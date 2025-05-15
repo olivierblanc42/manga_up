@@ -26,6 +26,7 @@ import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.projection.genre.GenreProjection;
@@ -227,4 +228,19 @@ public class PublicController {
         return categoryService.getCategoryWithMangas(categoryId, pageable);
     }
 
+
+
+    // TEst
+    @Operation(summary = "All manga Search")
+    @ApiResponse(responseCode = "201", description = "All manga have been retrived")
+    @GetMapping("test/pagination/{letter}")
+    public ResponseEntity<Page<MangaBaseProjection>> getAllTest(@PathVariable String letter,
+            @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+        LOGGER.info("Find all manga with pagination");
+        Page<MangaBaseProjection> manga = mangaService.getTitle(letter, pageable);
+        LOGGER.info("Found {} addresses", manga.getTotalElements());
+        return new ResponseEntity<>(manga, HttpStatus.OK);
+    }
+
+  
 }
