@@ -233,7 +233,7 @@ public class PublicController {
     // TEst
     @Operation(summary = "All manga Search")
     @ApiResponse(responseCode = "201", description = "All manga have been retrived")
-    @GetMapping("test/pagination/{letter}")
+    @GetMapping("search/{letter}")
     public ResponseEntity<Page<MangaBaseProjection>> getAllTest(@PathVariable String letter,
             @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all manga with pagination");
