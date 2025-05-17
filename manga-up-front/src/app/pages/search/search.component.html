@@ -1,1 +1,58 @@
-<p>search works!</p>
+<section class="section">
+    <div class="section__title">
+        <h1>Mangas</h1>
+    </div>
+    <div class="section__grid">
+        @for (manga of mangas?.content; track $index) {
+        <ui-card size="card-manga">
+            <img class="image" src="{{manga.pictureUrl}}" alt="Image du manga  {{manga.title}}">
+            <div>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+
+            </div>
+
+            <a [routerLink]="'/manga/' + manga.id" class="btn btn-card"
+                [attr.aria-label]="'Voir la fiche de ' + manga.title">
+                <img src="svg/mdi_magnify.svg">
+                <p>voir plus</p>
+            </a>
+        </ui-card>
+        }
+
+
+    </div>
+    <nav role="navigation" aria-label="Pagination">
+        <ul class="pagination">
+            @for(page of pages; track page; let count=$index){
+            @if(count===0){
+            <li>
+                <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page précédente"
+                    class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg">
+                    Previous
+                </button>
+            </li>
+            }
+
+            <li>
+                <button (click)="pageMangas(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                    [attr.aria-label]="'Page ' + (count + 1)"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-black bg-white border border-gray-300">
+                    {{count + 1}}
+                </button>
+            </li>
+
+            @if(count===lastPage-1){
+            <li>
+                <button (click)="pageNext()"
+                    [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page suivante"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg">
+                    Next
+                </button>
+            </li>
+            }
+            }
+        </ul>
+    </nav>
+</section>

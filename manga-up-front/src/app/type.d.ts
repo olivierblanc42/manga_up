@@ -362,6 +362,21 @@ export type MangaPaginations = {
     totalPages: number;
 }
 
+
+export type MangaBaseProjection = {
+    id: number;
+    title: string;
+    idImage: number;
+    pictureUrl: string;
+    authorFullName: string;
+}
+export type MangaBaseProjections = {
+    content: MangaBaseProjection[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
+
 //UserAddress
 export type UserAddress = {
     id: number;

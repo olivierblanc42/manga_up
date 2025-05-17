@@ -5,9 +5,10 @@ import { CardComponent } from "./components/card/card.component";
 import { AuthService } from './service/auth.service';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, BreadcrumbComponent,CommonModule],
+  imports: [RouterOutlet, RouterModule, BreadcrumbComponent, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   standalone: true
@@ -16,6 +17,7 @@ export class AppComponent  implements OnInit {
   title = 'manga-up-front';
   sidenav = viewChild<ElementRef<HTMLElement>>('mySidenav');
   isAdmin: boolean = false;
+  searchTerm = '';
 
 
   constructor(private router: Router, private authService: AuthService) {
@@ -48,7 +50,11 @@ export class AppComponent  implements OnInit {
       element.nativeElement.style.width = '0';
     }
   }
-
+  redirect() {
+    if (this.searchTerm.trim()) {
+      this.router.navigate(['/search', this.searchTerm.trim().toLowerCase()]);
+    }
+  }
 }
 
 

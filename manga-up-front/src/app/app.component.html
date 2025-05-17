@@ -5,9 +5,9 @@
         <img class="logo" src="images/manga-up-logo.webp" alt="Logo de Manga UP">
       </a>
       <div>
-        <form class="search" action="">
-          <input type="text" name="query" placeholder="Rechercher..." required aria-label="Champ de recherche">
-        </form>
+        <form class="search" (ngSubmit)="redirect()">
+          <input type="text" name="query" [(ngModel)]="searchTerm" placeholder="Rechercher..." required />
+          <button type="submit">🔍</button> </form>
       </div>
       <div class="first-nav__icons">
         <a [routerLink]="'/account/'" aria-label="Mon compte"><img src="svg/mdi_user.svg" alt="Icône utilisateur"
