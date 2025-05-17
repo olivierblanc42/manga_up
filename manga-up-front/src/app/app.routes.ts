@@ -22,6 +22,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './service/auth.guard';
 import { RoleGuard } from './service/role.guard'; // Le guard de rôle
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
+import { SearchComponent } from './pages/search/search.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -38,8 +39,11 @@ export const routes: Routes = [
     { path: 'manga/:id', component: MangaComponent },
     { path: "cart", component: CartComponent },
     { path: "login", component: LoginComponent },
-
-    // Routes administratives protégées par RoleGuard
+    {
+        path: 'search/:query',
+        loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent)
+      } , 
+        // Routes administratives protégées par RoleGuard
     {
         path: 'admin', component: AdminLayoutComponent,
         canActivate: [AuthGuard, RoleGuard], 
