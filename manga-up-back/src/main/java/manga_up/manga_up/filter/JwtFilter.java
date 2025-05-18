@@ -32,44 +32,62 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Vérification des URI à ne pas filtrer (comme Swagger)
         String requestURI = request.getRequestURI();
-
-
+        System.out.println("Request URI: " + requestURI);
 
         if (requestURI.startsWith("/v3/api-docs") ||
                 requestURI.startsWith("/swagger-ui") ||
                 requestURI.startsWith("/swagger-resources") ||
-                requestURI.startsWith("/webjars")|| 
+                requestURI.startsWith("/webjars") ||
                 requestURI.startsWith("/api/public")) {
+            System.out.println("Request excluded from JWT filtering: " + requestURI);
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Lire le JWT depuis le cookie
+        // Lecture du cookie JWT
         String jwt = null;
-        if (request.getCookies() != null) {
+        if (request.getCookies() == null) {
+            System.out.println("No cookies found");
+        } else {
             for (Cookie cookie : request.getCookies()) {
+                System.out.println("Cookie found: " + cookie.getName() + "=" + cookie.getValue());
                 if ("jwt".equals(cookie.getName())) {
                     jwt = cookie.getValue();
+                    System.out.println("JWT extracted from cookie");
                 }
             }
         }
 
-        // Vérification du JWT et authentification
-        if (jwt != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            String username = jwtUtils.extractUsername(jwt); // Extraire le username depuis le JWT
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-
-            if (jwtUtils.validateToken(jwt, userDetails)) {
-                // Créer un token d'authentification et l'ajouter au contexte de sécurité
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+        if (jwt == null) {
+            System.out.println("No JWT token present in cookies");
         }
+
+        if (jwt != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            try {
+                String username = jwtUtils.extractUsername(jwt);
+                System.out.println("Extracted username from JWT: " + username);
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+                if (jwtUtils.validateToken(jwt, userDetails)) {
+                    System.out.println("JWT token validated");
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    System.out.println("Security context set with authentication for user: " + username);
+                } else {
+                    System.out.println("JWT token validation failed");
+                }
+            } catch (Exception e) {
+                System.out.println("Exception during JWT token validation: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("JWT token is null or authentication already set");
+        }
+
         filterChain.doFilter(request, response);
     }
-
+    
 }
