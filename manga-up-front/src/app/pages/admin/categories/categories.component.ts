@@ -95,7 +95,7 @@ export class CategoriesAdminComponent implements OnInit {
 
       try {
         await this.categoryService.addCategory(newCat);
-        // Optionally, refresh the categories list here if needed
+        await this.loadCategories(); 
         this.closeModal();
       } catch (error) {
         console.error('Erreur lors de la création', error);
@@ -104,5 +104,19 @@ export class CategoriesAdminComponent implements OnInit {
       this.categoryForm.markAllAsTouched();
     }
   }
+
+  loadCategories() {
+    try {
+      this.categoryService.getAllCategoriesWithPagination();
+      this.categoryService.currentCategoriesProjection.subscribe((data) => {
+        this.categories = data;
+        this.pages = this.convertNumberToArray(this.categories?.totalPages!);
+        this.lastPage = this.categories?.totalPages!;
+      });
+    } catch (error) {
+      console.error('Erreur lors du chargement des catégories', error);
+    }
+  }
+  
   
 }
