@@ -1,7 +1,7 @@
-import { AuthorProjection, AuthorProjections, AuthorWithMangas, CategoriesProjections, MangasWithImages, MangaWithImages } from './../type.d';
+import { AuthorDto, AuthorProjection, AuthorProjections, AuthorWithMangas, CategoriesProjections, MangasWithImages, MangaWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
@@ -13,7 +13,8 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 export class AuthorService {
     url = "/api/public/authors/pagination";
     urlOne = "/api/public/author/"
-    
+    urlAdd = "/api/authors/add"
+
     options = {
         headers: new HttpHeaders({
             "Content-Type": "application/json",
@@ -34,6 +35,7 @@ export class AuthorService {
 
 
     currentAuthorOneProjection = this.authorOneProjection.asObservable();
+    authorDto = new BehaviorSubject<AuthorDto | null>(null);
 
 
     async getAllAuthorWithPagination(page: number = 0) {
@@ -68,6 +70,13 @@ export class AuthorService {
     }
 
 
+    async addAuthor(category: AuthorDto): Promise<AuthorDto> {
+        const response = await firstValueFrom(
+            this.http.post<AuthorDto>(this.urlAdd, category,{ withCredentials: true } )
+        );
 
+        this.authorDto.next(response);
+        return response; 
+    }
 
 }

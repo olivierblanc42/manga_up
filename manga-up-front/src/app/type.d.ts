@@ -117,6 +117,10 @@ export type AuthorDto = {
     lastname: string;
     firstname: string;
     description: string;
+    genre:string;
+    description:string;
+    createdAt: Date;
+    birthdate: Date;
 }
 
 export type AuthorLigthDto = {
