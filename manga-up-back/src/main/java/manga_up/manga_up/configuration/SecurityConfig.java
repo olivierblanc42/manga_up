@@ -4,6 +4,7 @@ import manga_up.manga_up.filter.JwtFilter;
 import manga_up.manga_up.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,25 +38,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/my-swagger/**",
-                                "/my-api-docs/**",
-                                "/api/auth/register",
-                                "/api/auth/login",
-                                "/api/public/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
+            return http
+                            .csrf(AbstractHttpConfigurer::disable)
+                            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                            .authorizeHttpRequests(auth -> auth
+                                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // <-- ajoute cette
+                                                                                                    // ligne ici
+                                            .requestMatchers(
+                                                            "/swagger-ui/**",
+                                                            "/v3/api-docs/**",
+                                                            "/swagger-ui.html",
+                                                            "/my-swagger/**",
+                                                            "/my-api-docs/**",
+                                                            "/api/auth/register",
+                                                            "/api/auth/login",
+                                                            "/api/public/**")
+                                            .permitAll()
+                                            .anyRequest().authenticated())
+                            .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
+                                            UsernamePasswordAuthenticationFilter.class)
+                            .build();
     }
-
+    
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
