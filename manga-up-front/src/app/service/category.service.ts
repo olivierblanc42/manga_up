@@ -60,7 +60,7 @@ export class CategoryService {
         }
     }
 
-    async addCategoryTest(category: CategoryDto): Promise<CategoryDto> {
+    async addCategory(category: CategoryDto): Promise<CategoryDto> {
         const response = await firstValueFrom(
             this.http.post<CategoryDto>(this.urlAdd, category,{ withCredentials: true } )
         );
@@ -69,14 +69,6 @@ export class CategoryService {
         return response; 
     }
       
-    addCategoryTest2(category: CategoryDto) {
-        firstValueFrom(this.http.post<CategoryDto>(this.urlAdd, category, { withCredentials: true }))
-            .then((r) => {
-                if (!r) return;
-                console.log(r)
-                this.categoryDto.next(r);
-            })
-    }
 
 
 

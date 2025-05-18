@@ -94,7 +94,7 @@ export class CategoriesAdminComponent implements OnInit {
       };
 
       try {
-        await this.categoryService.addCategoryTest(newCat);
+        await this.categoryService.addCategory(newCat);
         // Optionally, refresh the categories list here if needed
         this.closeModal();
       } catch (error) {
