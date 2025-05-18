@@ -118,5 +118,14 @@ export class CategoriesAdminComponent implements OnInit {
     }
   }
   
-  
+  async deleteCategory(id: number) {
+    const confirmed = confirm('Voulez-vous vraiment supprimer cet auteur ?');
+    if (!confirmed) return;
+    try {
+      await this.categoryService.deleteCategory(id);
+      this.loadCategories();
+    } catch (error) {
+      console.error('Erreur lors de la suppression', error);
+    }
+  }
 }

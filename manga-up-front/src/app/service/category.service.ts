@@ -11,7 +11,8 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 export class CategoryService {
-    url = "/api/public/categories/pagination";
+    url = "/api/categories"
+    urlPagination = "/api/public/categories/pagination";
     urlCategori = "/api/public/category/"; 
     urlAdd = "/api/categories/add";  
 
@@ -36,7 +37,7 @@ export class CategoryService {
 
     async getAllCategoriesWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<CategoriesProjections>(`${this.url}?page=${page}`));
+            const r = await lastValueFrom(this.http.get<CategoriesProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.categoriesProjections.next(r);
             console.log('Categories récupérés avec succès :', r);
@@ -69,7 +70,16 @@ export class CategoryService {
         return response; 
     }
       
+    async deleteCategory(id: number): Promise<CategoryDto> {
+        const response = await firstValueFrom(
+            this.http.delete<CategoryDto>(`${this.url}/${id}`, {
+                withCredentials: true
+            })
+        );
 
+        this.categoryDto.next(response);
+        return response;
+    }
 
 
 }
