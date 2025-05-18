@@ -78,4 +78,14 @@ public class Genre {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public String getDescritpion() {
+        return description;
+    }
+
+    public void setDescritpion(String description) {
+        this.description = description;
+    }
+
+
 }
