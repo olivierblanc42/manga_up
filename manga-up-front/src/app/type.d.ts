@@ -161,6 +161,7 @@ export type Category = {
 export type CategoryDto = {
     label: string;
     description: string;
+    url:String;
     createdAt: Date;
 }
 
