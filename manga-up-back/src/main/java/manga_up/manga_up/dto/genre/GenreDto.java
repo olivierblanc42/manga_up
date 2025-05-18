@@ -11,8 +11,7 @@ import java.util.Objects;
  */
 public class GenreDto implements Serializable {
 
-    @NotNull
-    private final Integer id;
+
     @NotNull
     @Size(max = 255)
     private String url;
@@ -20,18 +19,21 @@ public class GenreDto implements Serializable {
     @Size(max = 50)
     private final String label;
 
-    public GenreDto(Integer id, String url, String label) {
-        this.id = id;
+    private final String description;
+
+    public GenreDto( String url, String label, String description) {
         this.url = url;
         this.label = label;
+        this.description =description;
     }
     public String getLabel() {
         return label;
     }
 
 
-    public Integer getId() {
-        return id;
+ 
+    public String getDescription() {
+        return description;
     }
 
     public String getUrl() {
@@ -41,6 +43,9 @@ public class GenreDto implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+
+
 
     @Override
     public boolean equals(Object o) {
