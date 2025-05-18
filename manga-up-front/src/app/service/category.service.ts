@@ -1,7 +1,7 @@
-import { CategoriesProjections, CategoryProjection, CategoryWithMangas, MangasWithImages } from './../type.d';
+import { CategoriesProjections, CategoryDto, CategoryProjection, CategoryWithMangas, MangasWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
@@ -13,7 +13,7 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 export class CategoryService {
     url = "/api/public/categories/pagination";
     urlCategori = "/api/public/category/"; 
-    
+    urlAdd = "/api/categories/add";  
 
     options = {
         headers: new HttpHeaders({
@@ -32,7 +32,7 @@ export class CategoryService {
 
     categoriesWithManga = new BehaviorSubject<CategoryWithMangas | null>(null );
     currentcategoriesWithManga = this.categoriesWithManga.asObservable();
-
+    categoryDto = new BehaviorSubject<CategoryDto | null>(null);
 
     async getAllCategoriesWithPagination(page: number = 0) {
         try {
@@ -59,4 +59,25 @@ export class CategoryService {
             console.error('Erreur lors de la récupération des genres :', err);
         }
     }
+
+    async addCategoryTest(category: CategoryDto): Promise<CategoryDto> {
+        const response = await firstValueFrom(
+            this.http.post<CategoryDto>(this.urlAdd, category,{ withCredentials: true } )
+        );
+
+        this.categoryDto.next(response);
+        return response; 
+    }
+      
+    addCategoryTest2(category: CategoryDto) {
+        firstValueFrom(this.http.post<CategoryDto>(this.urlAdd, category, { withCredentials: true }))
+            .then((r) => {
+                if (!r) return;
+                console.log(r)
+                this.categoryDto.next(r);
+            })
+    }
+
+
+
 }
