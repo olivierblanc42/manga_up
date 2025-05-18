@@ -1,28 +1,74 @@
 <section class="section section-admin">
+    <button (click)="openModal()" class="btn btn-primary">+ Ajouter une catégorie</button>
+
+    <div class="modal" [class.show]="isModalOpen">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+
+            <div class="section-admin__title">
+                <h2>Nouvelle catégorie</h2>
+            </div>
+
+            <!-- Formulaire réactif -->
+            <form [formGroup]="categoryForm" (ngSubmit)="createCategory()">
+            
+                <label>Label</label>
+                <input type="text" formControlName="label" />
+                <div *ngIf="categoryForm.get('label')?.invalid && categoryForm.get('label')?.touched">
+                    <small>Le label est requis.</small>
+                </div>
+            
+                <label>Description</label>
+                <textarea formControlName="description"></textarea>
+                <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched">
+                    <small>La description est requise.</small>
+                </div>
+            
+                <label>Image URL</label>
+                <input type="text" formControlName="url" />
+                <div *ngIf="categoryForm.get('url')?.invalid && categoryForm.get('url')?.touched">
+                    <small>L'URL de l’image est requise.</small>
+                </div>
+            
+                <button type="submit" [disabled]="categoryForm.invalid">Créer</button>
+            </form>
+              
+              
+        </div>
+    </div>
 
     <div>
         <div class="section-admin__title">
             <h1>Catégories</h1>
         </div>
-        <table  class="section-admin__content"  >
+
+        <table class="section-admin__content">
             <thead>
                 <tr>
-                  <th scope="col">Titre</th>
-                  <th scope="col">Date de creation</th>
-                  <th scope="col">Prix</th>
-                  <th scope="col">Auteurs</th>
-                  <th scope="col">Actions</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date de création</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
                 </tr>
-              </thead>
+            </thead>
 
-
-  <tbody>
-    
-  </tbody>
-
-              
+            <tbody>
+                <tr *ngFor="let category of categories?.content; let i = index">
+                    <td>{{ category.label }}</td>
+                    <td>{{ category.createdAt | date:'dd/MM/yyyy' }}</td>
+                    <td><img class="image" [src]="category.url" alt="{{ category.label }}" /></td>
+                    <td>
+                        {{ category.description.length > 100 ? (category.description | slice:0:100) + '...' :
+                        category.description }}
+                    </td>
+                    <td>
+                        <a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-edit">Modifier</a>
+                        <a href="#" class="btn btn-delete" >Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-
 </section>
-
+  
