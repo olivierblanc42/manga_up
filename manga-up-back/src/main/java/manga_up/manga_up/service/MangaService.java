@@ -211,7 +211,7 @@ public class MangaService {
 
         String[] parts = categoryString.split(":");
         return new CategoryDto(
-                parts[0], parts[1]);
+                parts[0], parts[1],parts[2]);
     }
 
     private Set<GenreDto> parseGenre(String GenreDto) {
