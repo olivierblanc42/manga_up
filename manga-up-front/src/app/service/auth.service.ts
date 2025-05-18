@@ -10,7 +10,7 @@ import { AuthUserInfo } from '../type'; // adapte le chemin si besoin
 })
 export class AuthService {
     private apiUrl = 'http://localhost:8080/api/auth';
-    private apiRegisterUrl = 'http://localhost:8080/api/auth/register';
+    private apiRegisterUrl = 'api/auth/register';
     private apiGender = 'http://localhost:8080/api/public/genderUser';
 
 
