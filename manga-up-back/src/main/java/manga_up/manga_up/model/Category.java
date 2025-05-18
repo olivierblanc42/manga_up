@@ -56,7 +56,9 @@ public class Category {
     public String getDescription() {
         return description;
     }
-
+    public String getUrl(){
+        return url;
+    }
     public void setDescription(String description) {
         this.description = description;
     }
@@ -77,4 +79,7 @@ public class Category {
         this.mangas = mangas;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
