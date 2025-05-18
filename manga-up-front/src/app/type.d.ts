@@ -227,7 +227,8 @@ export type GenreLightDto = {
 export type GenreProjection = {
     id: number;
     label: string;
-    url: string;        
+    url: string;  
+    description: string;      
     createdAt: Date;
     
 };
