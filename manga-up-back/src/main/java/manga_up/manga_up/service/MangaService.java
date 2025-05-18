@@ -220,12 +220,13 @@ public class MangaService {
         }
 
         return Arrays.stream(GenreDto.split("\\|"))
-                .map(authorData -> {
-                    String[] parts = authorData.split("@");
+                .map(genreData -> {
+                    String[] parts = genreData.split("@");
                     return new GenreDto(
-                            Integer.parseInt(parts[0]),
+                            parts[0],
                             parts[1],
-                            parts[2]);
+                            parts[2]
+                            );
                 })
                 .collect(Collectors.toSet());
     }
