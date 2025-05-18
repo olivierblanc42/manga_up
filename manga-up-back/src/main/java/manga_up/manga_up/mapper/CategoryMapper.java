@@ -13,7 +13,8 @@ public class CategoryMapper {
     public CategoryDto toDtoCategory(Category category) {
                return new CategoryDto(
                        category.getLabel(),
-                       category.getDescription()
+                       category.getDescription(),
+                       category.getUrl()
                );
     }
 
@@ -21,6 +22,7 @@ public class CategoryMapper {
         Category category = new Category();
         category.setLabel(categoryDto.getLabel());
         category.setDescription(categoryDto.getDescription());
+        category.setUrl(categoryDto.getUrl());
         return category;
     }
 
