@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -18,13 +19,17 @@ public class AuthorDto implements Serializable {
     private final String firstname;
     @NotNull
     private final String description;
+    @NotNull
+    private final String genre;
+    @NotNull
+    private final LocalDate birthdate;
 
-
-
-    public AuthorDto( String lastname, String firstname, String description) {
+    public AuthorDto( String lastname, String firstname, String description, String genre, LocalDate birthdate) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.description = description;
+        this.genre = genre;
+        this.birthdate = birthdate;
     }
 
 
@@ -42,7 +47,13 @@ public class AuthorDto implements Serializable {
     }
 
 
+    public String getGenre() {
+        return genre;
+    }
 
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
 
 
     @Override

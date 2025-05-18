@@ -100,4 +100,21 @@ public class Author {
         this.mangas = mangas;
     }
 
+
+    public LocalDate getBirthdate() {
+        return createdAt;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
 }

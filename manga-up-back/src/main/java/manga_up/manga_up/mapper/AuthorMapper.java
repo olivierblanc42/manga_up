@@ -22,7 +22,9 @@ public class AuthorMapper {
         return new AuthorDto(
                 author.getFirstname(),
                 author.getLastname(),
-                author.getDescription()
+                author.getDescription(),
+                author.getGenre(),
+                author.getBirthdate()
 
         );
     }
@@ -34,6 +36,8 @@ public class AuthorMapper {
         author.setFirstname(authorDto.getFirstname());
         author.setLastname(authorDto.getLastname());
         author.setDescription(authorDto.getDescription());
+        author.setGenre(authorDto.getGenre());
+        author.setBirthdate(author.getBirthdate());
         return author;
     }
 

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -89,6 +90,9 @@ public class  AuthorService {
         author.setFirstname(authorDto.getFirstname());
         author.setLastname(authorDto.getLastname());
         author.setDescription(authorDto.getDescription());
+        author.setCreatedAt(LocalDate.now());
+        author.setBirthdate(authorDto.getBirthdate());
+        author.setGenre(authorDto.getGenre());
         authorDao.save(author);
         return authorMapper.toDtoAuthor(author);
     }
