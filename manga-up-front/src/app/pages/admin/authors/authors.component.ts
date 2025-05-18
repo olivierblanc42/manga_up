@@ -92,7 +92,7 @@ export class AuthorsAdminComponent implements OnInit {
 
       try {
         await this.authorService.addAuthor(newGen);
-        await this.loadGenres();
+        await this.loadAuthors();
         this.closeModal();
       } catch (error) {
         console.error('Erreur lors de la création', error);
@@ -102,7 +102,7 @@ export class AuthorsAdminComponent implements OnInit {
     }
   }
 
-  loadGenres() {
+  loadAuthors() {
     try {
       this.authorService.getAllAuthorWithPagination();
       this.authorService.currentauthorProjection.subscribe((data) => {
@@ -117,6 +117,16 @@ export class AuthorsAdminComponent implements OnInit {
     }
   }
 
-
+  async deleteAuthor(id: number) {
+    const confirmed = confirm('Voulez-vous vraiment supprimer cet auteur ?');
+    if (!confirmed) return;
+    try {
+      await this.authorService.deleteAuthor(id);
+      this.loadAuthors(); 
+    } catch (error) {
+      console.error('Erreur lors de la suppression', error);
+    }
+  }
+  
 
 }

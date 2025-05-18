@@ -11,9 +11,13 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 export class AuthorService {
-    url = "/api/public/authors/pagination";
+    url = "/api/authors/";
+    urlPagination = "/api/public/authors/pagination";
     urlOne = "/api/public/author/"
     urlAdd = "/api/authors/add"
+    
+
+
 
     options = {
         headers: new HttpHeaders({
@@ -40,7 +44,7 @@ export class AuthorService {
 
     async getAllAuthorWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<AuthorProjections>(`${this.url}?page=${page}`));
+            const r = await lastValueFrom(this.http.get<AuthorProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.authorProjection.next(r);
             console.log('Genres récupérés avec succès :', r);
@@ -70,13 +74,26 @@ export class AuthorService {
     }
 
 
-    async addAuthor(category: AuthorDto): Promise<AuthorDto> {
+    async addAuthor(author: AuthorDto): Promise<AuthorDto> {
         const response = await firstValueFrom(
-            this.http.post<AuthorDto>(this.urlAdd, category,{ withCredentials: true } )
+            this.http.post<AuthorDto>(this.urlAdd, author,{ withCredentials: true } )
         );
 
         this.authorDto.next(response);
         return response; 
     }
+
+
+    async deleteAuthor(id: number): Promise<AuthorDto> {
+        const response = await firstValueFrom(
+            this.http.delete<AuthorDto>(`${this.url}/${id}`, {
+                withCredentials: true
+            })
+        );
+
+        this.authorDto.next(response);
+        return response;
+    }
+      
 
 }

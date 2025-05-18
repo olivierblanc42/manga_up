@@ -91,7 +91,7 @@
                         </td>
                         <td>
                             <a [routerLink]="['/admin/categories/edit', author.id]" class="btn btn-edit">Modifier</a>
-                            <a href="#" class="btn btn-delete">Supprimer</a>
+                            <a href="#" class="btn btn-delete" (click)="deleteAuthor(author.id); $event.preventDefault()">Supprimer</a>
                         </td>
                     </tr>
                 </tbody> 
