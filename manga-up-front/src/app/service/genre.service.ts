@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWithImages, MangasWithImages } from '../type';
 
 
@@ -13,7 +13,7 @@ export class GenreService {
     url = "/api/public/genres/pagination";
     urlFour = "api/public/genres/four";
     urlGenre= "/api/public/genres/"
-
+    urlAdd = "/api/genres/add"
 
 
     options = {
@@ -36,6 +36,10 @@ export class GenreService {
 
     genreSolo = new BehaviorSubject<GenreWithMangas | null>(null);
     curentGenreSolo = this.genreSolo.asObservable();
+
+
+    genreDto = new BehaviorSubject<GenreDto | null>(null);
+
 
     async getAllGenreWithPagination(page: number = 0) {
         try {
@@ -80,5 +84,15 @@ export class GenreService {
         }
     }
 
+
+    async addGenre(category: GenreDto): Promise<GenreDto> {
+        const response = await firstValueFrom(
+            this.http.post<GenreDto>(this.urlAdd, category,{ withCredentials: true } )
+        );
+
+        this.genreDto.next(response);
+        return response; 
+    }
+      
     
 }
