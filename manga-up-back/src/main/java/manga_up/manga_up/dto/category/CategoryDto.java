@@ -15,13 +15,13 @@ public class CategoryDto implements Serializable {
     private final String label;
     @NotNull
     private final String description;
+    private final String url;
 
 
-
-    public CategoryDto(String label, String description) {
+    public CategoryDto(String label, String description,String url) {
         this.label = label;
         this.description = description;
-
+        this.url =url;
 
     }
 
@@ -33,6 +33,9 @@ public class CategoryDto implements Serializable {
         return description;
     }
 
+    public String getUrl(){
+        return url;
+    }
 
 
 
