@@ -4,20 +4,33 @@
         <div class="section-admin__title">
             <h1>Mangas:</h1>
         </div>
-        <table  class="section-admin__content"  >
-            <thead>
-                <tr>
-                  <th scope="col">Titre</th>
-                  <th scope="col">Date de creation</th>
-                  <th scope="col">Prix</th>
-                  <th scope="col">Auteurs</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-    
-              </tbody>
-        </table>
+<table class="section-admin__content">
+    <thead>
+        <tr>
+            <th scope="col">Titre</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Image</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let manga of mangas?.content; let i = index">
+            <td>{{ manga.title }}</td>
+            <td></td>
+            <td><img class="image" [src]="manga.pictureUrl" alt="{{ manga.title }}" /></td>
+            <td>
+               
+            </td>
+            <td>
+                <a [routerLink]="['/admin/categories/edit', manga.id]" class="btn btn-edit">Modifier</a>
+                <a href="#" class="btn btn-delete"
+                    >Supprimer</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
     </div>
 
 </section>
