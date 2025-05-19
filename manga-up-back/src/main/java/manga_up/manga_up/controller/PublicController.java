@@ -102,13 +102,14 @@ public class PublicController {
         return ResponseEntity.ok(mangaService.findMangaDtoById(id));
     }
 
+ 
     @Operation(summary = "All Mangas with pagination")
     @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
     @GetMapping("mangas/paginations")
-    public ResponseEntity<Page<MangaBaseProjection>> getAllMangaPicture(
-            @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+    public ResponseEntity<Page<MangaDtoRandom>> getAllMangaPictureTest(
+            @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all addresses with pagination");
-        Page<MangaBaseProjection> mangas = mangaService.getTest(pageable);
+        Page<MangaDtoRandom> mangas = mangaService.getPageMangas(pageable);
         LOGGER.info("Found {} addresses", mangas.getTotalElements());
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
@@ -241,6 +242,12 @@ public class PublicController {
         LOGGER.info("Found {} addresses", manga.getTotalElements());
         return new ResponseEntity<>(manga, HttpStatus.OK);
     }
+
+
+
+
+
+
 
   
 }
