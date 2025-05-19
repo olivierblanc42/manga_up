@@ -4,13 +4,18 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import manga_up.manga_up.dto.author.AuthorDto;
+import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
+import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +26,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -98,13 +106,63 @@ public class  AuthorService {
     }
 
 
-    public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
-        AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
-            .orElseThrow(() -> new RuntimeException("Author not found"));
+    // public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
+    //     AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
+    //         .orElseThrow(() -> new RuntimeException("Author not found"));
 
-        Page<MangaBaseProjection> mangas = mangaDao.findMangasByAuthor(authorId, pageable);
+    //     Page<MangaBaseProjection> mangas = mangaDao.findMangasByAuthor(authorId, pageable);
 
-        return new AuthorWithMangasResponse(author, mangas);
+    //     return new AuthorWithMangasResponse(author, mangas);
+    // }
+
+
+
+public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
+    // Récupération du genre
+    AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
+             .orElseThrow(() -> new RuntimeException("Author not found"));
+
+    // Récupération des mangas avec auteurs parsés
+    Page<MangaDtoRandom> mangas = findMangasByGenre2(authorId, pageable);
+
+    // Construction de la réponse
+    return new AuthorWithMangasResponse(author, mangas);
+}
+
+public Page<MangaDtoRandom> findMangasByGenre2(Integer genreId, Pageable pageable) {
+    Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByAuthor2(genreId, pageable);
+    return projections.map(this::mapToDto2);
+}
+
+private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
+    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+
+    return new MangaDtoRandom(
+            projection.getMangaId(),
+            projection.getTitle(),
+            authors,
+            projection.getPicture());
+}
+
+private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
+    if (authorsString == null || authorsString.isEmpty()) {
+        return Set.of();
     }
+
+    return Arrays.stream(authorsString.split("\\|"))
+            .map(authorData -> {
+                String[] parts = authorData.split(":");
+                if (parts.length < 3) {
+                    throw new IllegalArgumentException("Auteur mal formé : " + authorData);
+                }
+                return new AuthorDtoRandom(
+                        Integer.parseInt(parts[0]),
+                        parts[2], // lastname
+                        parts[1] // firstname
+                );
+            })
+            .collect(Collectors.toSet());
+}
+
 
 }
