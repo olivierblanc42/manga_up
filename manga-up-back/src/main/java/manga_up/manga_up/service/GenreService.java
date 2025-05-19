@@ -4,12 +4,15 @@ package manga_up.manga_up.service;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dao.MangaDao;
+import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreService {
@@ -115,10 +121,56 @@ public class GenreService {
 
 
 
+
+
+
+
+
+
 public GenreWithMangasResponse getGenreWithMangas(Integer genreId, Pageable pageable) {
+    // Récupération du genre
     GenreProjection genre = genreDao.findGenreProjectionById(genreId)
             .orElseThrow(() -> new EntityNotFoundException("Genre with id " + genreId + " not found"));
-    Page<MangaBaseProjection> mangas = mangaDao.findMangasByGenre(genreId, pageable);
+
+    // Récupération des mangas avec auteurs parsés
+    Page<MangaDtoRandom> mangas = findMangasByGenre2(genreId, pageable);
+
+    // Construction de la réponse
     return new GenreWithMangasResponse(genre, mangas);
+}
+
+public Page<MangaDtoRandom> findMangasByGenre2(Integer genreId, Pageable pageable) {
+    Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByGenre2(genreId, pageable);
+    return projections.map(this::mapToDto2);
+}
+
+private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
+    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+
+    return new MangaDtoRandom(
+            projection.getMangaId(),
+            projection.getTitle(),
+            authors,
+            projection.getPicture());
+}
+
+private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
+    if (authorsString == null || authorsString.isEmpty()) {
+        return Set.of();
+    }
+
+    return Arrays.stream(authorsString.split("\\|"))
+            .map(authorData -> {
+                String[] parts = authorData.split(":");
+                if (parts.length < 3) {
+                    throw new IllegalArgumentException("Auteur mal formé : " + authorData);
+                }
+                return new AuthorDtoRandom(
+                        Integer.parseInt(parts[0]),
+                        parts[2], // lastname
+                        parts[1] // firstname
+                );
+            })
+            .collect(Collectors.toSet());
 }
 }
