@@ -165,6 +165,9 @@ public class MangaService {
         return Arrays.stream(authorsString.split("\\|"))
                 .map(authorData -> {
                     String[] parts = authorData.split(":");
+                    if (parts.length < 3) {
+                        throw new IllegalArgumentException("Auteur mal formé : " + authorData);
+                    }
                     return new AuthorDtoRandom(
                             Integer.parseInt(parts[0]),
                             parts[2],
@@ -210,23 +213,29 @@ public class MangaService {
         }
 
         String[] parts = categoryString.split(":");
+        if (parts.length < 4) {
+            throw new IllegalArgumentException("Catégorie mal formée : " + categoryString);
+        }
+
         return new CategoryDto(
-                parts[0], parts[1],parts[2]);
+                Integer.parseInt(parts[0]),
+                parts[1],
+                parts[2],
+                parts[3]);
     }
 
-    private Set<GenreDto> parseGenre(String GenreDto) {
-        if (GenreDto == null || GenreDto.isEmpty()) {
+    private Set<GenreDto> parseGenre(String genreString) {
+        if (genreString == null || genreString.isEmpty()) {
             return Set.of();
         }
 
-        return Arrays.stream(GenreDto.split("\\|"))
+        return Arrays.stream(genreString.split("\\|"))
                 .map(genreData -> {
-                    String[] parts = genreData.split("@");
-                    return new GenreDto(
-                            parts[0],
-                            parts[1],
-                            parts[2]
-                            );
+                    String[] parts = genreData.split("@", -1);
+                    if (parts.length < 3) {
+                        throw new IllegalArgumentException("Genre mal formé : " + genreData);
+                    }
+                    return new GenreDto(parts[0], parts[1], parts[2]);
                 })
                 .collect(Collectors.toSet());
     }
@@ -315,5 +324,16 @@ public class MangaService {
         return mangaDao.findByTitleWithGenres(letter,pageable);
     }
     
+
+
+
+    public Page<MangaDtoRandom> getPageMangas(Pageable pageable) {
+        Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasWithMainPicturesTest(pageable);
+        return projections.map(this::mapToDto);
+    }
+
+
+ 
+
 
 }
