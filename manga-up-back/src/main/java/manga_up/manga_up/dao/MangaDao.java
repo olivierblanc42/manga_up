@@ -295,5 +295,30 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     Page<MangaProjectionWithAuthor> findMangasByAuthor2(@Param("authorId") Integer authorId, Pageable pageable);
 
 
-
+    @Query(value = """
+                    SELECT
+                        m.Id_mangas AS mangaId,
+                        m.title AS title,
+                        GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname)
+                            ORDER BY a.Id_authors SEPARATOR '|') AS authors,
+                        p.url AS picture
+                    FROM manga m
+                    JOIN picture p ON m.Id_mangas = p.Id_mangas
+                    JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+                    JOIN author a ON ma.id_authors = a.id_authors
+                    JOIN category c ON c.Id_categories = m.Id_categories
+                    WHERE p.is_main = 1
+                      AND c.Id_categories = :categoryId
+                    GROUP BY m.Id_mangas, m.title, p.url
+                    """, countQuery = """
+                    SELECT COUNT(DISTINCT m.Id_mangas)
+                    FROM manga m
+                    JOIN picture p ON m.Id_mangas = p.Id_mangas
+                    JOIN category c ON c.Id_categories = m.Id_categories
+                    WHERE p.is_main = 1
+                      AND c.Id_categories = :categoryId
+                    """, nativeQuery = true)
+    Page<MangaProjectionWithAuthor> findMangasByCategory2(@Param("categoryId") Integer categoryId,
+                    Pageable pageable);
+    
 }
