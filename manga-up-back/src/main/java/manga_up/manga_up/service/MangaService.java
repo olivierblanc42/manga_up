@@ -316,9 +316,9 @@ public class MangaService {
         return mangaMapper.mangaToMangaDto(manga);
     }
 
-    public Page<MangaBaseProjection> getTest(Pageable pageable) {
-        return mangaDao.findMangasWithMainPictures(pageable);
-    }
+    // public Page<MangaBaseProjection> getTest(Pageable pageable) {
+    //     return mangaDao.findMangasWithMainPictures(pageable);
+    // }
 
     public Page<MangaBaseProjection> getTitle(String letter,Pageable pageable) {
         return mangaDao.findByTitleWithGenres(letter,pageable);
