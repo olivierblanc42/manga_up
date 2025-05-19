@@ -10,6 +10,7 @@ import java.util.Objects;
  * DTO for {@link manga_up.manga_up.model.Category}
  */
 public class CategoryDto implements Serializable {
+    private final Integer id;
     @NotNull
     @Size(max = 50)
     private final String label;
@@ -18,11 +19,16 @@ public class CategoryDto implements Serializable {
     private final String url;
 
 
-    public CategoryDto(String label, String description,String url) {
+    public CategoryDto( Integer id,String label, String description,String url) {
+        this.id= id;
         this.label = label;
         this.description = description;
         this.url =url;
 
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getLabel() {
