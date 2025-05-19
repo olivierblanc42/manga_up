@@ -21,21 +21,21 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     @Query("From Author ")
     Page<Manga> findMangasByPage(Pageable pageable);
 
-    @Query(value = """
-            SELECT
-                m.Id_mangas AS id,
-                m.title AS title,
-                p.Id_picture AS pictureId,
-                p.url AS pictureUrl,
-                GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
-            FROM manga m
-            JOIN picture p ON m.Id_mangas = p.Id_mangas
-            JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
-            JOIN author a ON a.id_authors = ma.id_authors
-            WHERE p.is_main = 1
-            GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
-            """, nativeQuery = true)
-    Page<MangaBaseProjection> findMangasWithMainPictures(Pageable pageable);
+//     @Query(value = """
+//             SELECT
+//                 m.Id_mangas AS id,
+//                 m.title AS title,
+//                 p.Id_picture AS pictureId,
+//                 p.url AS pictureUrl,
+//                 GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
+//             FROM manga m
+//             JOIN picture p ON m.Id_mangas = p.Id_mangas
+//             JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+//             JOIN author a ON a.id_authors = ma.id_authors
+//             WHERE p.is_main = 1
+//             GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
+//             """, nativeQuery = true)
+//     Page<MangaBaseProjection> findMangasWithMainPictures(Pageable pageable);
 
     @Query("SELECT DISTINCT m FROM Manga m " +
             "LEFT JOIN FETCH m.authors a " +
@@ -267,5 +267,33 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                       AND gm.Id_gender_mangas = :genreId
                     """, nativeQuery = true)
     Page<MangaProjectionWithAuthor> findMangasByGenre2(@Param("genreId") Integer genreId, Pageable pageable);
+
+
+
+    @Query(value = """
+                    SELECT
+                        m.Id_mangas AS mangaId,
+                        m.title AS title,
+                        GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname)
+                            ORDER BY a.Id_authors SEPARATOR '|') AS authors,
+                        p.url AS picture
+                    FROM manga m
+                    JOIN picture p ON m.Id_mangas = p.Id_mangas
+                    JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
+                    JOIN author a ON am.Id_authors = a.Id_authors
+                    WHERE p.is_main = 1
+                      AND am.Id_authors = :authorId
+                    GROUP BY m.Id_mangas, m.title, p.url
+                    """, countQuery = """
+                    SELECT COUNT(DISTINCT m.Id_mangas)
+                    FROM manga m
+                    JOIN picture p ON m.Id_mangas = p.Id_mangas
+                    JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
+                    WHERE p.is_main = 1
+                      AND am.Id_authors = :authorId
+                    """, nativeQuery = true)
+    Page<MangaProjectionWithAuthor> findMangasByAuthor2(@Param("authorId") Integer authorId, Pageable pageable);
+
+
 
 }
