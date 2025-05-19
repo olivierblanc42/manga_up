@@ -24,6 +24,5 @@ public interface MangaProjection {
     Set<PictureLittleProjection> getPictures();
     Set<GenreLittleProjection> getGenres();
     Set<AuthorLittleProjection> getAuthors();
-   // Set<FavoriteProjection> getFavorites();
 
 }
