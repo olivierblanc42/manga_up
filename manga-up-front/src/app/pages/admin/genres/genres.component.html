@@ -56,17 +56,17 @@
             </thead>
     
             <tbody>
-                <tr *ngFor="let category of genres?.content; let i = index">
-                    <td>{{ category.label }}</td>
-                    <td>{{ category.createdAt | date:'dd/MM/yyyy' }}</td>
-                    <td><img class="image" [src]="category.url" alt="{{ category.label }}" /></td>
+                <tr *ngFor="let genre of genres?.content; let i = index">
+                    <td>{{ genre.label }}</td>
+                    <td>{{ genre.createdAt | date:'dd/MM/yyyy' }}</td>
+                    <td><img class="image" [src]="genre.url" alt="{{ genre.label }}" /></td>
                     <td>
-                        {{ category.description.length > 100 ? (category.description | slice:0:100) + '...' :
-                        category.description }}
+                        {{ genre.description.length > 100 ? (genre.description | slice:0:100) + '...' :
+                        genre.description }}
                     </td>
                     <td>
-                        <a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-edit">Modifier</a>
-                        <a href="#" class="btn btn-delete">Supprimer</a>
+                        <a [routerLink]="['/admin/categories/edit', genre.id]" class="btn btn-edit">Modifier</a>
+                        <a href="#" class="btn btn-delete" (click)="deleteGenre(genre.id); $event.preventDefault()">Supprimer</a>
                     </td>
                 </tr>
             </tbody>
