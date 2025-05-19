@@ -11,7 +11,7 @@ import { MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjecti
 export class MangaService{
     urlOne = "api/public/one";
     urlFourDate= "api/public/four";
-    urlPagination = "api/public/mangas/pagination";
+    urlPagination = "api/public/mangas/paginations";
     url = "/api/public/manga/"
     urlRandom ="/api/public/randomFour"
 
