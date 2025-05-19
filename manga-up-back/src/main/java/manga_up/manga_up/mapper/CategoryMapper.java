@@ -12,6 +12,7 @@ public class CategoryMapper {
 
     public CategoryDto toDtoCategory(Category category) {
                return new CategoryDto(
+                       category.getId(),
                        category.getLabel(),
                        category.getDescription(),
                        category.getUrl()
@@ -20,6 +21,7 @@ public class CategoryMapper {
 
     public Category toEntity(CategoryDto categoryDto) {
         Category category = new Category();
+        category.setId(categoryDto.getId());
         category.setLabel(categoryDto.getLabel());
         category.setDescription(categoryDto.getDescription());
         category.setUrl(categoryDto.getUrl());
