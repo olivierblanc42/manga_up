@@ -19,10 +19,8 @@ public interface GenreDao extends JpaRepository<Genre, Integer> {
     @Query("SELECT g FROM Genre g")
     Page<GenreProjection> findAllByPage(Pageable pageable);
 
-    @Query(value = "SELECT  genre.Id_gender_mangas ,genre.url, genre.label " +
-            "FROM genre  " +
-            "ORDER BY RAND() " +
-            "LIMIT 4 ", nativeQuery = true)
+    @Query(value = "SELECT genre.url, genre.label, genre.description " +
+            "FROM genre ORDER BY RAND() LIMIT 4", nativeQuery = true)
     List<GenreDto> findRandomGenres();
 
     @Query("SELECT g FROM Genre g LEFT JOIN FETCH g.mangas WHERE g.id = :genreId ")
