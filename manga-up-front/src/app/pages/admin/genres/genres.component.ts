@@ -114,5 +114,14 @@ export class GenresAdminComponent implements OnInit {
     }
   }
 
-
+  async deleteGenre(id: number) {
+    const confirmed = confirm('Voulez-vous vraiment supprimer cet auteur ?');
+    if (!confirmed) return;
+    try {
+      await this.genreService.deleteGenre(id);
+      this.loadGenres();
+    } catch (error) {
+      console.error('Erreur lors de la suppression', error);
+    }
+  }
 }
