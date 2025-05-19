@@ -18,7 +18,7 @@ public class GenreDto implements Serializable {
     @NotNull
     @Size(max = 50)
     private final String label;
-
+    @NotNull
     private final String description;
 
     public GenreDto( String url, String label, String description) {
