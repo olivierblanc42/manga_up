@@ -110,8 +110,8 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "m.subtitle, " +
             "m.summary, " +
             "m.price, " +
-            "GROUP_CONCAT(DISTINCT CONCAT(c.Id_categories, ':', c.label) SEPARATOR '|') AS categories, " +
-            "GROUP_CONCAT(DISTINCT CONCAT(g.Id_gender_mangas, '@' ,g.url, '@', g.label) SEPARATOR '|') AS genres, "
+            "GROUP_CONCAT(DISTINCT CONCAT(c.Id_categories, ':', c.label, ':', c.description,':',c.url) SEPARATOR '|') AS categories, " +
+            "GROUP_CONCAT(DISTINCT CONCAT(g.url, '@', g.label,'@', g.description) SEPARATOR '|') AS genres, "
             +
             "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, "
             +
