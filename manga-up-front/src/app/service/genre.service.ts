@@ -10,7 +10,8 @@ import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWith
 
 
 export class GenreService {
-    url = "/api/public/genres/pagination";
+    url ="/api/genres/"
+    urlPagination = "/api/public/genres/pagination";
     urlFour = "api/public/genres/four";
     urlGenre= "/api/public/genres/"
     urlAdd = "/api/genres/add"
@@ -43,7 +44,7 @@ export class GenreService {
 
     async getAllGenreWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<GenreProjections>(`${this.url}?page=${page}`));
+            const r = await lastValueFrom(this.http.get<GenreProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.genresProjectionPaginations.next(r);
             console.log('Genres récupérés avec succès :', r);
@@ -94,5 +95,15 @@ export class GenreService {
         return response; 
     }
       
+    async deleteGenre(id: number): Promise<GenreDto> {
+            const response = await firstValueFrom(
+                this.http.delete<GenreDto>(`${this.url}/${id}`, {
+                    withCredentials: true
+                })
+            );
     
+            this.genreDto.next(response);
+            return response;
+        }
+          
 }
