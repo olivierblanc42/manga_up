@@ -13,6 +13,8 @@ import { AdminLayoutComponent } from './pages/admin/admin-layout/admin-layout.co
 import { MangasAdminComponent } from './pages/admin/mangas/mangas.component';
 import { AuthorsAdminComponent } from './pages/admin/authors/authors.component';
 import { CategoriesAdminComponent } from './pages/admin/categories/categories.component';
+import { CategoryAdminComponent } from './pages/admin/category/category.component';
+
 import { GenresAdminComponent } from './pages/admin/genres/genres.component';
 import { UsersRegisterComponent } from './pages/users-register/users-register.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
@@ -23,6 +25,7 @@ import { AuthGuard } from './service/auth.guard';
 import { RoleGuard } from './service/role.guard'; // Le guard de rôle
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SearchComponent } from './pages/search/search.component';
+import { GenreAdminComponent } from './pages/admin/genre/genre.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -51,7 +54,9 @@ export const routes: Routes = [
         children: [
             { path: 'mangasAdmin', component: MangasAdminComponent },
             { path: 'genresAdmin', component: GenresAdminComponent },
+            { path: 'genre/:id', component: GenreAdminComponent },
             { path: 'categoriesAdmin', component: CategoriesAdminComponent },
+            { path: 'category/:id', component: CategoryAdminComponent },
             { path: 'authorsAdmin', component: AuthorsAdminComponent },
         ]
     },
