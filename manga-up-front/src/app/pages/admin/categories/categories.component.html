@@ -63,7 +63,7 @@
                         category.description }}
                     </td>
                     <td>
-                        <a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-edit">Modifier</a>
+                        <a [routerLink]="['/admin/category', category.id]" class="btn btn-edit">Modifier</a>
                         <a href="#" class="btn btn-delete" (click)="deleteCategory(category.id); $event.preventDefault()">Supprimer</a>
                     </td>
                 </tr>
