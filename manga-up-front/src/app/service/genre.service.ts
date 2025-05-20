@@ -106,4 +106,21 @@ export class GenreService {
             return response;
         }
           
+
+
+    async updateGenre(genre: GenreDto): Promise<GenreDto> {
+        try {
+            const urlWithId = `${this.url}/${genre.id}`; 
+            const updatedGenre = await lastValueFrom(
+                this.http.put<GenreDto>(urlWithId, genre, { withCredentials: true })
+            );
+            this.genreDto.next(updatedGenre);
+            return updatedGenre;
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de la catégorie :', error);
+            throw error;
+        }
+    }
+
+
 }
