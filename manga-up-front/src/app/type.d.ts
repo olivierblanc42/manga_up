@@ -163,6 +163,7 @@ export type Category = {
 }
 
 export type CategoryDto = {
+    id:number;
     label: string;
     description: string;
     url:String;
