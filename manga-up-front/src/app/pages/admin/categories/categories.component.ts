@@ -20,22 +20,19 @@ export class CategoriesAdminComponent implements OnInit {
 
   isModalOpen = false;
 
-  categoryForm: FormGroup;
+  categoryForm!: FormGroup;
 
   constructor(
     public categoryService: CategoryService,
     private fb: FormBuilder
   ) {
     this.currentPage = 0;
-    // Initialisation du formulaire réactif
-    this.categoryForm = this.fb.group({
-      label: ['', Validators.required],
-      description: ['', Validators.required],
-      url: ['', Validators.required]
-    });
+  
   }
 
   ngOnInit(): void {
+    this.initForm();
+
     console.log("in ngOnInit");
 
     this.categoryService.getAllCategoriesWithPagination();
@@ -45,6 +42,15 @@ export class CategoriesAdminComponent implements OnInit {
       this.pages = this.convertNumberToArray(this.categories?.totalPages!);
       this.lastPage = this.categories?.totalPages!;
       console.log("categories : ", this.categories);
+    });
+  }
+
+
+  initForm(): void {
+    this.categoryForm = this.fb.group({
+      label: ['', Validators.required],
+      description: ['', Validators.required],
+      url: ['', Validators.required]
     });
   }
 
@@ -104,6 +110,9 @@ export class CategoriesAdminComponent implements OnInit {
       this.categoryForm.markAllAsTouched();
     }
   }
+
+
+
 
   loadCategories() {
     try {
