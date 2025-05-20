@@ -1,1 +1,34 @@
-<p>category works!</p>
+<div class="category-form-container" *ngIf="categoryForm">
+    <h2>Modifier la catégorie</h2>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label for="label">Libellé</label>
+            <input id="label" type="text" formControlName="label" />
+            <div *ngIf="categoryForm.get('label')?.invalid && categoryForm.get('label')?.touched" class="error">
+                Le libellé est obligatoire.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"></textarea>
+            <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched"
+                class="error">
+                La description est obligatoire.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input id="url" type="text" formControlName="url" />
+            <div *ngIf="categoryForm.get('url')?.invalid && categoryForm.get('url')?.touched" class="error">
+                L’URL est obligatoire.
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="categoryForm.invalid">Enregistrer</button>
+    </form>
+</div>
+  
