@@ -82,4 +82,26 @@ export class CategoryService {
     }
 
 
+
+
+
+
+    
+
+
+    async updateCategory(category: CategoryDto): Promise<CategoryDto> {
+        try {
+            const urlWithId = `${this.url}/${category.id}`; 
+            const updatedCategory = await lastValueFrom(
+                this.http.put<CategoryDto>(urlWithId, category, { withCredentials: true })
+            );
+            this.categoryDto.next(updatedCategory);
+            return updatedCategory;
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour de la catégorie :', error);
+            throw error;
+        }
+    }
+    
+
 }
