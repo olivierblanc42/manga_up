@@ -114,6 +114,7 @@ export type AuthorProjections = {
 }
 
 export type AuthorDto = {
+    id:number;
     lastname: string;
     firstname: string;
     description: string;
