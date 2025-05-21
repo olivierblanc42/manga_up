@@ -26,6 +26,7 @@ import { RoleGuard } from './service/role.guard'; // Le guard de rôle
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SearchComponent } from './pages/search/search.component';
 import { GenreAdminComponent } from './pages/admin/genre/genre.component';
+import { AuthorAdminComponent } from './pages/admin/author/author.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -58,6 +59,8 @@ export const routes: Routes = [
             { path: 'categoriesAdmin', component: CategoriesAdminComponent },
             { path: 'category/:id', component: CategoryAdminComponent },
             { path: 'authorsAdmin', component: AuthorsAdminComponent },
+            { path: 'author/:id', component: AuthorAdminComponent },
+
         ]
     },
     { path: 'forbidden', component: ForbiddenComponent },
