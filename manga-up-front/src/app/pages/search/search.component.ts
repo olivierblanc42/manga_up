@@ -7,9 +7,10 @@ import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-search',
+  standalone: true,
   imports: [CardComponent, RouterModule, NgClass],
   templateUrl: './search.component.html',
-  styleUrl: './search.component.scss'
+  styleUrls: ['./search.component.scss']  
 })
 
 
