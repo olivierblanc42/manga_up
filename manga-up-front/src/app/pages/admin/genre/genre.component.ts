@@ -82,7 +82,7 @@ export class GenreAdminComponent implements OnInit {
 
         await this.genreService.updateGenre(updatedGenre);
         alert('Genre mis à jour avec succès !');
-        this.router.navigate(['/admin/categoriesAdmin']); // ou une autre route de retour
+        this.router.navigate(['/admin/genresAdmin']); // ou une autre route de retour
       } catch (error) {
         console.error('Erreur lors de la mise à jour', error);
         alert('Erreur lors de la mise à jour');
