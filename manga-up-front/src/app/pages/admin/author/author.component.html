@@ -1,1 +1,78 @@
-<p>author works!</p>
+<div class="category-form-container" *ngIf="authorForm">
+    <h2>Modifier l'auteur</h2>
+
+    <form [formGroup]="authorForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <div class="form-group">
+                <label for="firstname">Nom</label>
+                <textarea id="firstname" formControlName="firstname"></textarea>
+                <div *ngIf="authorForm.get('firstname')?.touched && authorForm.get('firstname')?.invalid" class="error">
+                    <small *ngIf="authorForm.get('firstname')?.errors?.['required']">La description est
+                        obligatoire.</small>
+                    <small *ngIf="authorForm.get('firstname')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                        autorisées.</small>
+                </div>
+                </div>
+            <label for="lastname">Prénom</label>
+            <textarea id="lastname" formControlName="lastname"></textarea>
+            <div *ngIf="authorForm.get('lastname')?.touched && authorForm.get('lastname')?.invalid" class="error">
+                <small *ngIf="authorForm.get('lastname')?.errors?.['required']">La description est
+                    obligatoire.</small>
+                <small *ngIf="authorForm.get('lastname')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                    autorisées.</small>
+            </div>
+        </div>
+ 
+        <label>Genre</label>
+        <select formControlName="genre">
+            <option value="">-- Choisir un genre --</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Autre">Autre</option>
+        </select>
+        <div *ngIf="authorForm.get('genre')?.invalid && authorForm.get('genre')?.touched">
+            <small>Le genre est requis.</small>
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"></textarea>
+            <div *ngIf="authorForm.get('description')?.touched && authorForm.get('description')?.invalid" class="error">
+                <small *ngIf="authorForm.get('description')?.errors?.['required']">La description est
+                    obligatoire.</small>
+                <small *ngIf="authorForm.get('description')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                    autorisées.</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Date de naissance</label>
+            <input type="date" formControlName="birthdate" />
+            <div *ngIf="authorForm.get('birthdate')?.invalid && authorForm.get('birthdate')?.touched">
+                <small>La date de naissance est requise.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Image URL</label>
+            <input type="text" formControlName="url" />
+            <div *ngIf="authorForm.get('url')?.invalid && authorForm.get('url')?.touched">
+                <small *ngIf="authorForm.get('url')?.errors?.['required']">
+                    L'URL de l’image est requise.
+                </small>
+                <small *ngIf="authorForm.get('url')?.errors?.['invalidUrl']">
+                    L’URL doit commencer par http:// ou https://.
+                </small>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="authorForm.invalid">Enregistrer</button>
+
+    </form>
+
+
+
+</div>
