@@ -20,6 +20,7 @@ describe('GenresComponent', () => {
         id: 12,
         label: 'Romance',
         createdAt: new Date('2025-04-17T15:43:41'),
+        description:"sdfdvdvd",
         url: 'https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp'
       }
     ],
