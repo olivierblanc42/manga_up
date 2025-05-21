@@ -4,6 +4,7 @@ import { GenreService } from '../../../service/genre.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { noHtmlTagsValidator, urlValidator } from '../../../validator';
 
 @Component({
   selector: 'app-genres',
@@ -18,7 +19,7 @@ export class GenresAdminComponent implements OnInit {
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
-    categoryForm: FormGroup;
+    genreForm!: FormGroup;
   isModalOpen = false;
  constructor(
     private genreService : GenreService,
@@ -26,13 +27,13 @@ export class GenresAdminComponent implements OnInit {
     
  ) {
    this.currentPage = 0;
-    this.categoryForm = this.fb.group({
-      label: ['', Validators.required],
-      description: ['', Validators.required],
-      url: ['', Validators.required]
-    }); }
+ }
 
   ngOnInit(): void {
+    this.initForm();
+
+
+
     this.genreService.getAllGenreWithPagination();
     this.genreService.currentGenresProjectionPaginations.subscribe((data) => {
       this.genres = data;
@@ -69,7 +70,13 @@ export class GenresAdminComponent implements OnInit {
     }
   }
 
-
+  initForm(): void {
+    this.genreForm = this.fb.group({
+          label: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(100)]],
+          description: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(500)]],
+          url: ['', [Validators.required, urlValidator]]
+        });
+  }
 
   openModal() {
     this.isModalOpen = true;
@@ -77,12 +84,12 @@ export class GenresAdminComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
-    this.categoryForm.reset();
+    this.genreForm.reset();
   }
   async createGenre() {
-    if (this.categoryForm.valid) {
+    if (this.genreForm.valid) {
       const newGen = {
-        ...this.categoryForm.value,
+        ...this.genreForm.value,
         createdAt: new Date().toISOString()
       };
 
@@ -94,7 +101,7 @@ export class GenresAdminComponent implements OnInit {
         console.error('Erreur lors de la création', error);
       }
     } else {
-      this.categoryForm.markAllAsTouched();
+      this.genreForm.markAllAsTouched();
     }
   }
 
