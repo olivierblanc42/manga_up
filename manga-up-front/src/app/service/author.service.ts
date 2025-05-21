@@ -36,10 +36,11 @@ export class AuthorService {
     currentauthorProjection = this.authorProjection.asObservable();
 
     authorOneProjection = new BehaviorSubject<AuthorWithMangas | null>(null);
-
-
     currentAuthorOneProjection = this.authorOneProjection.asObservable();
     authorDto = new BehaviorSubject<AuthorDto | null>(null);
+
+
+    
 
 
     async getAllAuthorWithPagination(page: number = 0) {
@@ -95,5 +96,20 @@ export class AuthorService {
         return response;
     }
       
+
+
+    async updateAuthor(author: AuthorDto): Promise<AuthorDto> {
+            try {
+                const urlWithId = `${this.url}/${author.id}`; 
+                const updatedCategory = await lastValueFrom(
+                    this.http.put<AuthorDto>(urlWithId, author, { withCredentials: true })
+                );
+                this.authorDto.next(updatedCategory);
+                return updatedCategory;
+            } catch (error) {
+                console.error('Erreur lors de la mise à jour de l\'author :', error);
+                throw error;
+            }
+        }
 
 }
