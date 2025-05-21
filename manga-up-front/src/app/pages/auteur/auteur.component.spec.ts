@@ -85,7 +85,7 @@ describe('AuteurComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: authorService, useValue: authorService },
+        { provide: AuthorService, useValue: authorService },
         {
           provide: ActivatedRoute,
           useValue: {
