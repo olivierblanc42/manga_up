@@ -12,22 +12,40 @@
             <!-- Formulaire réactif -->
             <form [formGroup]="categoryForm" (ngSubmit)="createCategory()">
             
+                <!-- Label -->
                 <label>Label</label>
                 <input type="text" formControlName="label" />
                 <div *ngIf="categoryForm.get('label')?.invalid && categoryForm.get('label')?.touched">
-                    <small>Le label est requis.</small>
+                    <small *ngIf="categoryForm.get('label')?.errors?.['required']">
+                        Le label est requis.
+                    </small>
+                    <small *ngIf="categoryForm.get('label')?.errors?.['htmlTagDetected']">
+                        Le label ne doit pas contenir de balises HTML.
+                    </small>
                 </div>
             
+                <!-- Description -->
                 <label>Description</label>
                 <textarea formControlName="description"></textarea>
                 <div *ngIf="categoryForm.get('description')?.invalid && categoryForm.get('description')?.touched">
-                    <small>La description est requise.</small>
+                    <small *ngIf="categoryForm.get('description')?.errors?.['required']">
+                        La description est requise.
+                    </small>
+                    <small *ngIf="categoryForm.get('description')?.errors?.['htmlTagDetected']">
+                        La description ne doit pas contenir de balises HTML.
+                    </small>
                 </div>
             
+                <!-- URL -->
                 <label>Image URL</label>
                 <input type="text" formControlName="url" />
                 <div *ngIf="categoryForm.get('url')?.invalid && categoryForm.get('url')?.touched">
-                    <small>L'URL de l’image est requise.</small>
+                    <small *ngIf="categoryForm.get('url')?.errors?.['required']">
+                        L'URL de l’image est requise.
+                    </small>
+                    <small *ngIf="categoryForm.get('url')?.errors?.['invalidUrl']">
+                        L’URL doit commencer par http:// ou https://.
+                    </small>
                 </div>
             
                 <button type="submit" [disabled]="categoryForm.invalid">Créer</button>
