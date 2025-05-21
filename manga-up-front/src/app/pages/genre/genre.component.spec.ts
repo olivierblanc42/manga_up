@@ -13,22 +13,22 @@ describe('GenreComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [GenreComponent],
-            providers: [
-                    provideHttpClient(), 
-                    provideHttpClientTesting(),     {
-                                    provide: ActivatedRoute,
-                                    useValue: {
-                                      snapshot: {
-                                        paramMap: {
-                                          get: (key: string) => '123', 
-                                        },
-                                      },
-                                      params: of({ id: '123' }), 
-                                    },
-                                  }
-                  ]
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(), {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: (key: string) => '123',
+              },
+            },
+            params: of({ id: '123' }),
+          },
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(GenreComponent);
     component = fixture.componentInstance;
