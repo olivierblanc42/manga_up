@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CategoryService } from '../../../service/category.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { noHtmlTagsValidator, urlValidator } from '../../../validator';
 
 @Component({
   selector: 'app-category-admin',
@@ -52,9 +53,9 @@ export class CategoryAdminComponent implements OnInit {
 
   initForm(): void {
     this.categoryForm = this.fb.group({
-      label: ['', Validators.required],
-      description: ['', Validators.required],
-      url: ['', Validators.required]
+      label: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(100)]],
+      description: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(500)]],
+      url: ['', [Validators.required, urlValidator]]
     });
   }
 
