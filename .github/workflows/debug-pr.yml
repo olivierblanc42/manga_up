@@ -1,4 +1,4 @@
-name: Debug Workflow Run
+name: Debug Workflow Run Trigger
 
 on:
   workflow_run:
@@ -11,3 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Workflow_run triggered successfully!"
+      - run: echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
+      - run: echo "Workflow name: ${{ github.event.workflow_run.name }}"
