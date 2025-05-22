@@ -2,9 +2,10 @@ name: Create PR from integration to main
 
 on:
   workflow_run:
-    workflows: ["Test Angular Front"]   # nom exact du workflow de test à adapter si besoin
+    workflows: ["Test Angular Front"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   create-pr:
