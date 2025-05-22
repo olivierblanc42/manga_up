@@ -1,0 +1,291 @@
+<swiper-container navigation="true" pagination="true">
+    <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
+    <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
+    <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
+    <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
+</swiper-container>
+
+
+
+<section class="section">
+    <div class="section__title">
+        <a [routerLink]="'/mangas/'" aria-label="Voir la page des mangas">
+            <h2>Nouveauté Mangas</h2>
+        </a>
+    </div>
+    <swiper-container class="swiper-manga" navigation="true">
+        @for (manga of mangaDtoRandom; track $index) {
+        <swiper-slide>
+            <ui-card size="card-manga">
+                <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
+                <div>
+                    <h3 class="card-manga__title">{{ manga.title }}</h3>
+                    <p class="card-manga__autor">
+                        @for (author of manga.authors; track $index) {
+                        {{ author.firstname }} {{ author.lastname }}
+                        @if (author !== manga.authors[manga.authors.length - 1]) {
+                        ,
+                        }
+                        }
+                    </p>
+                </div>
+                <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                    [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
+                </a>
+            </ui-card>
+        </swiper-slide>
+        }
+    </swiper-container>
+
+    <div class="section__grid section__grid--home">
+        @for (manga of mangaDtoRandom; track $index) {
+        <ui-card size="card-manga">
+            <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
+            <div>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+                <p class="card-manga__autor">
+                    @for (author of manga.authors; track $index) {
+                    {{author.firstname}} {{author.lastname}}
+                    @if (author !== manga.authors[manga.authors.length - 1]) {
+                    ,
+                    }
+                    }
+                </p>
+
+            </div>
+            <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                <img src="svg/mdi_magnify.svg" alt="">
+                <p>voir plus</p>
+            </a>
+        </ui-card>
+        }
+
+
+    </div>
+
+</section>
+
+<div class="infos">
+    <div>
+        <div class="info">
+            <img src="svg\material-symbols_shield-outline.svg" class="icon" alt="">
+            <div class="info__text">
+                <p><span>Fiable et sûr</span> <br>
+                    référence du manga</p>
+            </div>
+        </div>
+        <img class="trait-vertical" src="images/Line_2.webp" alt="">
+        <img class="horizontale-mobile" src="images/line-verticale-mobile.webp" alt="">
+        <div class="info">
+            <img src="svg\mdi_speak-outline.svg" class="icon" alt="">
+            <div class="info__text">
+                <p> <span>1000 Mangas</span><br>
+                    grande collection</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<section class="section">
+    <div class="section__title">
+        <h2>Mangas populaires</h2>
+    </div>
+    <swiper-container class="swiper-manga" navigation="true">
+        @for (manga of mangaDtoRandomFour; track $index) {
+        <swiper-slide>
+            <ui-card size="card-manga">
+                <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
+                <div>
+                    <h3 class="card-manga__title">{{ manga.title }}</h3>
+                    <p class="card-manga__autor">
+                        @for (author of manga.authors; track $index) {
+                        {{ author.firstname }} {{ author.lastname }}
+                        @if (author !== manga.authors[manga.authors.length - 1]) {
+                        ,
+                        }
+                        }
+                    </p>
+                </div>
+                <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                    [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
+                </a>
+            </ui-card>
+        </swiper-slide>
+        }
+    </swiper-container>
+
+    <div class="section__grid section__grid--home">
+        @for (manga of mangaDtoRandomFour; track $index) {
+        <ui-card size="card-manga">
+            <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
+            <div>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+                <p class="card-manga__autor">
+                    @for (author of manga.authors; track $index) {
+                    {{author.firstname}} {{author.lastname}}
+                    @if (author !== manga.authors[manga.authors.length - 1]) {
+                    ,
+                    }
+                    }
+                </p>
+    
+            </div>
+            <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"
+                [attr.aria-label]="'Voir la fiche de '+ manga.title">
+                <img src="svg/mdi_magnify.svg" alt="">
+                <p>voir plus</p>
+            </a>
+        </ui-card>
+        }
+    
+    
+    </div>
+
+
+
+</section>
+
+<div class="infos infos-avis"> <img src="images/trust.webp" alt=""> </div>
+
+<section class="section">
+
+    <div class="section__title">
+        <a [routerLink]="'/genres/'">
+            <h2>Genres</h2>
+        </a>
+
+    </div>
+    <swiper-container navigation="true" class="swiper-genre">
+
+        @for (genre of genres; track $index) {
+        <swiper-slide>
+            <ui-card size="card-genre">
+                <img src="{{genre.url}}" alt="image du genre {{genre.label}}">
+
+                <div>
+                    <h3 class="card-genre__title">{{genre.label}}</h3>
+
+                    <a [routerLink]="'/genre/' + genre.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
+                        <img src="svg/mdi_magnify.svg" alt="">
+                        <p>voir plus</p>
+                    </a>
+                </div>
+            </ui-card>
+        </swiper-slide>
+        }
+    </swiper-container>
+
+
+
+    <div class="section__grid section__grid--home">
+        @for (genre of genres; track $index) {
+
+        <ui-card size="card-genre">
+            <img src="{{genre.url}}" alt="image du genre {{genre.label}}">
+
+            <div>
+                <h3 class="card-genre__title">{{genre.label}}</h3>
+
+                <a [routerLink]="'/genre/' + genre.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche du genre '+ genre.label">
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
+                </a>
+            </div>
+        </ui-card>
+
+        }
+    </div>
+
+
+</section>
+
+<div class="infos">
+
+    <div>
+        <div class="info">
+            <img src="svg\mdi_truck.svg" class="icon" alt="">
+            <div class="info__text">
+                <p><span>Livraison</span> <br>
+                    Dans toute la France</p>
+            </div>
+        </div>
+        <img class="trait-vertical" src="images/Line_2.webp" alt="">
+        <img class="horizontale-mobile" src="images/line-verticale-mobile.webp" alt="">
+
+        <div class="info">
+            <img src="svg/ic_baseline-phone.svg" class="icon" alt="">
+            <div class="info__text">
+                <p> <span>Service clients</span><br>
+                    24h/24h</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<section class="section">
+    <div class="section__title">
+        <h2>Manga du moment</h2>
+    </div>
+    <div class="card single-card">
+
+        @if (mangaOne.length > 0) {
+        @for ( manga of mangaOne; track manga.id) {
+        @if (manga.picture) {
+        <img [src]="manga.picture" alt="image du manga {{manga.title}}" />
+        } @else {
+        <img src="assets/default-picture.jpg" alt="Image non disponible" />
+        }
+        }
+        } @else {
+        <p>Chargement en cours...</p>
+        }
+
+
+        @if (mangaOne.length > 0 && mangaOne[0]) {
+        <div class="single-card__content">
+            <div class="single-card__infos">
+                <div class="title__infos">
+                    <p>Information</p>
+                </div>
+                <p><span>Titre :</span> {{ mangaOne[0].title }}</p>
+                <p><span>Auteur :</span>
+                    @for (author of mangaOne[0].authors; track $index) {
+                    <a [routerLink]="'/auteur/' + author.id"
+                        [attr.aria-label]="'Voir la fiche de '+ author?.firstname +author?.lastname +'auteur du manga' ">{{author?.firstname}}
+                        {{author?.lastname}}</a>
+                    }
+                </p>
+                <p><span>ANNÉE DE SORTIE :</span> 2002</p>
+                <p><span>PRIX :</span> {{ mangaOne[0].price }} €</p>
+            </div>
+
+            <div class="single-card__summary">
+                <div class="title__summary">
+                    <p>Résumé</p>
+                </div>
+                <p>Lorem ipsum dolor sit amet consectetur. Fermentum nunc id eu id phasellus sed leo etiam enim.
+                    Duis ut tristique nulla lacinia ullamcorper curabitur nibh ipsum. Purus vestibulum ...</p>
+            </div>
+
+            <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne[0].id"    [attr.aria-label]="'Voir la fiche du manga' + mangaOne[0].title"><i
+                    class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
+        </div>
+        } @else {
+        <p>Chargement du manga...</p>
+        }
+
+
+
+
+    </div>
+
+</section>

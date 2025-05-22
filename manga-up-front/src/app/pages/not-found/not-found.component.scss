@@ -1,0 +1,10 @@
+@use '../../../variables.scss' as *;
+.not-found{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 2rem;
+  color: $primary;
+
+}

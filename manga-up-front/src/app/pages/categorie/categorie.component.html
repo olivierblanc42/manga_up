@@ -1,0 +1,54 @@
+<article class="section">
+    <div class="card card-single-other">
+        <div class="card-single-other__title">
+            <h1>{{category?.label}}</h1>
+        </div>
+        <div class="card-single-other__content">
+            <img src="{{category?.url}}" alt="Image de presentation de la catégorie {{category?.label}}"  >
+            <div class=" card card-single-other__info">
+                <div class="card-single-other__info-title">
+                    <h2>Présentation</h2>
+                </div>
+                <p>{{category?.description}}</p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</article>
+
+
+<section class="section">
+    <div class="section__title">
+        <h2>Mangas dans la categorie {{category?.label}}</h2>
+    </div>
+
+@if ((category?.mangasWithImages?.content?.length ?? 0) > 0) {
+        <div class="section__grid">
+   @for (manga of category?.mangasWithImages?.content; track $index) {
+            <ui-card size="card-manga">
+
+       
+        <img src="{{manga.pictureUrl}}" alt="image manga {{manga.title}}">
+        
+
+        <div>
+            <h3 class="card-manga__title">{{manga.title}}</h3>
+            <a class="btn btn-card" [routerLink]="'/manga/' + manga.id " [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title"  >
+            <img src="svg/mdi_magnify.svg" alt="">   <p>voir plus</p>
+            </a>
+        </div>
+
+
+    </ui-card>
+   }
+
+</div>
+   
+}
+
+
+</section>

@@ -1,0 +1,33 @@
+<div class="category-form-container" *ngIf="genreForm">
+    <h2>Modifier la catégorie</h2>
+
+    <form [formGroup]="genreForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label for="label">Libellé</label>
+            <input id="label" type="text" formControlName="label" />
+            <div *ngIf="genreForm.get('label')?.invalid && genreForm.get('label')?.touched" class="error">
+                Le libellé est obligatoire.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"></textarea>
+            <div *ngIf="genreForm.get('description')?.invalid && genreForm.get('description')?.touched"
+                class="error">
+                La description est obligatoire.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input id="url" type="text" formControlName="url" />
+            <div *ngIf="genreForm.get('url')?.invalid && genreForm.get('url')?.touched" class="error">
+                L’URL est obligatoire.
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="genreForm.invalid">Enregistrer</button>
+    </form>
+</div>

@@ -1,0 +1,60 @@
+<section class="section">
+    <div class="section__title">
+        <h1>Catégories</h1>
+
+        <div class="section__grid">
+            @for (category of categories?.content; track category.id) {
+
+            <ui-card size="card-genre">
+                <img class="image" src="{{category.url}}" alt="{{category.label}}" title="{{category.label}}">
+
+                <div>
+                    <h3 class="card-genre__title">{{category.label}}</h3>
+
+                    <a [routerLink]="'/categorie/' + category.id" class="btn btn-card"> <img src="svg/mdi_magnify.svg"
+                         alt=""   
+                          [attr.aria-label]="'Voir la fiche de ' + category.label">
+                         
+                        <p>voir plus</p>
+                    </a>
+                </div>
+            </ui-card>
+
+            }
+        </div>
+
+    <nav role="navigation" aria-label="Pagination">
+        <ul class="pagination">
+            @for(page of pages; track page; let count=$index){
+            @if(count===0){
+            <li>
+                <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page précédente"
+                    class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg">
+                    Previous
+                </button>
+            </li>
+            }
+    
+            <li>
+                <button (click)="pageCategories(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                    [attr.aria-label]="'Page ' + (count + 1)"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-black bg-white border border-gray-300">
+                    {{count + 1}}
+                </button>
+            </li>
+    
+            @if(count===lastPage-1){
+            <li>
+                <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page suivante"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg">
+                    Next
+                </button>
+            </li>
+            }
+            }
+        </ul>
+    </nav>
+    </div>
+</section>

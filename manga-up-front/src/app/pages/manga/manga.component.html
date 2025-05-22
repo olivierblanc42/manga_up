@@ -1,0 +1,74 @@
+<article class="section">
+    <div class="card card-single-manga">
+        <div class="card-single-manga__title">
+            <h1>{{manga?.title}}</h1>
+        </div>
+        <div class="card-padding">
+            <div class="card-single-manga__content">
+                <div class="card-single-manga__img">
+                    @for (picture of manga?.pictures; track $index) {
+                    @if (picture.isMain == true) {
+                    <img src="{{picture.url}}" alt="Image principaelle du manga {{manga?.title}}">
+                    }
+                    }
+
+                    <div class="card-single-manga__icons">
+                        <img src="svg/mdi_cart-outline_black.svg" alt="">
+                        <app-favorite-button></app-favorite-button>
+                    </div>
+                </div>
+                <div class="card card-content">
+                    <div class="card-content__title">
+                        <h2>information</h2>
+                    </div>
+                    <div class="card-content__infos">
+                        <div><span>Titre:</span> {{manga?.title}}</div>
+                        <div><span>Auteurs:</span>
+                            @for (author of manga?.authors; track $index) {
+                            {{author.firstname}} {{author.lastname}}
+                            }
+                        </div>
+                        <p><span>Année de publication:</span> {{ getYearFromDate(manga?.releaseDate) }}</p>                        <div><span>Prix:</span> {{manga?.price}} €</div>
+                        <div><span>France:</span> Oui</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-padding">
+            <div class=" card card-single__summary">
+                <div class="card-single__summary-title">
+                    <h2>summary</h2>
+                </div>
+                <div class="card-single__summary-content">
+                    <p>{{manga?.summary}}</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</article>
+
+<section class="section">
+    <div class="card card-comments">
+        <div class="card-comments__title">
+            <h2>Commentaires</h2>
+        </div>
+        <div class="card-padding">
+            <div class="card-comments__comments">
+                <article class="comment">
+                    <img src="images/profil_test.webp" alt="">
+                    <div class="card card-comment">
+                        <div class="card-comment__user">
+                            <p><strong>#1</strong> - Par <span>lorem</span> le 26/12/2000</p>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur...</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>

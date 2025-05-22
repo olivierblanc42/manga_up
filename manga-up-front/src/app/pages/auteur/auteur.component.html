@@ -1,0 +1,72 @@
+
+<article class="section">
+    <div class="card card-single-auteur">
+        <div class="card-single-auteur__title">
+            <h1>{{author?.firstname}} {{author?.lastname}}</h1>
+        </div>
+
+        <div class="card-padding">
+            <div class="card-single-auteur__content">
+                <div class="card-single-auteur__img">
+                    <img src="{{author?.url}}" alt="Portrait de {{author?.firstname}} {{author?.lastname}}">
+                </div>
+
+                <div class="card card-content">
+                    <div class="card-content__title">
+                        <h2>Informations</h2>
+                    </div>
+
+                    <dl class="card-content__infos">
+                        <div>
+                            <dt>Nom :</dt>
+                            <dd>{{author?.firstname}} {{author?.lastname}}</dd>
+                        </div>
+                        <div>
+                            <dt>Genre :</dt>
+                            <dd>{{author?.genre}}</dd>
+                        </div>
+                        <div>
+                            <dt>Date de naissance :</dt>
+                            <dd>{{author?.birthdate}}</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-padding">
+            <div class="card card-single__summary">
+                <div class="card-single__summary-title">
+                    <h3>Biographie</h3>
+                </div>
+                <div class="card-single__summary-content">
+                    <p>{{author?.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<section class="section">
+    <div class="section__title">
+        <h2>Mangas de l'auteur</h2>
+    </div>
+
+    <div class="section__grid">
+        @for (item of author?.mangasWithImages?.content; track $index) {
+        <ui-card size="card-manga">
+            <img src="{{item.pictureUrl}}" alt="Couverture du manga {{item.title}}">
+
+            <div>
+                <h3 class="card-manga__title">{{item.title}}</h3>
+                <a class="btn btn-card" [routerLink]="'/manga/' + item?.id"
+                    [attr.aria-label]="'Voir plus d’informations sur le manga ' + item.title">
+                <img src="svg/mdi_magnify.svg" alt="">   <p>Voir plus</p>
+                </a>
+            </div>
+        </ui-card>
+        }
+    </div>
+</section>
+
+

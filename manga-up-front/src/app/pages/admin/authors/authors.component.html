@@ -1,0 +1,105 @@
+<section class="section section-admin">
+
+
+    <button (click)="openModal()" class="btn btn-primary">+ Ajouter un auteur</button>
+    
+    <div class="modal" [class.show]="isModalOpen">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+    
+            <div class="section-admin__title">
+                <h2>Nouvel auteur</h2>
+            </div>
+    
+            <!-- Formulaire réactif -->
+            <form [formGroup]="authorForm"  (ngSubmit)="createAuthor()" >
+    
+                <label>Nom</label>
+                <input type="text" formControlName="lastname" />
+                <div *ngIf="authorForm.get('lastname')?.invalid && authorForm.get('lastname')?.touched">
+                    <small>Le nom est requis.</small>
+                </div>
+    
+                <label>Prénom</label>
+                <input type="text" formControlName="firstname" />
+                <div *ngIf="authorForm.get('firstname')?.invalid && authorForm.get('firstname')?.touched">
+                    <small>Le prénom est requis.</small>
+                </div>
+    
+                <label>Genre</label>
+                <select formControlName="genre">
+                    <option value="">-- Choisir un genre --</option>
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                    <option value="Autre">Autre</option>
+                </select>
+                <div *ngIf="authorForm.get('genre')?.invalid && authorForm.get('genre')?.touched">
+                    <small>Le genre est requis.</small>
+                </div>
+    
+                <label>Date de naissance</label>
+                <input type="date" formControlName="birthdate" />
+                <div *ngIf="authorForm.get('birthdate')?.invalid && authorForm.get('birthdate')?.touched">
+                    <small>La date de naissance est requise.</small>
+                </div>
+    
+                <label>Description</label>
+                <textarea formControlName="description"></textarea>
+                <div *ngIf="authorForm.get('description')?.invalid && authorForm.get('description')?.touched">
+                    <small>La description est requise.</small>
+                </div>
+    
+                <label>Image URL</label>
+                <input type="text" formControlName="url" />
+                <div *ngIf="authorForm.get('url')?.invalid && authorForm.get('url')?.touched">
+                    <small>L'URL de l’image est requise.</small>
+                </div>
+    
+                <button type="submit" [disabled]="authorForm.invalid">Créer</button>
+            </form>
+        </div>
+        </div>
+
+
+
+    <div>
+        <div class="section-admin__title">
+            <h1>Auteurs:</h1>
+        </div>
+        <div>
+            <table class="section-admin__content">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Date de création</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Biographie</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+        
+                 <tbody>
+                    <tr *ngFor="let author of authors?.content; let i = index">
+                        <td>{{ author.lastname }}</td>
+                        <td>{{ author.firstname }}</td>
+                        <td>{{ author.createdAt | date:'dd/MM/yyyy' }}</td>
+                        <td><img class="image" [src]="author.url" alt="{{ author.lastname + author.firstname }}" /></td>
+                        <td>
+                            {{ author.description.length > 100 ? (author.description | slice:0:100) + '...' :
+                            author.description }}
+                        </td>
+                        <td>
+                            <a [routerLink]="['/admin/author/', author.id]" class="btn btn-edit">Modifier</a>
+                            <a href="#" class="btn btn-delete" (click)="deleteAuthor(author.id); $event.preventDefault()">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody> 
+            </table>
+            </div>
+
+
+    </div>
+
+</section>
+

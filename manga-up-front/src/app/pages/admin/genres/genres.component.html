@@ -1,0 +1,125 @@
+<section class="section section-admin">
+
+
+    <button (click)="openModal()" class="btn btn-primary">+ Ajouter un genre</button>
+    
+    <div class="modal" [class.show]="isModalOpen">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+    
+            <div class="section-admin__title">
+                <h2>Nouveau genre</h2>
+            </div>
+    
+            <!-- Formulaire réactif -->
+            <form [formGroup]="genreForm" (ngSubmit)="createGenre()">
+            
+                <label>Label</label>
+                <input type="text" formControlName="label" />
+                <div *ngIf="genreForm.get('label')?.touched && genreForm.get('label')?.errors">
+                    <small *ngIf="genreForm.get('label')?.errors?.['required']">
+                        Le label est requis.
+                    </small>
+                    <small *ngIf="genreForm.get('label')?.errors?.['noHtml']">
+                        Les balises HTML ne sont pas autorisées.
+                    </small>
+                </div>
+            
+                <label>Description</label>
+                <textarea formControlName="description"></textarea>
+                <div *ngIf="genreForm.get('description')?.touched && genreForm.get('description')?.errors">
+                    <small *ngIf="genreForm.get('description')?.errors?.['required']">
+                        La description est requise.
+                    </small>
+                    <small *ngIf="genreForm.get('description')?.errors?.['noHtml']">
+                        Les balises HTML ne sont pas autorisées.
+                    </small>
+                </div>
+            
+                <label>Image URL</label>
+                <input type="text" formControlName="url" />
+                <div *ngIf="genreForm.get('url')?.touched && genreForm.get('url')?.errors">
+                    <small *ngIf="genreForm.get('url')?.errors?.['required']">
+                        L'URL de l’image est requise.
+                    </small>
+                    <small *ngIf="genreForm.get('url')?.errors?.['invalidUrl']">
+                        L'URL n'est pas valide.
+                    </small>
+                </div>
+            
+                <button type="submit" [disabled]="genreForm.invalid">Créer</button>
+            </form>
+              
+
+
+
+
+
+
+            <!-- <form [formGroup]="genreForm" (ngSubmit)="createGenre()">
+            
+                <label>Label</label>
+                <input type="text" formControlName="label" />
+                <div *ngIf="genreForm.get('label')?.touched && genreForm.get('label')?.invalid">
+                    <small *ngIf="genreForm.get('label')?.errors?.['required']">Le label est requis.</small>
+                    <small *ngIf="genreForm.get('label')?.errors?.['noHtml']">Les balises HTML ne sont pas autorisées.</small>
+                </div>
+            
+            
+            
+                <label>Description</label>
+                <textarea formControlName="description"></textarea>
+                <div *ngIf="genreForm.get('description')?.touched && genreForm.get('description')?.invalid">
+                    <small *ngIf="genreForm.get('description')?.errors?.['required']">La description est requise.</small>
+                    <small *ngIf="genreForm.get('description')?.errors?.['noHtml']">Les balises HTML ne sont pas autorisées.</small>
+                </div>
+            
+                <label>Image URL</label>
+                <input type="text" formControlName="url" />
+                <div *ngIf="genreForm.get('url')?.touched && genreForm.get('url')?.invalid">
+                    <small *ngIf="genreForm.get('url')?.errors?.['required']">L'URL de l’image est requise.</small>
+                    <small *ngIf="genreForm.get('url')?.errors?.['pattern']">L’URL n’est pas valide.</small>
+                </div>
+            
+                <button type="submit" [disabled]="genreForm.invalid">Créer</button>
+            </form> -->
+    
+        </div>
+    </div>
+
+    <div>
+        <div class="section-admin__title">
+            <h1>Catégories</h1>
+        </div>
+    
+        <table class="section-admin__content">
+            <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date de création</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <tr *ngFor="let genre of genres?.content; let i = index">
+                    <td>{{ genre.label }}</td>
+                    <td>{{ genre.createdAt | date:'dd/MM/yyyy' }}</td>
+                    <td><img class="image" [src]="genre.url" alt="{{ genre.label }}" /></td>
+                    <td>
+                        {{ genre.description.length > 100 ? (genre.description | slice:0:100) + '...' :
+                        genre.description }}
+                    </td>
+                    <td>
+                        <a [routerLink]="['/admin/genre', genre.id]" class="btn btn-edit">Modifier</a>
+                        <a href="#" class="btn btn-delete" (click)="deleteGenre(genre.id); $event.preventDefault()">Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+

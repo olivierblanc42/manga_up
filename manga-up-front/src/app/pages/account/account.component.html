@@ -1,0 +1,60 @@
+
+<app-logout></app-logout>
+<article class="section">
+    <div class="card card-single-account">
+        <div class="card-single-account__title">
+            <h1>{{user?.username}}</h1>
+        </div>
+
+        <div class="card-padding">
+            <div class="card-single-account__content">
+                <div class="card-single-account__img">
+                </div>
+                <img src="" alt="">
+                <div class="card card-content">
+                    <div class="card-content__title">
+                        <h2>Informations</h2>
+                    </div>
+
+                    <dl class="card-content__infos">
+                        <div>
+
+                            <dt>Nom d'utilisateur :</dt>
+                            <dd>{{user?.username}}</dd>
+                        </div>
+                        <div>
+                            <dt>Nom :</dt>
+                            <dd>{{user?.lastname}}</dd>
+                        </div>
+                        <div>
+                            <dt>Prénom :</dt>
+                            <dd>{{user?.firstname}}</dd>
+                        </div>
+                        <div>
+                            <dt>Email :</dt>
+                            <dd>{{user?.email}}</dd>
+                        </div>
+                        <div>
+                            <dt>Numéro :</dt>
+                            <dd>{{user?.phoneNumber}}</dd>
+                        </div>
+                        <div>
+                            <dt>Date de création du compte : </dt>
+                            <dd></dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</article>
+
+<section class="section">
+    <div class="section__title">
+        <h2>Mangas favoris de {{user?.username}}</h2>
+    </div>
+
+
+</section>

@@ -1,0 +1,58 @@
+<section class="section">
+    <div class="section__title">
+        <h1>Auteurs</h1>
+
+        <div class="section__grid">
+            @for (author of authors?.content; track author.id) {
+            <ui-card size="card-genre">
+                <img class="image" src="{{author.url}}" alt="Portrait de {{author.firstname}} {{author.lastname}}">
+
+                <div>
+                    <h2 class="card-genre__title">{{author.firstname}} {{author.lastname}}</h2>
+                </div>
+
+                <a [routerLink]="'/auteur/' + author.id" class="btn btn-card"
+                     [attr.aria-label]="'Voir la fiche de ' + author.firstname + ' ' + author.lastname">
+                    <img src="svg/mdi_magnify.svg" alt="" aria-hidden="true">
+                    <p>Voir plus</p>
+                </a>
+            </ui-card>
+            }
+        </div>
+
+        <nav role="navigation" aria-label="Pagination" >
+        <ul class="pagination">
+            @for(page of pages; track page; let count=$index){
+            @if(count===0){
+            <li>
+                <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page précédente"
+                    class="">
+                    Previous
+                </button>
+            </li>
+            }
+
+            <li>
+                <button (click)="pageAuthor(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                    [attr.aria-label]="'Page ' + (count + 1)"
+                    class="">
+                    {{count + 1}}
+                </button>
+            </li>
+
+            @if(count===lastPage-1){
+            <li>
+                <button (click)="pageNext()"
+                    [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page suivante"
+                    class="">
+                    Next
+                </button>
+            </li>
+            }
+            }
+        </ul>
+        </nav>
+    </div>
+</section>

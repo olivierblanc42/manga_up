@@ -1,0 +1,40 @@
+<div class="category-form-container" *ngIf="categoryForm">
+    <h2>Modifier la catégorie</h2>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label for="label">Libellé</label>
+            <input id="label" type="text" formControlName="label" />
+            <div *ngIf="categoryForm.get('label')?.touched && categoryForm.get('label')?.invalid" class="error">
+                <small *ngIf="categoryForm.get('label')?.errors?.['required']">Le libellé est obligatoire.</small>
+                <small *ngIf="categoryForm.get('label')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                    autorisées.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"></textarea>
+            <div *ngIf="categoryForm.get('description')?.touched && categoryForm.get('description')?.invalid"
+                class="error">
+                <small *ngIf="categoryForm.get('description')?.errors?.['required']">La description est
+                    obligatoire.</small>
+                <small *ngIf="categoryForm.get('description')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                    autorisées.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input id="url" type="text" formControlName="url" />
+            <div *ngIf="categoryForm.get('url')?.touched && categoryForm.get('url')?.invalid" class="error">
+                <small *ngIf="categoryForm.get('url')?.errors?.['required']">L’URL est obligatoire.</small>
+                <small *ngIf="categoryForm.get('url')?.errors?.['pattern']">L’URL n’est pas valide.</small>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="categoryForm.invalid">Enregistrer</button>
+    </form>
+</div>
+  

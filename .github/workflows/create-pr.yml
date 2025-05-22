@@ -1,0 +1,27 @@
+name: Create PR on demand
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout integration branch
+        uses: actions/checkout@v3
+        with:
+          ref: integration
+
+      - name: Create Pull Request to main
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GH_PAT }}
+          commit-message: 'Auto: merge integration into main after tests passed'
+          title: 'Merge integration into main'
+          body: |
+            ✅ Tests passed on integration branch.
+            This PR was created automatically.
+          base: main
+          branch: auto/integration-to-main
+          delete-branch: true

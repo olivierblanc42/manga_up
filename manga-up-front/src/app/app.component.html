@@ -1,67 +1,135 @@
 <header>
   <nav>
     <div class="first-nav">
-      <a href="index.html">
-        <img src="./asset/images/manga-up-logo-nobg-accent.png " alt="logomanga UP">
-
+      <a routerLink="/" aria-label="Aller à la page d’accueil">
+        <img class="logo" src="images/manga-up-logo.webp" alt="Logo de Manga UP">
       </a>
       <div>
-        <form class="search" action="">
-
-          <input type="text" name="query" placeholder="Rechercher..." required>
-          <!-- <button type="submit">Rechercher</button> -->
-
-        </form>
+        <form class="search" (ngSubmit)="redirect()">
+          <input type="text" name="query" [(ngModel)]="searchTerm" placeholder="Rechercher..." required />
+          <button type="submit"></button> </form>
       </div>
       <div class="first-nav__icons">
-        <a><i class="fa-solid fa-user fa-lg" style="color: #496677;"></i></a>
-        <i class="fa-solid fa-bars fa-lg" style="color: #496677;"></i>
-        <a><i class="fa-solid fa-cart-shopping fa-lg" style="color: #496677;"></i></a>
+        <a [routerLink]="'/account/'" aria-label="Mon compte"><img src="svg/mdi_user.svg" alt="Icône utilisateur"
+            class="icons"></a>
+        <img src="svg/material-symbols_list.svg" class="icons menu" alt="Icône menu" (click)="openNav()"
+          aria-label="Ouvrir le menu">
+        <a aria-label="Mon panier"><img src="svg/mdi_cart-outline.svg" alt="Icône panier" class="icons"></a>
+
+        <a routerLink="admin" *ngIf="isAdmin" aria-label="Accès admin"><img src="svg/admin-tool.svg" alt="Icône panier" class="icons"></a>
       </div>
     </div>
+
     <div class="secondary-nav">
       <div class="secondary-content">
         <div>
           <div>
-            <a href="./mangas.html">
-              <i class="fa-solid fa-book"></i>
+            <a routerLink="mangas" aria-label="Voir les mangas">
+              <img src="svg/mynaui_book-solid.svg" class="icons" alt="Icône mangas">
               <p>Mangas</p>
             </a>
           </div>
         </div>
+
         <div>
           <div>
-            <a href="">
-              <i class="fa-solid fa-bars"></i>
+            <a routerLink="genres" aria-label="Voir les genres">
+              <img src="svg/material-symbols_list_white.svg" class="icons" alt="Icône genres">
               <p>Genres</p>
             </a>
-
           </div>
-
         </div>
+
         <div>
           <div>
-            <a href="">
-              <i class="fa-solid fa-bars"></i>
+            <a routerLink="categories" aria-label="Voir les catégories">
+              <img src="svg/material-symbols_list_white.svg" class="icons" alt="Icône catégories">
               <p>Catégories</p>
             </a>
-
           </div>
         </div>
+
         <div>
           <div>
-            <a href="">
-              <i class="fa-solid fa-pen"></i>
+            <a routerLink="auteurs" aria-label="Voir les auteurs">
+              <img src="svg/mdi_pen.svg" class="icons" alt="Icône auteurs">
               <p>Auteurs</p>
             </a>
-
           </div>
         </div>
+
       </div>
     </div>
-
   </nav>
 </header>
 
 
-<router-outlet />
+<div #mySidenav id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()" aria-label="Fermer le menu">&times;</a>
+  <div class="menu">
+    <a routerLink="mangas" (click)="closeNav()" aria-label="Voir les mangas">
+      <div class="menu__item">
+        <img src="svg/mynaui_book-solid.svg" class="icons" alt="Icône mangas">
+        <img src="images/line-off-canvas.webp" alt="Séparateur décoratif">
+        <p>Mangas</p>
+      </div>
+    </a>
+
+    <a routerLink="genres" (click)="closeNav()" aria-label="Voir les genres">
+      <div class="menu__item">
+        <img src="svg/material-symbols_list_white.svg" class="icons" alt="Icône genres">
+        <img src="images/line-off-canvas.webp" alt="Séparateur décoratif">
+        <p>Genres</p>
+      </div>
+    </a>
+
+    <a routerLink="categories" (click)="closeNav()" aria-label="Voir les catégories">
+      <div class="menu__item">
+        <img src="svg/material-symbols_list_white.svg" class="icons" alt="Icône catégories">
+        <img src="images/line-off-canvas.webp" alt="Séparateur décoratif">
+        <p>Catégories</p>
+      </div>
+    </a>
+
+    <a routerLink="auteurs" (click)="closeNav()" aria-label="Voir les auteurs">
+      <div class="menu__item">
+        <img src="svg/mdi_pen.svg" class="icons" alt="Icône auteurs">
+        <img src="images/line-off-canvas.webp" alt="Séparateur décoratif">
+        <p>Auteurs</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+
+
+<xng-breadcrumb class="breadcrumb">
+
+</xng-breadcrumb>
+
+
+<router-outlet></router-outlet>
+
+
+
+<footer>
+  <div>
+    <div class="footer-link">
+      <a aria-label="Nous contacter">Contact</a>
+      <a routerLink="privacy" aria-label="Cookies et vie privée">Cookies et vie privée</a>
+      <a aria-label="Connexion à votre compte">Connexion</a>
+    </div>
+    <div class="sociale">
+      <img src="svg/ic_baseline-discord.svg" class="icons" alt="Logo Discord" aria-label="Rejoignez-nous sur Discord">
+      <img src="svg/prime_twitter.svg" class="icons" alt="Logo Twitter" aria-label="Suivez-nous sur Twitter">
+      <img src="svg/ic_baseline-facebook.svg" class="icons" alt="Logo Facebook" aria-label="Suivez-nous sur Facebook">
+      <img src="svg/lets-icons_insta.svg" class="icons" alt="Logo Instagram" aria-label="Suivez-nous sur Instagram">
+    </div>
+  </div>
+  <div>
+    <img src="images/Line_1.webp" alt="Ligne décorative du pied de page">
+  </div>
+  <div>
+    <p>Copyright © 2025 Manga’Up</p>
+  </div>
+</footer>
