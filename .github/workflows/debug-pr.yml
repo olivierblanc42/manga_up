@@ -1,0 +1,14 @@
+name: Debug PR creation
+
+on:
+  workflow_run:
+    workflows: ["Test Angular Front"]
+    types:
+      - completed
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show event context
+        run: echo "${{ toJson(github.event) }}"
