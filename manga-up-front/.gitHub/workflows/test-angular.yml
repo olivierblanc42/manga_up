@@ -1,0 +1,27 @@
+name: Test Angular Front
+
+on:
+  push:
+    branches: [integration]        # Cible les pushs vers la branche integration
+  pull_request:
+    branches: [main]               # Cible les pull requests vers main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./manga-up-front  # enlève cette ligne si le projet est à la racine
+
+      - name: Run tests
+        run: npm run test:headless
+        working-directory: ./manga-up-front  # idem ici
