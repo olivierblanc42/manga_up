@@ -1,4 +1,4 @@
-name: Debug Workflow Run Trigger
+name: Debug PR Workflow
 
 on:
   workflow_run:
