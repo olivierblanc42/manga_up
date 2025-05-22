@@ -19,13 +19,30 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Create or update branch auto/integration-to-main from integration + merge main
+      - name: Show commits difference integration vs main
         run: |
-          git checkout -B auto/integration-to-main
+          git fetch origin main
+          echo "Commits in integration not in main:"
+          git log origin/main..integration --oneline || echo "No commits"
+          echo "Commits in main not in integration:"
+          git log integration..origin/main --oneline || echo "No commits"
+
+      - name: Create or update branch auto/integration-to-main from integration + merge main (force no-ff)
+        run: |
+          git checkout -B auto/integration-to-main integration
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
           git fetch origin main
-          git merge origin/main --no-edit
+          git merge origin/main --no-ff --no-edit || echo "No changes to merge"
           git push -u origin auto/integration-to-main --force
+
+      - name: Show commits difference auto/integration-to-main vs main (after merge)
+        run: |
+          echo "Commits in auto/integration-to-main not in main:"
+          git log origin/main..auto/integration-to-main --oneline || echo "No commits"
+          echo "Commits in main not in auto/integration-to-main:"
+          git log auto/integration-to-main..origin/main --oneline || echo "No commits"
+          echo "Diff auto/integration-to-main vs main:"
+          git diff origin/main..auto/integration-to-main --stat
 
       - name: Create Pull Request to main
         uses: peter-evans/create-pull-request@v5
