@@ -1,16 +1,11 @@
 name: Create PR on successful tests
 
 on:
-  workflow_run:
-    workflows: ["Test Angular Front"]
-    types:
-      - completed
+  workflow_dispatch:
 
 jobs:
   create-pr:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout integration branch
         uses: actions/checkout@v3
