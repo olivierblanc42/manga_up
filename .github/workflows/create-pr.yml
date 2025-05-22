@@ -20,8 +20,8 @@ jobs:
           commit-message: 'Auto: merge integration into main after tests passed'
           title: 'Merge integration into main'
           body: |
-            ✅ Tests passed on integration branch.
-            This PR was created automatically.
+            ✅ Tests passed on integration.
+            This PR was created automatically after manual trigger.
           base: main
           branch: auto/integration-to-main
-          delete-branch: true
+          delete-branch: false
