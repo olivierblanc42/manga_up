@@ -6,12 +6,26 @@ on:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout integration branch
         uses: actions/checkout@v3
         with:
           ref: integration
+
+      - name: Show current branches (before)
+        run: |
+          git branch -a
+          git log --oneline -5
+
+      - name: Force create/update PR branch
+        run: |
+          git checkout -B auto/integration-to-main
+          git push -f origin auto/integration-to-main
+
+      - name: Show current branches (after)
+        run: |
+          git branch -a
+          git log --oneline -5
 
       - name: Create Pull Request to main
         uses: peter-evans/create-pull-request@v5
