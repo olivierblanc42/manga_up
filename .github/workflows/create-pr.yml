@@ -1,4 +1,4 @@
-name: Create PR on demand
+name: Create PR from integration to main
 
 on:
   workflow_dispatch:
@@ -12,16 +12,30 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: integration
+          fetch-depth: 0
+
+      - name: Set up Git config
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Create or update branch auto/integration-to-main from integration + merge main
+        run: |
+          git checkout -B auto/integration-to-main
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git fetch origin main
+          git merge origin/main --no-edit
+          git push -u origin auto/integration-to-main --force
 
       - name: Create Pull Request to main
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GH_PAT }}
-          commit-message: 'Auto: merge integration into main after tests passed'
+          commit-message: 'Auto: merge integration into main after sync'
           title: 'Merge integration into main'
           body: |
             ✅ Tests passed on integration.
-            This PR was created automatically after manual trigger.
+            🔄 Synced with latest main before creating PR.
           base: main
           branch: auto/integration-to-main
           delete-branch: false
