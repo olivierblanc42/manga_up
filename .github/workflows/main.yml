@@ -1,0 +1,25 @@
+name: Debug Push Branch
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      - name: Create and push test branch
+        run: |
+          git checkout -b debug/test-push-branch
+          git commit --allow-empty -m "Test push branch from workflow"
+          git push origin debug/test-push-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
