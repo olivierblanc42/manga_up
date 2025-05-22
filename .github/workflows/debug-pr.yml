@@ -1,4 +1,4 @@
-name: Debug PR creation
+name: Debug Workflow Run
 
 on:
   workflow_run:
@@ -10,5 +10,4 @@ jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
-      - name: Show event context
-        run: echo "${{ toJson(github.event) }}"
+      - run: echo "Workflow_run triggered successfully!"
