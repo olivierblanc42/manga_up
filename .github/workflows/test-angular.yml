@@ -2,9 +2,9 @@ name: Test Angular Front
 
 on:
   push:
-    branches: [integration]        # Cible les pushs vers la branche integration
+    branches: [integration]
   pull_request:
-    branches: [main]               # Cible les pull requests vers main
+    branches: [main]
 
 jobs:
   test:
@@ -25,3 +25,7 @@ jobs:
       - name: Run tests
         run: npm run test:headless
         working-directory: ./manga-up-front  
+
+      - name: Success message
+        if: ${{ success() }}
+        run: echo "✅ Tests passed. You can create a pull request to main."
