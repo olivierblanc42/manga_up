@@ -1,0 +1,4 @@
+[build]
+  base = "manga-up-front"
+  publish = "manga-up-front/dist/manga-up-front"
+  command = "npm ci && npx ng build --configuration=production"
