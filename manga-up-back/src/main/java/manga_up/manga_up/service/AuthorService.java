@@ -101,6 +101,7 @@ public class  AuthorService {
         author.setCreatedAt(LocalDate.now());
         author.setBirthdate(authorDto.getBirthdate());
         author.setGenre(authorDto.getGenre());
+        author.setUrl(authorDto.getUrl());
         authorDao.save(author);
         return authorMapper.toDtoAuthor(author);
     }

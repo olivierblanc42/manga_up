@@ -24,12 +24,16 @@ public class AuthorDto implements Serializable {
     @NotNull
     private final LocalDate birthdate;
 
-    public AuthorDto( String lastname, String firstname, String description, String genre, LocalDate birthdate) {
+    @NotNull
+    private final String url;
+
+    public AuthorDto( String lastname, String firstname, String description, String genre, LocalDate birthdate,String url) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.description = description;
         this.genre = genre;
         this.birthdate = birthdate;
+        this.url =url;
     }
 
 
@@ -53,6 +57,10 @@ public class AuthorDto implements Serializable {
 
     public LocalDate getBirthdate() {
         return birthdate;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
 

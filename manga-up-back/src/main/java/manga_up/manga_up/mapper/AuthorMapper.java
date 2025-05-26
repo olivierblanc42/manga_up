@@ -24,7 +24,8 @@ public class AuthorMapper {
                 author.getLastname(),
                 author.getDescription(),
                 author.getGenre(),
-                author.getBirthdate()
+                author.getBirthdate(),
+                author.getUrl()
 
         );
     }
@@ -37,7 +38,8 @@ public class AuthorMapper {
         author.setLastname(authorDto.getLastname());
         author.setDescription(authorDto.getDescription());
         author.setGenre(authorDto.getGenre());
-        author.setBirthdate(author.getBirthdate());
+        author.setBirthdate(authorDto.getBirthdate());
+        author.setUrl(authorDto.getUrl());
         return author;
     }
 
