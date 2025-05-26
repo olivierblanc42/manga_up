@@ -200,7 +200,6 @@ public class PublicController {
 
 
     // All public requests for Categories
-
     @Operation(summary = "All Categories with pagination")
     @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
     @GetMapping("categories/pagination")
