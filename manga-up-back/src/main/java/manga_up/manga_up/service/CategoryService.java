@@ -90,6 +90,8 @@ public class CategoryService {
        Category category = categoryDao.findCategoryById(id).
                orElseThrow(() -> new RuntimeException("category not found"));
        category.setLabel(categoryDto.getLabel());
+       category.setDescription(categoryDto.getDescription());
+       category.setUrl(categoryDto.getUrl());
        categoryDao.save(category);
        return categoryMapper.toDtoCategory(category);
     }
