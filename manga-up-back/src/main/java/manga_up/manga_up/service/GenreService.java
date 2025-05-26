@@ -115,6 +115,8 @@ public class GenreService {
         Genre genre = genreDao.findGenreById(genreId).
                 orElseThrow(() -> new RuntimeException("Genre with ID " + genreId + " not found"));
         genre.setLabel(genreDto.getLabel());
+        genre.setDescritpion(genreDto.getDescription());
+        genre.setUrl(genreDto.getUrl());
         genreDao.save(genre);
         return genderMangaMapper.toDtoGenre(genre);
      }
