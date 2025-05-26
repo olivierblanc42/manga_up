@@ -7,19 +7,21 @@ import { AuthService } from './auth.service';
     providedIn: 'root'
 })
 export class RoleGuard implements CanActivate {
-
     constructor(private authService: AuthService, private router: Router) { }
 
-    canActivate(
-        route: ActivatedRouteSnapshot
-    ): Observable<boolean | UrlTree> {
+    canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
         const expectedRole = route.data['role'];
         const userRole = this.authService.getUserRole();
+
+        if (!userRole) {
+            return of(this.router.createUrlTree(['/login']));
+        }
 
         if (userRole === expectedRole) {
             return of(true);
         } else {
-            return of(this.router.createUrlTree(['/forbidden'])); 
+            return of(this.router.createUrlTree(['/forbidden']));
         }
     }
 }
+  
