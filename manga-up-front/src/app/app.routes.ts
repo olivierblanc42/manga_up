@@ -22,7 +22,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './service/auth.guard';
-import { RoleGuard } from './service/role.guard'; // Le guard de rôle
+import { RoleGuard } from './service/role.guard'; 
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SearchComponent } from './pages/search/search.component';
 import { GenreAdminComponent } from './pages/admin/genre/genre.component';
@@ -51,7 +51,7 @@ export const routes: Routes = [
     {
         path: 'admin', component: AdminLayoutComponent,
         canActivate: [AuthGuard, RoleGuard], 
-        data: { role: 'ADMIN_ROLE' }, 
+        data: { role: 'ROLE_ADMIN' }, 
         children: [
             { path: 'mangasAdmin', component: MangasAdminComponent },
             { path: 'genresAdmin', component: GenresAdminComponent },
