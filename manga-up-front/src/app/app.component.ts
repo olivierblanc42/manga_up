@@ -33,7 +33,7 @@ export class AppComponent  implements OnInit {
   }
     ngOnInit(): void {
       this.authService.userRole$.subscribe(role => {
-        this.isAdmin = role === 'ADMIN_ROLE';
+        this.isAdmin = role === 'ROLE_ADMIN';
       });
   }
 
