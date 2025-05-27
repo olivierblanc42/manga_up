@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -25,9 +28,9 @@ public class JwtUtils {
 
     public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role); 
+        claims.put("roles", List.of(role)); 
         return createToken(claims, username);
-    }
+    }    
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -58,10 +61,18 @@ public class JwtUtils {
         return extractClaim(token, Claims::getSubject);
     }
     
-    public String extractRole(String token) {
+    public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("role", String.class);
-    }
+        Object rolesObject = claims.get("roles");
+        if (rolesObject instanceof List<?>) {
+            return ((List<?>) rolesObject).stream()
+                    .filter(String.class::isInstance)
+                    .map(String.class::cast)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }    
+
 
     private Date extractExpirationDate(String token) {
         return extractClaim(token, Claims::getExpiration);
