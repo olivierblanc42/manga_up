@@ -98,7 +98,6 @@ public class  AuthorService {
         author.setFirstname(authorDto.getFirstname());
         author.setLastname(authorDto.getLastname());
         author.setDescription(authorDto.getDescription());
-        author.setCreatedAt(LocalDate.now());
         author.setBirthdate(authorDto.getBirthdate());
         author.setGenre(authorDto.getGenre());
         author.setUrl(authorDto.getUrl());
