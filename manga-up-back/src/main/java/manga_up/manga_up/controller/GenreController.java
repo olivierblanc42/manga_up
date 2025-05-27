@@ -16,11 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/genres")
@@ -35,7 +34,7 @@ public class GenreController {
     }
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Find genre with id")
     @GetMapping("{id}")
     public ResponseEntity<GenreProjection> getGenreById(@PathVariable Integer id) {
@@ -43,6 +42,7 @@ public class GenreController {
         return ResponseEntity.ok(genreService.findGenreUserById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete genre by id ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Genre deleted"),
@@ -55,6 +55,7 @@ public class GenreController {
         genreService.deleteGenre(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Adding a gender")
     @PostMapping("/add")
     public ResponseEntity<?> addGenre(@RequestBody GenreDto genre) {
@@ -63,7 +64,7 @@ public class GenreController {
     }
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update manga genre")
     @PutMapping("/{id}")
     public ResponseEntity<GenreDto> updateGenre(@PathVariable Integer id, @RequestBody GenreDto genreDto) {

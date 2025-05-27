@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class GenderUserController {
     public GenderUserController(GenreUserService genreUserService) {
         this.genreUserService = genreUserService;
     }
-
+@PreAuthorize("hasRole('ADMIN')")  
     @Operation(summary = "All genreUsers with pagination")
     @GetMapping
     public ResponseEntity<Page<GenderUserProjection>> getAllGenreUsers(
@@ -45,6 +46,7 @@ public class GenderUserController {
         return new ResponseEntity<>(genderUserProjections, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Find a gender by id")
     @GetMapping("{id}")
     public ResponseEntity<GenderUserProjection> getGenderUserById(@PathVariable Integer id) {
@@ -52,7 +54,7 @@ public class GenderUserController {
         return ResponseEntity.ok(genreUserService.getGenreUserById(id));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete Gender by id ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Gender deleted"),
@@ -65,6 +67,7 @@ public class GenderUserController {
       genreUserService.deleteGenreUserById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add one genre User")
     @PostMapping("add")
     public ResponseEntity<GenderUserDto> addGenreUser(@RequestBody GenderUserDto genreUserDto) {
@@ -72,7 +75,7 @@ public class GenderUserController {
         return ResponseEntity.ok(genreUserService.saveGenreUser(genreUserDto));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "update Gender user")
     @PutMapping("/{id}")
     public ResponseEntity<GenderUserDto> updateGenreUser( @RequestBody GenderUserDto genreUserDto, @PathVariable Integer id) {

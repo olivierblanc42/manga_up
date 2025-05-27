@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,7 +55,7 @@ public class CategoryController {
     //     return ResponseEntity.ok(categoryService.findCategoryById(id));
     // }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete category by id ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Category deleted"),
@@ -67,6 +68,7 @@ public class CategoryController {
         categoryService.deleteCategoryById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add category")
     @PostMapping("/add")
     public ResponseEntity<?> addCategory(@RequestBody CategoryDto category) {
@@ -74,6 +76,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.save(category));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("{id}")
     public ResponseEntity<CategoryDto> updateCategory(
             @PathVariable Integer id,
@@ -94,11 +97,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "200", description = "Author with mangas retrieved"),
             @ApiResponse(responseCode = "404", description = "Author not found")
     })
-
-
-
-
-    
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("category/{categoryId}/mangas")
     public CategoryWithMangaResponse getCategoryWithMangas(@PathVariable Integer categoryId,
             @PageableDefault(page = 0, size = 8, sort = "title", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {

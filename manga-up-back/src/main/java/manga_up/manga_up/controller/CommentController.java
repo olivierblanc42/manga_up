@@ -18,12 +18,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/comments")
 public class CommentController {
-    private static final Logger LOGGER= LoggerFactory.getLogger(CommentController .class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
     private final CommentService commentService;
 
@@ -31,45 +32,41 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "All comments with the pagination")
     @GetMapping()
     public ResponseEntity<Page<CommentProjection>> findAllByPage(
-            @PageableDefault(
-                    page = 0,
-                    size = 10,
-                    sort = "createdAt",
-                    direction = Sort.Direction.DESC
-            ) @ParameterObject Pageable pageable
-    ) {
+            @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all comments with the pagination");
         Page<CommentProjection> comment = commentService.getAllComment(pageable);
         LOGGER.info("Found {} addresses", comment.getTotalElements());
-        return new  ResponseEntity<>(comment, HttpStatus.OK);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @Operation(summary=" One comment")
+    @Operation(summary = " One comment")
     @GetMapping("{id}")
     public ResponseEntity<?> getCommentById(@PathVariable Integer id) {
         LOGGER.info("Find comment by id: {}", id);
-        return  ResponseEntity.ok(commentService.getComment(id));
+        return ResponseEntity.ok(commentService.getComment(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
 
     @Operation(summary = "Update Comment")
     @PutMapping("{id}")
-    public ResponseEntity<CommentLightDto>  updateAddress(@PathVariable Integer id, @RequestBody CommentLightDto commentLightDto) {
+    public ResponseEntity<CommentLightDto> updateAddress(@PathVariable Integer id,
+            @RequestBody CommentLightDto commentLightDto) {
         LOGGER.info("Updating address");
-        try{
-            CommentLightDto commentDto = commentService.updateComment(id , commentLightDto) ;
+        try {
+            CommentLightDto commentDto = commentService.updateComment(id, commentLightDto);
             return new ResponseEntity<>(commentDto, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Error updating Comment", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
 
     @Operation(summary = "delete comment by id ")
     @ApiResponses(value = {
@@ -80,8 +77,7 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable Integer id) {
         LOGGER.info("Deleting address by id");
-       commentService.deleteComment(id);
+        commentService.deleteComment(id);
     }
-
 
 }

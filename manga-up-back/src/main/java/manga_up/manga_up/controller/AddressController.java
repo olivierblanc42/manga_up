@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,7 +34,7 @@ public class AddressController {
 
     }
 
-
+   @PreAuthorize("hasRole('ADMIN')")  
     @Operation(summary = "All addresses with pagination")
     @ApiResponse(responseCode =  "201", description = "All addresses have been retrieved")
     @GetMapping
@@ -52,7 +53,7 @@ public class AddressController {
     }
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary=" One address")
     @GetMapping("{id}")
     public ResponseEntity<?> getAddressById(@PathVariable Integer id) {
@@ -60,6 +61,7 @@ public class AddressController {
         return  ResponseEntity.ok(addressService.findById(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Adding address")
     @PostMapping("/add")
     public ResponseEntity<UserAddressDto> addAddress(@RequestBody UserAddressDto userAddressDto) {
@@ -68,7 +70,7 @@ public class AddressController {
     }
 
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete address by id ")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Address deleted"),
@@ -81,7 +83,7 @@ public class AddressController {
         addressService.deleteUserAddress(id);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Update UserAddress")
     @PutMapping("{id}")
     public ResponseEntity<UserAddressDto>  updateAddress(@PathVariable Integer id, @RequestBody UserAddressDto userAddressDto) {
