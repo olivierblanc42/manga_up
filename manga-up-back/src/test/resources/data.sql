@@ -15,29 +15,39 @@ CREATE TABLE user_address(
                              CONSTRAINT user_address_PK PRIMARY KEY(Id_user_address)
 );
 
-CREATE TABLE author(
-                       Id_authors INT AUTO_INCREMENT,
-                       lastname VARCHAR(100) NOT NULL,
-                       firstname VARCHAR(50) NOT NULL,
-                       description TEXT NOT NULL,
-                       created_at DATE,
-                       CONSTRAINT author_PK PRIMARY KEY(Id_authors)
+
+CREATE TABLE author (
+    id_authors INT AUTO_INCREMENT,
+    lastname VARCHAR(100) NOT NULL,
+    firstname VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    created_at DATE,
+    birthdate DATE,
+    url VARCHAR(255),
+    genre VARCHAR(50),
+    CONSTRAINT author_PK PRIMARY KEY(id_authors)
 );
+
 
 CREATE TABLE genre(
-                      Id_gender_mangas INT AUTO_INCREMENT,
-                      label VARCHAR(50) NOT NULL,
-                      created_at DATETIME,
-                      CONSTRAINT genre_PK PRIMARY KEY(Id_gender_mangas)
+    Id_gender_mangas INT AUTO_INCREMENT,
+    label VARCHAR(50) NOT NULL,
+    created_at DATETIME,
+    description VARCHAR(255),
+    url VARCHAR(255),
+    CONSTRAINT genre_PK PRIMARY KEY(Id_gender_mangas)
 );
 
-CREATE TABLE category(
-                         Id_categories INT AUTO_INCREMENT,
-                         label VARCHAR(50) NOT NULL,
-                         description TEXT NOT NULL,
-                         created_at DATETIME,
-                         CONSTRAINT category_PK PRIMARY KEY(Id_categories)
+
+CREATE TABLE category (
+    Id_categories INT AUTO_INCREMENT,
+    label VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL,
+    created_at DATETIME,
+    url VARCHAR(255), 
+    CONSTRAINT category_PK PRIMARY KEY(Id_categories)
 );
+
 
 CREATE TABLE means_of_payment(
                                  Id_means_of_payment INT AUTO_INCREMENT,
@@ -117,6 +127,7 @@ CREATE TABLE picture(
                         name VARCHAR(50),
                         url VARCHAR(255),
                         Id_mangas INT NOT NULL,
+                        is_main BOOLEAN DEFAULT FALSE,
                         CONSTRAINT picture_PK PRIMARY KEY(Id_picture),
                         CONSTRAINT picture_manga_FK FOREIGN KEY(Id_mangas) REFERENCES manga(Id_mangas) ON DELETE CASCADE
 );
@@ -177,26 +188,28 @@ VALUES ('12 rue des Lilas', '', '', 'Paris', '75012'),
        ('14 rue des Écoles', 'Bât C', '2e étage', 'Strasbourg', '67000');
 
 --Author address
-INSERT INTO author(lastname , firstname, description ,created_at )
-    VALUES
-    ('Toriyama', 'Akira', 'Mangaka japonais célèbre pour avoir créé "Dragon Ball" et "Dr. Slump".', '2022-07-12'),
-    ('Oda', 'Eiichiro', 'Auteur de "One Piece", l’un des mangas les plus vendus de l’histoire.', '2023-01-25'),
-    ('Kishimoto', 'Masashi', 'Créateur de "Naruto", manga culte mêlant ninjas et aventures épiques.', '2023-05-18'),
-    ('Togashi', 'Yoshihiro', 'Connu pour "Hunter x Hunter" et "Yu Yu Hakusho", mangaka à l’imaginaire unique.', '2024-02-09'),
-    ('Arakawa', 'Hiromu', 'Auteure de "Fullmetal Alchemist", célèbre pour ses intrigues profondes.', '2022-09-30'),
-    ('Isayama', 'Hajime', 'Créateur de "L’Attaque des Titans", une œuvre post-apocalyptique marquante.', '2023-11-03'),
-    ('Inoue', 'Takehiko', 'Auteur de "Slam Dunk" et "Vagabond", maître du trait réaliste.', '2022-04-20'),
-    ('Gotouge', 'Koyoharu', 'Auteure de "Demon Slayer", succès mondial au style percutant.', '2024-03-14');
-
-INSERT INTO category (label, description, created_at)
+INSERT INTO author(lastname, firstname, description, created_at, birthdate, url, genre)
 VALUES
-    ('Action', 'Catégorie centrée sur les scènes d’action et les aventures intenses.', '2023-02-14 09:00:00'),
-    ('Comédie', 'Manga axé sur l’humour et les situations comiques.', '2024-01-05 16:30:00');
+('Toriyama', 'Akira', 'Mangaka japonais célèbre pour avoir créé "Dragon Ball" et "Dr. Slump".', '2022-07-12', '1955-04-05', 'https://example.com/toriyama.jpg', 'Shonen'),
+('Oda', 'Eiichiro', 'Auteur de "One Piece", l’un des mangas les plus vendus de l’histoire.', '2023-01-25', '1975-01-01', 'https://example.com/oda.jpg', 'Shonen'),
+('Kishimoto', 'Masashi', 'Créateur de "Naruto", manga culte mêlant ninjas et aventures épiques.', '2023-05-18', '1974-11-08', 'https://example.com/kishimoto.jpg', 'Shonen'),
+('Togashi', 'Yoshihiro', 'Connu pour "Hunter x Hunter" et "Yu Yu Hakusho", mangaka à l’imaginaire unique.', '2024-02-09', '1966-04-27', 'https://example.com/togashi.jpg', 'Shonen'),
+('Arakawa', 'Hiromu', 'Auteure de "Fullmetal Alchemist", célèbre pour ses intrigues profondes.', '2022-09-30', '1973-05-08', 'https://example.com/arakawa.jpg', 'Seinen'),
+('Isayama', 'Hajime', 'Créateur de "L’Attaque des Titans", une œuvre post-apocalyptique marquante.', '2023-11-03', '1986-08-29', 'https://example.com/isayama.jpg', 'Seinen'),
+('Inoue', 'Takehiko', 'Auteur de "Slam Dunk" et "Vagabond", maître du trait réaliste.', '2022-04-20', '1967-01-12', 'https://example.com/inoue.jpg', 'Seinen'),
+('Gotouge', 'Koyoharu', 'Auteure de "Demon Slayer", succès mondial au style percutant.', '2024-03-14', '1989-06-05', 'https://example.com/gotouge.jpg', 'Shonen');
 
-INSERT INTO genre (label, created_at)
+
+INSERT INTO category (label, description, created_at, url)
 VALUES
-        ('Shonen', '2023-01-01 08:00:00'),
-        ('Seinen', '2022-09-10 10:00:00');
+    ('Action', 'Catégorie centrée sur les scènes d’action et les aventures intenses.', '2023-02-14 09:00:00', 'action'),
+    ('Comédie', 'Manga axé sur l’humour et les situations comiques.', '2024-01-05 16:30:00', 'comedie');
+
+
+INSERT INTO genre (label, created_at,description,url)
+VALUES
+        ('Shonen', '2023-01-01 08:00:00','description','url.com'),
+        ('Seinen', '2022-09-10 10:00:00','description','url.com');
 
 INSERT INTO status (label) VALUES
                                ('En cours'),
@@ -223,3 +236,17 @@ INSERT INTO comment (rating, comment, created_at, Id_mangas, Id_users)
 VALUES
     (5, 'Un manga exceptionnel, très captivant!', '2023-04-10 10:00:00', 1, 1),
     (4, 'Bien écrit, mais parfois un peu long.', '2023-03-20 14:30:00', 2, 2);
+
+
+INSERT INTO mangas_authors (Id_mangas, Id_authors) VALUES
+(1, 1),  
+(2, 2)  ;
+
+
+INSERT INTO picture (url, is_main, Id_mangas) VALUES
+('https://example.com/dragonball_main.jpg', TRUE, 1),
+('https://example.com/onepiece_main.jpg', TRUE, 2),
+('https://example.com/dragonball_secondary.jpg', FALSE, 1); 
+
+INSERT INTO genres_manga (Id_mangas,Id_gender_mangas) VALUES
+(1,1)
