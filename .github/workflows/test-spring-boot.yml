@@ -27,20 +27,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Check internet connectivity
-        run: |
-          curl -v https://api.github.com
-          ping -c 4 github.com
-
       - name: Run tests with test profile
-        run: mvn clean verify -Dspring.profiles.active=test -X
+        run: mvn clean verify -Dspring.profiles.active=test
         working-directory: ./manga-up-back
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: ./manga-up-back/target/surefire-reports/
+      - name: Show test reports
+        run: |
+          echo "==== Contenu des rapports de tests ===="
+          cat ./manga-up-back/target/surefire-reports/*.txt || echo "Aucun rapport trouvé."
+        working-directory: ./manga-up-back
 
       - name: Success message
         if: success()
