@@ -32,6 +32,13 @@ jobs:
         run: mvn clean verify -Dspring.profiles.active=test
         working-directory: ./manga-up-back
 
+      - name: Upload Surefire reports if tests fail
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-reports
+          path: ./manga-up-back/target/surefire-reports/
+
       - name: Success message
-        if: ${{ success() }}
+        if: success()
         run: echo "✅ Java tests passed with profile 'test'. You can create a pull request to main."
