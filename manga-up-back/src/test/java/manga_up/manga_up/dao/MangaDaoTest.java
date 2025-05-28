@@ -2,15 +2,21 @@ package manga_up.manga_up.dao;
 
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.Manga;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
@@ -74,4 +80,70 @@ class MangaDaoTest {
         Optional<Manga> foundManga = mangaDao.findById(1);
         assertFalse(foundManga.isPresent());
  }
+
+ @Test
+ public void findMangasWithMainPicturesTest() {
+     Pageable pageable = PageRequest.of(0, 10);
+     Page<MangaProjectionWithAuthor> result = mangaDao.findMangasWithMainPicturesTest(pageable);
+
+     assertThat(result).isNotEmpty();
+
+     for (MangaProjectionWithAuthor manga : result.getContent()) {
+         System.out.println("Manga ID: " + manga.getMangaId());
+         System.out.println("Title: " + manga.getTitle());
+         System.out.println("Authors: " + manga.getAuthors());
+         System.out.println("Picture URL: " + manga.getPicture());
+         System.out.println("------");
+     }
+ }
+
+
+
+
+
+ @Test
+ public void shouldfindMangasByGenre2() {
+     Pageable pageable = PageRequest.of(0, 10);
+     Page<MangaProjectionWithAuthor> result = mangaDao.findMangasByGenre2(1, pageable);
+
+     assertThat(result).isNotEmpty();
+
+     MangaProjectionWithAuthor manga = result.getContent().get(0);
+     System.out.println("Manga: " + manga.getTitle());
+     System.out.println("Authors: " + manga.getAuthors());
+     System.out.println("Picture URL: " + manga.getPicture());
+
+ }
+
+
+
+ @Test
+ public void testFindMangasByCategory2() {
+     Pageable pageable = PageRequest.of(0, 10);
+     Page<MangaProjectionWithAuthor> result = mangaDao.findMangasByCategory2(1, pageable);
+
+     assertThat(result).isNotEmpty();
+
+     MangaProjectionWithAuthor manga = result.getContent().get(0);
+     System.out.println("Manga: " + manga.getTitle());
+     System.out.println("Authors: " + manga.getAuthors());
+     System.out.println("Picture URL: " + manga.getPicture());
+
+ }
+ 
+ @Test
+ public void testFindMangasByAuthor2() {
+     Pageable pageable = PageRequest.of(0, 10);
+     Integer authorId = 1; 
+
+     Page<MangaProjectionWithAuthor> result = mangaDao.findMangasByAuthor2(authorId, pageable);
+
+     assertThat(result).isNotEmpty();
+
+     MangaProjectionWithAuthor manga = result.getContent().get(0);
+     System.out.println("Manga: " + manga.getTitle());
+     System.out.println("Authors: " + manga.getAuthors());
+     System.out.println("Picture URL: " + manga.getPicture());
+ }
+ 
 }
