@@ -160,7 +160,7 @@ public TestAuthorProjection( Integer id, String firstname, String lastname,Strin
 @Test
 void shouldReturnAuthorSave() {
     // Arrange
-    AuthorDto authorDto = new AuthorDto("Akira1", "Toriyama", "description", "Homme", LocalDate.of(2025, 5, 26), "images.com");
+    AuthorDto authorDto = new AuthorDto(1,"Akira1", "Toriyama", "description", "Homme", LocalDate.of(2025, 5, 26), "images.com");
 
     Author authorEntity = new Author();
     authorEntity.setFirstname(authorDto.getFirstname());
@@ -198,8 +198,8 @@ void shouldReturnAuthorSave() {
 void shouldReturnAuthorUpdate() {
     int id = 1;
 
-    AuthorDto authorDto = new AuthorDto("tite", "Kubo", "bleach", "Homme", LocalDate.of(2025, 5, 26),
-            "images.com");
+    // Correction ordre firstname / lastname ici
+    AuthorDto authorDto = new AuthorDto(1, "Kubo", "Tite", "bleach", "Homme", LocalDate.of(2025, 5, 26), "images.com");
 
     Author authorEntity = new Author();
     authorEntity.setId(id);
@@ -210,32 +210,25 @@ void shouldReturnAuthorUpdate() {
 
     when(authorDao.findAuthorById(id)).thenReturn(Optional.of(authorEntity));
 
-    // Ici on attend que save soit appelé avec l'entité modifiée
     when(authorDao.save(authorEntity)).thenReturn(authorEntity);
 
-    // Ici on attend que le mapper convertisse l'entité en DTO à retourner
     when(authorMapper.toDtoAuthor(authorEntity)).thenReturn(authorDto);
 
-    // Act
     AuthorDto result = authorService.updateAuthor(id, authorDto);
 
-    // Assert
     assertThat(result).isNotNull();
-    assertThat(result.getLastname()).isEqualTo("tite");
-    assertThat(result.getFirstname()).isEqualTo("Kubo");
+    assertThat(result.getFirstname()).isEqualTo("Tite");
+    assertThat(result.getLastname()).isEqualTo("Kubo");
     assertThat(result.getDescription()).isEqualTo("bleach");
 
-    // Optionnel: vérifier que l'entité a bien été mise à jour
-    assertThat(authorEntity.getFirstname()).isEqualTo("Kubo");
-    assertThat(authorEntity.getLastname()).isEqualTo("tite");
+    assertThat(authorEntity.getFirstname()).isEqualTo("Tite");
+    assertThat(authorEntity.getLastname()).isEqualTo("Kubo");
     assertThat(authorEntity.getDescription()).isEqualTo("bleach");
 
-    // Vérifier les interactions
     verify(authorDao).findAuthorById(id);
     verify(authorDao).save(authorEntity);
     verify(authorMapper).toDtoAuthor(authorEntity);
 }
-
 
 @Test
 void shouldDeleteAuthor() {
@@ -268,7 +261,7 @@ void shouldThrowExceptionWhenDeletingNonExistingAuthor() {
 
 @Test
 void shouldRollbackTransactionOnError() {
-    AuthorDto authorDto = new AuthorDto("tite", "Kubo", "bleach", "Homme", LocalDate.of(2025, 5, 26),
+    AuthorDto authorDto = new AuthorDto(1,"tite", "Kubo", "bleach", "Homme", LocalDate.of(2025, 5, 26),
             "images.com");
     when(authorMapper.toEntity(authorDto)).thenThrow(new RuntimeException("Simulated error"));
 
