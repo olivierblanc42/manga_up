@@ -2,7 +2,6 @@ package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.*;
-import manga_up.manga_up.dto.*;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.genre.GenreDto;
@@ -10,13 +9,10 @@ import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
-import manga_up.manga_up.dto.picture.PictureDtoRandom;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.*;
-import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
-import manga_up.manga_up.projection.manga.MangaLittleProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
