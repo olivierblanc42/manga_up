@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,6 +42,7 @@ import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CustomUserDetailsService;
 
 @WebMvcTest(AuthorController.class)
+@ActiveProfiles("test")
 class AuthorControllerTest {
 
     @Autowired
