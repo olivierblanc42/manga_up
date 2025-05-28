@@ -21,21 +21,6 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     @Query("From Author ")
     Page<Manga> findMangasByPage(Pageable pageable);
 
-//     @Query(value = """
-//             SELECT
-//                 m.Id_mangas AS id,
-//                 m.title AS title,
-//                 p.Id_picture AS pictureId,
-//                 p.url AS pictureUrl,
-//                 GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
-//             FROM manga m
-//             JOIN picture p ON m.Id_mangas = p.Id_mangas
-//             JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
-//             JOIN author a ON a.id_authors = ma.id_authors
-//             WHERE p.is_main = 1
-//             GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
-//             """, nativeQuery = true)
-//     Page<MangaBaseProjection> findMangasWithMainPictures(Pageable pageable);
 
     @Query("SELECT DISTINCT m FROM Manga m " +
             "LEFT JOIN FETCH m.authors a " +
@@ -98,7 +83,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "FROM manga m " +
             "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
             "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
-            "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas AND p.is_main = 1 " +
+            "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas AND p.is_main = TRUE " +
             "GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url " +
             "ORDER BY RAND() " +
             "LIMIT 4", nativeQuery = true)
@@ -139,7 +124,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             JOIN picture p ON m.Id_mangas = p.Id_mangas
             JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
             JOIN author a ON am.Id_authors = a.Id_authors
-            WHERE p.is_main = 1
+            WHERE p.is_main = TRUE
               AND am.Id_authors = :authorId
             GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
             """, countQuery = """
@@ -147,7 +132,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             FROM manga m
             JOIN picture p ON m.Id_mangas = p.Id_mangas
             JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
-            WHERE p.is_main = 1
+            WHERE p.is_main = TRUE
               AND am.Id_authors = :authorId
             """, nativeQuery = true)
     Page<MangaBaseProjection> findMangasByAuthor(@Param("authorId") Integer authorId, Pageable pageable);
@@ -160,14 +145,14 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                           FROM manga m
                           JOIN picture p ON m.Id_mangas = p.Id_mangas
                           JOIN category c ON c.Id_categories = m.Id_categories
-                          WHERE p.is_main = 1
+                          WHERE p.is_main = TRUE
                           AND  c.Id_categories = :categoryId
             """, countQuery = """
                 SELECT COUNT(*)
                 FROM manga m
                 JOIN picture p ON m.Id_mangas = p.Id_mangas
                 JOIN category c ON c.Id_categories = m.Id_categories
-                WHERE p.is_main = 1
+                WHERE p.is_main = TRUE
                   AND  c.Id_categories = :categoryId
             """, nativeQuery = true)
     Page<MangaBaseProjection> findMangasByCategory(@Param("categoryId") Integer categoryId, Pageable pageable);
@@ -180,14 +165,14 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                   FROM manga m
                   JOIN picture p ON m.Id_mangas = p.Id_mangas
                   JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                          WHERE p.is_main = 1
+                          WHERE p.is_main = TRUE
                           AND  gm.Id_gender_mangas = :genreId
             """, countQuery = """
                 SELECT COUNT(*)
                 FROM manga m
                   JOIN picture p ON m.Id_mangas = p.Id_mangas
                   JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                WHERE p.is_main = 1
+                WHERE p.is_main = TRUE
                    AND  gm.Id_gender_mangas = :genreId
             """, nativeQuery = true)
     Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer genreId, Pageable pageable);
@@ -206,7 +191,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             JOIN picture p ON m.Id_mangas = p.Id_mangas
             JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
             JOIN author a ON a.id_authors = ma.id_authors
-            WHERE p.is_main = 1 AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+            WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
             GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
             ORDER BY m.title ASC
             """, countQuery = """
@@ -215,7 +200,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             JOIN picture p ON m.Id_mangas = p.Id_mangas
             JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
             JOIN author a ON a.id_authors = ma.id_authors
-            WHERE p.is_main = 1 AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+            WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
             """, nativeQuery = true)
     Page<MangaBaseProjection> findByTitleWithGenres(@Param("letter") String letter, Pageable pageable);
 
@@ -233,7 +218,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     FROM manga m
                     LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas
                     LEFT JOIN author a ON ma.Id_authors = a.Id_authors
-                    LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas AND p.is_main = 1
+                    LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas AND p.is_main = TRUE
                     GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
                     """, countQuery = """
                     SELECT COUNT(DISTINCT m.Id_mangas)
@@ -255,7 +240,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
                     JOIN author a ON ma.id_authors = a.id_authors
                     JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND gm.Id_gender_mangas = :genreId
                     GROUP BY m.Id_mangas, m.title, p.url
                     """, countQuery = """
@@ -263,7 +248,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     FROM manga m
                     JOIN picture p ON m.Id_mangas = p.Id_mangas
                     JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND gm.Id_gender_mangas = :genreId
                     """, nativeQuery = true)
     Page<MangaProjectionWithAuthor> findMangasByGenre2(@Param("genreId") Integer genreId, Pageable pageable);
@@ -281,7 +266,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     JOIN picture p ON m.Id_mangas = p.Id_mangas
                     JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
                     JOIN author a ON am.Id_authors = a.Id_authors
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND am.Id_authors = :authorId
                     GROUP BY m.Id_mangas, m.title, p.url
                     """, countQuery = """
@@ -289,7 +274,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     FROM manga m
                     JOIN picture p ON m.Id_mangas = p.Id_mangas
                     JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND am.Id_authors = :authorId
                     """, nativeQuery = true)
     Page<MangaProjectionWithAuthor> findMangasByAuthor2(@Param("authorId") Integer authorId, Pageable pageable);
@@ -307,7 +292,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
                     JOIN author a ON ma.id_authors = a.id_authors
                     JOIN category c ON c.Id_categories = m.Id_categories
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND c.Id_categories = :categoryId
                     GROUP BY m.Id_mangas, m.title, p.url
                     """, countQuery = """
@@ -315,7 +300,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
                     FROM manga m
                     JOIN picture p ON m.Id_mangas = p.Id_mangas
                     JOIN category c ON c.Id_categories = m.Id_categories
-                    WHERE p.is_main = 1
+                    WHERE p.is_main = TRUE
                       AND c.Id_categories = :categoryId
                     """, nativeQuery = true)
     Page<MangaProjectionWithAuthor> findMangasByCategory2(@Param("categoryId") Integer categoryId,
