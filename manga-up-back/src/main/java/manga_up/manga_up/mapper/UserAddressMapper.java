@@ -12,7 +12,7 @@ import java.time.Instant;
 @Mapper(componentModel = "spring")
 public class UserAddressMapper {
 
-public static UserAddressDto toDto(UserAddress userAddress) {
+public  UserAddressDto toDto(UserAddress userAddress) {
     return new UserAddressDto(
             userAddress.getLine1(),
             userAddress.getLine2(),
@@ -24,7 +24,7 @@ public static UserAddressDto toDto(UserAddress userAddress) {
 }
 
 
-public static UserAddress toEntity(UserAddressDto userAddressDto) {
+public  UserAddress toEntity(UserAddressDto userAddressDto) {
     UserAddress  userAddress = new UserAddress();
     userAddress.setLine1(userAddressDto.getLine1());
     userAddress.setLine2(userAddressDto.getLine2());
