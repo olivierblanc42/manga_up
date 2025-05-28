@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.MediaType;
 
 import java.util.Optional;
 
@@ -63,6 +64,7 @@ public class AuthorController {
             @ApiResponse(responseCode = "404", description = "Author not found")
     })
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAuthor(@PathVariable Integer id) {
         LOGGER.info("Delete author with id {}", id);
         authorService.deleteAuthorById(id);
@@ -83,12 +85,15 @@ public class AuthorController {
         LOGGER.info("Updating Author");
         try {
             AuthorDto author = authorService.updateAuthor(id, authorDto);
-            return new ResponseEntity<>(author, HttpStatus.OK);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.APPLICATION_JSON) 
+                    .body(author);
         } catch (Exception e) {
             LOGGER.error("Error updating Author", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }
+    }    
 
     // @Operation(summary = "Get author with mangas")
     // @ApiResponses(value = {
