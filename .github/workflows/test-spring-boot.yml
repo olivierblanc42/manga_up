@@ -32,12 +32,12 @@ jobs:
         run: mvn clean verify -Dspring.profiles.active=test
         working-directory: ./manga-up-back
 
-      - name: Upload Surefire reports if tests fail
-        if: failure()
-        uses: actions/upload-artifact@v2
+      - name: Upload test results
+        uses: actions/upload-artifact@v1
         with:
-          name: surefire-reports
+          name: test-results
           path: ./manga-up-back/target/surefire-reports/
+
 
       - name: Success message
         if: success()
