@@ -8,8 +8,10 @@ import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,11 +25,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UserAddressServiceTest {
 
   @Mock
@@ -214,13 +215,14 @@ class UserAddressServiceTest {
     @Test
     void shouldSaveUserAddress() {
         int id = 1;
+        Instant fixedInstant = Instant.parse("2024-01-01T12:00:00Z");
 
         UserAddressDto userAddressDto = new UserAddressDto(
                 "123 Main St",
                 "Apt 4B",
                 "Near the Park",
                 "city",
-                Instant.now(),
+                fixedInstant,
                 "75001");
 
         UserAddress userAddress = new UserAddress();
@@ -247,6 +249,7 @@ class UserAddressServiceTest {
     @Test
     void deleteUserAddress() {
        int id = 1;
+
        UserAddress userAddress = new UserAddress();
        userAddress.setId(id);
        userAddress.setLine1("123 Main St");
@@ -264,12 +267,14 @@ class UserAddressServiceTest {
     @Test
     void updateUserAddress() {
        int id = 1;
+       Instant fixedInstant = Instant.parse("2024-01-01T12:00:00Z");
+
         UserAddressDto userAddressDto = new UserAddressDto(
                 "1234 Main St",
                 "Apt 4B",
                 "Near the Park",
                 "city",
-                Instant.now(),
+                fixedInstant,
                 "75001");
 
         UserAddress userAddressEntity = new UserAddress();
@@ -278,7 +283,7 @@ class UserAddressServiceTest {
         userAddressEntity.setLine2("Apt 3B");
         userAddressEntity.setLine3("the Park");
         userAddressEntity.setCity("city2");
-        userAddressEntity.setCreatedAt(Instant.now());
+        userAddressEntity.setCreatedAt(fixedInstant);
         userAddressEntity.setPostalCode("75004");
 
         when(addressDao.findUserAddressById(id)).thenReturn(Optional.of(userAddressEntity));
@@ -287,7 +292,6 @@ class UserAddressServiceTest {
         userAddressEntity.setLine3(userAddressDto.getLine3());
         userAddressEntity.setCity(userAddressDto.getCity());
         userAddressEntity.setPostalCode(userAddressDto.getPostalCode());
-        when(userAddressMapper.toEntity(userAddressDto)).thenReturn(userAddressEntity);
         when(addressDao.save(userAddressEntity)).thenReturn(userAddressEntity);
         when(userAddressMapper.toDto(userAddressEntity)).thenReturn(userAddressDto);
 
