@@ -34,7 +34,7 @@ jobs:
 
       - name: Upload Surefire reports if tests fail
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: surefire-reports
           path: ./manga-up-back/target/surefire-reports/
