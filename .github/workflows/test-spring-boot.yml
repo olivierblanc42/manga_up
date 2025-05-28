@@ -39,8 +39,8 @@ jobs:
       - name: Upload test results
         uses: actions/upload-artifact@v3
         with:
-        name: test-results
-        path: ./manga-up-back/target/surefire-reports/
+          name: test-results
+          path: ./manga-up-back/target/surefire-reports/
 
       - name: Success message
         if: success()
