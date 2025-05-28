@@ -1,9 +1,15 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.model.Author;
+import manga_up.manga_up.projection.author.AuthorProjection;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,5 +71,27 @@ void shouldUpdateAuthor() {
  assertFalse(author.isPresent());
 
 }
+
+
+@Test
+void shouldGetPagedAuthors() {
+    Page<AuthorProjection> page = authorDao.findAllByPage(PageRequest.of(0, 5));
+    assertFalse(page.isEmpty());
+}
+
+@Test
+void shouldGetAuthorWithMangasById() {
+    Optional<Author> author = authorDao.findAuthorById(1);
+    assertTrue(author.isPresent());
+    assertNotNull(author.get().getMangas());
+}
+
+@Test
+void shouldGetAuthorProjectionById() {
+    Optional<AuthorProjection> projection = authorDao.findAuthorProjectionById(1);
+    assertTrue(projection.isPresent());
+    assertEquals("Toriyama", projection.get().getLastname());
+}
+
 
 }
