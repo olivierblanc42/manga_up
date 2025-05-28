@@ -33,14 +33,14 @@ jobs:
           ping -c 4 github.com
 
       - name: Run tests with test profile
-        run: mvn clean verify -Dspring.profiles.active=test
+        run: mvn clean verify -Dspring.profiles.active=test -X
         working-directory: ./manga-up-back
 
       - name: Upload test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: ./manga-up-back/target/surefire-reports/
+        name: test-results
+        path: ./manga-up-back/target/surefire-reports/
 
       - name: Success message
         if: success()
