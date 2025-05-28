@@ -24,18 +24,24 @@ jobs:
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven-
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Check internet connectivity
+        run: |
+          curl -v https://api.github.com
+          ping -c 4 github.com
 
       - name: Run tests with test profile
         run: mvn clean verify -Dspring.profiles.active=test
         working-directory: ./manga-up-back
 
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: test-results
           path: ./manga-up-back/target/surefire-reports/
 
       - name: Success message
-        if: ${{ success() }}
+        if: success()
         run: echo "✅ Java tests passed with profile 'test'. You can create a pull request to main."
