@@ -22,23 +22,20 @@ jobs:
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.m2/repository
+          path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          restore-keys: ${{ runner.os }}-maven-
 
       - name: Run tests with test profile
         run: mvn clean verify -Dspring.profiles.active=test
         working-directory: ./manga-up-back
 
       - name: Upload test results
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: ./manga-up-back/target/surefire-reports/
 
-
       - name: Success message
-        if: success()
+        if: ${{ success() }}
         run: echo "✅ Java tests passed with profile 'test'. You can create a pull request to main."
