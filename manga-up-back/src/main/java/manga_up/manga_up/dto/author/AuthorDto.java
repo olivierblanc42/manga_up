@@ -11,7 +11,7 @@ import java.util.Objects;
  * DTO for {@link manga_up.manga_up.model.Author}
  */
 public class AuthorDto implements Serializable {
-
+    private final Integer id;
     @Size(max = 100)
     private final String lastname;
     @NotNull
@@ -27,7 +27,8 @@ public class AuthorDto implements Serializable {
     @NotNull
     private final String url;
 
-    public AuthorDto( String lastname, String firstname, String description, String genre, LocalDate birthdate,String url) {
+    public AuthorDto(Integer id, String lastname, String firstname, String description, String genre, LocalDate birthdate,String url) {
+        this.id = id;
         this.lastname = lastname;
         this.firstname = firstname;
         this.description = description;
@@ -36,7 +37,9 @@ public class AuthorDto implements Serializable {
         this.url =url;
     }
 
-
+    public Integer getId() {
+        return id;
+    }
 
     public String getLastname() {
         return lastname;
