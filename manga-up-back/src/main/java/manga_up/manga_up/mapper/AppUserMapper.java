@@ -16,10 +16,16 @@ import manga_up.manga_up.model.Picture;
 @Component
 public class AppUserMapper {
 
+    private final UserAddressMapper userAddressMapper;
+
+    private final GenderUserMapper genderUserMapper;
+
     private final MangaMapper mangaMapper;
 
-    public AppUserMapper(MangaMapper mangaMapper) {
+    public AppUserMapper(MangaMapper mangaMapper, GenderUserMapper genderUserMapper, UserAddressMapper userAddressMapper) {
         this.mangaMapper = mangaMapper;
+        this.genderUserMapper = genderUserMapper;
+        this.userAddressMapper = userAddressMapper;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppUserMapper.class);
@@ -36,8 +42,8 @@ public class AppUserMapper {
                 appUser.getPhoneNumber(),
                 appUser.getEmail(),
                 appUser.getCreatedAt(),
-                UserAddressMapper.toDto(appUser.getIdUserAddress()),
-                GenderUserMapper.toDto(appUser.getIdGendersUser()),
+                userAddressMapper.toDto(appUser.getIdUserAddress()),
+                genderUserMapper.toDto(appUser.getIdGendersUser()),
                 mangaMapper.toMangaLightDtoSet(appUser.getMangas())
                 );
 
@@ -57,8 +63,8 @@ public class AppUserMapper {
         appUser.setPhoneNumber(userProfilDto.getPhoneNumber());
         appUser.setEmail(userProfilDto.getEmail());
         appUser.setCreatedAt(userProfilDto.getCreatedAt());
-        appUser.setIdUserAddress(UserAddressMapper.toEntity(userProfilDto.getIdUserAddress()));
-        appUser.setIdGendersUser(GenderUserMapper.toEntity(userProfilDto.getIdGendersUser()));
+        appUser.setIdUserAddress(userAddressMapper.toEntity(userProfilDto.getIdUserAddress()));
+        appUser.setIdGendersUser(genderUserMapper.toEntity(userProfilDto.getIdGendersUser()));
         appUser.setMangas(mangaMapper.toEntityMangas(userProfilDto.getMangas()));
         return appUser;
     }
