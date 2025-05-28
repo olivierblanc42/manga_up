@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GenderUserMapper {
 
-    public static GenderUserDto toDto( GenderUser genderUser) {
+    public  GenderUserDto toDto( GenderUser genderUser) {
         return new GenderUserDto(
                 genderUser.getId(),
                 genderUser.getLabel()
@@ -16,7 +16,7 @@ public class GenderUserMapper {
     }
 
 
-    public static GenderUser toEntity( GenderUserDto genderUserDto) {
+    public GenderUser toEntity( GenderUserDto genderUserDto) {
         GenderUser genderUser = new GenderUser();
         genderUser.setId(genderUserDto.getId());
         genderUser.setLabel(genderUserDto.getLabel());
