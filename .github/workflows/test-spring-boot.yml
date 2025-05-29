@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Run tests with test profile
-        run: mvn clean verify -Dspring.profiles.active=test
+        run: mvn clean test "-Dspring.profiles.active=test"
         working-directory: ./manga-up-back
 
       - name: Show test reports
