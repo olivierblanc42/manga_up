@@ -32,14 +32,21 @@ jobs:
         working-directory: ./manga-up-back
 
       - name: Lister le contenu du dossier test/resources
-        run: ls -lR ./manga-up-back/src/test/resources
+        run: ls -lR ./src/test/resources
         working-directory: ./manga-up-back
 
       - name: Show test reports
         run: |
           echo "==== Contenu des rapports de tests ===="
-          cat ./manga-up-back/target/surefire-reports/*.txt || echo "Aucun rapport trouvé."
+          cat ./target/surefire-reports/*.txt || echo "Aucun rapport trouvé."
         working-directory: ./manga-up-back
+
+      - name: Upload Surefire Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: ./manga-up-back/target/surefire-reports/
 
       - name: Success message
         if: success()
