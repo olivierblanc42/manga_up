@@ -34,6 +34,10 @@ jobs:
           echo "=== Dans le projet ==="
           find . -name settings.xml
 
+      - name: Afficher le contenu de ~/.m2/settings.xml
+        run: cat ~/.m2/settings.xml
+
+
       - name: Run tests with test profile and verbose logs
         run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
