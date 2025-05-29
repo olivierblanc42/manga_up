@@ -39,7 +39,7 @@ jobs:
 
 
       - name: Run tests with test profile and verbose logs
-        run: mvn clean test -Dspring.profiles.active=test -e -X --settings /dev/null
+        run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
 
       - name: Lister le contenu du dossier test/resources
