@@ -31,6 +31,10 @@ jobs:
         run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
 
+      - name: Lister le contenu du dossier test/resources
+        run: ls -lR ./manga-up-back/src/test/resources
+        working-directory: ./manga-up-back
+
       - name: Show test reports
         run: |
           echo "==== Contenu des rapports de tests ===="
