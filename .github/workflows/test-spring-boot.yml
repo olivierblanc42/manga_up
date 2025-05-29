@@ -46,6 +46,10 @@ jobs:
       - name: Afficher les variables d’environnement GitHub
         run: env | grep GITHUB || echo "Aucune variable GITHUB trouvée"
 
+      - name: Générer un .env pour la CI
+        run: cp .env.example .env
+        working-directory: ./manga-up-back
+
       - name: Run tests with test profile and verbose logs
         run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
