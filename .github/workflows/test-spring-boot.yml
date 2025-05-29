@@ -27,16 +27,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Lister les settings.xml dans le repo et le runner
+      - name: Lister tous les settings.xml présents sur le runner
         run: |
-          echo "=== Dans ~/.m2 ==="
+          echo "=== settings.xml dans ~/.m2 ==="
           ls -l ~/.m2 || true
-          echo "=== Dans le projet ==="
-          find . -name settings.xml
+          echo "=== settings.xml partout sur le runner ==="
+          find /home/runner -name "settings.xml" || true
+          echo "=== settings.xml dans le projet ==="
+          find . -name "settings.xml" || true
 
       - name: Afficher le contenu de ~/.m2/settings.xml
         run: cat ~/.m2/settings.xml
 
+      - name: Afficher tous les serveurs du settings.xml
+        run: grep "<server>" -A 4 ~/.m2/settings.xml || echo "Aucun serveur trouvé"
+
+      - name: Afficher les variables d’environnement GitHub
+        run: env | grep GITHUB || echo "Aucune variable GITHUB trouvée"
 
       - name: Run tests with test profile and verbose logs
         run: mvn clean test -Dspring.profiles.active=test -e -X
