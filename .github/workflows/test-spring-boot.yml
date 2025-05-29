@@ -27,6 +27,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Lister les settings.xml dans le repo et le runner
+        run: |
+          echo "=== Dans ~/.m2 ==="
+          ls -l ~/.m2 || true
+          echo "=== Dans le projet ==="
+          find . -name settings.xml
+
       - name: Run tests with test profile and verbose logs
         run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
