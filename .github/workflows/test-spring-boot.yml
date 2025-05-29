@@ -27,8 +27,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Run tests with test profile
-        run: mvn clean test "-Dspring.profiles.active=test"
+      - name: Run tests with test profile and verbose logs
+        run: mvn clean test -Dspring.profiles.active=test -e -X
         working-directory: ./manga-up-back
 
       - name: Show test reports
