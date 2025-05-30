@@ -1,8 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+declare global {
+  interface Window {
+    onCaptchaSuccess: (token: string) => void;
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -11,17 +16,32 @@ import { FormsModule } from '@angular/forms';
   imports: [NgIf, FormsModule, RouterModule],
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   credentials = { username: '', password: '' };
   errorMessage: string = '';
+  captchaToken: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
 
+  ngOnInit(): void {
+    // Callback global appelé par hCaptcha (déclaré dans index.html)
+    window.onCaptchaSuccess = (token: string) => {
+      this.captchaToken = token;
+      console.log('hCaptcha token reçu :', token);
+    };
+  }
+
   login(): void {
+    if (!this.captchaToken) {
+      this.errorMessage = 'Veuillez valider le captcha avant de continuer.';
+      return;
+    }
+
+    // Tu peux maintenant envoyer le token au backend avec les credentials
     this.authService.login(this.credentials).subscribe({
-      next: (response) => {
-        console.log('Utilisateur connecté avec succès :');
-        this.router.navigate(['/']);  // Redirection après un login réussi
+      next: () => {
+        console.log('Utilisateur connecté avec succès');
+        this.router.navigate(['/']);
       },
       error: () => {
         this.errorMessage = 'Échec de la connexion. Vérifiez vos identifiants.';
@@ -29,18 +49,26 @@ export class LoginComponent {
     });
   }
 
+  loginTest(): void {
+    // if (!this.captchaToken) {
+    //   this.errorMessage = 'Veuillez valider le captcha avant de continuer.';
+    //   return;
+    // }
 
-loginTest(): void{
-  this.authService.loginAfterLogout(this.credentials).subscribe({
-    next: (res) => {
-      console.log('Connecté avec succès', res);
-      this.router.navigate(['/']); 
-    },
-    error: (err) => {
-      console.error('Erreur lors du login :', err);
-    }
-  });
-}
+    const loginData = {
+      ...this.credentials,
+      captchaToken: this.captchaToken
+    };
 
+    this.authService.loginAfterLogout(loginData).subscribe({
+      next: (res) => {
+        console.log('Connecté avec succès', res);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Erreur lors du login :', err);
+      }
+    });
+  }
   
 }
