@@ -317,7 +317,7 @@ public class MangaService {
     // }
 
     public Page<MangaBaseProjection> getTitle(String letter,Pageable pageable) {
-        return mangaDao.findByTitleWithGenres(letter,pageable);
+        return mangaDao.findMangaWithSearch(letter,pageable);
     }
     
 

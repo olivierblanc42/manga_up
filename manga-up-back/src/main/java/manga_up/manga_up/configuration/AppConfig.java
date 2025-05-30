@@ -12,7 +12,7 @@ public class AppConfig {
     public static PropertySourcesPlaceholderConfigurer propertyConfig() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
         configurer.setLocation(new FileSystemResource(".env"));
-        configurer.setIgnoreResourceNotFound(false);
+        configurer.setIgnoreResourceNotFound(true);
         configurer.setIgnoreUnresolvablePlaceholders(true); 
         return configurer;
     }

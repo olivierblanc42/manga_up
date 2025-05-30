@@ -32,7 +32,7 @@ public class RegisterDto implements Serializable {
     private String email;
 
     @NotNull
-  
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Mot de passe invalide")
     @Size(max = 128)
     private String password;
     private UserAddressDto address;

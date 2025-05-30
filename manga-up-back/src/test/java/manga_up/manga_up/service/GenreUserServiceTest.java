@@ -1,9 +1,12 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.GenderUserDao;
+import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.GenderUserMapper;
+import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.model.Author;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
@@ -25,14 +28,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -110,6 +119,28 @@ class GenreUserServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenGenderUserHasUser() {
+        GenderUser gender = new GenderUser();
+        gender.setId(1);
+        gender.setLabel("Man");
+        gender.setAppUsers(Set.of());
+        AppUser user = new AppUser();
+        gender.setAppUsers(Set.of(user));
+        when(genderUserDao.findGenderById(1)).thenReturn(Optional.of(gender));
+
+
+  EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+      genreUserService.deleteGenreUserById(1);
+  });
+
+           assertEquals("The Gender user is linked to a user it cannot be deleted", exception.getMessage());
+           verify(genderUserDao, never()).delete(any());
+
+    }
+
+
+
+    @Test
     void deleteGenreUserById() {
         GenderUser gender = new GenderUser();
         gender.setId(1);
@@ -120,6 +151,11 @@ class GenreUserServiceTest {
         verify(genderUserDao).delete(gender);
 
     }
+
+
+
+
+
 
     @Test
     void saveGenreUser() {
@@ -139,6 +175,35 @@ class GenreUserServiceTest {
         assertThat(result).isEqualTo(genderUserDto);
     }    
 
+
+@Test
+void shouldThrowExceptionWhenSaveErreur() {
+    // Arrange
+    GenderUserDto genderUserDto = new GenderUserDto(1, "Man");
+    GenderUser genderUserEntity = new GenderUser();
+    genderUserEntity.setId(genderUserDto.getId());
+    genderUserEntity.setLabel(genderUserDto.getLabel());
+
+    when(genderUserMapper.toEntity(genderUserDto)).thenReturn(genderUserEntity);
+    when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving author"));
+
+    // Act + Assert
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        genreUserService.saveGenreUser(genderUserDto);
+    });
+
+    assertEquals("Error saving genre user", exception.getMessage());
+
+    // Verify
+    verify(genderUserMapper).toEntity(genderUserDto);
+    verify(genderUserDao).save(genderUserEntity);
+}
+
+
+
+
+
+
     @Test
     void ShouldUpdateGenreUser() {
         int id = 1;
@@ -149,7 +214,7 @@ class GenreUserServiceTest {
 
         when(genderUserDao.findGenderById(id)).thenReturn(Optional.of(genderEntity));
         when(genderUserDao.save(genderEntity)).thenReturn(genderEntity);
-        when(genderUserMapper.toDto(genderEntity)).thenReturn(genderDto); // <<< ligne manquante
+        when(genderUserMapper.toDto(genderEntity)).thenReturn(genderDto); 
 
         GenderUserDto result = genreUserService.updateGenreUser(id, genderDto);
 
@@ -157,5 +222,24 @@ class GenreUserServiceTest {
         assertThat(result).isEqualTo(genderDto);
         assertThat(result.getLabel()).isEqualTo("Man3");
     }
-    
+
+
+
+
+
+    @Test
+    void shouldReturnAllGenreUsersDto() {
+
+        GenderUserDto genderDto1 = new GenderUserDto(1, "Man3");
+        GenderUserDto genderDto2 = new GenderUserDto(1, "Man3");
+
+        List<GenderUserDto> genderUsersList = new ArrayList<>(List.of(genderDto1, genderDto2));
+        when(genderUserDao.getGenderUserDto()).thenReturn(genderUsersList);
+
+
+        List<GenderUserDto> result = genreUserService.getAllGenreUsers();
+
+        assertThat(result).hasSize(2).containsExactly(genderDto1, genderDto2);
+
+    }
 }

@@ -114,68 +114,68 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "LIMIT 1", nativeQuery = true)
     List<Object[]> findRandomOneMangas();
 
-    @Query(value = """
-            SELECT m.Id_mangas AS id,
-                   m.title AS title,
-                   p.Id_picture AS pictureId,
-                   p.url AS pictureUrl,
-                   GROUP_CONCAT(DISTINCT CONCAT(a.firstname, ':', a.lastname) SEPARATOR '|') AS authorFullName
-            FROM manga m
-            JOIN picture p ON m.Id_mangas = p.Id_mangas
-            JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
-            JOIN author a ON am.Id_authors = a.Id_authors
-            WHERE p.is_main = TRUE
-              AND am.Id_authors = :authorId
-            GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
-            """, countQuery = """
-            SELECT COUNT(DISTINCT m.Id_mangas)
-            FROM manga m
-            JOIN picture p ON m.Id_mangas = p.Id_mangas
-            JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
-            WHERE p.is_main = TRUE
-              AND am.Id_authors = :authorId
-            """, nativeQuery = true)
-    Page<MangaBaseProjection> findMangasByAuthor(@Param("authorId") Integer authorId, Pageable pageable);
+    // @Query(value = """
+    //         SELECT m.Id_mangas AS id,
+    //                m.title AS title,
+    //                p.Id_picture AS pictureId,
+    //                p.url AS pictureUrl,
+    //                GROUP_CONCAT(DISTINCT CONCAT(a.firstname, ':', a.lastname) SEPARATOR '|') AS authorFullName
+    //         FROM manga m
+    //         JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //         JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
+    //         JOIN author a ON am.Id_authors = a.Id_authors
+    //         WHERE p.is_main = TRUE
+    //           AND am.Id_authors = :authorId
+    //         GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
+    //         """, countQuery = """
+    //         SELECT COUNT(DISTINCT m.Id_mangas)
+    //         FROM manga m
+    //         JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //         JOIN mangas_authors am ON am.Id_mangas = m.Id_mangas
+    //         WHERE p.is_main = TRUE
+    //           AND am.Id_authors = :authorId
+    //         """, nativeQuery = true)
+    // Page<MangaBaseProjection> findMangasByAuthor(@Param("authorId") Integer authorId, Pageable pageable);
 
-    @Query(value = """
-            SELECT m.Id_mangas AS id,
-                                 m.title AS title,
-                                 p.Id_picture AS pictureId,
-                                 p.url AS pictureUrl
-                          FROM manga m
-                          JOIN picture p ON m.Id_mangas = p.Id_mangas
-                          JOIN category c ON c.Id_categories = m.Id_categories
-                          WHERE p.is_main = TRUE
-                          AND  c.Id_categories = :categoryId
-            """, countQuery = """
-                SELECT COUNT(*)
-                FROM manga m
-                JOIN picture p ON m.Id_mangas = p.Id_mangas
-                JOIN category c ON c.Id_categories = m.Id_categories
-                WHERE p.is_main = TRUE
-                  AND  c.Id_categories = :categoryId
-            """, nativeQuery = true)
-    Page<MangaBaseProjection> findMangasByCategory(@Param("categoryId") Integer categoryId, Pageable pageable);
+    // @Query(value = """
+    //         SELECT m.Id_mangas AS id,
+    //                              m.title AS title,
+    //                              p.Id_picture AS pictureId,
+    //                              p.url AS pictureUrl
+    //                       FROM manga m
+    //                       JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //                       JOIN category c ON c.Id_categories = m.Id_categories
+    //                       WHERE p.is_main = TRUE
+    //                       AND  c.Id_categories = :categoryId
+    //         """, countQuery = """
+    //             SELECT COUNT(*)
+    //             FROM manga m
+    //             JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //             JOIN category c ON c.Id_categories = m.Id_categories
+    //             WHERE p.is_main = TRUE
+    //               AND  c.Id_categories = :categoryId
+    //         """, nativeQuery = true)
+    // Page<MangaBaseProjection> findMangasByCategory(@Param("categoryId") Integer categoryId, Pageable pageable);
 
-    @Query(value = """
-            SELECT m.Id_mangas AS id,
-                         m.title AS title,
-                         p.Id_picture AS pictureId,
-                         p.url AS pictureUrl
-                  FROM manga m
-                  JOIN picture p ON m.Id_mangas = p.Id_mangas
-                  JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                          WHERE p.is_main = TRUE
-                          AND  gm.Id_gender_mangas = :genreId
-            """, countQuery = """
-                SELECT COUNT(*)
-                FROM manga m
-                  JOIN picture p ON m.Id_mangas = p.Id_mangas
-                  JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
-                WHERE p.is_main = TRUE
-                   AND  gm.Id_gender_mangas = :genreId
-            """, nativeQuery = true)
-    Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer genreId, Pageable pageable);
+    // @Query(value = """
+    //         SELECT m.Id_mangas AS id,
+    //                      m.title AS title,
+    //                      p.Id_picture AS pictureId,
+    //                      p.url AS pictureUrl
+    //               FROM manga m
+    //               JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //               JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
+    //                       WHERE p.is_main = TRUE
+    //                       AND  gm.Id_gender_mangas = :genreId
+    //         """, countQuery = """
+    //             SELECT COUNT(*)
+    //             FROM manga m
+    //               JOIN picture p ON m.Id_mangas = p.Id_mangas
+    //               JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas
+    //             WHERE p.is_main = TRUE
+    //                AND  gm.Id_gender_mangas = :genreId
+    //         """, nativeQuery = true)
+    // Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer genreId, Pageable pageable);
 
 
 
@@ -202,7 +202,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             JOIN author a ON a.id_authors = ma.id_authors
             WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
             """, nativeQuery = true)
-    Page<MangaBaseProjection> findByTitleWithGenres(@Param("letter") String letter, Pageable pageable);
+    Page<MangaBaseProjection> findMangaWithSearch(@Param("letter") String letter, Pageable pageable);
 
 
 
