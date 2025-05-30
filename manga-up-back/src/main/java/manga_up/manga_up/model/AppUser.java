@@ -51,7 +51,6 @@ public class AppUser {
     @Column(name = "created_at")
     private Instant createdAt;
 
-    // @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Mot de passe invalide")
     @Column(name = "password", nullable = false, length = 128)
     private String password;
 

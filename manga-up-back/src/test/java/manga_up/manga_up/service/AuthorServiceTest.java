@@ -4,6 +4,7 @@ import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.author.AuthorProjection;
 
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -194,6 +196,43 @@ void shouldReturnAuthorSave() {
 }
 
 
+@Test
+void shouldThrowExceptionWhenSaveErreur() {
+    // Arrange
+    AuthorDto authorDto = new AuthorDto(1, "Akira1", "Toriyama", "description", "Homme", LocalDate.of(2025, 5, 26),
+            "images.com");
+
+    Author authorEntity = new Author();
+    authorEntity.setFirstname(authorDto.getFirstname());
+    authorEntity.setLastname(authorDto.getLastname());
+    authorEntity.setDescription(authorDto.getDescription());
+    authorEntity.setGenre(authorDto.getGenre());
+    authorEntity.setBirthdate(authorDto.getBirthdate());
+    authorEntity.setUrl(authorDto.getUrl());
+    authorEntity.setCreatedAt(LocalDate.now());
+
+    when(authorMapper.toEntity(authorDto)).thenReturn(authorEntity);
+    when(authorDao.save(authorEntity)).thenThrow(new RuntimeException("Error saving author"));
+
+    // Act + Assert
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        authorService.save(authorDto);
+    });
+
+    assertEquals("Error saving author", exception.getMessage());
+
+    // Verify
+    verify(authorMapper).toEntity(authorDto);
+    verify(authorDao).save(authorEntity);
+}
+
+@Test
+void debugTest() {
+    AuthorDto authorDto = new AuthorDto(1, "Kubo", "Tite", "bleach", "Homme", LocalDate.of(2025, 5, 26), "images.com");
+    when(authorMapper.toEntity(authorDto)).thenReturn(new Author());
+
+    authorService.save(authorDto);
+}
 
 
 @Test
@@ -251,6 +290,32 @@ void shouldDeleteAuthor() {
     verifyNoMoreInteractions(authorDao);
 }
 
+
+@Test 
+void shouldThrowExceptionWhenAuthorHasMangas(){
+    Author a = new Author();
+    a.setId(1);
+    a.setFirstname("Toriyama");
+    a.setLastname("Akira");
+    a.setDescription("Takuchi");
+    a.setCreatedAt(LocalDate.of(2022, 9, 27));
+
+    Manga m = new Manga();
+    a.setMangas(Set.of(m));
+
+    when(authorDao.findAuthorById(1)).thenReturn(Optional.of(a));
+
+
+    EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+        authorService.deleteAuthorById(1);
+    });
+   assertEquals("The author is linked to mangas it cannot be deleted", exception.getMessage());
+   verify(authorDao).findAuthorById(1);
+   verify(authorDao, never()).delete(any());
+}
+
+
+
 @Test
 void shouldThrowExceptionWhenDeletingNonExistingAuthor() {
     when(authorDao.findAuthorById(2)).thenReturn(Optional.empty());
@@ -271,7 +336,6 @@ void shouldRollbackTransactionOnError() {
         authorService.save(authorDto);
     });
 
-    // Ici, avec Mockito, on ne peut pas compter en base, donc on vérifie que save n’a jamais été appelé
     verify(authorDao, never()).save(any());
 }
 
@@ -280,6 +344,5 @@ void shouldRollbackTransactionOnError() {
 
 
 
-    
 
 }
