@@ -10,7 +10,7 @@
                 <div class="form-group">
                     <label>Nom d'utilisateur</label>
                     <input formControlName="username" />
-                    <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+                    <div class="info-error" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
                         <small *ngIf="registerForm.get('username')?.errors?.['required']">Nom d'utilisateur
                             requis</small>
                         <small *ngIf="registerForm.get('username')?.errors?.['minlength']">Minimum 3 caractères</small>
@@ -21,14 +21,14 @@
                     <div class="form-group">
                         <label>Prénom</label>
                         <input formControlName="firstname" />
-                        <div *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
+                        <div class="info-error" *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
                             <small *ngIf="registerForm.get('firstname')?.errors?.['required']">Prénom requis</small>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Nom</label>
                         <input formControlName="lastname" />
-                        <div *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
+                        <div class="info-error" *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
                             <small *ngIf="registerForm.get('lastname')?.errors?.['required']">Nom requis</small>
                         </div>
                     </div>
@@ -38,19 +38,19 @@
                 <div class="form-group">
                     <label>Mot de passe</label>
                     <input type="password" formControlName="password" />
-                    <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
-                        <small *ngIf="registerForm.get('password')?.errors?.['required']">Mot de passe requis</small>
-                        <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 6 caractères</small>
+                    <div class="info-error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                        <small *ngIf="registerForm.get('password')?.errors?.['required']">Mot de passe requis.</small>
+                        <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 6 caractères.</small>
                         <small *ngIf="registerForm.get('password')?.errors?.['pattern']">
                             Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère
-                            spécial
+                            spécial.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" formControlName="email" />
-                    <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                    <div class="info-error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
                         <small *ngIf="registerForm.get('email')?.errors?.['required']">Email requis</small>
                         <small *ngIf="registerForm.get('email')?.errors?.['email']">Format invalide</small>
                     </div>
@@ -73,7 +73,7 @@
                         <input formControlName="postalCode" placeholder="Code postal" />
                     </div>
                 </div>
-<div class="form-group">
+<div class="gender-user ">
     <h4>Genre</h4>
     <div formGroupName="genderUserId">
         <select formControlName="id">
