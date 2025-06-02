@@ -5,7 +5,7 @@
             <h1>Authentification Utilisateur</h1>
         </div>
         <div class="login-form">
-            <form (ngSubmit)="loginTest()">
+            <form (ngSubmit)="loginTest()" >
                 <div class="form-group">
                     <input id="username" placeholder="Nom d'utilisateur" [(ngModel)]="credentials.username"
                         name="username" required />
@@ -17,7 +17,7 @@
                 <button class="btn btn-card" type="submit">Se connecter</button>
                 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
             </form>
-            <a [routerLink]="'/register/'"   class="btn btn-card" >créé un nouveau compte</a>
+            <a [routerLink]="'/register/'"   class="btn btn-card" >Créé un nouveau compte</a>
         </div>
     </div>
 
