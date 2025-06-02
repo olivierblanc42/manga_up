@@ -239,7 +239,7 @@
         @if (mangaOne.length > 0) {
         @for ( manga of mangaOne; track manga.id) {
         @if (manga.picture) {
-        <img [src]="manga.picture" alt="image du manga {{manga.title}}" />
+        <img class="single-image" [src]="manga.picture" alt="image du manga {{manga.title}}" />
         } @else {
         <img src="assets/default-picture.jpg" alt="Image non disponible" />
         }
@@ -271,19 +271,19 @@
                 <div class="title__summary">
                     <p>Résumé</p>
                 </div>
-                <p>Lorem ipsum dolor sit amet consectetur. Fermentum nunc id eu id phasellus sed leo etiam enim.
-                    Duis ut tristique nulla lacinia ullamcorper curabitur nibh ipsum. Purus vestibulum ...</p>
+                <p>{{mangaOne[0].summary.length > 200 ? (mangaOne[0].summary | slice:0:200) + '...' :
+                mangaOne[0].summary}}</p>
             </div>
 
-            <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne[0].id"    [attr.aria-label]="'Voir la fiche du manga' + mangaOne[0].title"><i
-                    class="fa-solid fa-magnifying-glass"></i>Voir plus</a>
+            <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne[0].id"    [attr.aria-label]="'Voir la fiche du manga' + mangaOne[0].title">
+                <img src="svg/mdi_magnify.svg" alt="">Voir plus</a>
         </div>
         } @else {
         <p>Chargement du manga...</p>
         }
 
 
-
+   
 
     </div>
 
