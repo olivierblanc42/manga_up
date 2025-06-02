@@ -51,45 +51,17 @@
             </form>
               
 
-
-
-
-
-
-            <!-- <form [formGroup]="genreForm" (ngSubmit)="createGenre()">
-            
-                <label>Label</label>
-                <input type="text" formControlName="label" />
-                <div *ngIf="genreForm.get('label')?.touched && genreForm.get('label')?.invalid">
-                    <small *ngIf="genreForm.get('label')?.errors?.['required']">Le label est requis.</small>
-                    <small *ngIf="genreForm.get('label')?.errors?.['noHtml']">Les balises HTML ne sont pas autorisées.</small>
-                </div>
-            
-            
-            
-                <label>Description</label>
-                <textarea formControlName="description"></textarea>
-                <div *ngIf="genreForm.get('description')?.touched && genreForm.get('description')?.invalid">
-                    <small *ngIf="genreForm.get('description')?.errors?.['required']">La description est requise.</small>
-                    <small *ngIf="genreForm.get('description')?.errors?.['noHtml']">Les balises HTML ne sont pas autorisées.</small>
-                </div>
-            
-                <label>Image URL</label>
-                <input type="text" formControlName="url" />
-                <div *ngIf="genreForm.get('url')?.touched && genreForm.get('url')?.invalid">
-                    <small *ngIf="genreForm.get('url')?.errors?.['required']">L'URL de l’image est requise.</small>
-                    <small *ngIf="genreForm.get('url')?.errors?.['pattern']">L’URL n’est pas valide.</small>
-                </div>
-            
-                <button type="submit" [disabled]="genreForm.invalid">Créer</button>
-            </form> -->
     
         </div>
     </div>
 
+
+
+
+    
     <div>
         <div class="section-admin__title">
-            <h1>Catégories</h1>
+            <h1>Genres</h1>
         </div>
     
         <table class="section-admin__content">
@@ -120,6 +92,38 @@
             </tbody>
         </table>
     </div>
-
+    <nav aria-label="Pagination">
+        <ul class="pagination">
+            @for(page of pages; track page; let count=$index){
+            @if(count===0){
+            <li>
+                <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page précédente"
+                    class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg">
+                    Previous
+                </button>
+            </li>
+            }
+    
+            <li>
+                <button (click)="pageGenres(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                    [attr.aria-label]="'Page ' + (count + 1)"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-black bg-white border border-gray-300">
+                    {{count + 1}}
+                </button>
+            </li>
+    
+            @if(count===lastPage-1){
+            <li>
+                <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                    aria-label="Page suivante"
+                    class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg">
+                    Next
+                </button>
+            </li>
+            }
+            }
+        </ul>
+        </nav>
 </section>
 
