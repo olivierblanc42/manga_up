@@ -1,6 +1,8 @@
-<div class="category-form-container" *ngIf="genreForm">
-    <h2>Modifier la catégorie</h2>
-
+<div class="genre-form-container card card-single-other  " *ngIf="genreForm">
+   
+    <div class="card-single-other__title">
+        <h1>Modifier le genre:{{genre?.label}}</h1>
+    </div>
     <form [formGroup]="genreForm" (ngSubmit)="onSubmit()">
 
         <div class="form-group">
@@ -28,6 +30,6 @@
             </div>
         </div>
 
-        <button type="submit" [disabled]="genreForm.invalid">Enregistrer</button>
+        <button  class="btn btn-card" type="submit" [disabled]="genreForm.invalid">Enregistrer</button>
     </form>
 </div>
