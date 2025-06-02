@@ -65,7 +65,7 @@ body {
     background: $button-color ;
     box-sizing: border-box;
     padding: $padding-xs $padding;
-    color: $white;
+    color: black;
     border-radius: 2px;
     text-decoration: none;
     display: flex;
@@ -251,7 +251,7 @@ body {
     justify-content: space-between;
 
 
-    img {
+    .single-image {
         width: 80%;
         max-width: 216px;
         margin-left: auto;
@@ -268,7 +268,7 @@ body {
         min-height: 600px;
         margin-left: auto;
         margin-right: auto;
-
+          
         >.btn {
             display: flex;
             align-items: center;
@@ -432,7 +432,7 @@ body.home-page .breadcrumb {
         flex-wrap: wrap;
         width: 80%;
 
-        img {
+        .single-image {
             width: 80%;
             max-width: none;
             margin-left: auto;
@@ -512,7 +512,10 @@ body.home-page .breadcrumb {
 
 }
 
-/* Tablette en mode paysage et petits PC portables (1024px et plus) */
+
+
+
+
 @media (min-width: 1024px) {
 
     .card-genre {
@@ -559,7 +562,7 @@ body.home-page .breadcrumb {
 
 }
 
-/* Écran PC standard et laptop (1280px et plus) */
+
 @media (min-width: 1280px) {
     body {
         font-family: $font-primary;
@@ -624,7 +627,7 @@ body.home-page .breadcrumb {
         justify-content: space-between;
 
 
-        img {
+        .single-image {
             width: 520px;
             height: 740px;
             margin: 0px;
