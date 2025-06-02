@@ -288,6 +288,12 @@ export type GenderRegister = {
 
 //Manga
 
+
+export type Manga = {
+    id: number;
+    title: string; 
+}
+
 export type FavoriteManga = {
     favorite: boolean;
 }
@@ -358,11 +364,15 @@ export type MangasWithImages = {
 }
 
 export type MangaPagination = {
-    id: number;
+    id_mangas: number;
     pictureId: string;
-    pictureUrl: string;
+    picture: string;
     title: string;
+    authors: AuthorLittleProjection[];
 }
+
+aut
+
 export type MangaPaginations = {
     content: MangaPagination[];
     size: number;
@@ -384,6 +394,11 @@ export type MangaBaseProjections = {
     totalElements: number;
     totalPages: number;
 }
+
+
+
+
+
 
 //UserAddress
 export type UserAddress = {
