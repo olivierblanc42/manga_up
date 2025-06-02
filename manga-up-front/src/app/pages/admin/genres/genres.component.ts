@@ -31,9 +31,6 @@ export class GenresAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-
-
     this.genreService.getAllGenreWithPagination();
     this.genreService.currentGenresProjectionPaginations.subscribe((data) => {
       this.genres = data;
