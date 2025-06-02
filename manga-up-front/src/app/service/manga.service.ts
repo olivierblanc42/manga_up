@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
+import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
+import { Manga, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
 
 
 @Injectable({
@@ -44,6 +44,11 @@ export class MangaService{
 
     mangaProjection = new BehaviorSubject<MangaProjection | null>(null);
     currentMangaProjection = this.mangaProjection.asObservable();
+
+
+       manga = new BehaviorSubject<Manga | null>(null);
+   
+
 
 
     async getMangas(page: number = 0) {
@@ -104,6 +109,17 @@ export class MangaService{
          }
      }
 
+
+
+    async deleteManga(id: number): Promise<Manga> {
+        const response = await firstValueFrom(
+            this.http.delete<Manga>(`${this.url}/${id}`, {
+                withCredentials: true
+            })
+        );
+        this.manga.next(response);
+        return response;
+    }
 
 
      
