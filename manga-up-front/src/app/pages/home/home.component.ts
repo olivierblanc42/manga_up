@@ -4,10 +4,11 @@ import { GenreProjection, GenreDto, MangaOne, MangaDtoRandom  } from '../../type
 import { GenreService } from '../../service/genre.service';
 import { MangaService } from '../../service/manga.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [CardComponent, RouterModule],
+  imports: [CommonModule,CardComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas : [CUSTOM_ELEMENTS_SCHEMA,],
