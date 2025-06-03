@@ -6,15 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
-import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.projection.author.AuthorProjection;
-import manga_up.manga_up.projection.genre.GenreProjection;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;
@@ -25,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -104,18 +100,6 @@ public class  AuthorService {
         authorDao.save(author);
         return authorMapper.toDtoAuthor(author);
     }
-
-
-    // public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
-    //     AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
-    //         .orElseThrow(() -> new RuntimeException("Author not found"));
-
-    //     Page<MangaBaseProjection> mangas = mangaDao.findMangasByAuthor(authorId, pageable);
-
-    //     return new AuthorWithMangasResponse(author, mangas);
-    // }
-
-
 
 public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
     // Récupération du genre
