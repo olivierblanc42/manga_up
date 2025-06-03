@@ -44,15 +44,13 @@ public class GenderMangaMapper {
 
     public GenreLightDto toGenreLightDto(Genre genre) {
         return new GenreLightDto(
-            genre.getId(),
-            genre.getLabel()
+            genre.getId()
             );
     }
 
     public Genre toEntityGenre(GenreLightDto genreLightDto) {
         Genre genre = new Genre();
         genre.setId(genreLightDto.getId());
-        genre.setLabel(genreLightDto.getLabel());
         return genre;
     }
 
