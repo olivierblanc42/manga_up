@@ -47,17 +47,13 @@ public class AuthorMapper {
 
     public AuthorLigthDto toLightDtoAuthor(Author author) {
         return new AuthorLigthDto(
-                author.getId(),
-                author.getLastname(),
-                author.getFirstname()
+                author.getId()
         );
     }
 
     public Author toLightEntity(AuthorLigthDto authorDto) {
         Author author = new Author();
         author.setId(authorDto.getId());
-        author.setLastname(authorDto.getLastname());
-        author.setFirstname(authorDto.getFirstname());
         return author;
     };
 
