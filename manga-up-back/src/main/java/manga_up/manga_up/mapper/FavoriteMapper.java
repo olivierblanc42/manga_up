@@ -13,18 +13,15 @@ import manga_up.manga_up.model.AppUser;
 @Component
 public class FavoriteMapper {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppUserMapper.class);
 
-        private static final Logger LOGGER = LoggerFactory.getLogger(AppUserMapper.class);
-
-// for USerFavoriteDto
+    // for UserFavoriteDto
     public UserFavoriteDto toDtoAppUserFavorite(AppUser appUser) {
         LOGGER.info("AppUser size before mapping: {}", appUser.getUsername());
 
         return new UserFavoriteDto(
                 appUser.getId(),
-                appUser.getUsername()
-                );
-
+                appUser.getUsername());
     }
 
     public AppUser toEntityAppUserFavorite(UserFavoriteDto userFavoriteDto) {
@@ -36,15 +33,21 @@ public class FavoriteMapper {
         return appUser;
     }
 
-       public Set<UserFavoriteDto> toUserFavoriteDtoSet(Set<AppUser> favorite) {
-       return favorite.stream()
-               .map(this::toDtoAppUserFavorite)
-               .collect(Collectors.toSet());
-   }
+    public Set<UserFavoriteDto> toUserFavoriteDtoSet(Set<AppUser> favorite) {
+        if (favorite == null) {
+            return java.util.Collections.emptySet();
+        }
+        return favorite.stream()
+                .map(this::toDtoAppUserFavorite)
+                .collect(Collectors.toSet());
+    }
+
     public Set<AppUser> toEntityAppUserFavorite(Set<UserFavoriteDto> userFavoriteDtos) {
+        if (userFavoriteDtos == null) {
+            return java.util.Collections.emptySet();
+        }
         return userFavoriteDtos.stream()
                 .map(this::toEntityAppUserFavorite)
                 .collect(Collectors.toSet());
     }
-
 }
