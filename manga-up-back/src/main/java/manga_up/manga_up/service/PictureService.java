@@ -1,11 +1,17 @@
 package manga_up.manga_up.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
 import manga_up.manga_up.dto.picture.PictureDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.PictureMapper;
+import manga_up.manga_up.model.Category;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.pictureProjection.PictureProjection;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +26,12 @@ public class PictureService {
 
     private final PictureDao pictureDao;
     private final PictureMapper pictureMapper;
+    private final MangaDao mangaDao;
 
-    public PictureService(PictureDao pictureDao, PictureMapper pictureMapper) {
+    public PictureService(PictureDao pictureDao, PictureMapper pictureMapper, MangaDao mangaDao) {
         this.pictureDao=pictureDao;
         this.pictureMapper = pictureMapper;
+        this.mangaDao = mangaDao;
     }
 
 
@@ -46,14 +54,48 @@ public class PictureService {
                  orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
     }
 
+    @Transactional
+    public PictureLightDto updatePicture(Integer id, PictureLightDto pictureDto) {
+        LOGGER.info("Update picture with id {}", id);
 
-    public PictureDto UpdatePicture(Integer id, PictureDto pictureDto) {
-        LOGGER.info("Update picture");
-        Picture picture = pictureDao.findPictureById(id).
-                orElseThrow(() -> new RuntimeException("Picture not found"));
+        Picture picture = pictureDao.findPictureById(id)
+                .orElseThrow(() -> new RuntimeException("Picture not found"));
+
+        if (Boolean.TRUE.equals(pictureDto.getIsMain())) {
+            List<Picture> otherPictures = pictureDao.findByIdMangasIdAndIsMainTrue(
+                    picture.getIdMangas().getId());
+
+            for (Picture other : otherPictures) {
+                if (!other.getId().equals(picture.getId())) {
+                    other.setMain(false);
+                    pictureDao.save(other);
+                }
+            }
+            picture.setMain(true); 
+        } else {
+            picture.setMain(false); 
+        }
+
         picture.setUrl(pictureDto.getUrl());
         pictureDao.save(picture);
-        return pictureMapper.toPictureDto(picture);
-    }
+
+        return pictureMapper.toPictureLightDto(picture);
+    }    
+
+    @Transactional
+ public void  deletePictureById(Integer id){
+     LOGGER.info("deletePictureById");
+     Picture picture = pictureDao.findById(id)
+             .orElseThrow(() -> new EntityNotFoundException("Picture with id " + id + " not found"));
+
+       Manga manga = picture.getIdMangas();
+
+       if (manga != null) {
+           manga.getPictures().remove(picture);
+            mangaDao.save(manga);
+       }
+       pictureDao.delete(picture);
+ }
+
 
 }
