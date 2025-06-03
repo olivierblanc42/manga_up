@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
-import { Manga, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
+import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
 
 
 @Injectable({
@@ -14,6 +14,8 @@ export class MangaService{
     urlPagination = "api/public/mangas/paginations";
     url = "/api/public/manga/"
     urlRandom ="/api/public/randomFour"
+    urlAdd = "/api/mangas/add"
+    urldelete ="/api/mangas"
 
     options = {
         headers: new HttpHeaders({
@@ -47,6 +49,7 @@ export class MangaService{
 
 
        manga = new BehaviorSubject<Manga | null>(null);
+       mangaDto = new BehaviorSubject<MangaDto | null>(null);
    
 
 
@@ -113,7 +116,7 @@ export class MangaService{
 
     async deleteManga(id: number): Promise<Manga> {
         const response = await firstValueFrom(
-            this.http.delete<Manga>(`${this.url}/${id}`, {
+            this.http.delete<Manga>(`${this.urldelete}/${id}`, {
                 withCredentials: true
             })
         );
@@ -121,6 +124,13 @@ export class MangaService{
         return response;
     }
 
+    async addManga(category: MangaDto): Promise<MangaDto> {
+        const response = await firstValueFrom(
+            this.http.post<MangaDto>(this.urlAdd, category,{ withCredentials: true } )
+        );
 
+        this.mangaDto.next(response);
+        return response; 
+    }
      
 }
