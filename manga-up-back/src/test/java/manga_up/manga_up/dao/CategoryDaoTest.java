@@ -72,7 +72,7 @@ class CategoryDaoTest {
 @Test
 void shouldReturnPagedCategoryProjection() {
     Pageable pageable = PageRequest.of(0, 2);
-    Page<CategoryProjection> page = categoryDao.findAllCategorisByPage(pageable);
+    Page<CategoryProjection> page = categoryDao.findAllCategoriesByPage(pageable);
 
     assertEquals(2, page.getTotalElements());
     assertEquals("Action", page.getContent().get(0).getLabel());

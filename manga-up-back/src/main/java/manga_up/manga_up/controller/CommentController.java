@@ -35,7 +35,7 @@ public class CommentController {
     public ResponseEntity<Page<CommentProjection>> findAllByPage(
             @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all comments with the pagination");
-        Page<CommentProjection> comment = commentService.getAllComment(pageable);
+        Page<CommentProjection> comment = commentService.getAllComments(pageable);
         LOGGER.info("Found {} addresses", comment.getTotalElements());
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }

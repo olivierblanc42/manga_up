@@ -210,7 +210,7 @@ public class PublicController {
     ) @ParameterObject Pageable pageable)
     {
         LOGGER.info("Find all Categories with pagination");
-        Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
+        Page<CategoryProjection> categories = categoryService.findAllCategoriesByPage(pageable);
         LOGGER.info("Found {} categories", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }

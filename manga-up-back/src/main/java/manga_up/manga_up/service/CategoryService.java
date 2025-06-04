@@ -1,4 +1,5 @@
 package manga_up.manga_up.service;
+
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.CategoryDao;
@@ -26,122 +27,152 @@ import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
-    private static final Logger LOGGER= LoggerFactory.getLogger(CategoryService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 
     private final CategoryDao categoryDao;
     private final CategoryMapper categoryMapper;
-        private final MangaDao mangaDao;
+    private final MangaDao mangaDao;
 
-    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper,MangaDao mangaDao) {
+    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper, MangaDao mangaDao) {
         this.mangaDao = mangaDao;
         this.categoryDao = categoryDao;
         this.categoryMapper = categoryMapper;
     }
 
     /**
-     * Récupère une page paginée de catégories.
+     * Retrieves a paginated list of categories.
      *
-     * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
-     * @return une page de résultats {@link Page < Address >} contenant les catégories
+     * @param pageable the pagination and sorting information
+     * @return a {@link Page} of {@link CategoryProjection} containing the
+     *         categories
      */
-    public Page<CategoryProjection> findAllCategorisByPage(Pageable pageable) {
-        LOGGER.info("findAllByPage");
-        return categoryDao.findAllCategorisByPage(pageable);
+    public Page<CategoryProjection> findAllCategoriesByPage(Pageable pageable) {
+        LOGGER.info("findAllCategoriesByPage");
+        return categoryDao.findAllCategoriesByPage(pageable);
     }
 
-
+    /**
+     * Finds a category by its id.
+     *
+     * @param id the id of the category
+     * @return the {@link CategoryProjection} found
+     * @throws EntityNotFoundException if no category found with the given id
+     */
     public CategoryProjection findCategoryById(Integer id) {
-        LOGGER.info("FindCategoryById");
+        LOGGER.info("findCategoryById");
         return categoryDao.findCategoryProjectionById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
     }
 
+    /**
+     * Deletes a category by its id.
+     * Throws an exception if the category is linked to mangas.
+     *
+     * @param id the id of the category to delete
+     * @throws EntityNotFoundException if the category is linked to mangas or not
+     *                                 found
+     */
     public void deleteCategoryById(Integer id) {
         LOGGER.info("deleteCategoryById");
         Category category = categoryDao.findCategoryById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
-        if(!category.getMangas().isEmpty()) {
-            throw new EntityNotFoundException("The category is linked to many mangas it cannot be deleted");
+        if (!category.getMangas().isEmpty()) {
+            throw new EntityNotFoundException("The category is linked to mangas and cannot be deleted");
         }
         categoryDao.delete(category);
     }
 
-@Transactional
+    /**
+     * Saves a new category.
+     *
+     * @param categoryDto the category DTO to save
+     * @return the saved category DTO
+     */
+    @Transactional
     public CategoryDto save(CategoryDto categoryDto) {
-        LOGGER.info("categoryDto : {}", categoryDto);
+        LOGGER.info("Saving category: {}", categoryDto);
         Category category = categoryMapper.toEntity(categoryDto);
-        LOGGER.info("category category : {}", category);
         category.setCreatedAt(Instant.now());
         try {
-          category =  categoryDao.save(category);
-        }catch (Exception e) {
+            category = categoryDao.save(category);
+        } catch (Exception e) {
             LOGGER.error("Error saving category: ", e);
-            throw new RuntimeException("error saving category", e);
+            throw new RuntimeException("Error saving category", e);
         }
         return categoryMapper.toDtoCategory(category);
     }
 
-
-@Transactional
-    public CategoryDto update( Integer id, CategoryDto categoryDto) {
-       Category category = categoryDao.findCategoryById(id).
-               orElseThrow(() -> new RuntimeException("category not found"));
-       category.setLabel(categoryDto.getLabel());
-       category.setDescription(categoryDto.getDescription());
-       category.setUrl(categoryDto.getUrl());
-       categoryDao.save(category);
-       return categoryMapper.toDtoCategory(category);
+    /**
+     * Updates an existing category.
+     *
+     * @param id          the id of the category to update
+     * @param categoryDto the category DTO with new data
+     * @return the updated category DTO
+     */
+    @Transactional
+    public CategoryDto update(Integer id, CategoryDto categoryDto) {
+        Category category = categoryDao.findCategoryById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        category.setLabel(categoryDto.getLabel());
+        category.setDescription(categoryDto.getDescription());
+        category.setUrl(categoryDto.getUrl());
+        categoryDao.save(category);
+        return categoryMapper.toDtoCategory(category);
     }
 
-
-public CategoryWithMangaResponse getCategoryWithMangas(Integer categoryId, Pageable pageable) {
-    // Récupération du genre
-    CategoryProjection category = categoryDao.findCategoryProjectionById(categoryId)
+    /**
+     * Retrieves a category with its associated mangas, paginated.
+     *
+     * @param categoryId the id of the category
+     * @param pageable   pagination information
+     * @return a {@link CategoryWithMangaResponse} containing the category and its
+     *         mangas
+     */
+    public CategoryWithMangaResponse getCategoryWithMangas(Integer categoryId, Pageable pageable) {
+        CategoryProjection category = categoryDao.findCategoryProjectionById(categoryId)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + categoryId + " not found"));
-
-    // Récupération des mangas avec auteurs parsés
-    Page<MangaDtoRandom> mangas = findMangasByGenre(categoryId, pageable);
-
-    // Construction de la réponse
-    return new CategoryWithMangaResponse(category, mangas);
-}
-
-public Page<MangaDtoRandom> findMangasByGenre(Integer genreId, Pageable pageable) {
-    Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByCategory2(genreId, pageable);
-    return projections.map(this::mapToDto2);
-}
-
-private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
-    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
-
-    return new MangaDtoRandom(
-            projection.getMangaId(),
-            projection.getTitle(),
-            authors,
-            projection.getPicture());
-}
-
-private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-    if (authorsString == null || authorsString.isEmpty()) {
-        return Set.of();
+        Page<MangaDtoRandom> mangas = findMangasByCategory(categoryId, pageable);
+        return new CategoryWithMangaResponse(category, mangas);
     }
 
-    return Arrays.stream(authorsString.split("\\|"))
-            .map(authorData -> {
-                String[] parts = authorData.split(":");
-                if (parts.length < 3) {
-                    throw new IllegalArgumentException("Auteur mal formé : " + authorData);
-                }
-                return new AuthorDtoRandom(
-                        Integer.parseInt(parts[0]),
-                        parts[2], // lastname
-                        parts[1] // firstname
-                );
-            })
-            .collect(Collectors.toSet());
-}
+    /**
+     * Finds mangas by category.
+     *
+     * @param categoryId the category id
+     * @param pageable   pagination information
+     * @return a page of {@link MangaDtoRandom}
+     */
+    public Page<MangaDtoRandom> findMangasByCategory(Integer categoryId, Pageable pageable) {
+        Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByCategory2(categoryId, pageable);
+        return projections.map(this::mapToDto);
+    }
 
+    private MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
+        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+        return new MangaDtoRandom(
+                projection.getMangaId(),
+                projection.getTitle(),
+                authors,
+                projection.getPicture());
+    }
 
+    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
+        if (authorsString == null || authorsString.isEmpty()) {
+            return Set.of();
+        }
 
-
+        return Arrays.stream(authorsString.split("\\|"))
+                .map(authorData -> {
+                    String[] parts = authorData.split(":");
+                    if (parts.length < 3) {
+                        throw new IllegalArgumentException("Malformed author string: " + authorData);
+                    }
+                    return new AuthorDtoRandom(
+                            Integer.parseInt(parts[0]),
+                            parts[2], // lastname
+                            parts[1] // firstname
+                    );
+                })
+                .collect(Collectors.toSet());
+    }
 }

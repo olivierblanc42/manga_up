@@ -51,17 +51,24 @@ public class MangaService {
     }
 
     /**
-     * Récupère une page paginée de mangas.
+     * Retrieves a paginated page of mangas.
      *
-     * @param pageable un objet {@link Pageable} qui contient les informations de
-     *                 pagination et de tri
-     * @return une page de résultats {@link Page < Manga >} contenant les mangas
+     * @param pageable a {@link Pageable} object containing pagination and sorting
+     *                 information
+     * @return a {@link Page<MangaBaseProjection>} containing the mangas
      */
     public Page<MangaBaseProjection> findAllByPage(Pageable pageable) {
         LOGGER.info("Find all mangas by Pageable");
         return mangaDao.findAllMangas(pageable);
     }
 
+    /**
+     * Finds a manga DTO by its ID.
+     *
+     * @param id the ID of the manga
+     * @return the corresponding {@link MangaDto}
+     * @throws EntityNotFoundException if the manga is not found
+     */
     public MangaDto findMangaDtoById(Integer id) {
         LOGGER.info("Find manga by id");
         Manga manga = mangaDao.findManga2ById(id)
@@ -69,12 +76,27 @@ public class MangaService {
         return mangaMapper.mangaToMangaDto(manga);
     }
 
+    /**
+     * Finds a manga projection by its ID.
+     *
+     * @param id the ID of the manga
+     * @return the corresponding {@link MangaProjection}
+     * @throws EntityNotFoundException if the manga is not found
+     */
     public MangaProjection findMangaById(Integer id) {
         LOGGER.info("Find manga by id");
         return mangaDao.findMangaById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category with id " + id + " not found"));
     }
 
+    /**
+     * Saves or updates a manga.
+     *
+     * @param mangaDto the manga DTO to save
+     * @return the saved {@link MangaDto}
+     * @throws IllegalArgumentException if validation fails (e.g. no images,
+     *                                  multiple main images)
+     */
     @Transactional
     public MangaDto save(MangaDto mangaDto) {
         LOGGER.info("Save manga");
@@ -85,7 +107,7 @@ public class MangaService {
             throw new IllegalArgumentException("A manga must contain at least one image.");
         }
 
-        // 1. Prépare auteurs/genres
+        // 1. Prepare authors and genres
         Set<Author> authors = mangaDto.getAuthors().stream()
                 .map(id -> authorDao.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
@@ -96,7 +118,7 @@ public class MangaService {
                         .orElseThrow(() -> new IllegalArgumentException("Genre not found")))
                 .collect(Collectors.toSet());
 
-        // 2. Mappe et sauvegarde le Manga SANS images
+        // 2. Map and save Manga WITHOUT images
         Manga manga = mangaMapper.mangaToEntity(mangaDto);
         manga.setAuthors(authors);
         manga.setGenres(genres);
@@ -107,11 +129,12 @@ public class MangaService {
             BigDecimal multiplier = new BigDecimal("0.1");
             BigDecimal TVAmount = priceHt.multiply(multiplier);
             manga.setPriceHt(priceHt.add(TVAmount));
-            LOGGER.info("Price adjusted with TVA (10%): {} → {}", priceHt, manga.getPriceHt());
+            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, manga.getPriceHt());
         } else {
-            LOGGER.warn("The price excluding TVA is NULL, no TVA calculation carried out!");
+            LOGGER.warn("The price excluding VAT is NULL, no VAT calculation carried out!");
         }
         mangaDao.save(manga);
+
         long countMain = mangaDto.getPictures().stream()
                 .filter(PictureLightDto::getIsMain)
                 .count();
@@ -123,7 +146,7 @@ public class MangaService {
             throw new IllegalArgumentException("Only one image can be marked as main.");
         }
 
-        // 3. Crée les images en leur associant le manga
+        // 3. Create images and associate them with the manga
         Set<Picture> pictures = new HashSet<>();
         for (PictureLightDto pictureDto : mangaDto.getPictures()) {
             Picture picture;
@@ -142,7 +165,7 @@ public class MangaService {
             }
         }
 
-        // 4. Associe la liste d'images au manga
+        // 4. Associate the image list with the manga
         manga.setPictures(pictures);
         mangaDao.save(manga);
 
@@ -150,8 +173,9 @@ public class MangaService {
     }
 
     /**
-     * Retrieve a list of four mangas
-     * return a list of four mangas
+     * Retrieves a list of four random mangas.
+     *
+     * @return a list of four random {@link MangaDtoRandom}
      */
     public List<MangaDtoRandom> getFourMangaRandom() {
         List<MangaProjectionWithAuthor> projections = mangaDao.findFourMangasRandom();
@@ -162,8 +186,9 @@ public class MangaService {
     }
 
     /**
-     * Retrieve
-     * return a list of four mangas
+     * Retrieves mangas sorted by release date in descending order.
+     *
+     * @return a list of mangas sorted by release date
      */
     public List<MangaDtoRandom> getReleaseDateRaw() {
         List<MangaProjectionWithAuthor> projections = mangaDao.findMangasReleaseDateRaw();
@@ -191,7 +216,7 @@ public class MangaService {
                 .map(authorData -> {
                     String[] parts = authorData.split(":");
                     if (parts.length < 3) {
-                        throw new IllegalArgumentException("Auteur mal formé : " + authorData);
+                        throw new IllegalArgumentException("Malformed author: " + authorData);
                     }
                     return new AuthorDtoRandom(
                             Integer.parseInt(parts[0]),
@@ -202,8 +227,9 @@ public class MangaService {
     }
 
     /**
-     * Retrieve a Random manga
-     * return a list of one manga
+     * Retrieves a single random manga.
+     *
+     * @return a list containing one random {@link MangaDtoOne}
      */
     public List<MangaDtoOne> getRandomManga() {
         List<Object[]> rawMangas = mangaDao.findRandomOneMangas();
@@ -238,7 +264,7 @@ public class MangaService {
 
         String[] parts = categoryString.split(":");
         if (parts.length < 4) {
-            throw new IllegalArgumentException("Catégorie mal formée : " + categoryString);
+            throw new IllegalArgumentException("Malformed category: " + categoryString);
         }
 
         return new CategoryDto(
@@ -257,24 +283,41 @@ public class MangaService {
                 .map(genreData -> {
                     String[] parts = genreData.split("@", -1);
                     if (parts.length < 3) {
-                        throw new IllegalArgumentException("Genre mal formé : " + genreData);
+                        throw new IllegalArgumentException("Malformed genre: " + genreData);
                     }
                     return new GenreDto(parts[0], parts[1], parts[2]);
                 })
                 .collect(Collectors.toSet());
     }
 
- 
+    /**
+     * Searches mangas by their title.
+     *
+     * @param letter   the starting letter or substring of the title
+     * @param pageable pagination information
+     * @return a page of mangas matching the title criteria
+     */
     public Page<MangaBaseProjection> getTitle(String letter, Pageable pageable) {
         return mangaDao.findByTitleWithGenres(letter, pageable);
     }
 
+    /**
+     * Retrieves a paginated page of mangas with their main pictures.
+     *
+     * @param pageable pagination information
+     * @return a page of {@link MangaDtoRandom}
+     */
     public Page<MangaDtoRandom> getPageMangas(Pageable pageable) {
         Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasWithMainPicturesTest(pageable);
         return projections.map(this::mapToDto);
     }
 
-
+    /**
+     * Deletes a manga by its ID.
+     *
+     * @param id the ID of the manga to delete
+     * @throws EntityNotFoundException if the manga is not found
+     */
     @Transactional
     public void deleteManga(Integer id) {
         LOGGER.info("Deleting Manga by id");

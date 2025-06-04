@@ -20,56 +20,76 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+/**
+ * Service class that manages author-related operations.
+ */
 @Service
-
-public class  AuthorService {
+public class AuthorService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorService.class);
     private final AuthorDao authorDao;
     private final AuthorMapper authorMapper;
     private final MangaDao mangaDao;
 
-    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper,MangaDao mangaDao) {
+    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper, MangaDao mangaDao) {
         this.authorDao = authorDao;
         this.authorMapper = authorMapper;
         this.mangaDao = mangaDao;
     }
 
     /**
-     * Récupère une page paginée d'authors.
+     * Retrieves a paginated list of authors.
      *
-     * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
-     * @return une page de résultats {@link Page<AuthorProjection>} contenant les autheurs
+     * @param pageable Pagination and sorting information.
+     * @return A page of author projections.
      */
     public Page<AuthorProjection> getAllAuthors(Pageable pageable) {
         LOGGER.info("Getting authors");
         return authorDao.findAllByPage(pageable);
     }
 
+    /**
+     * Retrieves an author by their ID.
+     *
+     * @param id The ID of the author.
+     * @return The author projection.
+     * @throws EntityNotFoundException if the author is not found.
+     */
     public AuthorProjection getAuthorById(Integer id) {
         LOGGER.info("Getting author by id");
         return authorDao.findAuthorProjectionById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
     }
 
-@Transactional
-   public void deleteAuthorById(Integer id) {
+    /**
+     * Deletes an author by their ID if they have no linked mangas.
+     *
+     * @param id The ID of the author to delete.
+     * @throws EntityNotFoundException if the author does not exist or has linked
+     *                                 mangas.
+     */
+    @Transactional
+    public void deleteAuthorById(Integer id) {
         LOGGER.info("Deleting author by id");
-        Author author = authorDao.findAuthorById(id).
-                orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
-        if(!author.getMangas().isEmpty()){
-            throw new EntityNotFoundException("The author is linked to mangas it cannot be deleted");
+        Author author = authorDao.findAuthorById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Author with id " + id + " not found"));
+        if (!author.getMangas().isEmpty()) {
+            throw new EntityNotFoundException("The author is linked to mangas and cannot be deleted");
         }
         authorDao.delete(author);
-   }
+    }
 
-@Transactional
+    /**
+     * Saves a new author.
+     *
+     * @param authorDto The author data transfer object.
+     * @return The saved author as a DTO.
+     */
+    @Transactional
     public AuthorDto save(AuthorDto authorDto) {
         LOGGER.info("Saving author");
         LOGGER.info("author authorDto : {}", authorDto);
@@ -80,16 +100,24 @@ public class  AuthorService {
             authorDao.save(author);
         } catch (Exception e) {
             LOGGER.error("Error saving author", e);
-            throw new RuntimeException("Error saving author",e);
+            throw new RuntimeException("Error saving author", e);
         }
-        
+
         return authorMapper.toDtoAuthor(author);
     }
 
-@Transactional
+    /**
+     * Updates an existing author by ID.
+     *
+     * @param authorId  The ID of the author to update.
+     * @param authorDto The new data for the author.
+     * @return The updated author as a DTO.
+     * @throws RuntimeException if the author is not found.
+     */
+    @Transactional
     public AuthorDto updateAuthor(Integer authorId, AuthorDto authorDto) {
-        Author author = authorDao.findAuthorById(authorId).
-                orElseThrow(() -> new RuntimeException("Author with id " + authorId + " not found"));
+        Author author = authorDao.findAuthorById(authorId)
+                .orElseThrow(() -> new RuntimeException("Author with id " + authorId + " not found"));
         LOGGER.info("Updating author");
         author.setFirstname(authorDto.getFirstname());
         author.setLastname(authorDto.getLastname());
@@ -101,52 +129,61 @@ public class  AuthorService {
         return authorMapper.toDtoAuthor(author);
     }
 
-public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
-    // Récupération du genre
-    AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
-             .orElseThrow(() -> new RuntimeException("Author not found"));
+    /**
+     * Retrieves an author with their mangas in a paginated format.
+     *
+     * @param authorId The ID of the author.
+     * @param pageable Pagination information.
+     * @return An AuthorWithMangasResponse containing the author and their mangas.
+     */
+    public AuthorWithMangasResponse getAuthorWithMangas(Integer authorId, Pageable pageable) {
+        AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
+                .orElseThrow(() -> new RuntimeException("Author not found"));
 
-    // Récupération des mangas avec auteurs parsés
-    Page<MangaDtoRandom> mangas = findMangasByGenre2(authorId, pageable);
+        Page<MangaDtoRandom> mangas = findMangasByGenre2(authorId, pageable);
 
-    // Construction de la réponse
-    return new AuthorWithMangasResponse(author, mangas);
-}
-
-public Page<MangaDtoRandom> findMangasByGenre2(Integer genreId, Pageable pageable) {
-    Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByAuthor2(genreId, pageable);
-    return projections.map(this::mapToDto2);
-}
-
-private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
-    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
-
-    return new MangaDtoRandom(
-            projection.getMangaId(),
-            projection.getTitle(),
-            authors,
-            projection.getPicture());
-}
-
-private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-    if (authorsString == null || authorsString.isEmpty()) {
-        return Set.of();
+        return new AuthorWithMangasResponse(author, mangas);
     }
 
-    return Arrays.stream(authorsString.split("\\|"))
-            .map(authorData -> {
-                String[] parts = authorData.split(":");
-                if (parts.length < 3) {
-                    throw new IllegalArgumentException("Auteur mal formé : " + authorData);
-                }
-                return new AuthorDtoRandom(
-                        Integer.parseInt(parts[0]),
-                        parts[2], // lastname
-                        parts[1] // firstname
-                );
-            })
-            .collect(Collectors.toSet());
-}
+    /**
+     * Finds mangas by the author's genre with pagination.
+     *
+     * @param genreId  The ID of the genre.
+     * @param pageable Pagination information.
+     * @return A page of MangaDtoRandom objects.
+     */
+    public Page<MangaDtoRandom> findMangasByGenre2(Integer genreId, Pageable pageable) {
+        Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByAuthor2(genreId, pageable);
+        return projections.map(this::mapToDto2);
+    }
 
+    private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
+        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
 
+        return new MangaDtoRandom(
+                projection.getMangaId(),
+                projection.getTitle(),
+                authors,
+                projection.getPicture());
+    }
+
+    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
+        if (authorsString == null || authorsString.isEmpty()) {
+            return Set.of();
+        }
+
+        return Arrays.stream(authorsString.split("\\|"))
+                .map(authorData -> {
+                    String[] parts = authorData.split(":");
+                    if (parts.length < 3) {
+                        throw new IllegalArgumentException("Malformed author: " + authorData);
+                    }
+                    return new AuthorDtoRandom(
+                            Integer.parseInt(parts[0]),
+                            parts[2], 
+                            parts[1] 
+                    );
+                })
+                .collect(Collectors.toSet());
+    }
 }

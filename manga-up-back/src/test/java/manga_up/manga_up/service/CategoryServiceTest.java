@@ -96,8 +96,8 @@ class CategoryServiceTest {
                 "descritpion",
                 "com.com");
         Page<CategoryProjection> page = new PageImpl<>(List.of(c1, c2));
-        when(categoryDao.findAllCategorisByPage(pageable)).thenReturn(page);
-        Page<CategoryProjection> result = categoryService.findAllCategorisByPage(pageable);
+        when(categoryDao.findAllCategoriesByPage(pageable)).thenReturn(page);
+        Page<CategoryProjection> result = categoryService.findAllCategoriesByPage(pageable);
 
         assertThat(result).hasSize(2).containsExactly(c1, c2);
     }

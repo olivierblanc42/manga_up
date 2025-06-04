@@ -13,6 +13,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Picture} entities.
+ * 
+ */
 @Repository
 public interface PictureDao extends JpaRepository<Picture, Integer> {
 

@@ -15,6 +15,10 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing {@link AppUser} entities.
+ * 
+ */
 @Repository
 public interface UserDao extends JpaRepository<AppUser, Integer> {
     AppUser findByUsername(String username);

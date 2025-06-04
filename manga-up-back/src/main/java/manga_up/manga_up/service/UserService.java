@@ -19,84 +19,109 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing user-related operations.
+ */
 @Service
 public class UserService {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(UserAddressService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final UserDao userdao;
     private final AppUserMapper userMapper;
-   
 
     public UserService(UserDao userdao, UserResponseMapper userResponseMapper, AppUserMapper userMapper) {
         this.userdao = userdao;
         this.userMapper = userMapper;
-    
     }
 
-
     /**
-     * Récupère une page paginée d'adresses.
+     * Retrieves a paginated list of users.
      *
-     * @param pageable un objet {@link Pageable} qui contient les informations de pagination et de tri
-     * @return une page de résultats {@link Page < Address >} contenant les adresses
+     * @param pageable Pagination and sorting information.
+     * @return a page of {@link AppUserProjection} representing users.
      */
     public Page<AppUserProjection> findAllByPage(Pageable pageable) {
         LOGGER.info("Find all users by Pageable");
-       return userdao.FindAllUser(pageable);
+        return userdao.FindAllUser(pageable);
     }
 
-public ResponseEntity<UserProfilDto> getCurrentUser() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    /**
+     * Retrieves the currently authenticated user's profile.
+     *
+     * @return a {@link ResponseEntity} containing the user's profile DTO or
+     *         appropriate HTTP status.
+     */
+    public ResponseEntity<UserProfilDto> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication != null && authentication.isAuthenticated()) {
-        String username = authentication.getName();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
 
-        // Charger l'utilisateur complet (avec ses relations)
-        AppUser appUser = userdao.findAppUserByUsername(username);
+            // Load the full user entity with related data
+            AppUser appUser = userdao.findAppUserByUsername(username);
 
-        if (appUser == null) {
-            return ResponseEntity.notFound().build();
+            if (appUser == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Map entity to DTO
+            UserProfilDto userDto = userMapper.toDtoAppUser(appUser);
+
+            return ResponseEntity.ok(userDto);
         }
 
-        // Mapper l'entité en DTO
-        UserProfilDto userDto = userMapper.toDtoAppUser(appUser);
-
-        return ResponseEntity.ok(userDto);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-}
+    /**
+     * Returns the authenticated {@link AppUser} entity.
+     *
+     * @return the authenticated user entity.
+     * @throws AccessDeniedException if the user is not authenticated.
+     */
+    public AppUser getAuthenticatedUserEntity() throws AccessDeniedException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            return userdao.findAppUserByUsername(username);
+        }
 
-
-public AppUser getAuthenticatedUserEntity() throws AccessDeniedException {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    if (authentication != null && authentication.isAuthenticated()) {
-        String username = authentication.getName();
-        // Retourne l'entité AppUser
-        return userdao.findAppUserByUsername(username); 
+        throw new AccessDeniedException("User not authenticated");
     }
 
-    throw new AccessDeniedException("Utilisateur non authentifié");
-}
+    /**
+     * Adds a manga to the user's list of favorites.
+     *
+     * @param userId  the ID of the user.
+     * @param mangaId the ID of the manga to add.
+     */
+    public void addFavorite(Integer userId, Integer mangaId) {
+        userdao.addUserInFavorite(userId, mangaId);
+    }
 
+    /**
+     * Removes a manga from the user's list of favorites.
+     *
+     * @param userId  the ID of the user.
+     * @param mangaId the ID of the manga to remove.
+     */
+    public void removeFavorite(Integer userId, Integer mangaId) {
+        userdao.removeUserInFavorite(userId, mangaId);
+    }
 
-public void addFavorite(Integer userId, Integer mangaId) {
-    userdao.addUserInFavorite(userId, mangaId); 
-}
-
-public void removeFavorite(Integer userId, Integer mangaId) {
-    userdao.removeUserInFavorite(userId, mangaId); 
-}
-
-
-public boolean isFavorite(Integer userId, Integer mangaId) {
-    LOGGER.info("[SERVICE] Vérifie si manga ID={} est favori de l'utilisateur ID={}", mangaId, userId);
-    int count = userdao.countFavorite(userId, mangaId);
-    LOGGER.info("[SERVICE] Résultat du COUNT = {}", count);
-    return count > 0;
-}
-
+    /**
+     * Checks if a manga is in the user's favorites.
+     *
+     * @param userId  the ID of the user.
+     * @param mangaId the ID of the manga to check.
+     * @return {@code true} if the manga is a favorite, {@code false} otherwise.
+     */
+    public boolean isFavorite(Integer userId, Integer mangaId) {
+        LOGGER.info("[SERVICE] Checking if manga ID={} is favorite for user ID={}", mangaId, userId);
+        int count = userdao.countFavorite(userId, mangaId);
+        LOGGER.info("[SERVICE] COUNT result = {}", count);
+        return count > 0;
+    }
 }
