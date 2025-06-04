@@ -6,13 +6,10 @@ import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
-import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.category.CategoryProjection;
-import manga_up.manga_up.projection.genre.GenreProjection;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;

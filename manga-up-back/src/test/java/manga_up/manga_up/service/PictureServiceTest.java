@@ -2,12 +2,10 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
-import manga_up.manga_up.dto.picture.PictureDto;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.PictureMapper;
 import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.model.Picture;
-import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.manga.MangaLittleProjection;
 import manga_up.manga_up.projection.pictureProjection.PictureLittleProjection;
 import manga_up.manga_up.projection.pictureProjection.PictureProjection;
@@ -22,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +28,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

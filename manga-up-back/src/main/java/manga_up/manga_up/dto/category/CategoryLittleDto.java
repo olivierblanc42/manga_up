@@ -3,7 +3,6 @@ package manga_up.manga_up.dto.category;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.validation.constraints.Size;
 
 /**
  * DTO for {@link manga_up.manga_up.model.Category}

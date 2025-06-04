@@ -11,7 +11,6 @@ import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.genre.GenreProjection;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;

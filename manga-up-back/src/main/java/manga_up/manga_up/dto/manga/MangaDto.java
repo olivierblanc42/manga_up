@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.appUser.UserFavoriteDto;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
-import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 
 import java.io.Serializable;

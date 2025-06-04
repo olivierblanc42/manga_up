@@ -3,7 +3,6 @@ package manga_up.manga_up.dto.genre;
 
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.genre.GenreProjection;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 
 import org.springframework.data.domain.Page;
 

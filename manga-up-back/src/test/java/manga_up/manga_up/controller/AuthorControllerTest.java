@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -36,7 +35,6 @@ import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.mapper.AuthorMapper;
-import manga_up.manga_up.model.Author;
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CustomUserDetailsService;

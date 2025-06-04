@@ -5,7 +5,6 @@ import manga_up.manga_up.dao.*;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.genre.GenreDto;
-import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
@@ -265,71 +264,7 @@ public class MangaService {
                 .collect(Collectors.toSet());
     }
 
-    @Transactional
-    // public MangaDto updateManga(Integer id, MangaDto mangaDto) {
-
-    // Manga manga = mangaDao.findMangaId(id)
-    // .orElseThrow(() -> new EntityNotFoundException("Manga with ID " + id + " not
-    // found"));
-
-    // manga.setTitle(mangaDto.getTitle());
-    // manga.setSummary(mangaDto.getSummary());
-    // manga.setPriceHt(mangaDto.getPriceHt());
-
-    // Integer categoryId = mangaDto.getIdCategories().getId();
-    // Category category = categoryDao.findById(categoryId)
-    // .orElseThrow(() -> new RuntimeException("Category not found"));
-
-    // manga.setIdCategories(category);
-    // Set<Genre> updatedGenres = new HashSet<>();
-
-    // if (mangaDto.getGenres() != null) {
-    // for (GenreLightDto dto : mangaDto.getGenres()) {
-    // Genre genre = genreDao.findById(dto.getId())
-    // .orElseThrow(() -> new EntityNotFoundException("Genre with ID " + dto.getId()
-    // + " not found"));
-
-    // updatedGenres.add(genre);
-    // }
-    // }
-    // manga.setGenres(updatedGenres);
-
-    // Set<Author> updatedAuthors = mangaDto.getAuthors() == null ? new HashSet<>()
-    // : mangaDto.getAuthors().stream()
-    // .map(dto -> authorDao.findById(dto.getId())
-    // .orElseThrow(() -> new EntityNotFoundException(
-    // "Genre with ID " + dto.getId() + " not found")))
-    // .collect(Collectors.toSet());
-    // manga.setAuthors(updatedAuthors);
-
-    // Set<Picture> updatedPictures = new HashSet<>();
-
-    // if (mangaDto.getPictures() != null) {
-    // for (PictureLightDto dto : mangaDto.getPictures()) {
-    // Picture picture = pictureDao.findById(dto.getId())
-    // .orElseThrow(
-    // () -> new EntityNotFoundException("Picture with ID " + dto.getId() + " not
-    // found"));
-
-    // picture.setIdMangas(manga);
-    // updatedPictures.add(picture);
-    // }
-    // }
-
-    // manga.getPictures().clear();
-    // manga.getPictures().addAll(updatedPictures);
-
-    // manga.getPictures().clear();
-    // manga.getPictures().addAll(updatedPictures);
-
-    // manga = mangaDao.save(manga);
-    // return mangaMapper.mangaToMangaDto(manga);
-    // }
-
-    // public Page<MangaBaseProjection> getTest(Pageable pageable) {
-    // return mangaDao.findMangasWithMainPictures(pageable);
-    // }
-
+ 
     public Page<MangaBaseProjection> getTitle(String letter, Pageable pageable) {
         return mangaDao.findByTitleWithGenres(letter, pageable);
     }

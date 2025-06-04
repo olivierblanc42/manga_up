@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import manga_up.manga_up.projection.appUser.FavoriteProjection;
 import manga_up.manga_up.projection.author.AuthorLittleProjection;
 import manga_up.manga_up.projection.category.CategoryLittleProjection;
 import manga_up.manga_up.projection.genre.GenreLittleProjection;

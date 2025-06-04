@@ -15,18 +15,15 @@ import java.util.stream.Collectors;
 public class MangaMapper {
 
     private final CategoryMapper categoryMapper;
-    private final GenderMangaMapper genderMapper;
-    private final AuthorMapper authorMapper;
+
     private final PictureMapper pictureMapper;
     private final FavoriteMapper appUserMapper;
     private final GenreDao genreDao;
 
-    public MangaMapper(CategoryMapper categoryMapper, GenderMangaMapper genderMapper, AuthorMapper authorMapper,
+    public MangaMapper(CategoryMapper categoryMapper,
             PictureMapper pictureMapper,
             FavoriteMapper appUserMapper, GenreDao genreDao) {
         this.categoryMapper = categoryMapper;
-        this.genderMapper = genderMapper;
-        this.authorMapper = authorMapper;
         this.pictureMapper = pictureMapper;
         this.appUserMapper = appUserMapper;
         this.genreDao = genreDao;
