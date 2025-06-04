@@ -1,8 +1,11 @@
 package manga_up.manga_up.service;
 
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
 import manga_up.manga_up.dto.picture.PictureDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.PictureMapper;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.manga.MangaLittleProjection;
@@ -19,12 +22,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.notNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -35,6 +44,8 @@ class PictureServiceTest {
  PictureDao pictureDao;
  @Mock
     PictureMapper pictureMapper;
+    @Mock
+    MangaDao mangaDao;
  @InjectMocks
  PictureService pictureService;
 
@@ -152,25 +163,109 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
 
     }
 
+
     @Test
-    void updatePicture() {
-        int id = 1;
+    void shouldUpdatePictureAndSetAsMain() {
+        // Given
+        Integer pictureId = 1;
+        Integer mangaId = 42;
 
-        PictureDto pictureDto = new PictureDto(
-         "www.picture.com"
-      );
-      Picture picture = new Picture();
-      picture.setId(id);
-      picture.setUrl("www.picture.fr");
+        PictureLightDto pictureDto = new PictureLightDto(
+                pictureId,
+                "image.com/updated",
+                true);    
+
+        Picture existingPicture = new Picture();
+        existingPicture.setId(pictureId);
+        existingPicture.setUrl("old-url.com");
+        existingPicture.setMain(false);
+
+        Manga manga = new Manga();
+        manga.setId(mangaId);
+        existingPicture.setIdMangas(manga);
+
+        Picture otherMainPicture = new Picture();
+        otherMainPicture.setId(2);
+        otherMainPicture.setMain(true);
+        otherMainPicture.setIdMangas(manga);
+
+        when(pictureDao.findPictureById(pictureId)).thenReturn(Optional.of(existingPicture));
+        when(pictureDao.findByIdMangasIdAndIsMainTrue(mangaId)).thenReturn(List.of(otherMainPicture));
+        when(pictureMapper.toPictureLightDto(existingPicture)).thenReturn(pictureDto);
+
+        // When
+        PictureLightDto result = pictureService.updatePicture(pictureId, pictureDto);
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(existingPicture.getUrl()).isEqualTo("image.com/updated");
+        assertThat(existingPicture.getMain()).isTrue();
+        assertThat(otherMainPicture.getMain()).isFalse();
+
+        verify(pictureDao).findPictureById(pictureId);
+        verify(pictureDao).findByIdMangasIdAndIsMainTrue(mangaId);
+        verify(pictureDao).save(otherMainPicture);
+        verify(pictureMapper).toPictureLightDto(existingPicture);
+    }    
+
+@Test
+void shouldUpdatePictureWithoutChangingOthersWhenNotMain() {
+    Integer pictureId = 3;
+    PictureLightDto pictureDto = new PictureLightDto(
+        pictureId,
+            "image.com/updated",
+            false
+            );
+
+    Picture existingPicture = new Picture();
+    existingPicture.setId(pictureId);
+    existingPicture.setUrl("image.com/original");
+    existingPicture.setMain(false);
+
+    Manga manga = new Manga();
+    manga.setId(99);
+    existingPicture.setIdMangas(manga);
+
+    when(pictureDao.findPictureById(pictureId)).thenReturn(Optional.of(existingPicture));
+    when(pictureMapper.toPictureLightDto(existingPicture)).thenReturn(pictureDto);
+
+    PictureLightDto result = pictureService.updatePicture(pictureId, pictureDto);
+
+    assertThat(result).isNotNull();
+    assertThat(existingPicture.getUrl()).isEqualTo("image.com/updated");
+    assertThat(existingPicture.getMain()).isFalse();
+
+    verify(pictureDao).findPictureById(pictureId);
+    verify(pictureMapper).toPictureLightDto(existingPicture);
+    verify(pictureDao, never()).findByIdMangasIdAndIsMainTrue(anyInt());
+}
+
+@Test
+void shouldDeletePicture() {
+    Integer pictureId = 3;
+    Picture picture = new Picture();
+    picture.setId(pictureId);
+    picture.setUrl("image.com/original");
+    picture.setMain(false);
+
+    Manga manga = new Manga();
+    manga.setId(42);
+    Set<Picture> pictures = new HashSet<>();
+    pictures.add(picture);
+    manga.setPictures(pictures);
+    picture.setIdMangas(manga);
+
+     when(pictureDao.findById(pictureId)).thenReturn(Optional.of(picture));
+
+     pictureService.deletePictureById(pictureId);
+     assertThat(manga.getPictures()).doesNotContain(picture);
 
 
-      when(pictureDao.findPictureById(1)).thenReturn(Optional.of(picture));
-      picture.setUrl(pictureDto.getUrl());
-      when(pictureDao.save(picture)).thenReturn(picture);
-      when(pictureMapper.toPictureDto(picture)).thenReturn(pictureDto);
+     assertThat(manga.getPictures()).doesNotContain(picture); 
+     verify(pictureDao).findById(pictureId); 
+     verify(mangaDao).save(manga); 
+     verify(pictureDao).delete(picture); 
 
-      PictureDto result = pictureService.UpdatePicture(id, pictureDto);
-      assertNotNull(result);
-      assertThat(result.getUrl()).isEqualTo(pictureDto.getUrl());
-    }
+}
+
 }
