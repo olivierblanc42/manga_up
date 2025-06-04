@@ -149,7 +149,7 @@ class GenreUserServiceTest {
 
         when(genderUserDao.findGenderById(id)).thenReturn(Optional.of(genderEntity));
         when(genderUserDao.save(genderEntity)).thenReturn(genderEntity);
-        when(genderUserMapper.toDto(genderEntity)).thenReturn(genderDto); // <<< ligne manquante
+        when(genderUserMapper.toDto(genderEntity)).thenReturn(genderDto); 
 
         GenderUserDto result = genreUserService.updateGenreUser(id, genderDto);
 
