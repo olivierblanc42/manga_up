@@ -60,9 +60,10 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
         LOGGER.info("Deleting address by id");
         categoryService.deleteCategoryById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
