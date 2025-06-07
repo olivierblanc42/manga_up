@@ -30,6 +30,7 @@ import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
+import manga_up.manga_up.projection.manga.MangaProjection;
 import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CategoryService;
 import manga_up.manga_up.service.GenreService;
@@ -82,22 +83,22 @@ public class PublicController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-    @Operation(summary = "All Mangas with pagination")
-    @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
-    @GetMapping("mangas/pagination")
-    public ResponseEntity<Page<MangaBaseProjection>> getAllManga(
-            @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
-        LOGGER.info("Find all addresses with pagination");
-        Page<MangaBaseProjection> mangas = mangaService.findAllByPage(pageable);
-        LOGGER.info("Found {} addresses", mangas.getTotalElements());
-        return new ResponseEntity<>(mangas, HttpStatus.OK);
-    }
+    // @Operation(summary = "All Mangas with pagination")
+    // @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
+    // @GetMapping("mangas/pagination")
+    // public ResponseEntity<Page<MangaBaseProjection>> getAllManga(
+    //         @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+    //     LOGGER.info("Find all addresses with pagination");
+    //     Page<MangaBaseProjection> mangas = mangaService.findAllByPage(pageable);
+    //     LOGGER.info("Found {} addresses", mangas.getTotalElements());
+    //     return new ResponseEntity<>(mangas, HttpStatus.OK);
+    // }
 
     @Operation(summary = "Get one manga with her id")
     @GetMapping("manga/{id}")
-    public ResponseEntity<MangaDto> getMangaById(@PathVariable Integer id) {
+    public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
         LOGGER.info("Find manga by id");
-        return ResponseEntity.ok(mangaService.findMangaDtoById(id));
+        return ResponseEntity.ok(mangaService.findMangaById(id));
     }
 
  
@@ -138,6 +139,7 @@ public class PublicController {
         LOGGER.info("Find author with id {}", id);
       return ResponseEntity.ok(authorService.getAuthorById(id));
     }
+
 
     @Operation(summary = "Get author with mangas")
     @ApiResponses(value = {
@@ -188,13 +190,13 @@ public class PublicController {
      // All public requests for GenderUser
 
    // @GetMapping("categories")
-   @GetMapping("genderUser")
-   public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
-       LOGGER.info("Get GenderUserDto");
-       List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
-       LOGGER.info("Found {} genres ", genders.size());
-       return new ResponseEntity<>(genders, HttpStatus.OK);
-   }
+//    @GetMapping("genderUser")
+//    public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
+//        LOGGER.info("Get GenderUserDto");
+//        List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
+//        LOGGER.info("Found {} genres ", genders.size());
+//        return new ResponseEntity<>(genders, HttpStatus.OK);
+//    }
 
 
     // All public requests for Categories
