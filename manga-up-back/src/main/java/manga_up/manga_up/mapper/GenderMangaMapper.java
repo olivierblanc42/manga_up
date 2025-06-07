@@ -19,7 +19,6 @@ public class GenderMangaMapper {
 
 
     public GenreDto toDtoGenre(Genre genre) {
-        LOGGER.info("Mangas size before mapping: {}", genre.getMangas().size());
 
         return new GenreDto(
                 genre.getUrl(),

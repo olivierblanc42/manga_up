@@ -42,7 +42,7 @@ public class FavoriteMapper {
                 .collect(Collectors.toSet());
     }
 
-    public Set<AppUser> toEntityAppUserFavorite(Set<UserFavoriteDto> userFavoriteDtos) {
+    public Set<AppUser> toEntityAppUserFavoriteSet(Set<UserFavoriteDto> userFavoriteDtos) {
         if (userFavoriteDtos == null) {
             return java.util.Collections.emptySet();
         }

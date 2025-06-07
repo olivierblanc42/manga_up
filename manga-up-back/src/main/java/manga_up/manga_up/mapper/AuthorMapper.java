@@ -21,8 +21,8 @@ public class AuthorMapper {
         LOGGER.info("AuthorDto size before mapping: {}", author.getMangas().size());
         return new AuthorDto(
                 author.getId(),
-                author.getFirstname(),
                 author.getLastname(),
+                author.getFirstname(),
                 author.getDescription(),
                 author.getGenre(),
                 author.getBirthdate(),

@@ -86,7 +86,7 @@ public class MangaMapper {
         Set<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
         manga.setPictures(pictures);
 
-        Set<AppUser> appUsers = appUserMapper.toEntityAppUserFavorite(mangaDto.getUsersFavorites());
+        Set<AppUser> appUsers = appUserMapper.toEntityAppUserFavoriteSet(mangaDto.getUsersFavorites());
         manga.setAppUsers(appUsers);
 
         return manga;
