@@ -9,7 +9,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -41,6 +46,7 @@ import manga_up.manga_up.service.CustomUserDetailsService;
 
 @WebMvcTest(AuthorController.class)
 @ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class AuthorControllerTest {
 
     @Autowired
@@ -123,6 +129,11 @@ class AuthorControllerTest {
         }
 
     }
+
+
+
+
+
 
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
@@ -241,6 +252,36 @@ void shouldUpdateCreatedAuthor() throws Exception {
             .andExpect(jsonPath("$.lastname").value("Akira"))
             .andExpect(jsonPath("$.url").value("images.fr"));
 }
+
+
+@Test
+@WithMockUser(username = "user", roles = { "ADMIN" })
+void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
+    String json = """
+            {
+                "id": 1,
+                "lastname": "Akira",
+                "firstname": "Toriyama",
+                "genre": "Homme",
+                "description": "Mangaka japonais, créateur de Dragon Ball.",
+                "birthdate": "2023-05-12",
+                "url": "images.com"
+            }
+            """;
+
+    // Simuler une exception lancée par le service
+    when(authorService.updateAuthor(eq(1), any(AuthorDto.class)))
+            .thenThrow(new RuntimeException("Database error"));
+
+    mockMvc.perform(put("/api/authors/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .with(csrf()))
+            .andExpect(status().isInternalServerError());
+}
+
+
+
 
 
 @Test
