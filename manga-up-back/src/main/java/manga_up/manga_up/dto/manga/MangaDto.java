@@ -22,7 +22,7 @@ public class MangaDto implements Serializable {
     @Size(max = 255)
     private final String subtitle;
     private final Instant releaseDate;
-    @Size(max = 50)
+    @Size(max = 1000)
     private final String summary;
     private final BigDecimal priceHt;
     private final BigDecimal price;
