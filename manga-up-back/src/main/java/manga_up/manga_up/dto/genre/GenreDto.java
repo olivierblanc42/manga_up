@@ -29,10 +29,7 @@ public class GenreDto implements Serializable {
     public String getLabel() {
         return label;
     }
-
-
- 
-    public String getDescription() {
+   public String getDescription() {
         return description;
     }
 
