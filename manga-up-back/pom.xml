@@ -122,7 +122,10 @@
 					<version>0.8.10</version>
 					<configuration>
 						<excludes>
-							<exclude>**/entity/*</exclude>
+							
+							<exclude>**/model/**</exclude> 
+							<exclude>**/dto/**</exclude> 
+							<exclude>manga_up/manga_up/MangaUpApplication.class</exclude>
 						</excludes>
 					</configuration>
 				</plugin>
