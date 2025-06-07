@@ -57,6 +57,9 @@
                         <small *ngIf="mangaForm.get('summary')?.errors?.['required']">Le résumé est requis.</small>
                         <small *ngIf="mangaForm.get('summary')?.errors?.['noHtml']">Les balises HTML ne sont pas
                             autorisées.</small>
+                        <small *ngIf="mangaForm.get('summary')?.errors?.['maxlength']">le rèsumé fait plus de 1000
+                            caractère
+                        </small>
                     </div>
                 </div>
 
@@ -116,14 +119,19 @@
                 <div class="group-form">
                     <label>Genres</label>
                     <ng-select [items]="genres?.content" bindLabel="label" bindValue="id" [multiple]="true"
-                        [searchable]="true" formControlName="genres"
-                        placeholder="Sélectionnez un ou plusieurs genres">
+                        [searchable]="true" formControlName="genres" placeholder="Sélectionnez un ou plusieurs genres">
                     </ng-select>
                 </div>
+                <div *ngIf="mangaForm.get('genres')?.touched && mangaForm.get('genres')?.errors">
+                    <small *ngIf="mangaForm.get('genres')?.errors?.['minlength']">Veuillez sélectionner au moins un
+                        genre.</small>
+                </div>
+
 
                 <div class="group-form">
                     <label>Auteurs</label>
-                    <ng-select [items]="authors?.content" bindValue="id" [multiple]="true" formControlName="authors"         placeholder="Sélectionnez un ou plusieurs Auteurs">
+                    <ng-select [items]="authors?.content" bindValue="id" [multiple]="true" formControlName="authors"
+                        placeholder="Sélectionnez un ou plusieurs Auteurs">
                         >
 
                         <ng-template ng-label-tmp let-item="item">
@@ -131,27 +139,32 @@
                         </ng-template>
                         <ng-template ng-option-tmp let-item="item">
                             {{item.firstname}} {{item.lastname}}
-                        </ng-template>          
-                    
+                        </ng-template>
+
                     </ng-select>
+                </div>
+
+                <div *ngIf="mangaForm.get('authors')?.touched && mangaForm.get('authors')?.errors">
+                    <small *ngIf="mangaForm.get('authors')?.errors?.['minlength']">Veuillez sélectionner au moins un
+                        auteur.</small>
                 </div>
 
 
 
-
-
                 <div formArrayName="pictures">
-                    <div *ngFor="let img of pictures.controls; let i = index" [formGroupName]="i" style="margin-bottom: 1em;">
+                    <div *ngFor="let img of pictures.controls; let i = index" [formGroupName]="i"
+                        style="margin-bottom: 1em;">
                         <input formControlName="url" placeholder="URL de l'image" />
                         <label>
-                            <input type="radio" name="mainImage" [checked]="img.value.isMain" (change)="setMainImage(i)" />
+                            <input type="radio" name="mainImage" [checked]="img.value.isMain"
+                                (change)="setMainImage(i)" />
                             Principale
                         </label>
                         <button type="button" (click)="deleteImage(i)">Supprimer</button>
                     </div>
                 </div>
                 <button type="button" (click)="addImage('')">Ajouter une image</button>
-                <button type="submit" [disabled]="mangaForm.invalid">Créer</button>
+                <button type="submit">Créer</button>
 
             </form>
 
