@@ -130,15 +130,16 @@ export class MangasAdminComponent implements OnInit {
       title: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(100)]],
       subtitle: ['', [noHtmlTagsValidator, Validators.maxLength(100)]],
       releaseDate: [null, Validators.required],
-      summary: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(500)]],
+      summary: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(1000)]],
       price: [1, [Validators.required, Validators.min(1)]],
-      inStock: [true],
-      active: [true],
+      inStock: [false],
+      active: [false],
       idCategories: [null, Validators.required],
-      genres: [[], Validators.required],
-      authors: [[], Validators.required],
+      genres: [[], [Validators.required, Validators.maxLength(1)]],   
+      authors: [[], [Validators.required, Validators.maxLength(1)]],  
       pictures: this.fb.array([])
     });
+    
   }
   openModal() {
     this.isModalOpen = true;
@@ -175,6 +176,8 @@ export class MangasAdminComponent implements OnInit {
 
 
   async createManga() {
+    console.log('createManga called', this.mangaForm.valid);
+
     if (this.mangaForm.valid) {
       const raw = this.mangaForm.value;
 
@@ -193,6 +196,7 @@ export class MangasAdminComponent implements OnInit {
         console.error('Erreur lors de la création', error);
       }
     } else {
+
       this.mangaForm.markAllAsTouched();
     }
   }
