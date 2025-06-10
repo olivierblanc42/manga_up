@@ -269,7 +269,6 @@ void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
             }
             """;
 
-    // Simuler une exception lancée par le service
     when(authorService.updateAuthor(eq(1), any(AuthorDto.class)))
             .thenThrow(new RuntimeException("Database error"));
 

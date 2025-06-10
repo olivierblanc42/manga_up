@@ -21,6 +21,7 @@ import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
 import manga_up.manga_up.projection.author.AuthorProjection;
+import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
 import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CustomUserDetailsService;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -198,7 +200,11 @@ public class AddressControllerTest {
                 "69001",
                 usersSet2);
 
-        Page<UserAddressProjection> page = new PageImpl<>(List.of(address1, address2));
+        List<UserAddressProjection> address = new ArrayList<>();
+        address.add(address1);
+        address.add(address2);
+        Page<UserAddressProjection> page = new PageImpl<>(address);
+
         when(userAddressService.findAllByPage(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/api/addresses")
@@ -250,13 +256,12 @@ public class AddressControllerTest {
                 """;
 
         UserAddressDto address = new UserAddressDto(
-                "12 rue de la Paix", 
-                "Bâtiment A", 
-                "2ème étage", 
-                "Paris", 
+                "12 rue de la Paix",
+                "Bâtiment A",
+                "2ème étage",
+                "Paris",
                 Instant.parse("2025-06-05T16:09:22.331Z"),
-                "75001" 
-        );
+                "75001");
 
         when(userAddressService.save(any())).thenReturn(address);
 
@@ -269,7 +274,6 @@ public class AddressControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.line1").value("12 rue de la Paix"));
     }
-
 
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
@@ -293,7 +297,7 @@ public class AddressControllerTest {
                 Instant.parse("2025-06-05T16:09:22.331Z"),
                 "75001");
 
-    when(userAddressService.updateUserAddress(eq(1), any(UserAddressDto.class))).thenReturn(address);
+        when(userAddressService.updateUserAddress(eq(1), any(UserAddressDto.class))).thenReturn(address);
 
         mockMvc.perform(put("/api/addresses/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -304,8 +308,6 @@ public class AddressControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.line1").value("13 rue de la Paix"));
     }
-
-
 
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
@@ -321,20 +323,15 @@ public class AddressControllerTest {
                 }
                 """;
 
-       
-
         when(userAddressService.updateUserAddress(eq(1), any(UserAddressDto.class)))
                 .thenThrow(new RuntimeException("Database error"));
-    
+
         mockMvc.perform(put("/api/addresses/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
                 .with(csrf()))
                 .andExpect(status().isInternalServerError());
     }
-
-
-
 
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
