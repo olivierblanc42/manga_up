@@ -40,14 +40,14 @@ public class LoginService {
     /**
      * Constructs a new LoginService.
      *
-     * @param userDao the DAO for user data access
-     * @param jwtUtils utility class for JWT token generation and validation
+     * @param userDao               the DAO for user data access
+     * @param jwtUtils              utility class for JWT token generation and
+     *                              validation
      * @param authenticationManager Spring Security authentication manager
      */
-    public LoginService(UserDao userDao, 
-                        JwtUtils jwtUtils, 
-                        AuthenticationManager authenticationManager
-                       ) {
+    public LoginService(UserDao userDao,
+            JwtUtils jwtUtils,
+            AuthenticationManager authenticationManager) {
         this.userDao = userDao;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
@@ -64,7 +64,7 @@ public class LoginService {
      *         authentication succeeds,
      *         or a bad request status with error message if authentication fails
      */
-    public ResponseEntity<?> login(LoginRequestDto user, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> login(LoginRequestDto user, HttpServletResponse response) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -75,10 +75,10 @@ public class LoginService {
 
                 ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
                         .httpOnly(true)
-                        .secure(false) // should be true in production for HTTPS
+                        .secure(false)
                         .path("/")
-                        .maxAge(7 * 24 * 60 * 60) // 7 days
-                        .sameSite("Strict") // can also be "Lax"
+                        .maxAge(7 * 24 * 60 * 60)
+                        .sameSite("Strict")
                         .build();
 
                 response.setHeader("Set-Cookie", cookie.toString());
@@ -90,10 +90,15 @@ public class LoginService {
 
                 return ResponseEntity.ok(responseBody);
             }
-            return ResponseEntity.badRequest().body("Invalid username or password");
+            Map<String, Object> errorBody = new HashMap<>();
+            errorBody.put("error", "Invalid username or password");
+            return ResponseEntity.badRequest().body(errorBody);
         } catch (AuthenticationException e) {
             log.error("Authentication failed: {}", e.getMessage());
-            return ResponseEntity.badRequest().body("Invalid username or password");
+            Map<String, Object> errorBody = new HashMap<>();
+            errorBody.put("error", "Invalid username or password");
+            return ResponseEntity.badRequest().body(errorBody);
         }
     }
+
 }
