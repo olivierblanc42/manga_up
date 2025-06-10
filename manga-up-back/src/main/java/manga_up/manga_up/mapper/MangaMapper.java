@@ -8,6 +8,7 @@ import manga_up.manga_up.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,18 @@ public class MangaMapper {
                     .map(Author::getId)
                     .collect(Collectors.toSet());
         }
+        // Set<Integer> authorsIds = Collections.emptySet();
 
+        // if (manga.getAuthors() != null) {
+        // Set<Author> authors = manga.getAuthors();
+        // Set<Integer> ids = new HashSet<>();
+
+        // for (Author author : authors) {
+        // ids.add(author.getId());
+        // }
+
+        // authorsIds = ids;
+        // }
         Set<Integer> genresIds = Collections.emptySet();
         if (manga.getGenres() != null) {
             genresIds = manga.getGenres()
