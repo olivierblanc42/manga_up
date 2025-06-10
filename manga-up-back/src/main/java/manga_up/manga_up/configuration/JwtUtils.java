@@ -1,6 +1,7 @@
 package manga_up.manga_up.configuration;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,10 +49,23 @@ public class JwtUtils {
 
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-       String username = extractUsername(token);
-       return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    // public Boolean validateToken(String token, UserDetails userDetails) {
+    //    String username = extractUsername(token);
+    //    return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    // }
+    public boolean validateToken(String token, UserDetails userDetails) {
+    try {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    } catch (ExpiredJwtException e) {
+        // Le token est expiré, donc invalide
+        return false;
+    } catch (Exception e) {
+        // Pour toute autre erreur de validation, considérer le token comme invalide
+        return false;
     }
+}
+
 
     private boolean isTokenExpired(String token) {
         return extractExpirationDate(token).before(new Date());
