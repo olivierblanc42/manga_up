@@ -80,6 +80,9 @@ void shouldtoUserProfilDto() {
         UserProfilDto userProfilDto  = appUserMapper.toDtoAppUser(appUser);
         assertNotNull(userProfilDto);
         assertEquals("Doe", userProfilDto.getLastname());
+
+
+        
     }
 
     @Test
