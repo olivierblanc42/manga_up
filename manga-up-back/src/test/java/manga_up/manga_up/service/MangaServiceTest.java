@@ -458,7 +458,18 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
         verify(mangaDao).findMangaById(id);
     }
 
+    @Test
+    void shouldThrowExceptionWhenMangaNotFound() {
+        Integer id = 99;
 
+        when(mangaDao.findMangaById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> mangaService.findMangaById(id))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Category with id " + id + " not found");
+
+        verify(mangaDao).findMangaById(id);
+    }    
   
 
 
@@ -495,6 +506,7 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
         verify(mangaDao).delete(manga);
         verify(categoryDao).save(category);
     }
+
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingManga() {
         when(mangaDao.findById(99)).thenReturn(Optional.empty());
@@ -503,6 +515,82 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
 
         verify(mangaDao).findMangaId(99);
         verifyNoMoreInteractions(mangaDao);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAuthorNotFound() {
+        Integer authorId = 1;
+        Integer genreId = 1;
+        CategoryLittleDto category = new CategoryLittleDto(1);
+
+        PictureLightDto mainPicture = new PictureLightDto(1, "https://example.com/image1.jpg", true);
+
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "L’aventure commence",
+                Instant.parse("1999-10-20T00:00:00Z"),
+                "Un jeune garçon veut devenir roi des pirates.",
+                new BigDecimal("10.00"),
+                null,
+                true,
+                true,
+                category,
+                Set.of(genreId),
+                Set.of(authorId),
+                Set.of(mainPicture),
+                Set.of()  );
+
+        // Simule que authorDao.findById renvoie Optional.empty pour authorId
+        when(authorDao.findById(authorId)).thenReturn(Optional.empty());
+
+        // Vérifie que l'exception IllegalArgumentException est bien levée
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            mangaService.save(mangaDto);
+        });
+
+        assertTrue(exception.getMessage().contains("Author with id " + authorId + " not found"));
+
+        verify(authorDao).findById(authorId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGenreNotFound() {
+        Integer authorId = 1;
+        Integer genreId = 1;
+        CategoryLittleDto category = new CategoryLittleDto(1);
+
+        PictureLightDto mainPicture = new PictureLightDto(1, "https://example.com/image1.jpg", true);
+
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "L’aventure commence",
+                Instant.parse("1999-10-20T00:00:00Z"),
+                "Un jeune garçon veut devenir roi des pirates.",
+                new BigDecimal("10.00"),
+                null,
+                true,
+                true,
+                category,
+                Set.of(genreId),
+                Set.of(authorId),
+                Set.of(mainPicture),
+                Set.of());
+
+
+
+        when(authorDao.findById(authorId)).thenReturn(Optional.of(new Author()));
+
+        // Simule que genre.findById renvoie Optional.empty pour authorId
+        when(genreDao.findById(genreId)).thenReturn(Optional.empty());
+
+        // Vérifie que l'exception IllegalArgumentException est bien levée
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            mangaService.save(mangaDto);
+        });
+
+        assertTrue(exception.getMessage().contains("Genre not found"));
+
+        verify(genreDao).findById(genreId);
     }
 
 
