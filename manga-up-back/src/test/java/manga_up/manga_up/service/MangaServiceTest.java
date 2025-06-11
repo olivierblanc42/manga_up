@@ -5,6 +5,7 @@ import manga_up.manga_up.dao.CategoryDao;
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
+import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
@@ -24,8 +25,11 @@ import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 import manga_up.manga_up.projection.pictureProjection.PictureLittleProjection;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -45,6 +49,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -671,5 +676,77 @@ void save_shouldPersistMangaWithValidData() {
     verify(pictureDao).save(any(Picture.class));
 }
 
+@Test
+void shouldReturnRandomMangaDtoList() {
+    // Arrange
+    MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
+    when(projection1.getMangaId()).thenReturn(1);
+    when(projection1.getTitle()).thenReturn("Naruto");
+    when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+    when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
+
+    MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
+    when(projection2.getMangaId()).thenReturn(2);
+    when(projection2.getTitle()).thenReturn("Bleach");
+    when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
+    when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
+
+    when(mangaDao.findFourMangasRandom()).thenReturn(List.of(projection1, projection2));
+
+    // Act
+    List<MangaDtoRandom> result = mangaService.getFourMangaRandom();
+
+    // Assert
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
+    assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+
+    verify(mangaDao).findFourMangasRandom();
+}
+
+@Test
+void shouldReturnGetReleaseDateRaw() {
+    // Arrange
+    MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
+    when(projection1.getMangaId()).thenReturn(1);
+    when(projection1.getTitle()).thenReturn("Naruto");
+    when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+    when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
+
+    MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
+    when(projection2.getMangaId()).thenReturn(2);
+    when(projection2.getTitle()).thenReturn("Bleach");
+    when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
+    when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
+
+    when(mangaDao.findMangasReleaseDateRaw()).thenReturn(List.of(projection1, projection2));
+
+    // Act
+    List<MangaDtoRandom> result = mangaService.getReleaseDateRaw();
+
+    // Assert
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
+    assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+
+    verify(mangaDao).findMangasReleaseDateRaw();
+}
+
+
+@Test
+void ShouldMapToDto() {
+    MangaProjectionWithAuthor projection = mock(MangaProjectionWithAuthor.class);
+    when(projection.getMangaId()).thenReturn(1);
+    when(projection.getTitle()).thenReturn("Naruto");
+    when(projection.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+    when(projection.getPicture()).thenReturn("https://example.com/naruto.jpg");
+
+    MangaDtoRandom dto = mangaService.mapToDto(projection);
+
+    assertThat(dto.getId_mangas()).isEqualTo(1);
+    assertThat(dto.getTitle()).isEqualTo("Naruto");
+    assertThat(dto.getAuthors()).isNotEmpty();
+    assertThat(dto.getPicture()).isEqualTo("https://example.com/naruto.jpg");
+}
 
 }
