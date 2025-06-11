@@ -8,6 +8,7 @@ import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 import manga_up.manga_up.service.MangaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,4 +81,9 @@ public class MangaController {
         List<MangaDtoRandom> mangas = mangaService.getFourMangaRandom();
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
+
+
+
+
+
 }
