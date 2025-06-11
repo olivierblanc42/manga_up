@@ -201,7 +201,7 @@ public class MangaService {
                 .collect(Collectors.toList());
     }
 
-    private MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
+    MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
         Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
 
         return new MangaDtoRandom(
