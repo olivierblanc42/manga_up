@@ -1,0 +1,41 @@
+<section class="section section-admin">
+
+
+
+
+
+    <div>
+        <div class="section-admin__title">
+            <h1>Images:</h1>
+        </div>
+        <div>
+            <table class="section-admin__content">
+                <thead>
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Url</th>
+                        <th scope="col">est principale</th>
+                        <th scope="col">Manga</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let picture of pictures?.content; let i = index">
+                        <td><img class="image" src="{{picture.url}}" alt=""></td>
+                        <td>{{ picture.url }}</td>
+                        <td>{{picture.isMain}}</td>
+                        <td> {{ picture.idMangas.title }}  </td>
+                        <td>
+                            <a  [routerLink]="['/admin/picture/', picture.id]" class="btn btn-edit">Modifier</a>
+                            <a href="#" (click)="deletePicture(picture.id); $event.preventDefault()" class="btn btn-delete">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+</section>

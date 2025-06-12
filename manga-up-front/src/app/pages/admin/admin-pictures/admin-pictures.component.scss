@@ -33,7 +33,7 @@ form {
 
 .modal-content {
     background-color: #fff;
-    // margin: 10% auto;
+    margin: 10% auto;
     width: 400px;
     border-radius: 8px;
 }
@@ -46,10 +46,4 @@ h2 {
     float: right;
     font-size: 24px;
     cursor: pointer;
-}
-
-.group-form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
 }

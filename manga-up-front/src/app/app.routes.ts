@@ -27,6 +27,9 @@ import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SearchComponent } from './pages/search/search.component';
 import { GenreAdminComponent } from './pages/admin/genre/genre.component';
 import { AuthorAdminComponent } from './pages/admin/author/author.component';
+import { AdminPicturesComponent } from './pages/admin/admin-pictures/admin-pictures.component';
+import { AdminPictureComponent } from './pages/admin/admin-picture/admin-picture.component';
+
 
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
@@ -60,6 +63,8 @@ export const routes: Routes = [
             { path: 'category/:id', component: CategoryAdminComponent },
             { path: 'authorsAdmin', component: AuthorsAdminComponent },
             { path: 'author/:id', component: AuthorAdminComponent },
+            { path: 'picture/:id', component: AdminPictureComponent },
+            { path: 'picturesAdmin', component: AdminPicturesComponent },
 
         ]
     },

@@ -22,7 +22,7 @@ export type User = {
 };
 
 
-export type UserTest ={
+export type UserTest = {
     id: number;
     username: string;
     firstname: string;
@@ -30,6 +30,7 @@ export type UserTest ={
     email: string;
     phoneNumber: string;
     userAddressLitle: UserAddressLitle;
+    mangas: Manga[];
 };
 
 
@@ -69,11 +70,11 @@ export interface AuthUserInfo {
     username: string;
     role: string;
 }
-  
 
 
 
-export type AppUserRegister ={
+
+export type AppUserRegister = {
     username: string;
     firstname: string;
     lastname: string;
@@ -102,9 +103,9 @@ export type AuthorProjection = {
     description: string;
     createdAt: Date;
     birthdate: Date;
-    url:string;
-    genre:string
-  
+    url: string;
+    genre: string
+
 }
 export type AuthorProjections = {
     content: AuthorProjection[];
@@ -114,12 +115,12 @@ export type AuthorProjections = {
 }
 
 export type AuthorDto = {
-    id:number;
+    id: number;
     lastname: string;
     firstname: string;
     description: string;
-    genre:string;
-    description:string;
+    genre: string;
+    description: string;
     createdAt: Date;
     birthdate: Date;
 }
@@ -149,7 +150,7 @@ export type AuthorWithMangas = {
     createdAt: Date;
     birthdate: Date;
     url: string;
-    genre: string ;
+    genre: string;
     mangasWithImages: MangasWithImages;
 }
 
@@ -164,10 +165,10 @@ export type Category = {
 }
 
 export type CategoryDto = {
-    id:number;
+    id: number;
     label: string;
     description: string;
-    url:String;
+    url: String;
     createdAt: Date;
 }
 
@@ -202,7 +203,7 @@ export type CategoryWithMangas = {
     label: string;
     description: string;
     createdAt: Date;
-    url:string
+    url: string
     mangasWithImages: MangasWithImages;
 }
 
@@ -233,12 +234,12 @@ export type GenreLightDto = {
 export type GenreProjection = {
     id: number;
     label: string;
-    url: string;  
-    description: string;      
+    url: string;
+    description: string;
     createdAt: Date;
-    
+
 };
-export type GenreProjections  = {
+export type GenreProjections = {
     content: GenreProjection[];
     size: number;
     totalElements: number;
@@ -288,6 +289,12 @@ export type GenderRegister = {
 
 //Manga
 
+
+export type Manga = {
+    id: number;
+    title: string;
+}
+
 export type FavoriteManga = {
     favorite: boolean;
 }
@@ -313,6 +320,29 @@ export type MangaProjections = {
     size: number;
     totalElements: number;
     totalPages: number;
+}
+
+
+export interface MangaDto {
+    title: string;
+    subtitle?: string;
+    releaseDate?: Date;
+    summary?: string;
+    priceHt?: number;
+    price?: number;
+    inStock?: boolean;
+    active?: boolean;
+    idCategories: CategoryLittleDto;
+    genres?: number[];
+    authors?: number[];
+    pictures: PictureLightDto[];
+    usersFavorites?: UserFavoriteDto[];
+}
+
+export type PictureLightDto = {
+    id: number;
+    url: String;
+    isMain: Boolean;
 }
 
 export type MangaDtoRandom = {
@@ -344,9 +374,9 @@ export type MangaLittleProjection = {
 }
 
 export type MangaWithImages = {
-    id: number;
+    id_mangas: number;
     pictureId: string;
-    pictureUrl:string;
+    picture: string;
     title: string;
 }
 
@@ -358,11 +388,15 @@ export type MangasWithImages = {
 }
 
 export type MangaPagination = {
-    id: number;
+    id_mangas: number;
     pictureId: string;
-    pictureUrl: string;
+    picture: string;
     title: string;
+    authors: AuthorLittleProjection[];
 }
+
+aut
+
 export type MangaPaginations = {
     content: MangaPagination[];
     size: number;
@@ -384,6 +418,11 @@ export type MangaBaseProjections = {
     totalElements: number;
     totalPages: number;
 }
+
+
+
+
+
 
 //UserAddress
 export type UserAddress = {
@@ -454,6 +493,33 @@ export type UserRegister = {
 export interface PictureDtoRandom {
     id: number;
     url: string;
+}
+
+
+export type PictureProjection = {
+    id: number;
+    url: string;
+    isMain: boolean;
+    idMangas: idManga;
+}
+
+export type idManga = {
+    id: number;
+    title: string;
+}
+
+
+export type PictureProjections = {
+    content: PictureProjection[];
+    size: number;
+    totalElements: number;
+    totalPages: number;
+}
+
+export type PictureDto = {
+    id: number;
+    url: string;
+    isMain: boolean;
 }
 
 export type Picture = {

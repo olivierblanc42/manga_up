@@ -55,11 +55,11 @@
     <div class="section__grid">
         @for (item of author?.mangasWithImages?.content; track $index) {
         <ui-card size="card-manga">
-            <img src="{{item.pictureUrl}}" alt="Couverture du manga {{item.title}}">
+            <img src="{{item.picture}}" alt="Couverture du manga {{item.title}}">
 
             <div>
                 <h3 class="card-manga__title">{{item.title}}</h3>
-                <a class="btn btn-card" [routerLink]="'/manga/' + item?.id"
+                <a class="btn btn-card" [routerLink]="'/manga/' + item?.id_mangas"
                     [attr.aria-label]="'Voir plus d’informations sur le manga ' + item.title">
                 <img src="svg/mdi_magnify.svg" alt="">   <p>Voir plus</p>
                 </a>

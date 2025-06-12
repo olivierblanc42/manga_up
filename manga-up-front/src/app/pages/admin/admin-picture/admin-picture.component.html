@@ -1,0 +1,31 @@
+<div class="author-form-container card card-single-other">
+    <div class="card-single-other__title">
+        <h1>Modifier l'image</h1>
+    </div>
+    <form [formGroup]="pictureForm"    (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label for="url">Url</label>
+            <textarea id="url" formControlName="url"></textarea>
+            <div *ngIf="pictureForm.get('url')?.touched && pictureForm.get('url')?.invalid" class="error">
+                <small *ngIf="pictureForm.get('url')?.errors?.['required']">La description est
+                    obligatoire.</small>
+                <small *ngIf="pictureForm.get('url')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                    autorisées.</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Image principale
+
+                <input type="checkbox" formControlName="isMain" />
+            </label>  </div>
+
+            <button type="submit" [disabled]="pictureForm.invalid">Mettre à jour</button>
+
+    </form>
+
+
+
+</div>

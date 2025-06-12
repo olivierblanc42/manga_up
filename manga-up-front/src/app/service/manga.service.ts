@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
+import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
+import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
 
 
 @Injectable({
@@ -14,6 +14,8 @@ export class MangaService{
     urlPagination = "api/public/mangas/paginations";
     url = "/api/public/manga/"
     urlRandom ="/api/public/randomFour"
+    urlAdd = "/api/mangas/add"
+    urldelete ="/api/mangas"
 
     options = {
         headers: new HttpHeaders({
@@ -28,7 +30,7 @@ export class MangaService{
     ) { }
 
 
-    mangaOne = new BehaviorSubject<MangaOne[]>([])
+    mangaOne = new BehaviorSubject<MangaOne | null>(null);
     currentMangaOne = this.mangaOne.asObservable();
 
     mangaFour = new BehaviorSubject<MangaDtoRandom[]>([])
@@ -46,6 +48,12 @@ export class MangaService{
     currentMangaProjection = this.mangaProjection.asObservable();
 
 
+       manga = new BehaviorSubject<Manga | null>(null);
+       mangaDto = new BehaviorSubject<MangaDto | null>(null);
+   
+
+
+
     async getMangas(page: number = 0) {
         try {
             const r = await lastValueFrom(this.http.get<MangaPaginations>(`${this.urlPagination}?page=${page}`));
@@ -60,7 +68,7 @@ export class MangaService{
 
     async getMangaOne() {
         try {
-            const r = await lastValueFrom(this.http.get<MangaOne[]>(this.urlOne));
+            const r = await lastValueFrom(this.http.get<MangaOne>(this.urlOne));
             if (!r) return;
             this.mangaOne.next(r);
         } catch (err) {
@@ -106,5 +114,23 @@ export class MangaService{
 
 
 
+    async deleteManga(id: number): Promise<Manga> {
+        const response = await firstValueFrom(
+            this.http.delete<Manga>(`${this.urldelete}/${id}`, {
+                withCredentials: true
+            })
+        );
+        this.manga.next(response);
+        return response;
+    }
+
+    async addManga(category: MangaDto): Promise<MangaDto> {
+        const response = await firstValueFrom(
+            this.http.post<MangaDto>(this.urlAdd, category,{ withCredentials: true } )
+        );
+
+        this.mangaDto.next(response);
+        return response; 
+    }
      
 }
