@@ -52,9 +52,36 @@
 </article>
 
 <section class="section">
-    <div class="section__title">
-        <h2>Mangas favoris de {{user?.username}}</h2>
-    </div>
+    @if(mangas.length > 0){
+        <div class="section__title">
+            <h2>Mangas favoris de {{user?.username}} </h2>
+            </div>
+     @if(mangas.length == 1 ){
+        <p>il y a actuellement {{mangas.length}} favori dans tes favoris</p>
+     }@else{
+        <p>il y a actuellement {{mangas.length}} favoris dans tes favoris</p>
+     }
+    <div class="section__grid">
+ @for(manga of mangas; track $index ){
+    <ui-card size="card-manga">
+        <img class="image" src="" alt="Image du manga {{manga.title}}">
+        <div>
+            <h3 class="card-manga__title">{{manga.title}}</h3>
+    
+        </div>
+    
+        <a [routerLink]="'/manga/' + manga.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche de '">
+            <img src="svg/mdi_magnify.svg">
+            <p>voir plus</p>
+        </a>
+    </ui-card>
+    }
+ 
+</div>
+    } @else{
+    <p>Aucun Favoris pour le moment</p>
+    }
+  
 
 
 </section>
