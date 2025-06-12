@@ -13,12 +13,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.mapper.RegisterMapper;
 import manga_up.manga_up.model.AppUser;
+
+@ActiveProfiles("test")
 
 public class CustomUserDetailsServiceTest {
 

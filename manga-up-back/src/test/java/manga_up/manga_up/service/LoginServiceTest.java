@@ -21,12 +21,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.servlet.http.HttpServletResponse;
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.login.LoginRequestDto;
 import manga_up.manga_up.model.AppUser;
+
+@ActiveProfiles("test")
 
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceTest {
