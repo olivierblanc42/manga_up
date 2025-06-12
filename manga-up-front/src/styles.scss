@@ -59,6 +59,18 @@ body {
         text-transform: uppercase;
         margin-top: 0px;
     }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: inherit;
+    }
+}
+
+.btn-card:visited {
+    color: black;
 }
 
 .btn {
@@ -75,11 +87,25 @@ body {
     font-size: $font-mobile-btn ;
 }
 
+.btn-magnify {
+
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: inline-block;
+}
+
 .btn-card {
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+
     p {
-        padding-left: $padding-xs;
         margin: 0;
-        color: black ;
+        color: black;
+
     }
 
     i {
@@ -123,11 +149,11 @@ body {
     }
 }
 
-.section__grid--home {
+.section__grid.section__grid--home {
     display: none;
 }
 
-.section__grid{
+.section__grid {
     display: grid;
     grid-template-columns: repeat(1, 100%);
     row-gap: $margin;
@@ -268,7 +294,7 @@ body {
         min-height: 600px;
         margin-left: auto;
         margin-right: auto;
-          
+
         >.btn {
             display: flex;
             align-items: center;
@@ -286,6 +312,11 @@ body {
                 color: #496677;
             }
         }
+
+
+
+
+
 
         span {
             text-transform: uppercase;
@@ -370,6 +401,11 @@ body.home-page .breadcrumb {
 }
 
 // Partie Admin
+
+.link-admin {
+    display: none;
+}
+
 .section-admin {
     >div {
         .section-admin__title {
@@ -402,6 +438,9 @@ body.home-page .breadcrumb {
 
 /* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {
+    .link-admin {
+        display: block;
+    }
 
     .section {
         display: flex;
@@ -711,24 +750,24 @@ body.home-page .breadcrumb {
         margin: $margin-section 158px;
     }
 
-        .section {
-            display: flex;
-            flex-direction: column;
-            margin: $margin-section 140px;
-    
-    
-    
-            .section__grid {
-                display: grid;
-                grid-template-columns: repeat(4, 25%);
-                row-gap: $margin;
-    
-                ui-card {
-                    margin-left: auto;
-                    margin-right: auto;
-                }
+    .section {
+        display: flex;
+        flex-direction: column;
+        margin: $margin-section 140px;
+
+
+
+        .section__grid {
+            display: grid;
+            grid-template-columns: repeat(4, 25%);
+            row-gap: $margin;
+
+            ui-card {
+                margin-left: auto;
+                margin-right: auto;
             }
         }
+    }
 
 
 
@@ -756,7 +795,7 @@ body.home-page .breadcrumb {
 
 }
 
-.btn-edit,.btn-primary{
+.btn-edit,
+.btn-primary {
     margin-bottom: 5px;
 }
-
