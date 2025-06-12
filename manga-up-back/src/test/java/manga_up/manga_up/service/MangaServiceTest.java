@@ -68,8 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
-
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MangaServiceTest {
     @Mock
     private MangaDao mangaDao;
