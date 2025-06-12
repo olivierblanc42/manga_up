@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit{
 
   genres!: GenreDto[];
-  mangaOne: MangaOne[] = [];
+  mangaOne: MangaOne | null = null;;
   mangaDtoRandom: MangaDtoRandom[] = [];
   mangaDtoRandomFour: MangaDtoRandom[] = [];
   trackByManga: any;
@@ -43,6 +43,9 @@ export class HomeComponent implements OnInit{
     this.mangaService.getMangaOne();
     this.mangaService.currentMangaOne.subscribe((data) =>{
       this.mangaOne = data;
+      if (this.mangaOne?.summary) {
+        this.mangaOne?.summary 
+            }
       console.log("manga récupérés :", this.mangaOne);
 
     })
