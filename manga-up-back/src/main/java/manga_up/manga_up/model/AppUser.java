@@ -10,72 +10,96 @@ import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Represents an application user within the system.
+ * Includes user credentials, personal details, associations to address, gender,
+ * comments, carts, favorite mangas, and more.
+ */
 @Entity
 @Table(name = "app_user")
 public class AppUser {
+
+    /** Unique identifier for the user. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_users", nullable = false)
     private Integer id;
 
+    /** Unique username used for authentication. */
     @Size(max = 50)
     @NotNull
     @Column(name = "username", nullable = false, length = 50)
     private String username;
 
+    /** User's first name. */
     @Size(max = 80)
     @NotNull
     @Column(name = "firstname", nullable = false, length = 80)
     private String firstname;
 
+    /** User's last name. */
     @Size(max = 80)
     @NotNull
     @Column(name = "lastname", nullable = false, length = 80)
     private String lastname;
 
+    /** Role assigned to the user (e.g., ADMIN, USER). */
     @Size(max = 10)
     @Column(name = "role", length = 10)
     private String role;
-    
-    @Pattern(regexp = "^(\\+33|0)[1-9](\\d{2}){4}$", message = "Numéro de téléphone invalide")
+
+    /** Phone number in French format (e.g., +33612345678 or 0612345678). */
+    @Pattern(regexp = "^(\\+33|0)[1-9](\\d{2}){4}$", message = "Invalid phone number")
     @Size(max = 15)
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @Email(message = "Email invalide")
+    /** Email address used for contact and authentication. */
+    @Email(message = "Invalid email")
     @Size(max = 320)
     @NotNull
     @Column(name = "email", nullable = false, length = 320)
     private String email;
 
+    /** Date and time when the user was created. */
     @Column(name = "created_at")
     private Instant createdAt;
 
+    /** Hashed password for authentication. */
     @Column(name = "password", nullable = false, length = 128)
     private String password;
 
+    /** Address associated with the user. */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_user_address", nullable = false)
     private UserAddress idUserAddress;
 
+    /** Gender associated with the user. */
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Id_genders_user", nullable = false)
     private GenderUser idGendersUser;
 
+    /** Shopping carts created by the user. */
     @OneToMany(mappedBy = "idUsers")
     private Set<Cart> carts = new LinkedHashSet<>();
 
+    /** Comments posted by the user. */
     @OneToMany(mappedBy = "idUsers")
     private Set<Comment> comments = new LinkedHashSet<>();
 
+    /** Profile picture of the user. */
     @OneToOne(mappedBy = "idUsers")
     private UserPicture userPicture;
 
+    /** Favorite mangas of the user. */
     @ManyToMany
     @JoinTable(name = "appuser_manga", joinColumns = @JoinColumn(name = "Id_users"), inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
     private Set<Manga> mangas = new LinkedHashSet<>();
+
+    // --- Getters and setters below (no Javadoc necessary unless logic is added)
+    // ---
 
     public Integer getId() {
         return id;

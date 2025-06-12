@@ -3,26 +3,22 @@ package manga_up.manga_up.dto.category;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.validation.constraints.Size;
 
 /**
  * DTO for {@link manga_up.manga_up.model.Category}
  */
 public class CategoryLittleDto implements Serializable {
     private final Integer id;
-    @Size(max = 50)
-    private final String label;
-    public CategoryLittleDto(Integer id, String label) {
+
+    public CategoryLittleDto(Integer id) {
         this.id = id;
-        this.label = label;
+       
     }
 
     public Integer getId() {
         return id;
     }
-    public String getLabel() {
-        return label;
-    }
+ 
 
     @Override
     public boolean equals(Object o) {

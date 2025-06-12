@@ -3,25 +3,16 @@ package manga_up.manga_up.service;
 import manga_up.manga_up.dao.GenderUserDao;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
-import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.GenderUserMapper;
-import manga_up.manga_up.model.AppUser;
-import manga_up.manga_up.model.Author;
-import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
-import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.genderUser.GenderUserProjection;
-import manga_up.manga_up.projection.manga.MangaLittleProjection;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -30,18 +21,11 @@ import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 

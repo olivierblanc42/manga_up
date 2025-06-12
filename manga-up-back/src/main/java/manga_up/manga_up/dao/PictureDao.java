@@ -10,10 +10,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Picture} entities.
+ * 
+ */
 @Repository
 public interface PictureDao extends JpaRepository<Picture, Integer> {
+
+    List<Picture> findByIdMangasIdAndIsMainTrue(Integer mangaId);
 
     @Query("SELECT p FROM Picture p LEFT JOIN FETCH p.idMangas")
     Page<PictureProjection> findAllByPage(Pageable pageable);

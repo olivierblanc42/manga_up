@@ -10,7 +10,6 @@ public class CommentMapper {
 
 
 
-    private CommentMapper() {}
 
 
     public CommentLightDto toDtoComment(Comment comment) {

@@ -12,7 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
+/**
+ * Repository interface for managing {@link UserAddress} entities.
+ * 
+ */
 @Repository
 public interface AddressDao extends JpaRepository<UserAddress, Integer> {
 

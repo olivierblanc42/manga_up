@@ -1,6 +1,5 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.model.Author;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.category.CategoryProjection;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -74,7 +72,7 @@ class CategoryDaoTest {
 @Test
 void shouldReturnPagedCategoryProjection() {
     Pageable pageable = PageRequest.of(0, 2);
-    Page<CategoryProjection> page = categoryDao.findAllCategorisByPage(pageable);
+    Page<CategoryProjection> page = categoryDao.findAllCategoriesByPage(pageable);
 
     assertEquals(2, page.getTotalElements());
     assertEquals("Action", page.getContent().get(0).getLabel());

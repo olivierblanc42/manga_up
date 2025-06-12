@@ -14,6 +14,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link GenderUser} entities.
+ * 
+ */
 @Repository
 public interface GenderUserDao extends JpaRepository<GenderUser, Integer> {
 

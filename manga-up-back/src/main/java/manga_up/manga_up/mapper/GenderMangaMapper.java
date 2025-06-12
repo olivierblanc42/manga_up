@@ -19,7 +19,6 @@ public class GenderMangaMapper {
 
 
     public GenreDto toDtoGenre(Genre genre) {
-        LOGGER.info("Mangas size before mapping: {}", genre.getMangas().size());
 
         return new GenreDto(
                 genre.getUrl(),
@@ -44,15 +43,13 @@ public class GenderMangaMapper {
 
     public GenreLightDto toGenreLightDto(Genre genre) {
         return new GenreLightDto(
-            genre.getId(),
-            genre.getLabel()
+            genre.getId()
             );
     }
 
     public Genre toEntityGenre(GenreLightDto genreLightDto) {
         Genre genre = new Genre();
         genre.setId(genreLightDto.getId());
-        genre.setLabel(genreLightDto.getLabel());
         return genre;
     }
 

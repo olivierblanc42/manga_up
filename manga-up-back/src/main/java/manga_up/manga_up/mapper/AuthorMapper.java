@@ -21,8 +21,8 @@ public class AuthorMapper {
         LOGGER.info("AuthorDto size before mapping: {}", author.getMangas().size());
         return new AuthorDto(
                 author.getId(),
-                author.getFirstname(),
                 author.getLastname(),
+                author.getFirstname(),
                 author.getDescription(),
                 author.getGenre(),
                 author.getBirthdate(),
@@ -47,17 +47,13 @@ public class AuthorMapper {
 
     public AuthorLigthDto toLightDtoAuthor(Author author) {
         return new AuthorLigthDto(
-                author.getId(),
-                author.getLastname(),
-                author.getFirstname()
+                author.getId()
         );
     }
 
     public Author toLightEntity(AuthorLigthDto authorDto) {
         Author author = new Author();
         author.setId(authorDto.getId());
-        author.setLastname(authorDto.getLastname());
-        author.setFirstname(authorDto.getFirstname());
         return author;
     };
 

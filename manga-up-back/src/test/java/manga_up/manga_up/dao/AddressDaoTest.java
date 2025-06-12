@@ -1,6 +1,5 @@
 package manga_up.manga_up.dao;
 
-import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.model.UserAddress;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +60,9 @@ class AddressDaoTest {
        assertFalse(userAddressOptional.isPresent());
    }
 
+
+
+
+
+   
 }

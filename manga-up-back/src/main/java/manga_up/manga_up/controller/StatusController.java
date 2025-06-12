@@ -1,7 +1,6 @@
 package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import manga_up.manga_up.projection.comment.CommentProjection;
 import manga_up.manga_up.projection.status.StatusProjection;
 import manga_up.manga_up.service.StatusService;
 import org.slf4j.Logger;

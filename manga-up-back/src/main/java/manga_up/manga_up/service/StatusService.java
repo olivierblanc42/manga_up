@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-
-
+/**
+ * Service class for handling status-related operations.
+ */
 @Service
 public class StatusService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatusService.class);
@@ -22,12 +22,15 @@ public class StatusService {
         this.statusDao = statusDao;
     }
 
+    /**
+     * Retrieves a paginated list of statuses.
+     *
+     * @param pageable a {@link Pageable} object containing pagination and sorting
+     *                 information
+     * @return a paginated list of {@link StatusProjection}
+     */
     public Page<StatusProjection> findAllByPage(Pageable pageable) {
-     LOGGER.info("Finding all Status");
-     return statusDao.findAllByPage(pageable);
- }
-
-
-
-
+        LOGGER.info("Finding all Status");
+        return statusDao.findAllByPage(pageable);
+    }
 }

@@ -2,7 +2,6 @@ package manga_up.manga_up.dao;
 
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.Manga;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 

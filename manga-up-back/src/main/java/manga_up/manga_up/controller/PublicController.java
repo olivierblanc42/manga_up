@@ -26,7 +26,6 @@ import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
-import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.projection.genre.GenreProjection;
@@ -59,11 +58,15 @@ public class PublicController {
 
 // All public requests for manga
 
+
+
+
+
         @Operation(summary ="Get Random Manga")
     @GetMapping("/one")
-    public ResponseEntity<List<MangaDtoOne>> getRandomManga(){
+    public ResponseEntity<MangaDtoOne> getRandomManga(){
        LOGGER.info("Get  Manga");
-        List<MangaDtoOne> mangas = mangaService.getRandomManga();
+       MangaDtoOne mangas = mangaService.getRandomManga();
        return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
@@ -84,22 +87,22 @@ public class PublicController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-    @Operation(summary = "All Mangas with pagination")
-    @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
-    @GetMapping("mangas/pagination")
-    public ResponseEntity<Page<MangaBaseProjection>> getAllManga(
-            @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
-        LOGGER.info("Find all addresses with pagination");
-        Page<MangaBaseProjection> mangas = mangaService.findAllByPage(pageable);
-        LOGGER.info("Found {} addresses", mangas.getTotalElements());
-        return new ResponseEntity<>(mangas, HttpStatus.OK);
-    }
+    // @Operation(summary = "All Mangas with pagination")
+    // @ApiResponse(responseCode = "201", description = "All manga have been retrieved")
+    // @GetMapping("mangas/pagination")
+    // public ResponseEntity<Page<MangaBaseProjection>> getAllManga(
+    //         @PageableDefault(page = 0, size = 8, sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
+    //     LOGGER.info("Find all addresses with pagination");
+    //     Page<MangaBaseProjection> mangas = mangaService.findAllByPage(pageable);
+    //     LOGGER.info("Found {} addresses", mangas.getTotalElements());
+    //     return new ResponseEntity<>(mangas, HttpStatus.OK);
+    // }
 
     @Operation(summary = "Get one manga with her id")
     @GetMapping("manga/{id}")
-    public ResponseEntity<MangaDto> getMangaById(@PathVariable Integer id) {
+    public ResponseEntity<MangaProjection> getMangaById(@PathVariable Integer id) {
         LOGGER.info("Find manga by id");
-        return ResponseEntity.ok(mangaService.findMangaDtoById(id));
+        return ResponseEntity.ok(mangaService.findMangaById(id));
     }
 
  
@@ -140,6 +143,7 @@ public class PublicController {
         LOGGER.info("Find author with id {}", id);
       return ResponseEntity.ok(authorService.getAuthorById(id));
     }
+
 
     @Operation(summary = "Get author with mangas")
     @ApiResponses(value = {
@@ -190,13 +194,13 @@ public class PublicController {
      // All public requests for GenderUser
 
    // @GetMapping("categories")
-   @GetMapping("genderUser")
-   public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
-       LOGGER.info("Get GenderUserDto");
-       List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
-       LOGGER.info("Found {} genres ", genders.size());
-       return new ResponseEntity<>(genders, HttpStatus.OK);
-   }
+//    @GetMapping("genderUser")
+//    public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
+//        LOGGER.info("Get GenderUserDto");
+//        List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
+//        LOGGER.info("Found {} genres ", genders.size());
+//        return new ResponseEntity<>(genders, HttpStatus.OK);
+//    }
 
 
     // All public requests for Categories
@@ -212,7 +216,7 @@ public class PublicController {
     ) @ParameterObject Pageable pageable)
     {
         LOGGER.info("Find all Categories with pagination");
-        Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
+        Page<CategoryProjection> categories = categoryService.findAllCategoriesByPage(pageable);
         LOGGER.info("Found {} categories", categories.getTotalElements());
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }

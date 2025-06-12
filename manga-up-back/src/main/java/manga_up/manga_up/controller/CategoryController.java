@@ -4,15 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dao.CategoryDao;
-import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
 import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
-import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -63,9 +60,10 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
         LOGGER.info("Deleting address by id");
         categoryService.deleteCategoryById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")

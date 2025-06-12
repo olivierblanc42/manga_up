@@ -3,9 +3,7 @@ package manga_up.manga_up.dto.manga;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.appUser.UserFavoriteDto;
-import manga_up.manga_up.dto.author.AuthorLigthDto;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
-import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 
 import java.io.Serializable;
@@ -24,7 +22,7 @@ public class MangaDto implements Serializable {
     @Size(max = 255)
     private final String subtitle;
     private final Instant releaseDate;
-    @Size(max = 50)
+    @Size(max = 1000)
     private final String summary;
     private final BigDecimal priceHt;
     private final BigDecimal price;
@@ -32,14 +30,14 @@ public class MangaDto implements Serializable {
     private final Boolean active;
     @NotNull
     private final CategoryLittleDto idCategories;
-    private final Set<GenreLightDto> genres;
-    private final Set<AuthorLigthDto> authors;
+    private final Set<Integer> genres;
+    private final Set<Integer> authors;
     @NotNull(message = "A manga must have at least one image.")
     @Size(min = 1, message = "A manga must contain at least one image.")
     private final Set<PictureLightDto> pictures;
     private final Set<UserFavoriteDto> usersFavorites;
 
-    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt,BigDecimal price, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<GenreLightDto> genres, Set<AuthorLigthDto> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
+    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt,BigDecimal price, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<Integer> genres, Set<Integer> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
         this.title = title;
         this.subtitle = subtitle;
         this.releaseDate = releaseDate;
@@ -91,11 +89,11 @@ public class MangaDto implements Serializable {
         return idCategories;
     }
 
-    public Set<GenreLightDto> getGenres() {
+    public Set<Integer> getGenres() {
         return genres;
     }
 
-    public Set<AuthorLigthDto> getAuthors() {
+    public Set<Integer> getAuthors() {
         return authors;
     }
 

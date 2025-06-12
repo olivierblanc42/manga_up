@@ -1,7 +1,6 @@
 package manga_up.manga_up.dao;
 
 import manga_up.manga_up.model.AppUser;
-import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.model.UserAddress;
 import org.junit.jupiter.api.Test;

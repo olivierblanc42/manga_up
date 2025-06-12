@@ -14,6 +14,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Genre} entities.
+ * 
+ */
 @Repository
 public interface GenreDao extends JpaRepository<Genre, Integer> {
     @Query("SELECT g FROM Genre g")
