@@ -202,7 +202,29 @@ MangaProjectionOne findRandomOneManga();
     // Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer genreId, Pageable pageable);
 
 
-
+    @Query(value = """
+        SELECT
+            m.Id_mangas AS id,
+            m.title AS title,
+            p.Id_picture AS pictureId,
+            p.url AS pictureUrl,
+            GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
+        FROM manga m
+        JOIN picture p ON m.Id_mangas = p.Id_mangas
+        JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+        JOIN author a ON a.id_authors = ma.id_authors
+        WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+        GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
+        ORDER BY m.title ASC
+        """, countQuery = """
+        SELECT COUNT(DISTINCT m.Id_mangas)
+        FROM manga m
+        JOIN picture p ON m.Id_mangas = p.Id_mangas
+        JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+        JOIN author a ON a.id_authors = ma.id_authors
+        WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+        """, nativeQuery = true)
+    Page<MangaBaseProjection> findByTitleWithGenres(@Param("letter") String letter, Pageable pageable);
 
     @Query(value = """
             SELECT
