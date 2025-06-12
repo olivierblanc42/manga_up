@@ -123,7 +123,7 @@ class GenreUserServiceTest {
       genreUserService.deleteGenreUserById(1);
   });
 
-           assertEquals("The Gender user is linked to a user it cannot be deleted", exception.getMessage());
+           assertEquals("The Gender user is linked to a user and cannot be deleted", exception.getMessage());
            verify(genderUserDao, never()).delete(any());
 
     }
@@ -175,14 +175,14 @@ void shouldThrowExceptionWhenSaveErreur() {
     genderUserEntity.setLabel(genderUserDto.getLabel());
 
     when(genderUserMapper.toEntity(genderUserDto)).thenReturn(genderUserEntity);
-    when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving author"));
+    when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving GenderUser"));
 
     // Act + Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
         genreUserService.saveGenreUser(genderUserDto);
     });
 
-    assertEquals("Error saving genre user", exception.getMessage());
+    assertEquals("Error saving GenderUser", exception.getMessage());
 
     // Verify
     verify(genderUserMapper).toEntity(genderUserDto);
