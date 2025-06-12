@@ -58,11 +58,15 @@ public class PublicController {
 
 // All public requests for manga
 
+
+
+
+
         @Operation(summary ="Get Random Manga")
     @GetMapping("/one")
-    public ResponseEntity<List<MangaDtoOne>> getRandomManga(){
+    public ResponseEntity<MangaDtoOne> getRandomManga(){
        LOGGER.info("Get  Manga");
-        List<MangaDtoOne> mangas = mangaService.getRandomManga();
+       MangaDtoOne mangas = mangaService.getRandomManga();
        return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
