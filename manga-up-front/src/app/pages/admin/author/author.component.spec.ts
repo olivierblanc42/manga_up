@@ -29,15 +29,15 @@ describe('AuthorComponent', () => {
           mangasWithImages: {
             content: [
               {
-                id: 1,
+                id_mangas: 1,
                 title: "Naruto - Manga",
-                pictureUrl: "https://example.com/naruto.jpg",
+                picture: "https://example.com/naruto.jpg",
                 pictureId: "1",
               },
               {
-                id: 2,
+                id_mangas: 2,
                 title: "Bleach - Manga",
-                pictureUrl: "https://example.com/naruto.jpg",
+                picture: "https://example.com/naruto.jpg",
                 pictureId: "2",
               }
             ],
