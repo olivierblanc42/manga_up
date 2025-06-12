@@ -8,6 +8,7 @@ import manga_up.manga_up.dto.author.AuthorDtoRandom;
 import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.AuthorMapper;
+import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dao.MangaDao;
@@ -34,11 +35,14 @@ public class AuthorService {
     private final AuthorDao authorDao;
     private final AuthorMapper authorMapper;
     private final MangaDao mangaDao;
+    private final MangaMapper mangaMapper;
 
-    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper, MangaDao mangaDao) {
+    public AuthorService(AuthorDao authorDao, AuthorMapper authorMapper, MangaDao mangaDao, MangaMapper mangaMapper) {
         this.authorDao = authorDao;
         this.authorMapper = authorMapper;
         this.mangaDao = mangaDao;
+        this.mangaMapper = mangaMapper;
+
     }
 
     /**
@@ -140,7 +144,7 @@ public class AuthorService {
         AuthorProjection author = authorDao.findAuthorProjectionById(authorId)
                 .orElseThrow(() -> new RuntimeException("Author not found"));
 
-        Page<MangaDtoRandom> mangas = findMangasByGenre2(authorId, pageable);
+        Page<MangaDtoRandom> mangas = findMangasByAuthor(authorId, pageable);
 
         return new AuthorWithMangasResponse(author, mangas);
     }
@@ -152,38 +156,10 @@ public class AuthorService {
      * @param pageable Pagination information.
      * @return A page of MangaDtoRandom objects.
      */
-    public Page<MangaDtoRandom> findMangasByGenre2(Integer genreId, Pageable pageable) {
+    public Page<MangaDtoRandom> findMangasByAuthor(Integer genreId, Pageable pageable) {
         Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByAuthor2(genreId, pageable);
-        return projections.map(this::mapToDto2);
+        return projections.map(mangaMapper::mapToDto);
     }
 
-    private MangaDtoRandom mapToDto2(MangaProjectionWithAuthor projection) {
-        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
 
-        return new MangaDtoRandom(
-                projection.getMangaId(),
-                projection.getTitle(),
-                authors,
-                projection.getPicture());
-    }
-
-    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-        if (authorsString == null || authorsString.isEmpty()) {
-            return Set.of();
-        }
-
-        return Arrays.stream(authorsString.split("\\|"))
-                .map(authorData -> {
-                    String[] parts = authorData.split(":");
-                    if (parts.length < 3) {
-                        throw new IllegalArgumentException("Malformed author: " + authorData);
-                    }
-                    return new AuthorDtoRandom(
-                            Integer.parseInt(parts[0]),
-                            parts[2], 
-                            parts[1] 
-                    );
-                })
-                .collect(Collectors.toSet());
-    }
 }
