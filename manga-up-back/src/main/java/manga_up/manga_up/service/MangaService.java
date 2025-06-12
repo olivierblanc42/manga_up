@@ -13,6 +13,7 @@ import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -184,7 +186,7 @@ public class MangaService {
     public List<MangaDtoRandom> getFourMangaRandom() {
         List<MangaProjectionWithAuthor> projections = mangaDao.findFourMangasRandom();
         return projections.stream()
-                .map(this::mapToDto)
+                .map(mangaMapper::mapToDto)
                 .collect(Collectors.toList());
 
     }
@@ -197,102 +199,26 @@ public class MangaService {
     public List<MangaDtoRandom> getReleaseDateRaw() {
         List<MangaProjectionWithAuthor> projections = mangaDao.findMangasReleaseDateRaw();
         return projections.stream()
-                .map(this::mapToDto)
+                .map(mangaMapper::mapToDto)
                 .collect(Collectors.toList());
-    }
-
-    MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
-        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
-
-        return new MangaDtoRandom(
-                projection.getMangaId(),
-                projection.getTitle(),
-                authors,
-                projection.getPicture());
-    }
-
-    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-        if (authorsString == null || authorsString.isEmpty()) {
-            return Set.of();
-        }
-
-        return Arrays.stream(authorsString.split("\\|"))
-                .map(authorData -> {
-                    String[] parts = authorData.split(":");
-                    if (parts.length < 3) {
-                        throw new IllegalArgumentException("Malformed author: " + authorData);
-                    }
-                    return new AuthorDtoRandom(
-                            Integer.parseInt(parts[0]),
-                            parts[2],
-                            parts[1]);
-                })
-                .collect(Collectors.toSet());
-    }
+    }    
 
     /**
      * Retrieves a single random manga.
      *
-     * @return a list containing one random {@link MangaDtoOne}
+     * @return a  one random {@link MangaDtoOne}
      */
-    public List<MangaDtoOne> getRandomManga() {
-        List<Object[]> rawMangas = mangaDao.findRandomOneMangas();
+    public MangaDtoOne getRandomManga() {
+        MangaProjectionOne projection = mangaDao.findRandomOneManga();
 
-        return rawMangas.stream()
-                .map(this::mapToMangasRandom)
-                .collect(Collectors.toList());
-    }
-
-    private MangaDtoOne mapToMangasRandom(Object[] row) {
-        Integer idMangas = (Integer) row[0];
-        String title = (String) row[1];
-        String subtitle = (String) row[2];
-        String summary = (String) row[3];
-        BigDecimal price = (BigDecimal) row[4];
-        String categoryString = (String) row[5];
-        String genresString = (String) row[6];
-        String authorsString = (String) row[7];
-        String picture = (String) row[8];
-
-        CategoryDto category = parseCategory(categoryString);
-        Set<GenreDto> genres = parseGenre(genresString);
-        Set<AuthorDtoRandom> authors = parseAuthors(authorsString);
-
-        return new MangaDtoOne(idMangas, title, subtitle, summary, price, category, genres, authors, picture);
-    }
-
-    private CategoryDto parseCategory(String categoryString) {
-        if (categoryString == null || categoryString.isEmpty()) {
-            return null;
+        if (projection == null) {
+            throw new NoSuchElementException("No manga found");
         }
 
-        String[] parts = categoryString.split(":");
-        if (parts.length < 4) {
-            throw new IllegalArgumentException("Malformed category: " + categoryString);
-        }
-
-        return new CategoryDto(
-                Integer.parseInt(parts[0]),
-                parts[1],
-                parts[2],
-                parts[3]);
+        return mangaMapper.mapToDto(projection);
     }
 
-    private Set<GenreDto> parseGenre(String genreString) {
-        if (genreString == null || genreString.isEmpty()) {
-            return Set.of();
-        }
 
-        return Arrays.stream(genreString.split("\\|"))
-                .map(genreData -> {
-                    String[] parts = genreData.split("@", -1);
-                    if (parts.length < 3) {
-                        throw new IllegalArgumentException("Malformed genre: " + genreData);
-                    }
-                    return new GenreDto(parts[0], parts[1], parts[2]);
-                })
-                .collect(Collectors.toSet());
-    }
 
     /**
      * Searches mangas by their title.
@@ -313,7 +239,7 @@ public class MangaService {
      */
     public Page<MangaDtoRandom> getPageMangas(Pageable pageable) {
         Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasWithMainPicturesTest(pageable);
-        return projections.map(this::mapToDto);
+        return projections.map(mangaMapper::mapToDto);
     }
 
     /**
