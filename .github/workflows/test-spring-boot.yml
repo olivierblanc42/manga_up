@@ -11,6 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    services:
+      mongo:
+        image: mongo:5.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
 
@@ -38,7 +50,7 @@ jobs:
           find . -name "settings.xml" || true
 
       - name: Afficher le contenu de ~/.m2/settings.xml
-        run: cat ~/.m2/settings.xml
+        run: cat ~/.m2/settings.xml || echo "Pas de settings.xml"
 
       - name: Afficher tous les serveurs du settings.xml
         run: grep "<server>" -A 4 ~/.m2/settings.xml || echo "Aucun serveur trouvé"
