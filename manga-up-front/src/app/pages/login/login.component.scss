@@ -136,3 +136,20 @@ input::placeholder {
         }
 
 }
+
+
+.btn-card-new {
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    p {
+        margin: 0;
+        color: black;
+
+    }
+
+    i {
+        padding-right: $padding-xs;
+    }
+}
