@@ -7,19 +7,24 @@ import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.GenderMangaMapper;
+import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.genre.GenreProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
+
+import jakarta.persistence.EntityNotFoundException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -30,6 +35,12 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +53,14 @@ class GenreServiceTest {
     private GenreService genreService;
     @Mock
     private GenderMangaMapper genderMangaMapper;
+    @Mock
+    private MangaService mangaService; 
+    @Mock
+    private MangaMapper mangaMapper;
+    @Mock
+    private MangaDao mangaDao;
+    @InjectMocks
+    private MangaService mangaServiceInjectMock;
 
     private final class TestGenreProjection implements GenreProjection {
         private Integer id;
@@ -193,10 +212,51 @@ void shouldgetRandomFourGenres(){
     List<GenreDto> result = genreService.getRandomFourGenres();
 
     assertThat(result).hasSize(4);
-
-
 }
 
+    @Test
+    void shouldReturnGenreWithMangas() {
+        int genreId = 1;
+        Pageable pageable = PageRequest.of(0, 5);
+
+        // GIVEN
+        GenreProjection genreProjection = mock(GenreProjection.class);
+        when(genreDao.findGenreProjectionById(eq(genreId))).thenReturn(Optional.of(genreProjection));
+
+        MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
 
 
+        Page<MangaProjectionWithAuthor> projectionPage = new PageImpl<>(List.of(projection1), pageable, 1);
+        when(mangaDao.findMangasByGenre2(eq(genreId), eq(pageable))).thenReturn(projectionPage);
+
+        MangaDtoRandom dto = new MangaDtoRandom(1, "Naruto", Set.of(), "http://img1");
+        when(mangaMapper.mapToDto(eq(projection1))).thenReturn(dto);
+
+        // WHEN
+        GenreWithMangasResponse response = genreService.getGenreWithMangas(genreId, pageable);
+
+        // THEN
+        assertNotNull(response);
+        assertEquals(genreProjection, response.getGenre());
+        assertEquals(1, response.getMangas().getTotalElements());
+        assertEquals("Naruto", response.getMangas().getContent().get(0).getTitle());
+
+        verify(genreDao).findGenreProjectionById(genreId);
+        verify(mangaDao).findMangasByGenre2(genreId, pageable);
+        verify(mangaMapper).mapToDto(projection1);
+    }
+
+    @Test
+    void shouldThrowWhenGenreNotFound() {
+        int genreId = 404;
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(genreDao.findGenreProjectionById(genreId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
+            () -> genreService.getGenreWithMangas(genreId, pageable));
+
+        assertEquals("Genre with id 404 not found", exception.getMessage());
+        verify(genreDao).findGenreProjectionById(genreId);
+    }
 }

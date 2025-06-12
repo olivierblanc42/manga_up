@@ -6,8 +6,11 @@ import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dao.PictureDao;
 import manga_up.manga_up.dto.author.AuthorDtoRandom;
+import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
+import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.manga.MangaDto;
+import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.mapper.MangaMapper;
@@ -21,6 +24,7 @@ import manga_up.manga_up.projection.category.CategoryLittleProjection;
 import manga_up.manga_up.projection.genre.GenreLittleProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 import manga_up.manga_up.projection.pictureProjection.PictureLittleProjection;
 
@@ -41,6 +45,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -67,13 +72,13 @@ class MangaServiceTest {
     private MangaDao mangaDao;
     @Mock
     private MangaMapper mangaMapper;
-     @Mock
+    @Mock
     private GenreDao genreDao;
-      @Mock
+    @Mock
     private PictureDao pictureDao;
-        @Mock
+    @Mock
     private CategoryDao categoryDao;
-     @Mock
+    @Mock
     private AuthorDao authorDao;
     @InjectMocks
     private MangaService mangaService;
@@ -331,7 +336,6 @@ class MangaServiceTest {
 
     }
 
-
     @Test
     void shouldAllManga() {
         int id = 1;
@@ -372,55 +376,53 @@ class MangaServiceTest {
         verify(mangaDao).findAllMangas(pageable);
     }
 
+    @Test
+    void shouldReturnMangaDtoWhenFoundById() {
+        int id = 1;
 
-@Test
-void shouldReturnMangaDtoWhenFoundById() {
-    int id = 1;
+        Manga mangaEntity = new Manga();
+        mangaEntity.setId(id);
+        mangaEntity.setTitle("One Piece");
 
-    Manga mangaEntity = new Manga();
-    mangaEntity.setId(id);
-    mangaEntity.setTitle("One Piece");
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "Subtitle example",
+                Instant.now(),
+                "Summary example",
+                BigDecimal.valueOf(9.99),
+                BigDecimal.valueOf(11.99),
+                true,
+                true,
+                new CategoryLittleDto(1),
+                Set.of(1, 2),
+                Set.of(1),
+                Set.of(),
+                Set.of());
 
-    MangaDto mangaDto = new MangaDto(
-        "One Piece",
-        "Subtitle example",
-        Instant.now(),
-        "Summary example",
-        BigDecimal.valueOf(9.99),
-        BigDecimal.valueOf(11.99),
-        true,
-        true,
-        new CategoryLittleDto(1),
-        Set.of(1, 2),
-        Set.of(1),
-        Set.of(), 
-        Set.of()  
-    );
+        when(mangaDao.findManga2ById(id)).thenReturn(Optional.of(mangaEntity));
+        when(mangaMapper.mangaToMangaDto(mangaEntity)).thenReturn(mangaDto);
 
-    when(mangaDao.findManga2ById(id)).thenReturn(Optional.of(mangaEntity));
-    when(mangaMapper.mangaToMangaDto(mangaEntity)).thenReturn(mangaDto);
+        MangaDto result = mangaService.findMangaDtoById(id);
 
-    MangaDto result = mangaService.findMangaDtoById(id);
+        assertThat(result).isNotNull();
+        assertThat(result.getTitle()).isEqualTo("One Piece");
+        verify(mangaDao).findManga2ById(id);
+        verify(mangaMapper).mangaToMangaDto(mangaEntity);
+    }
 
-    assertThat(result).isNotNull();
-    assertThat(result.getTitle()).isEqualTo("One Piece");
-    verify(mangaDao).findManga2ById(id);
-    verify(mangaMapper).mangaToMangaDto(mangaEntity);
-}
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
+        int id = 999;
 
-@Test
-void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
-    int id = 999;
+        when(mangaDao.findManga2ById(id)).thenReturn(Optional.empty());
 
-    when(mangaDao.findManga2ById(id)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> mangaService.findMangaDtoById(id))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Manga with ID " + id + " not found");
 
-    assertThatThrownBy(() -> mangaService.findMangaDtoById(id))
-            .isInstanceOf(EntityNotFoundException.class)
-            .hasMessageContaining("Manga with ID " + id + " not found");
-
-    verify(mangaDao).findManga2ById(id);
-    verifyNoMoreInteractions(mangaMapper);
-}
+        verify(mangaDao).findManga2ById(id);
+        verifyNoMoreInteractions(mangaMapper);
+    }
 
     @Test
     void shouldMangaById() {
@@ -474,9 +476,7 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
                 .hasMessageContaining("Category with id " + id + " not found");
 
         verify(mangaDao).findMangaById(id);
-    }    
-  
-
+    }
 
     @Test
     void deleteManga_existingManga_deletesCorrectly() {
@@ -490,9 +490,6 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
         Genre genre2 = new Genre();
         genre2.setMangas(new HashSet<>(Set.of(manga)));
         manga.setGenres(new HashSet<>(Set.of(genre1, genre2)));
-        
-
-
 
         Author author = new Author();
         author.setMangas(new HashSet<>(Set.of(manga)));
@@ -500,9 +497,8 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
         manga.setAuthors(new HashSet<>(Set.of(author)));
 
         when(mangaDao.findMangaId(1)).thenReturn(Optional.of(manga));
-        
-        mangaService.deleteManga(1);
 
+        mangaService.deleteManga(1);
 
         assertFalse(genre1.getMangas().contains(manga));
         assertFalse(genre2.getMangas().contains(manga));
@@ -543,7 +539,7 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
                 Set.of(genreId),
                 Set.of(authorId),
                 Set.of(mainPicture),
-                Set.of()  );
+                Set.of());
 
         // Simule que authorDao.findById renvoie Optional.empty pour authorId
         when(authorDao.findById(authorId)).thenReturn(Optional.empty());
@@ -581,8 +577,6 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
                 Set.of(mainPicture),
                 Set.of());
 
-
-
         when(authorDao.findById(authorId)).thenReturn(Optional.of(new Author()));
 
         // Simule que genre.findById renvoie Optional.empty pour authorId
@@ -598,155 +592,292 @@ void shouldThrowEntityNotFoundExceptionWhenMangaNotFound() {
         verify(genreDao).findById(genreId);
     }
 
+    @Test
+    void save_shouldPersistMangaWithValidData() {
+        Integer authorId = 1;
+        Integer genreId = 1;
+        CategoryLittleDto category = new CategoryLittleDto(1);
 
+        PictureLightDto mainPicture = new PictureLightDto(null, "https://example.com/image1.jpg", true);
 
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "L’aventure commence",
+                Instant.parse("1999-10-20T00:00:00Z"),
+                "Un jeune garçon veut devenir roi des pirates.",
+                new BigDecimal("10.00"),
+                null,
+                true,
+                true,
+                category,
+                Set.of(genreId),
+                Set.of(authorId),
+                Set.of(mainPicture),
+                Set.of());
 
-@Test
-void save_shouldPersistMangaWithValidData() {
-    Integer authorId = 1;
-    Integer genreId = 1;
-    CategoryLittleDto category = new CategoryLittleDto(1);
+        Author author = new Author();
+        author.setId(authorId);
+        when(authorDao.findById(authorId)).thenReturn(Optional.of(author));
 
-    PictureLightDto mainPicture = new PictureLightDto(null, "https://example.com/image1.jpg", true);
+        Genre genre = new Genre();
+        genre.setId(genreId);
+        when(genreDao.findById(genreId)).thenReturn(Optional.of(genre));
 
-    MangaDto mangaDto = new MangaDto(
-        "One Piece",
-        "L’aventure commence",
-        Instant.parse("1999-10-20T00:00:00Z"),
-        "Un jeune garçon veut devenir roi des pirates.",
-        new BigDecimal("10.00"),
-        null,
-        true,
-        true,
-        category,
-        Set.of(genreId),
-        Set.of(authorId),
-        Set.of(mainPicture),
-        Set.of()
-    );
+        // Mock du mapper : MangaDto -> Manga
+        Manga mangaEntity = new Manga();
+        mangaEntity.setAuthors(Set.of(author));
+        mangaEntity.setGenres(Set.of(genre));
+        mangaEntity.setPictures(new HashSet<>());
+        mangaEntity.setPriceHt(mangaDto.getPriceHt());
+        mangaEntity.setTitle(mangaDto.getTitle());
+        when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
 
-    Author author = new Author();
-    author.setId(authorId);
-    when(authorDao.findById(authorId)).thenReturn(Optional.of(author));
+        // Mock du mapper inverse : Manga -> MangaDto
+        when(mangaMapper.mangaToMangaDto(any(Manga.class))).thenReturn(mangaDto);
 
-    Genre genre = new Genre();
-    genre.setId(genreId);
-    when(genreDao.findById(genreId)).thenReturn(Optional.of(genre));
+        // Mock des saves DAO
+        when(mangaDao.save(any(Manga.class))).thenAnswer(invocation -> {
+            Manga m = invocation.getArgument(0);
+            m.setId(123);
+            return m;
+        });
 
-    // Mock du mapper : MangaDto -> Manga
-    Manga mangaEntity = new Manga();
-    mangaEntity.setAuthors(Set.of(author));
-    mangaEntity.setGenres(Set.of(genre));
-    mangaEntity.setPictures(new HashSet<>());
-    mangaEntity.setPriceHt(mangaDto.getPriceHt());
-    mangaEntity.setTitle(mangaDto.getTitle());
-    when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
+        when(pictureDao.save(any(Picture.class))).thenAnswer(invocation -> {
+            Picture p = invocation.getArgument(0);
+            p.setId(456);
+            return p;
+        });
 
-    // Mock du mapper inverse : Manga -> MangaDto
-    when(mangaMapper.mangaToMangaDto(any(Manga.class))).thenReturn(mangaDto);
+        // Appel de la méthode testée
+        MangaDto savedMangaDto = mangaService.save(mangaDto);
 
-    // Mock des saves DAO
-    when(mangaDao.save(any(Manga.class))).thenAnswer(invocation -> {
-        Manga m = invocation.getArgument(0);
-        m.setId(123);
-        return m;
-    });
+        // Assertions
+        assertNotNull(savedMangaDto);
+        assertEquals("One Piece", savedMangaDto.getTitle());
+        assertFalse(savedMangaDto.getPictures().isEmpty());
+        assertTrue(savedMangaDto.getPictures().stream().anyMatch(PictureLightDto::getIsMain));
 
-    when(pictureDao.save(any(Picture.class))).thenAnswer(invocation -> {
-        Picture p = invocation.getArgument(0);
-        p.setId(456);
-        return p;
-    });
+        // Vérifications des interactions
+        verify(authorDao).findById(authorId);
+        verify(genreDao).findById(genreId);
+        verify(mangaMapper).mangaToEntity(mangaDto);
+        verify(mangaMapper).mangaToMangaDto(any(Manga.class));
+        verify(mangaDao, atLeastOnce()).save(any(Manga.class));
+        verify(pictureDao).save(any(Picture.class));
+    }
 
-    // Appel de la méthode testée
-    MangaDto savedMangaDto = mangaService.save(mangaDto);
+    @Test
+    void save_shouldThrowException_whenPicturesIsNull() {
+        Integer authorId = 1;
+        Integer genreId = 1;
+        CategoryLittleDto category = new CategoryLittleDto(1);
 
-    // Assertions
-    assertNotNull(savedMangaDto);
-    assertEquals("One Piece", savedMangaDto.getTitle());
-    assertFalse(savedMangaDto.getPictures().isEmpty());
-    assertTrue(savedMangaDto.getPictures().stream().anyMatch(PictureLightDto::getIsMain));
+        // Crée un MangaDto avec pictures = null pour déclencher l'exception
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "L’aventure commence",
+                Instant.parse("1999-10-20T00:00:00Z"),
+                "Un jeune garçon veut devenir roi des pirates.",
+                new BigDecimal("10.00"),
+                null,
+                true,
+                true,
+                category,
+                Set.of(genreId),
+                Set.of(authorId),
+                null,
+                Set.of());
 
-    // Vérifications des interactions
-    verify(authorDao).findById(authorId);
-    verify(genreDao).findById(genreId);
-    verify(mangaMapper).mangaToEntity(mangaDto);
-    verify(mangaMapper).mangaToMangaDto(any(Manga.class));
-    verify(mangaDao, atLeastOnce()).save(any(Manga.class));
-    verify(pictureDao).save(any(Picture.class));
-}
+        // Mock des retours des DAO pour les auteurs et genres
+        Author mockAuthor = mock(Author.class);
+        when(authorDao.findById(authorId)).thenReturn(Optional.of(mockAuthor));
 
-@Test
-void shouldReturnRandomMangaDtoList() {
-    // Arrange
-    MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
-    when(projection1.getMangaId()).thenReturn(1);
-    when(projection1.getTitle()).thenReturn("Naruto");
-    when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
-    when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
+        Genre mockGenre = mock(Genre.class);
+        when(genreDao.findById(genreId)).thenReturn(Optional.of(mockGenre));
 
-    MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
-    when(projection2.getMangaId()).thenReturn(2);
-    when(projection2.getTitle()).thenReturn("Bleach");
-    when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
-    when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
+        // Teste que l'exception est bien levée à cause des images manquantes
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            mangaService.save(mangaDto);
+        });
 
-    when(mangaDao.findFourMangasRandom()).thenReturn(List.of(projection1, projection2));
+        assertEquals("A manga must contain at least one image.", thrown.getMessage());
+    }
 
-    // Act
-    List<MangaDtoRandom> result = mangaService.getFourMangaRandom();
+    @Test
+    void save_shouldThrowException_whenPicturesIsEmpty() {
+        Integer authorId = 1;
+        Integer genreId = 1;
+        CategoryLittleDto category = new CategoryLittleDto(1);
+        Set<PictureLightDto> pictureLightDtos = new HashSet<>();
 
-    // Assert
-    assertThat(result).hasSize(2);
-    assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
-    assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+        // Crée un MangaDto avec pictures = null pour déclencher l'exception
+        MangaDto mangaDto = new MangaDto(
+                "One Piece",
+                "L’aventure commence",
+                Instant.parse("1999-10-20T00:00:00Z"),
+                "Un jeune garçon veut devenir roi des pirates.",
+                new BigDecimal("10.00"),
+                null,
+                true,
+                true,
+                category,
+                Set.of(genreId),
+                Set.of(authorId),
+                pictureLightDtos,
+                Set.of());
 
-    verify(mangaDao).findFourMangasRandom();
-}
+        // Mock des retours des DAO pour les auteurs et genres
+        Author mockAuthor = mock(Author.class);
+        when(authorDao.findById(authorId)).thenReturn(Optional.of(mockAuthor));
 
-@Test
-void shouldReturnGetReleaseDateRaw() {
-    // Arrange
-    MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
-    when(projection1.getMangaId()).thenReturn(1);
-    when(projection1.getTitle()).thenReturn("Naruto");
-    when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
-    when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
+        Genre mockGenre = mock(Genre.class);
+        when(genreDao.findById(genreId)).thenReturn(Optional.of(mockGenre));
 
-    MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
-    when(projection2.getMangaId()).thenReturn(2);
-    when(projection2.getTitle()).thenReturn("Bleach");
-    when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
-    when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
+        // Teste que l'exception est bien levée à cause des images manquantes
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            mangaService.save(mangaDto);
+        });
 
-    when(mangaDao.findMangasReleaseDateRaw()).thenReturn(List.of(projection1, projection2));
+        assertEquals("A manga must contain at least one image.", thrown.getMessage());
+    }
 
-    // Act
-    List<MangaDtoRandom> result = mangaService.getReleaseDateRaw();
+    @Test
+    void shouldReturnRandomMangaDtoList() {
+        // Arrange
+        MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
+        when(projection1.getMangaId()).thenReturn(1);
+        when(projection1.getTitle()).thenReturn("Naruto");
+        when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+        when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
 
-    // Assert
-    assertThat(result).hasSize(2);
-    assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
-    assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+        MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
+        when(projection2.getMangaId()).thenReturn(2);
+        when(projection2.getTitle()).thenReturn("Bleach");
+        when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
+        when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
 
-    verify(mangaDao).findMangasReleaseDateRaw();
-}
+        AuthorDtoRandom authorDtoRandom1 = new AuthorDtoRandom(1, "Masashi", "Kishimoto");
+        AuthorDtoRandom authorDtoRandom2 = new AuthorDtoRandom(1, "Tite", "Kubo");
 
+        Set<AuthorDtoRandom> dtoRandoms1 = new HashSet<>();
+        dtoRandoms1.add(authorDtoRandom1);
+        Set<AuthorDtoRandom> dtoRandoms2 = new HashSet<>();
+        dtoRandoms2.add(authorDtoRandom2);
 
-@Test
-void ShouldMapToDto() {
-    MangaProjectionWithAuthor projection = mock(MangaProjectionWithAuthor.class);
-    when(projection.getMangaId()).thenReturn(1);
-    when(projection.getTitle()).thenReturn("Naruto");
-    when(projection.getAuthors()).thenReturn("1:Masashi:Kishimoto");
-    when(projection.getPicture()).thenReturn("https://example.com/naruto.jpg");
+        List<MangaProjectionWithAuthor> projections = Arrays.asList(projection1, projection2);
+        MangaDtoRandom dto1 = new MangaDtoRandom(1, "Naruto", dtoRandoms1, "https://example.com/naruto.jpg");
+        MangaDtoRandom dto2 = new MangaDtoRandom(2, "Bleach", dtoRandoms2, "https://example.com/bleach.jpg");
 
-    MangaDtoRandom dto = mangaService.mapToDto(projection);
+        when(mangaDao.findFourMangasRandom()).thenReturn(projections);
+        when(mangaMapper.mapToDto(projection1)).thenReturn(dto1);
+        when(mangaMapper.mapToDto(projection2)).thenReturn(dto2);
 
-    assertThat(dto.getId_mangas()).isEqualTo(1);
-    assertThat(dto.getTitle()).isEqualTo("Naruto");
-    assertThat(dto.getAuthors()).isNotEmpty();
-    assertThat(dto.getPicture()).isEqualTo("https://example.com/naruto.jpg");
-}
+        // Act
+        List<MangaDtoRandom> result = mangaService.getFourMangaRandom();
+
+        // Assert
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
+        assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+        assertThat(result.get(0).getAuthors()).containsExactly(authorDtoRandom1);
+        assertThat(result.get(1).getAuthors()).containsExactly(authorDtoRandom2);
+
+        verify(mangaDao).findFourMangasRandom();
+    }
+
+    @Test
+    void shouldReturnGetReleaseDateRaw() {
+        // Arrange
+        MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
+        when(projection1.getMangaId()).thenReturn(1);
+        when(projection1.getTitle()).thenReturn("Naruto");
+        when(projection1.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+        when(projection1.getPicture()).thenReturn("https://example.com/naruto.jpg");
+
+        MangaProjectionWithAuthor projection2 = mock(MangaProjectionWithAuthor.class);
+        when(projection2.getMangaId()).thenReturn(2);
+        when(projection2.getTitle()).thenReturn("Bleach");
+        when(projection2.getAuthors()).thenReturn("2:Tite:Kubo");
+        when(projection2.getPicture()).thenReturn("https://example.com/bleach.jpg");
+
+        AuthorDtoRandom authorDtoRandom1 = new AuthorDtoRandom(1, "Masashi", "Kishimoto");
+        AuthorDtoRandom authorDtoRandom2 = new AuthorDtoRandom(1, "Tite", "Kubo");
+
+        Set<AuthorDtoRandom> dtoRandoms1 = new HashSet<>();
+        dtoRandoms1.add(authorDtoRandom1);
+        Set<AuthorDtoRandom> dtoRandoms2 = new HashSet<>();
+        dtoRandoms2.add(authorDtoRandom2);
+
+        List<MangaProjectionWithAuthor> projections = Arrays.asList(projection1, projection2);
+        MangaDtoRandom dto1 = new MangaDtoRandom(1, "Naruto", dtoRandoms1, "https://example.com/naruto.jpg");
+        MangaDtoRandom dto2 = new MangaDtoRandom(2, "Bleach", dtoRandoms2, "https://example.com/bleach.jpg");
+
+        when(mangaDao.findMangasReleaseDateRaw()).thenReturn(projections);
+        when(mangaMapper.mapToDto(projection1)).thenReturn(dto1);
+        when(mangaMapper.mapToDto(projection2)).thenReturn(dto2);
+
+        // Act
+        List<MangaDtoRandom> result = mangaService.getReleaseDateRaw();
+
+        // Assert
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getTitle()).isEqualTo("Naruto");
+        assertThat(result.get(1).getTitle()).isEqualTo("Bleach");
+        assertThat(result.get(0).getAuthors()).containsExactly(authorDtoRandom1);
+        assertThat(result.get(1).getAuthors()).containsExactly(authorDtoRandom2);
+
+        verify(mangaDao).findMangasReleaseDateRaw();
+    }
+
+    @Test
+    void ShouldMapToDto() {
+        MangaProjectionOne projection = mock(MangaProjectionOne.class);
+        when(projection.getId_mangas()).thenReturn(1);
+        when(projection.getTitle()).thenReturn("Naruto");
+        when(projection.getAuthors()).thenReturn("1:Masashi:Kishimoto");
+
+        CategoryDto categoryDto = new CategoryDto(1, "Shonen", "Manga destiné aux jeunes garçons",
+                "http://example.com/shonen.jpg");
+        GenreDto genreDto1 = new GenreDto("Action", "action", "Manga avec beaucoup d'action");
+        GenreDto genreDto2 = new GenreDto("Aventure", "adventure", "Manga d'aventure");
+
+        Set<GenreDto> genreDtos = new HashSet<>();
+        genreDtos.add(genreDto1);
+        genreDtos.add(genreDto2);
+
+        AuthorDtoRandom authorDtoRandom1 = new AuthorDtoRandom(1, "Eiichiro", "Oda");
+        AuthorDtoRandom authorDtoRandom2 = new AuthorDtoRandom(2, "John", "Doe");
+        Set<AuthorDtoRandom> authorDtos = new HashSet<>();
+        authorDtos.add(authorDtoRandom1);
+        authorDtos.add(authorDtoRandom2);
+
+        MangaDtoOne dto = new MangaDtoOne(
+                123,
+                "One Piece",
+                "Le début de l'aventure",
+                "Un manga d'aventure épique.",
+                new BigDecimal("9.99"),
+                categoryDto,
+                genreDtos,
+                authorDtos,
+                "http://example.com/onepiece.jpg");
+        when(mangaDao.findRandomOneManga()).thenReturn(projection);
+        when(mangaMapper.mapToDto(projection)).thenReturn(dto);
+        MangaDtoOne result = mangaService.getRandomManga();
+        assertNotNull(result);
+        assertEquals(123, result.getId());
+        assertEquals("One Piece", result.getTitle());
+        assertEquals("Le début de l'aventure", result.getSubtitle());
+        assertEquals("Un manga d'aventure épique.", result.getSummary());
+        assertEquals(new BigDecimal("9.99"), result.getPrice());
+        assertEquals(categoryDto, result.getIdCategories());
+        assertEquals(genreDtos, result.getGenres());
+        assertEquals(authorDtos, result.getAuthors());
+        assertEquals("http://example.com/onepiece.jpg", result.getPicture());
+
+        // Verify interactions (optional)
+        verify(mangaDao).findRandomOneManga();
+        verify(mangaMapper).mapToDto(projection);
+    }
 
 }

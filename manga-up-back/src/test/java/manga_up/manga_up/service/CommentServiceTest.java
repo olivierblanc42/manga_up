@@ -1,67 +1,64 @@
 package manga_up.manga_up.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
+import manga_up.manga_up.dao.CommentDao;
+import manga_up.manga_up.model.Author;
+import manga_up.manga_up.model.Comment;
+import manga_up.manga_up.projection.comment.CommentProjection;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class CommentServiceTest {
-// @Mock
-//     private CommentDao commentDao;
-// @Mock
-//     private CommentMapper commentMapper;
-// @InjectMocks
-//     private CommentService commentService;
 
-//    private final class TestCommentProjection implements CommentProjection{
-//        private final    Integer id;
-//        private final    Integer rating;
-//        private final   String comment;
-//        private final   AppUserLittleProjection idUsers;
-//        private final   MangaLittleProjection idMangas;
+    @Mock
+    private CommentDao commentDao;
 
-//        private TestCommentProjection(Integer id, Integer rating, String comment, AppUserLittleProjection idUsers, MangaLittleProjection idMangas) {
-//            this.id = id;
-//            this.rating = rating;
-//            this.comment = comment;
-//            this.idUsers = idUsers;
-//            this.idMangas = idMangas;
-//        }
-//        @Override
-//        public Integer getId() {
-//            return id;
-//        }
+    @InjectMocks
+    private CommentService commentService;
 
-//        @Override
-//        public Integer getRating() {
-//            return rating;
-//        }
+    @Test
+    void getAllComments_shouldReturnPage() {
+        Pageable pageable = PageRequest.of(0, 5);
 
-//        @Override
-//        public String getComment() {
-//            return comment;
-//        }
+        CommentProjection mockComment = mock(CommentProjection.class);
 
-//        @Override
-//        public AppUserLittleProjection getIdUsers() {
-//            return idUsers;
-//        }
+        List<CommentProjection> comments = List.of(mockComment);
 
-//        @Override
-//        public MangaLittleProjection getIdMangas() {
-//            return idMangas;
-//        }
-//    }
+        Page<CommentProjection> page = new PageImpl<>(comments, pageable, comments.size());
 
-//     @Test
-//     void shouldReturnComment() {
-//         Pageable pageable = PageRequest.of(0, 5);
+        when(commentDao.findAllByPage(pageable)).thenReturn(page);
+
+        Page<CommentProjection> result = commentService.getAllComments(pageable);
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+
+        verify(commentDao).findAllByPage(pageable);
+    }
 
 
-//     }
+
 
 }

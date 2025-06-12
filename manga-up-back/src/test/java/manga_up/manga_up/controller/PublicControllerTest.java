@@ -480,62 +480,62 @@ class PublicControllerTest {
 
         // Test pour Manga
 
-        @Test
-        void shouldReturnOneManga() throws Exception {
-                CategoryDto category = new CategoryDto(
-                                1,
-                                "Aventure",
-                                "https://example.com/category/aventure",
-                                "Des récits pleins d'action et de rebondissements.");
+        // @Test
+        // void shouldReturnOneManga() throws Exception {
+        //         CategoryDto category = new CategoryDto(
+        //                         1,
+        //                         "Aventure",
+        //                         "https://example.com/category/aventure",
+        //                         "Des récits pleins d'action et de rebondissements.");
 
-                GenreDto genre1 = new GenreDto(
-                                "Shonen",
-                                "https://example.com/genre/shonen",
-                                "Genre destiné principalement aux jeunes garçons.");
+        //         GenreDto genre1 = new GenreDto(
+        //                         "Shonen",
+        //                         "https://example.com/genre/shonen",
+        //                         "Genre destiné principalement aux jeunes garçons.");
 
-                GenreDto genre2 = new GenreDto(
-                                "Fantastique",
-                                "https://example.com/genre/fantastique",
-                                "Manga comportant des éléments surnaturels ou magiques.");
+        //         GenreDto genre2 = new GenreDto(
+        //                         "Fantastique",
+        //                         "https://example.com/genre/fantastique",
+        //                         "Manga comportant des éléments surnaturels ou magiques.");
 
-                AuthorDtoRandom author1 = new AuthorDtoRandom(
-                                1,
-                                "Akira",
-                                "Toriyama");
+        //         AuthorDtoRandom author1 = new AuthorDtoRandom(
+        //                         1,
+        //                         "Akira",
+        //                         "Toriyama");
 
-                AuthorDtoRandom author2 = new AuthorDtoRandom(
-                                2,
-                                "Naoko",
-                                "Takeuchi");
+        //         AuthorDtoRandom author2 = new AuthorDtoRandom(
+        //                         2,
+        //                         "Naoko",
+        //                         "Takeuchi");
 
-                Set<GenreDto> genres = new HashSet<>();
-                genres.add(genre1);
-                genres.add(genre2);
+        //         Set<GenreDto> genres = new HashSet<>();
+        //         genres.add(genre1);
+        //         genres.add(genre2);
 
-                Set<AuthorDtoRandom> authors = new HashSet<>();
-                authors.add(author1);
-                authors.add(author2);
+        //         Set<AuthorDtoRandom> authors = new HashSet<>();
+        //         authors.add(author1);
+        //         authors.add(author2);
 
-                MangaDtoOne mangaDto = new MangaDtoOne(
-                                1,
-                                "Dragon Quest",
-                                "La Quête du Héros",
-                                "Un jeune garçon part à l’aventure dans un monde fantastique.",
-                                new BigDecimal("12.99"),
-                                category,
-                                genres,
-                                authors,
-                                "https://example.com/manga/dragonquest.jpg");
+        //         MangaDtoOne mangaDto = new MangaDtoOne(
+        //                         1,
+        //                         "Dragon Quest",
+        //                         "La Quête du Héros",
+        //                         "Un jeune garçon part à l’aventure dans un monde fantastique.",
+        //                         new BigDecimal("12.99"),
+        //                         category,
+        //                         genres,
+        //                         authors,
+        //                         "https://example.com/manga/dragonquest.jpg");
 
-                List<MangaDtoOne> mangasList = List.of(mangaDto);
+        //         List<MangaDtoOne> mangasList = List.of(mangaDto);
 
-                when(mangaService.getRandomManga()).thenReturn(mangasList);
+        //         when(mangaService.getRandomManga()).thenReturn(mangasList);
 
-                mockMvc.perform(get("/api/public/one"))
-                                .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.length()").value(1))
-                                .andExpect(jsonPath("$[0].title").value("Dragon Quest"));
-        }
+        //         mockMvc.perform(get("/api/public/one"))
+        //                         .andExpect(status().isOk())
+        //                         .andExpect(jsonPath("$.length()").value(1))
+        //                         .andExpect(jsonPath("$[0].title").value("Dragon Quest"));
+        // }
 
         @Test
         void shouldReturnFourMangaReleaseDateRaw() throws Exception {

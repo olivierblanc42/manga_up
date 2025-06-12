@@ -1,10 +1,17 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.CategoryDao;
+import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
+import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.CategoryMapper;
+import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.category.CategoryProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +28,15 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,10 +44,16 @@ import static org.mockito.Mockito.verify;
 class CategoryServiceTest {
     @Mock
     private CategoryDao categoryDao;
+    @Mock
+    private MangaDao mangaDao;
     @InjectMocks
     private CategoryService categoryService;
+    @InjectMocks
+    private MangaService mangaService;
     @Mock
     private CategoryMapper categoryMapper;
+    @Mock
+    private MangaMapper mangaMapper;
 
     private static class TestCategoryProjection implements CategoryProjection {
         private final Integer id;
@@ -121,7 +140,7 @@ class CategoryServiceTest {
         CategoryDto categoryDto = new CategoryDto(
                 1,
                 "Baston",
-                 "description",
+                "description",
                 "test.com");
         Category categoryEntity = new Category();
         categoryEntity.setLabel("test");
@@ -163,7 +182,7 @@ class CategoryServiceTest {
         assertThat(result.getLabel()).isEqualTo("Baston");
         assertThat(result.getDescription()).isEqualTo("description");
     }
-    
+
     @Test
     void shouldDeleteCategory() {
         Category category = new Category();
@@ -179,4 +198,93 @@ class CategoryServiceTest {
 
     }
 
+
+
+
+@Test 
+void shouldGetCategoryWithMangas(){
+    Pageable pageable = PageRequest.of(0, 5);
+    Integer categoryId = 1;
+    CategoryProjection categoryProjection = mock(CategoryProjection.class);
+    when(categoryDao.findCategoryProjectionById(eq(categoryId))).thenReturn(Optional.of(categoryProjection));
+
+    MangaProjectionWithAuthor mockProjection = mock(MangaProjectionWithAuthor.class);
+    Page<MangaProjectionWithAuthor> projectionPage = new PageImpl<>(List.of(mockProjection), pageable, 1);
+
+     when(mangaDao.findMangasByCategory2(categoryId, pageable)).thenReturn(projectionPage);
+     MangaDtoRandom dto = new MangaDtoRandom(1, "Naruto", Set.of(), "http://img1");
+     when(mangaMapper.mapToDto(mockProjection)).thenReturn(dto);
+
+
+      CategoryWithMangaResponse response = categoryService.getCategoryWithMangas(categoryId, pageable);
+
+      assertNotNull(response);
+      assertEquals(categoryProjection, response.getCategory());
+      assertEquals(1, response.getMangas().getTotalElements());
+      assertEquals("Naruto", response.getMangas().getContent().get(0).getTitle());
+  }
+
+
+
+
+
+    @Test
+    void shoulFindMangasByCategory() {
+        Pageable pageable = PageRequest.of(0, 5);
+        Integer categoryId = 1;
+        MangaProjectionWithAuthor mockProjection = mock(MangaProjectionWithAuthor.class);
+
+
+
+
+        Page<MangaProjectionWithAuthor> projectionPage = new PageImpl<>(List.of(mockProjection), pageable, 1);
+        when(mangaDao.findMangasByCategory2(categoryId, pageable)).thenReturn(projectionPage);
+        MangaDtoRandom mockDto = mock(MangaDtoRandom.class);
+        when(mangaMapper.mapToDto(mockProjection)).thenReturn(mockDto);
+
+        Page<MangaDtoRandom> result = categoryService.findMangasByCategory(categoryId, pageable);
+        
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertSame(mockDto, result.getContent().get(0));
+
+        verify(mangaDao).findMangasByCategory2(categoryId, pageable);
+        verify(mangaMapper).mapToDto(mockProjection);
+    }
+
+    // @Test
+    // void shouldReturnGenreWithMangas() {
+    // int genreId = 1;
+    // Pageable pageable = PageRequest.of(0, 5);
+
+    // // GIVEN
+    // CategoryProjection categoryProjection = mock(CategoryProjection.class);
+    // when(genreDao.findGenreProjectionById(eq(genreId))).thenReturn(Optional.of(genreProjection));
+
+    // MangaProjectionWithAuthor projection1 =
+    // mock(MangaProjectionWithAuthor.class);
+
+    // Page<MangaProjectionWithAuthor> projectionPage = new
+    // PageImpl<>(List.of(projection1), pageable, 1);
+    // when(mangaDao.findMangasByGenre2(eq(genreId),
+    // eq(pageable))).thenReturn(projectionPage);
+
+    // MangaDtoRandom dto = new MangaDtoRandom(1, "Naruto", Set.of(),
+    // "http://img1");
+    // when(mangaMapper.mapToDto(eq(projection1))).thenReturn(dto);
+
+    // // WHEN
+    // GenreWithMangasResponse response = genreService.getGenreWithMangas(genreId,
+    // pageable);
+
+    // // THEN
+    // assertNotNull(response);
+    // assertEquals(genreProjection, response.getGenre());
+    // assertEquals(1, response.getMangas().getTotalElements());
+    // assertEquals("Naruto", response.getMangas().getContent().get(0).getTitle());
+
+    // verify(genreDao).findGenreProjectionById(genreId);
+    // verify(mangaDao).findMangasByGenre2(genreId, pageable);
+    // verify(mangaMapper).mapToDto(projection1);
+    // }
 }
