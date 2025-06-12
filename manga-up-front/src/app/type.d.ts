@@ -30,6 +30,7 @@ export type UserTest = {
     email: string;
     phoneNumber: string;
     userAddressLitle: UserAddressLitle;
+    mangas: Manga[];
 };
 
 
@@ -373,9 +374,9 @@ export type MangaLittleProjection = {
 }
 
 export type MangaWithImages = {
-    id: number;
+    id_mangas: number;
     pictureId: string;
-    pictureUrl: string;
+    picture: string;
     title: string;
 }
 
