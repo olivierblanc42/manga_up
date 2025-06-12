@@ -30,7 +30,7 @@ export class MangaService{
     ) { }
 
 
-    mangaOne = new BehaviorSubject<MangaOne[]>([])
+    mangaOne = new BehaviorSubject<MangaOne | null>(null);
     currentMangaOne = this.mangaOne.asObservable();
 
     mangaFour = new BehaviorSubject<MangaDtoRandom[]>([])
@@ -68,7 +68,7 @@ export class MangaService{
 
     async getMangaOne() {
         try {
-            const r = await lastValueFrom(this.http.get<MangaOne[]>(this.urlOne));
+            const r = await lastValueFrom(this.http.get<MangaOne>(this.urlOne));
             if (!r) return;
             this.mangaOne.next(r);
         } catch (err) {
