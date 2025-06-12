@@ -8,9 +8,11 @@
     margin-left: $gap;
     margin-right: $gap;
     margin-bottom: 15px;
-    .menu{
+
+    .menu {
         display: block;
-     }
+    }
+
     .logo {
 
         width: 162px;
@@ -39,7 +41,36 @@
 }
 
 
+.search {
+    position: relative;
 
+    .search-input {
+        border-right: none;
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+    }
+
+    .btn-magnify {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: white;
+        padding-bottom: 8px;
+        padding-top: 9px;
+        border: #767676 solid 2px;
+        border-bottom-left-radius: 0px;
+        border-top-left-radius: 0px;
+        border-left: none;
+        padding-right: 10px;
+        border-bottom-right-radius: 13px;
+        border-top-right-radius: 13px;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
 
 
 footer {
@@ -47,12 +78,14 @@ footer {
     flex-direction: column;
     background: $gradient-dark;
     color: $white ;
-a{
-    text-decoration: none;
-    color: $white;
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
+
+    a {
+        text-decoration: none;
+        color: $white;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
     >div:nth-child(1) {
         margin-bottom: 18px;
     }
@@ -151,7 +184,7 @@ a{
     margin-left: 50px;
 }
 
- 
+
 
 @media screen and (max-height: 450px) {
     .sidenav {
@@ -162,8 +195,10 @@ a{
         font-size: 18px;
     }
 }
+
 /* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {}
+
 /* Tablette en mode paysage et petits PC portables (1024px et plus) */
 @media (min-width: 1024px) {
     .first-nav {
@@ -174,9 +209,9 @@ a{
         align-items: center;
         justify-content: space-between;
 
-     .menu{
-        display: none;
-     }
+        .menu {
+            display: none;
+        }
 
         .search {
             display: none;
@@ -433,6 +468,4 @@ a{
     color: yellow !important;
     border-radius: 5px;
     padding: 10px 20px;
-  }
-
-
+}
