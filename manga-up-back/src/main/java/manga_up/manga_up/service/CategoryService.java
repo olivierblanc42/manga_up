@@ -9,6 +9,7 @@ import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.category.CategoryWithMangaResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.CategoryMapper;
+import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Category;
 import manga_up.manga_up.projection.category.CategoryProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
@@ -32,11 +33,13 @@ public class CategoryService {
     private final CategoryDao categoryDao;
     private final CategoryMapper categoryMapper;
     private final MangaDao mangaDao;
+    private final MangaMapper mangaMapper;
 
-    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper, MangaDao mangaDao) {
+    public CategoryService(CategoryDao categoryDao, CategoryMapper categoryMapper, MangaDao mangaDao, MangaMapper mangaMapper) {
         this.mangaDao = mangaDao;
         this.categoryDao = categoryDao;
         this.categoryMapper = categoryMapper;
+        this.mangaMapper = mangaMapper;
     }
 
     /**
@@ -144,35 +147,8 @@ public class CategoryService {
      */
     public Page<MangaDtoRandom> findMangasByCategory(Integer categoryId, Pageable pageable) {
         Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByCategory2(categoryId, pageable);
-        return projections.map(this::mapToDto);
+        return projections.map(mangaMapper::mapToDto);
     }
 
-    private MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
-        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
-        return new MangaDtoRandom(
-                projection.getMangaId(),
-                projection.getTitle(),
-                authors,
-                projection.getPicture());
-    }
 
-    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-        if (authorsString == null || authorsString.isEmpty()) {
-            return Set.of();
-        }
-
-        return Arrays.stream(authorsString.split("\\|"))
-                .map(authorData -> {
-                    String[] parts = authorData.split(":");
-                    if (parts.length < 3) {
-                        throw new IllegalArgumentException("Malformed author string: " + authorData);
-                    }
-                    return new AuthorDtoRandom(
-                            Integer.parseInt(parts[0]),
-                            parts[2], // lastname
-                            parts[1] // firstname
-                    );
-                })
-                .collect(Collectors.toSet());
-    }
 }
