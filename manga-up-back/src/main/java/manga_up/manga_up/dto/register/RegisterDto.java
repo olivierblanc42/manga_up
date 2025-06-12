@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.register;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;

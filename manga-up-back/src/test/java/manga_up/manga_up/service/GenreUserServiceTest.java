@@ -4,6 +4,7 @@ import manga_up.manga_up.dao.GenderUserDao;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.mapper.GenderUserMapper;
+import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
 import manga_up.manga_up.projection.genderUser.GenderUserProjection;
@@ -21,11 +22,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
