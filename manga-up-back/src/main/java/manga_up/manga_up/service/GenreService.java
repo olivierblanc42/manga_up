@@ -8,6 +8,7 @@ import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.genre.GenreWithMangasResponse;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.GenderMangaMapper;
+import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Genre;
 import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
@@ -32,11 +33,14 @@ public class GenreService {
     private final GenreDao genreDao;
     private final GenderMangaMapper genderMangaMapper;
     private final MangaDao mangaDao;
+    private final MangaMapper mangaMapper;
 
-    public GenreService(GenreDao genreDao, GenderMangaMapper genderMangaMapper, MangaDao mangaDao) {
+    public GenreService(GenreDao genreDao, GenderMangaMapper genderMangaMapper, MangaDao mangaDao,
+            MangaMapper mangaMapper) {
         this.genreDao = genreDao;
         this.genderMangaMapper = genderMangaMapper;
         this.mangaDao = mangaDao;
+        this.mangaMapper =mangaMapper;
     }
 
     /**
@@ -153,36 +157,8 @@ public class GenreService {
      */
     public Page<MangaDtoRandom> findMangasByGenre(Integer genreId, Pageable pageable) {
         Page<MangaProjectionWithAuthor> projections = mangaDao.findMangasByGenre2(genreId, pageable);
-        return projections.map(this::mapToDto);
+        return projections.map(mangaMapper::mapToDto);
     }
 
-    private MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
-        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
 
-        return new MangaDtoRandom(
-                projection.getMangaId(),
-                projection.getTitle(),
-                authors,
-                projection.getPicture());
-    }
-
-    private Set<AuthorDtoRandom> parseAuthors(String authorsString) {
-        if (authorsString == null || authorsString.isEmpty()) {
-            return Set.of();
-        }
-
-        return Arrays.stream(authorsString.split("\\|"))
-                .map(authorData -> {
-                    String[] parts = authorData.split(":");
-                    if (parts.length < 3) {
-                        throw new IllegalArgumentException("Malformed author data: " + authorData);
-                    }
-                    return new AuthorDtoRandom(
-                            Integer.parseInt(parts[0]),
-                            parts[2], // lastname
-                            parts[1] // firstname
-                    );
-                })
-                .collect(Collectors.toSet());
-    }
 }
