@@ -14,7 +14,7 @@ public class GenreDto implements Serializable {
 
     @NotNull
     @Size(max = 255)
-    private String url;
+    private final String url;
     @NotNull
     @Size(max = 50)
     private final String label;
@@ -37,31 +37,33 @@ public class GenreDto implements Serializable {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+
 
 
 
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GenreDto entity = (GenreDto) o;
-        return
-                Objects.equals(this.label, entity.label) ;
-
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        GenreDto genreDto = (GenreDto) o;
+        return Objects.equals(url, genreDto.url) &&
+                Objects.equals(label, genreDto.label) &&
+                Objects.equals(description, genreDto.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( label);
+        return Objects.hash(url, label, description);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() +
-                "label = " + label + ", " ;
+        return getClass().getSimpleName() + "(" +
+                "url = " + url + ", " +
+                "label = " + label + ", " +
+                "description = " + description + ")";
     }
 }
