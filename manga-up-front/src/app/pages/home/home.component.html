@@ -235,56 +235,36 @@
         <h2>Manga du moment</h2>
     </div>
     <div class="card single-card">
-
-        @if (mangaOne.length > 0) {
-        @for ( manga of mangaOne; track manga.id) {
-        @if (manga.picture) {
-        <img class="single-image" [src]="manga.picture" alt="image du manga {{manga.title}}" />
-        } @else {
-        <img src="assets/default-picture.jpg" alt="Image non disponible" />
-        }
-        }
-        } @else {
-        <p>Chargement en cours...</p>
-        }
-
-
-        @if (mangaOne.length > 0 && mangaOne[0]) {
-        <div class="single-card__content">
-            <div class="single-card__infos">
-                <div class="title__infos">
-                    <p>Information</p>
-                </div>
-                <p><span>Titre :</span> {{ mangaOne[0].title }}</p>
-                <p><span>Auteur :</span>
-                    @for (author of mangaOne[0].authors; track $index) {
-                    <a [routerLink]="'/auteur/' + author.id"
-                        [attr.aria-label]="'Voir la fiche de '+ author?.firstname +author?.lastname +'auteur du manga' ">{{author?.firstname}}
-                        {{author?.lastname}}</a>
-                    }
-                </p>
-                <p><span>ANNÉE DE SORTIE :</span> 2002</p>
-                <p><span>PRIX :</span> {{ mangaOne[0].price }} €</p>
-            </div>
-
-            <div class="single-card__summary">
-                <div class="title__summary">
-                    <p>Résumé</p>
-                </div>
-                <p>{{mangaOne[0].summary.length > 200 ? (mangaOne[0].summary | slice:0:200) + '...' :
-                mangaOne[0].summary}}</p>
-            </div>
-
-            <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne[0].id"    [attr.aria-label]="'Voir la fiche du manga' + mangaOne[0].title">
-                <img src="svg/mdi_magnify.svg" alt="">Voir plus</a>
+        <img class="single-image" [src]="mangaOne?.picture" alt="image du manga {{mangaOne?.title}}" />
+<div class="single-card__content">
+    <div class="single-card__infos">
+        <div class="title__infos">
+            <p>Information</p>
         </div>
-        } @else {
-        <p>Chargement du manga...</p>
-        }
+        <p><span>Titre :</span> {{ mangaOne?.title }}</p>
+        <p><span>Auteur :</span>
+            @for (author of mangaOne?.authors; track $index) {
+            <a [routerLink]="'/auteur/' + author.id"
+                [attr.aria-label]="'Voir la fiche de '+ author?.firstname +author?.lastname +'auteur du manga' ">{{author?.firstname}}
+                {{author?.lastname}}</a>
+            }
+        </p>
+        <p><span>ANNÉE DE SORTIE :</span> 2002</p>
+        <p><span>PRIX :</span> {{ mangaOne?.price }} €</p>
+    </div>
 
+    <div class="single-card__summary">
+        <div class="title__summary">
+            <p>Résumé</p>
+        </div>
+        <p>{{mangaOne?.summary!.length > 200 ? (mangaOne?.summary | slice:0:200) + '...' :
+            mangaOne?.summary}}</p>
+    </div>
 
-   
-
+    <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne?.id"
+        [attr.aria-label]="'Voir la fiche du manga' + mangaOne?.title">
+        <img src="svg/mdi_magnify.svg" alt="">Voir plus</a>
+</div> 
     </div>
 
 </section>
