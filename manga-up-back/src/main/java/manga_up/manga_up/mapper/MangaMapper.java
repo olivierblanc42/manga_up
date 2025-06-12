@@ -1,12 +1,19 @@
 package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dao.GenreDao;
+import manga_up.manga_up.dto.author.AuthorDtoRandom;
+import manga_up.manga_up.dto.category.CategoryDto;
+import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.manga.MangaDto;
+import manga_up.manga_up.dto.manga.MangaDtoOne;
+import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.manga.MangaLightDto;
 import manga_up.manga_up.model.*;
+import manga_up.manga_up.projection.manga.MangaProjectionOne;
+import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.springframework.stereotype.Component;
-
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -129,4 +136,70 @@ public class MangaMapper {
                 .collect(Collectors.toSet());
     }
 
+
+   
+public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
+    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+
+    return new MangaDtoRandom(
+            projection.getMangaId(),
+            projection.getTitle(),
+            authors,
+            projection.getPicture()
+    );
+
+}
+
+
+    public MangaDtoOne mapToDto(MangaProjectionOne p) {
+        if (p == null)
+            return null;
+        return new MangaDtoOne(
+                p.getId_mangas(),
+                p.getTitle(),
+                p.getSubtitle(),
+                p.getSummary(),
+                p.getPrice(),
+                parseCategory(p.getCategory()), 
+                parseGenres(p.getGenres()),
+                parseAuthors(p.getAuthors()),
+                p.getPicture());           
+    }    
+
+    public  CategoryDto parseCategory(String cat) {
+        if (cat == null || cat.isEmpty())
+            return null;
+
+        String[] parts = cat.split(":");
+        return new CategoryDto(
+                Integer.parseInt(parts[0]),
+                parts[1],
+                parts[2],
+                parts[3]);
+    }
+    
+    public  Set<GenreDto> parseGenres(String genres) {
+        if (genres == null || genres.isEmpty())
+            return Collections.emptySet();
+
+        return Arrays.stream(genres.split("\\|"))
+                .map(s -> {
+                    String[] parts = s.split("@");
+                    return new GenreDto(parts[0], parts[1], parts[2]);
+                })
+                .collect(Collectors.toSet());
+    }
+
+    public   Set<AuthorDtoRandom> parseAuthors(String authors) {
+        if (authors == null || authors.isEmpty())
+            return Collections.emptySet();
+
+        return Arrays.stream(authors.split("\\|"))
+                .map(s -> {
+                    String[] parts = s.split(":");
+                    return new AuthorDtoRandom(Integer.parseInt(parts[0]), parts[1], parts[2]);
+                })
+                .collect(Collectors.toSet());
+    }
+    
 }
