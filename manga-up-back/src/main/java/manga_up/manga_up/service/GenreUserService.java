@@ -17,9 +17,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service class for managing GenderUser entities.
+ * 
+ * <p>
+ * This service provides methods to perform CRUD operations on GenderUser,
+ * including pagination, retrieval by ID, saving, updating, and deletion.
+ * It also contains methods to fetch projections and DTO representations.
+ * </p>
+ */
 @Service
 public class GenreUserService {
-    private static final Logger LOGGER= LoggerFactory.getLogger(GenreUserService.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenreUserService.class);
 
     private final GenderUserDao genderUserDao;
     private final GenderUserMapper genderUserMapper;
@@ -29,62 +39,98 @@ public class GenreUserService {
         this.genderUserMapper = genderUserMapper;
     }
 
-
+    /**
+     * Retrieves a paginated list of GenderUser projections.
+     * 
+     * @param pageable the pagination and sorting information
+     * @return a {@link Page} of {@link GenderUserProjection}
+     */
     public Page<GenderUserProjection> getGenreUsers(Pageable pageable) {
-        LOGGER.info("Getting enderUser");
+        LOGGER.info("Getting paginated GenderUser projections");
         return genderUserDao.getGenderUser(pageable);
     }
 
-
-
+    /**
+     * Retrieves a GenderUser projection by its ID.
+     * 
+     * @param id the ID of the GenderUser to retrieve
+     * @return the {@link GenderUserProjection} corresponding to the given ID
+     * @throws EntityNotFoundException if no GenderUser with the given ID exists
+     */
     public GenderUserProjection getGenreUserById(Integer id) {
-        LOGGER.info("Getting enderUser");
-        return  genderUserDao.findGenderUserProjectionById(id)
+        LOGGER.info("Getting GenderUser projection by id: {}", id);
+        return genderUserDao.findGenderUserProjectionById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
     }
 
-
-@Transactional
+    /**
+     * Deletes a GenderUser entity by its ID.
+     * 
+     * <p>
+     * Deletion is only allowed if the GenderUser is not linked to any AppUser.
+     * Otherwise, an exception is thrown.
+     * </p>
+     * 
+     * @param id the ID of the GenderUser to delete
+     * @throws EntityNotFoundException if the GenderUser is not found or linked to
+     *                                 AppUsers
+     */
+    @Transactional
     public void deleteGenreUserById(@PathVariable Integer id) {
-        LOGGER.info("Deleting enderUser");
-          GenderUser genderUser = genderUserDao.findGenderById(id)
-                  .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
-          if(!genderUser.getAppUsers().isEmpty()) {
-              throw new EntityNotFoundException("The Gender user is linked to a user it cannot be deleted");
-          }
-          genderUserDao.delete(genderUser);
+        LOGGER.info("Deleting GenderUser with id: {}", id);
+        GenderUser genderUser = genderUserDao.findGenderById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Gender user with id " + id + " not found"));
+        if (!genderUser.getAppUsers().isEmpty()) {
+            throw new EntityNotFoundException("The Gender user is linked to a user and cannot be deleted");
+        }
+        genderUserDao.delete(genderUser);
     }
 
-@Transactional
+    /**
+     * Saves a new GenderUser entity.
+     * 
+     * @param genreUserDto the DTO containing GenderUser data to save
+     * @return the saved GenderUser mapped back as a DTO
+     * @throws RuntimeException if an error occurs during saving
+     */
+    @Transactional
     public GenderUserDto saveGenreUser(GenderUserDto genreUserDto) {
-        LOGGER.info("Saving genreUser");
-        GenderUser genderUser = genderUserMapper.toEntity(genreUserDto) ;
-           try {
-               genderUserDao.save(genderUser);
-           }catch (Exception e) {
-               LOGGER.error("Error saving genre user", e);
-               throw new RuntimeException("Error saving genre user", e);
-           }
-           return genderUserMapper.toDto(genderUser);
+        LOGGER.info("Saving new GenderUser");
+        GenderUser genderUser = genderUserMapper.toEntity(genreUserDto);
+        try {
+            genderUserDao.save(genderUser);
+        } catch (Exception e) {
+            LOGGER.error("Error saving GenderUser", e);
+            throw new RuntimeException("Error saving GenderUser", e);
+        }
+        return genderUserMapper.toDto(genderUser);
     }
 
-@Transactional
-    public GenderUserDto updateGenreUser( Integer genderId ,GenderUserDto genreUserDto) {
-        LOGGER.info("Updating genreUser");
-        GenderUser genderUser = genderUserDao.findGenderById(genderId).
-                orElseThrow(() -> new RuntimeException("Genre with ID " + genderId + " not found"));
-
+    /**
+     * Updates an existing GenderUser entity by ID.
+     * 
+     * @param genderId     the ID of the GenderUser to update
+     * @param genreUserDto the DTO containing updated data
+     * @return the updated GenderUser as a DTO
+     * @throws RuntimeException if the GenderUser with given ID is not found
+     */
+    @Transactional
+    public GenderUserDto updateGenreUser(Integer genderId, GenderUserDto genreUserDto) {
+        LOGGER.info("Updating GenderUser with id: {}", genderId);
+        GenderUser genderUser = genderUserDao.findGenderById(genderId)
+                .orElseThrow(() -> new RuntimeException("Gender user with ID " + genderId + " not found"));
         genderUser.setLabel(genreUserDto.getLabel());
         genderUserDao.save(genderUser);
         return genderUserMapper.toDto(genderUser);
     }
 
-
-
-public List<GenderUserDto> getAllGenreUsers() {
-    LOGGER.info("Getting all genre users");
-    return genderUserDao.getGenderUserDto();  
- } 
-
-
+    /**
+     * Retrieves a list of all GenderUsers as DTOs.
+     * 
+     * @return a {@link List} of {@link GenderUserDto}
+     */
+    public List<GenderUserDto> getAllGenreUsers() {
+        LOGGER.info("Getting all GenderUser DTOs");
+        return genderUserDao.getGenderUserDto();
+    }
 }

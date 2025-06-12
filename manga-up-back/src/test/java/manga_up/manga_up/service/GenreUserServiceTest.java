@@ -3,25 +3,17 @@ package manga_up.manga_up.service;
 import manga_up.manga_up.dao.GenderUserDao;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
-import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.GenderUserMapper;
 import manga_up.manga_up.model.AppUser;
-import manga_up.manga_up.model.Author;
-import manga_up.manga_up.model.Category;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
-import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.genderUser.GenderUserProjection;
-import manga_up.manga_up.projection.manga.MangaLittleProjection;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -30,9 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.persistence.EntityNotFoundException;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -133,7 +123,7 @@ class GenreUserServiceTest {
       genreUserService.deleteGenreUserById(1);
   });
 
-           assertEquals("The Gender user is linked to a user it cannot be deleted", exception.getMessage());
+           assertEquals("The Gender user is linked to a user and cannot be deleted", exception.getMessage());
            verify(genderUserDao, never()).delete(any());
 
     }
@@ -185,14 +175,14 @@ void shouldThrowExceptionWhenSaveErreur() {
     genderUserEntity.setLabel(genderUserDto.getLabel());
 
     when(genderUserMapper.toEntity(genderUserDto)).thenReturn(genderUserEntity);
-    when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving author"));
+    when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving GenderUser"));
 
     // Act + Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
         genreUserService.saveGenreUser(genderUserDto);
     });
 
-    assertEquals("Error saving genre user", exception.getMessage());
+    assertEquals("Error saving GenderUser", exception.getMessage());
 
     // Verify
     verify(genderUserMapper).toEntity(genderUserDto);

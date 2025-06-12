@@ -3,11 +3,8 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import manga_up.manga_up.dto.UserAdress.UserAddressDto;
-import manga_up.manga_up.dto.comment.CommentDto;
 import manga_up.manga_up.dto.comment.CommentLightDto;
 import manga_up.manga_up.projection.comment.CommentProjection;
-import manga_up.manga_up.projection.userAdress.UserAddressProjection;
 import manga_up.manga_up.service.CommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +35,7 @@ public class CommentController {
     public ResponseEntity<Page<CommentProjection>> findAllByPage(
             @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         LOGGER.info("Find all comments with the pagination");
-        Page<CommentProjection> comment = commentService.getAllComment(pageable);
+        Page<CommentProjection> comment = commentService.getAllComments(pageable);
         LOGGER.info("Found {} addresses", comment.getTotalElements());
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
@@ -50,21 +47,20 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getComment(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-
-    @Operation(summary = "Update Comment")
-    @PutMapping("{id}")
-    public ResponseEntity<CommentLightDto> updateAddress(@PathVariable Integer id,
-            @RequestBody CommentLightDto commentLightDto) {
-        LOGGER.info("Updating address");
-        try {
-            CommentLightDto commentDto = commentService.updateComment(id, commentLightDto);
-            return new ResponseEntity<>(commentDto, HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.error("Error updating Comment", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
+    // @PreAuthorize("hasRole('ADMIN')")
+    // @Operation(summary = "Update Comment")
+    // @PutMapping("{id}")
+    // public ResponseEntity<CommentLightDto> updateComment(@PathVariable Integer id,
+    //         @RequestBody CommentLightDto commentLightDto) {
+    //     LOGGER.info("Updating address");
+    //     try {
+    //         CommentLightDto commentDto = commentService.updateComment(id, commentLightDto);
+    //         return new ResponseEntity<>(commentDto, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         LOGGER.error("Error updating Comment", e);
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    //     }
+    // }
 
     @PreAuthorize("hasRole('ADMIN')")
 

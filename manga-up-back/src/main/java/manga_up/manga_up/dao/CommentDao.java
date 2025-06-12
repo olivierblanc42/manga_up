@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Comment} entities.
+ * 
+ */
 @Repository
 public interface CommentDao extends JpaRepository<Comment, Integer> {
 

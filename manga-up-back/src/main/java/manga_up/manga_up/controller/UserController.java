@@ -2,16 +2,13 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.transaction.Transactional;
-import manga_up.manga_up.dao.UserDao;
+
 import manga_up.manga_up.dto.appUser.UserProfilDto;
-import manga_up.manga_up.dto.appUser.UserResponseDto;
-import manga_up.manga_up.mapper.AppUserMapper;
+
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.service.UserService;
 
-import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,13 +36,11 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    private final UserDao userDao;
-    private final AppUserMapper userMapper;
+  
 
-    public UserController(UserService userService, UserDao userDao, AppUserMapper userMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userDao = userDao;
-        this.userMapper = userMapper;
+      
     }
 
     @PreAuthorize("hasRole('ADMIN')")  

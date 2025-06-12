@@ -14,20 +14,13 @@ public class PictureDto implements Serializable {
     @Size(max = 255)
     private final String url;
 
-
     public PictureDto(  String url) {
         this.url = url;
     }
 
-
-
-
-
     public String getUrl() {
         return url;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

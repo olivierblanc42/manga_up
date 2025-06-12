@@ -4,10 +4,11 @@ import { GenreProjection, GenreDto, MangaOne, MangaDtoRandom  } from '../../type
 import { GenreService } from '../../service/genre.service';
 import { MangaService } from '../../service/manga.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [CardComponent, RouterModule],
+  imports: [CommonModule,CardComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   schemas : [CUSTOM_ELEMENTS_SCHEMA,],
@@ -17,7 +18,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 export class HomeComponent implements OnInit{
 
   genres!: GenreDto[];
-  mangaOne: MangaOne[] = [];
+  mangaOne: MangaOne | null = null;;
   mangaDtoRandom: MangaDtoRandom[] = [];
   mangaDtoRandomFour: MangaDtoRandom[] = [];
   trackByManga: any;
@@ -42,6 +43,9 @@ export class HomeComponent implements OnInit{
     this.mangaService.getMangaOne();
     this.mangaService.currentMangaOne.subscribe((data) =>{
       this.mangaOne = data;
+      if (this.mangaOne?.summary) {
+        this.mangaOne?.summary 
+            }
       console.log("manga récupérés :", this.mangaOne);
 
     })

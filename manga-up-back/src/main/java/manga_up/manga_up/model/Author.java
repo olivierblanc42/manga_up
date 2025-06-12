@@ -8,49 +8,80 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+/**
+ * Represents an author in the manga system.
+ * Contains personal details and associated mangas.
+ */
 @Entity
 @Table(name = "author")
 public class Author {
+
+    /**
+     * Unique identifier for the author.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id_authors", nullable = false)
     private Integer id;
 
+    /**
+     * Last name of the author.
+     */
     @Size(max = 100)
     @NotNull
     @Column(name = "lastname", nullable = false, length = 100)
     private String lastname;
 
+    /**
+     * First name of the author.
+     */
     @Size(max = 50)
     @NotNull
     @Column(name = "firstname", nullable = false, length = 50)
     private String firstname;
 
+    /**
+     * A detailed description or biography of the author.
+     */
     @NotNull
     @Lob
     @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
+    /**
+     * Optional URL pointing to the author's external profile or image.
+     */
     @Size(max = 255)
     @Column(name = "url")
     private String url;
 
-   @Column(name = "birthdate")
+    /**
+     * Birthdate of the author.
+     */
+    @Column(name = "birthdate")
     private LocalDate birthdate;
 
+    /**
+     * Date when the author entity was created in the system.
+     */
     @Column(name = "created_at")
     private LocalDate createdAt;
 
+    /**
+     * Genre usually associated with this author (e.g., Shonen, Seinen).
+     */
     @Size(max = 50)
     @Column(name = "genre", nullable = false, length = 50)
     private String genre;
 
-
+    /**
+     * Set of mangas authored by this author.
+     */
     @ManyToMany
-    @JoinTable(name = "mangas_authors",
-            joinColumns = @JoinColumn(name = "Id_authors"),
-            inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
+    @JoinTable(name = "mangas_authors", joinColumns = @JoinColumn(name = "Id_authors"), inverseJoinColumns = @JoinColumn(name = "Id_mangas"))
     private Set<Manga> mangas = new LinkedHashSet<>();
+
+    // Getters and setters with no need for Javadoc unless extra logic is added
 
     public Integer getId() {
         return id;
@@ -100,9 +131,8 @@ public class Author {
         this.mangas = mangas;
     }
 
-
     public LocalDate getBirthdate() {
-        return createdAt;
+        return birthdate;
     }
 
     public void setBirthdate(LocalDate birthdate) {
@@ -117,8 +147,6 @@ public class Author {
         this.genre = genre;
     }
 
-
-
     public String getUrl() {
         return url;
     }
@@ -126,5 +154,4 @@ public class Author {
     public void setUrl(String url) {
         this.url = url;
     }
-
 }

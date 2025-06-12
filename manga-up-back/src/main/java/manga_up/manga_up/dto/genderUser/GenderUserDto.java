@@ -1,6 +1,5 @@
 package manga_up.manga_up.dto.genderUser;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 

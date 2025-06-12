@@ -1,16 +1,16 @@
 import {  MangaProjection } from './../../type.d';
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MangaService } from './../../service/manga.service';
 import { FavoriteButtonComponent } from "../../components/favorite-button/favorite-button.component";
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-manga',
   standalone: true,
   templateUrl: './manga.component.html',
   styleUrls: ['./manga.component.scss'],
-  imports: [FavoriteButtonComponent],
+  imports: [FavoriteButtonComponent, RouterModule, CommonModule],
   providers: [DatePipe]
 })
 export class MangaComponent implements OnInit {

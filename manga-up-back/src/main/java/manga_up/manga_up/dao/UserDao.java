@@ -3,7 +3,6 @@ package manga_up.manga_up.dao;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
-import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +15,10 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing {@link AppUser} entities.
+ * 
+ */
 @Repository
 public interface UserDao extends JpaRepository<AppUser, Integer> {
     AppUser findByUsername(String username);

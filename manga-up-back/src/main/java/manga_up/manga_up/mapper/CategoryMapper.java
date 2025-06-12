@@ -33,8 +33,7 @@ public class CategoryMapper {
 
  public CategoryLittleDto toLittleDtoCategory(Category category) {
         return new CategoryLittleDto(
-                category.getId(),
-                category.getLabel()
+                category.getId()
         );
  }
 
@@ -44,7 +43,6 @@ public class CategoryMapper {
  public Category categoryLittleDto(CategoryLittleDto categoryLittleDto) {
         Category category = new Category();
         category.setId(categoryLittleDto.getId());
-        category.setLabel(categoryLittleDto.getLabel());
         return category;
  }
 

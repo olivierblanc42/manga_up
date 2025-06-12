@@ -9,6 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository interface for managing {@link Status} entities.
+ * 
+ */
 @Repository
 public interface StatusDao extends JpaRepository<Status, Integer> {
 

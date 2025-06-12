@@ -12,11 +12,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Category} entities.
+ * 
+ */
 @Repository
 public interface CategoryDao extends JpaRepository<Category, Integer> {
 
     @Query("SELECT c FROM Category as c")
-    Page<CategoryProjection> findAllCategorisByPage(Pageable pageable);
+    Page<CategoryProjection> findAllCategoriesByPage(Pageable pageable);
 
     @Query("SELECT c FROM Category c LEFT JOIN FETCH c.mangas WHERE c.id = :idCategory")
     Optional<Category> findCategoryById(@Param("idCategory") Integer idCategory);

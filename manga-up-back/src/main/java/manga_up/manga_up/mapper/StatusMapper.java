@@ -15,8 +15,7 @@ public class StatusMapper {
         LOGGER.info("Converting status to entity");
         return new StatusDto(
                status.getId(),
-               status.getLabel())
-        ;
+               status.getLabel());
     }
 
 

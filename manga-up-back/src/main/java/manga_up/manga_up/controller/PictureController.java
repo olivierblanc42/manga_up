@@ -3,8 +3,7 @@ package manga_up.manga_up.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import manga_up.manga_up.dto.picture.PictureDto;
-import manga_up.manga_up.model.Picture;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.projection.pictureProjection.PictureProjection;
 import manga_up.manga_up.service.PictureService;
 import org.slf4j.Logger;
@@ -57,15 +56,27 @@ public class PictureController {
 
     @Operation(summary = "Update url picture manga")
     @PutMapping("{id}")
-    ResponseEntity<PictureDto> updatePicture(@PathVariable Integer id, @RequestBody PictureDto pictureDto) {
+    ResponseEntity<PictureLightDto> updatePicture(@PathVariable Integer id, @RequestBody PictureLightDto pictureDto) {
         LOGGER.info("Updating picture");
         try {
-            PictureDto picture = pictureService.UpdatePicture(id, pictureDto);
+            PictureLightDto picture = pictureService.updatePicture(id, pictureDto);
             return new ResponseEntity<>(picture, HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.error("Error updating picture", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+
+ 
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete  picture")
+    @DeleteMapping("{id}")
+    public void deletePicture(@PathVariable Integer id){
+        LOGGER.info("Delete genre with id");
+        pictureService.deletePictureById(id);
+    }
+
+
 
 }

@@ -4,8 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import manga_up.manga_up.dto.author.AuthorDto;
-import manga_up.manga_up.dto.author.AuthorWithMangasResponse;
-import manga_up.manga_up.model.Author;
+
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.service.AuthorService;
@@ -22,7 +21,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/authors")

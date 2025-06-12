@@ -48,22 +48,29 @@ public class CategoryDto implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         CategoryDto entity = (CategoryDto) o;
-        return Objects.equals(this.label, entity.label) &&
-                Objects.equals(this.description, entity.description);
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.label, entity.label) &&
+                Objects.equals(this.description, entity.description) &&
+                Objects.equals(this.url, entity.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(label, description);
-    }
+        return Objects.hash(id, label, description, url);
+    }    
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
                 "label = " + label + ", " +
-                "description = " + description ;
+                "description = " + description + ", " +
+                "url = " + url + ")";
     }
+    
 }

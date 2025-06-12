@@ -3,6 +3,7 @@ package manga_up.manga_up.dao;
 import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
+import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Manga} entities.
+ * 
+ */
 @Repository
 public interface MangaDao extends JpaRepository<Manga, Integer> {
 
@@ -89,30 +94,49 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "LIMIT 4", nativeQuery = true)
     List<MangaProjectionWithAuthor> findFourMangasRandom();
 
-    @Query(value = "SELECT " +
-            "m.Id_mangas, " +
-            "m.title, " +
-            "m.subtitle, " +
-            "m.summary, " +
-            "m.price, " +
-            "GROUP_CONCAT(DISTINCT CONCAT(c.Id_categories, ':', c.label, ':', c.description,':',c.url) SEPARATOR '|') AS categories, " +
-            "GROUP_CONCAT(DISTINCT CONCAT(g.url, '@', g.label,'@', g.description) SEPARATOR '|') AS genres, "
-            +
-            "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, "
-            +
-            "p.url AS pictures "
-            +
-            "FROM manga m " +
-            "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
-            "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
-            "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
-            "LEFT JOIN category c ON c.Id_categories = m.Id_categories " +
-            "LEFT JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas " +
-            "LEFT JOIN genre g ON g.Id_gender_mangas = gm.Id_gender_mangas " +
-            "GROUP BY m.Id_mangas, m.title ,p.url " +
-            "ORDER BY RAND() " +
-            "LIMIT 1", nativeQuery = true)
-    List<Object[]> findRandomOneMangas();
+@Query(value = "SELECT " +
+        "m.Id_mangas AS id_mangas, " +
+        "m.title, m.subtitle, m.summary, m.price, " +
+        "CONCAT(c.Id_categories, ':', c.label, ':', c.description, ':', c.url) AS category, " +
+        "GROUP_CONCAT(DISTINCT CONCAT(g.url, '@', g.label, '@', g.description) SEPARATOR '|') AS genres, " +
+        "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, " +
+        "p.url AS picture " +
+        "FROM manga m " +
+        "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+        "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
+        "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
+        "LEFT JOIN category c ON c.Id_categories = m.Id_categories " +
+        "LEFT JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas " +
+        "LEFT JOIN genre g ON g.Id_gender_mangas = gm.Id_gender_mangas " +
+        "GROUP BY m.Id_mangas, m.title ,p.url " +
+        "ORDER BY RAND() " +
+        "LIMIT 1", nativeQuery = true)
+MangaProjectionOne findRandomOneManga();
+
+    // @Query(value = "SELECT " +
+    //         "m.Id_mangas, " +
+    //         "m.title, " +
+    //         "m.subtitle, " +
+    //         "m.summary, " +
+    //         "m.price, " +
+    //         "GROUP_CONCAT(DISTINCT CONCAT(c.Id_categories, ':', c.label, ':', c.description,':',c.url) SEPARATOR '|') AS categories, " +
+    //         "GROUP_CONCAT(DISTINCT CONCAT(g.url, '@', g.label,'@', g.description) SEPARATOR '|') AS genres, "
+    //         +
+    //         "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, "
+    //         +
+    //         "p.url AS pictures "
+    //         +
+    //         "FROM manga m " +
+    //         "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
+    //         "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
+    //         "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
+    //         "LEFT JOIN category c ON c.Id_categories = m.Id_categories " +
+    //         "LEFT JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas " +
+    //         "LEFT JOIN genre g ON g.Id_gender_mangas = gm.Id_gender_mangas " +
+    //         "GROUP BY m.Id_mangas, m.title ,p.url " +
+    //         "ORDER BY RAND() " +
+    //         "LIMIT 1", nativeQuery = true)
+    // List<Object[]> findRandomOneMangas();
 
     // @Query(value = """
     //         SELECT m.Id_mangas AS id,
@@ -178,7 +202,29 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     // Page<MangaBaseProjection> findMangasByGenre(@Param("genreId") Integer genreId, Pageable pageable);
 
 
-
+    @Query(value = """
+        SELECT
+            m.Id_mangas AS id,
+            m.title AS title,
+            p.Id_picture AS pictureId,
+            p.url AS pictureUrl,
+            GROUP_CONCAT(CONCAT(a.firstname, ' ', a.lastname) SEPARATOR ', ') AS authorFullName
+        FROM manga m
+        JOIN picture p ON m.Id_mangas = p.Id_mangas
+        JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+        JOIN author a ON a.id_authors = ma.id_authors
+        WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+        GROUP BY m.Id_mangas, m.title, p.Id_picture, p.url
+        ORDER BY m.title ASC
+        """, countQuery = """
+        SELECT COUNT(DISTINCT m.Id_mangas)
+        FROM manga m
+        JOIN picture p ON m.Id_mangas = p.Id_mangas
+        JOIN mangas_authors ma ON ma.id_mangas = m.Id_mangas
+        JOIN author a ON a.id_authors = ma.id_authors
+        WHERE p.is_main = TRUE AND LOWER(m.title) LIKE LOWER(CONCAT('%', :letter, '%'))
+        """, nativeQuery = true)
+    Page<MangaBaseProjection> findByTitleWithGenres(@Param("letter") String letter, Pageable pageable);
 
     @Query(value = """
             SELECT

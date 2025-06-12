@@ -2,7 +2,6 @@ package manga_up.manga_up.dto.category;
 
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.category.CategoryProjection;
-import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
 import org.springframework.data.domain.Page;
 

@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repository interface for managing {@link Author} entities.
+ * 
+ */
 @Repository
 public interface AuthorDao extends JpaRepository<Author, Integer> {
 
