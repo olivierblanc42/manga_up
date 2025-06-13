@@ -67,6 +67,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowCredentials(true);
 
         
+        corsConfiguration.addAllowedOrigin("https://mangaup-production.up.railway.app");
         corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
         corsConfiguration.addAllowedOrigin("http://localhost:4200");
 
