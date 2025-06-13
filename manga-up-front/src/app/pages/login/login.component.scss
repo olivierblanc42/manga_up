@@ -4,7 +4,7 @@ section {
     margin-bottom: 100px;
 
     .card-single-other {
-        width: 50%;
+        width: 300px;
         margin-left: auto;
         margin-right: auto;
 
@@ -26,7 +26,12 @@ section {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            width: 100%;
+            box-sizing: border-box;
 
             form {
                 display: flex;
@@ -34,8 +39,9 @@ section {
                 justify-content: center;
                 align-items: center;
                 row-gap: 30px;
+                margin-bottom: 10px;
 
-                .form-group {
+               
                     input {
                         border-color: $secondary;
                         padding: 14px;
@@ -45,9 +51,8 @@ section {
                         -ms-border-radius: 13px;
                         -o-border-radius: 13px;
                         color: $secondary;
-                        min-width: 300px;
 
-                    }
+                    
                 }
             }
         }
@@ -73,4 +78,78 @@ input::placeholder {
     -moz-border-radius: 2px;
     -ms-border-radius: 2px;
     -o-border-radius: 2px;
+}
+
+
+@media (min-width: 768px) {
+    section {
+            margin-bottom: 100px;
+    
+            .card-single-other {
+                width: 600px;
+    
+                .login-form {
+                    form {
+                        input {
+                            border-color: $secondary;
+                            padding: 14px;
+                            border-radius: 13px;
+                            -webkit-border-radius: 13px;
+                            -moz-border-radius: 13px;
+                            -ms-border-radius: 13px;
+                            -o-border-radius: 13px;
+                            color: $secondary;
+    
+                            min-width: 300px;
+                        }
+                    }
+                }
+            }
+        }
+}
+
+@media (min-width: 1024px) {
+
+    section {
+            margin-bottom: 100px;
+    
+            .card-single-other {
+                width: 900px;
+        
+                .login-form {
+                    form {
+                        input {
+                            border-color: $secondary;
+                            padding: 14px;
+                            border-radius: 13px;
+                            -webkit-border-radius: 13px;
+                            -moz-border-radius: 13px;
+                            -ms-border-radius: 13px;
+                            -o-border-radius: 13px;
+                            color: $secondary;
+    
+    min-width: 300px;
+                        }
+                    }
+                }
+            }
+        }
+
+}
+
+
+.btn-card-new {
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    p {
+        margin: 0;
+        color: black;
+
+    }
+
+    i {
+        padding-right: $padding-xs;
+    }
 }

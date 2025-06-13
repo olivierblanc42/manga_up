@@ -1,7 +1,7 @@
 import { GenderRegister } from './../../type.d';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { AppUserRegister } from '../../type';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 export class UsersRegisterComponent implements OnInit {
   registerForm: any;
   genderUserId: GenderRegister[] | null = null;
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService,private router: Router) { }
 
 
   
@@ -56,10 +56,9 @@ export class UsersRegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.authService.registerUser(this.registerForm.value).subscribe({
         next: (res) => {
-          console.log('Utilisateur enregistré avec succès', res);
+          this.router.navigate(['/']); 
         },
         error: (err) => {
-          console.error('Erreur lors de l’enregistrement', err);
         }
       });
     } else {

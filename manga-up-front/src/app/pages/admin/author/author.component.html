@@ -1,6 +1,7 @@
-<div class="category-form-container" *ngIf="authorForm">
-    <h2>Modifier l'auteur</h2>
-
+<div class="author-form-container card card-single-other" *ngIf="authorForm">
+    <div class="card-single-other__title">
+        <h1>Modifier l'auteur:{{author?.lastname }} {{author?.firstname}}</h1>
+    </div>
     <form [formGroup]="authorForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <div class="form-group">
@@ -69,7 +70,7 @@
             </div>
         </div>
 
-        <button type="submit" [disabled]="authorForm.invalid">Enregistrer</button>
+        <button class="btn btn-card" type="submit" [disabled]="authorForm.invalid">Enregistrer</button>
 
     </form>
 

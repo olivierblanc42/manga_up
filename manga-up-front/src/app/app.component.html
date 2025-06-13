@@ -6,8 +6,8 @@
       </a>
       <div>
         <form class="search" (ngSubmit)="redirect()">
-          <input type="text" name="query" [(ngModel)]="searchTerm" placeholder="Rechercher..." required />
-          <button type="submit"></button> </form>
+          <input class="search-input" type="text" name="query" [(ngModel)]="searchTerm" placeholder="Rechercher..." required />
+          <button class="btn-magnify" type="submit"><img src="svg\bytesize_search.svg" alt=""></button> </form>
       </div>
       <div class="first-nav__icons">
         <a [routerLink]="'/account/'" aria-label="Mon compte"><img src="svg/mdi_user.svg" alt="Icône utilisateur"
@@ -16,7 +16,7 @@
           aria-label="Ouvrir le menu">
         <a aria-label="Mon panier"><img src="svg/mdi_cart-outline.svg" alt="Icône panier" class="icons"></a>
 
-        <a routerLink="admin" *ngIf="isAdmin" aria-label="Accès admin"><img src="svg/admin-tool.svg" alt="Icône panier" class="icons"></a>
+        <a class="link-admin" routerLink="admin" *ngIf="isAdmin" aria-label="Accès admin"><img src="svg/admin-tool.svg" alt="Icône panier" class="icons"></a>
       </div>
     </div>
 

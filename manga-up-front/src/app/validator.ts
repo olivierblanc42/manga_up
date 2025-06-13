@@ -15,3 +15,9 @@ export function urlValidator(control: AbstractControl): ValidationErrors | null 
     const pattern = /^https?:\/\/.+/i;
     return pattern.test(value) ? null : { invalidUrl: true };
   }
+
+
+  export function requiredTrueValidator(control: AbstractControl) {
+    return control.value === true ? null : { requiredTrue: true };
+}
+  

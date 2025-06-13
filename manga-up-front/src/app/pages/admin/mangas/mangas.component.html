@@ -1,37 +1,214 @@
+<link href="https://cdn.jsdelivr.net/npm/@ng-select/ng-select/themes/default.theme.css" rel="stylesheet">
+
 <section class="section section-admin">
+
+    <button (click)="openModal()" class="btn btn-primary">+ Ajouter un manga</button>
+
+    <div class="modal" [class.show]="isModalOpen">
+        <div class="modal-content">
+            <span class="close" (click)="closeModal()">&times;</span>
+
+            <div class="section-admin__title">
+                <h2>Nouveau Manga</h2>
+            </div>
+
+            <form [formGroup]="mangaForm" (ngSubmit)="createManga()">
+
+                <!-- Titre -->
+                <div class="group-form">
+                    <label>Titre</label>
+                    <input type="text" formControlName="title" />
+                    <div *ngIf="mangaForm.get('title')?.touched && mangaForm.get('title')?.errors">
+                        <small *ngIf="mangaForm.get('title')?.errors?.['required']">Le titre est requis.</small>
+                        <small *ngIf="mangaForm.get('title')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                            autorisées.</small>
+                    </div>
+                </div>
+
+
+                <!-- Sous-titre -->
+
+                <div class="group-form">
+                    <label>Sous-titre</label>
+                    <input type="text" formControlName="subtitle" />
+                    <div *ngIf="mangaForm.get('subtitle')?.touched && mangaForm.get('subtitle')?.errors">
+                        <small *ngIf="mangaForm.get('subtitle')?.errors?.['required']">Le sous-titre est requis.</small>
+                        <small *ngIf="mangaForm.get('subtitle')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                            autorisées.</small>
+                    </div>
+                </div>
+
+
+                <!-- Date de sortie -->
+                <div class="group-form">
+                    <label>Date de sortie</label>
+                    <input type="date" formControlName="releaseDate" />
+                    <div *ngIf="mangaForm.get('releaseDate')?.touched && mangaForm.get('releaseDate')?.errors">
+                        <small>La date de sortie est requise.</small>
+                    </div>
+                </div>
+
+
+                <!-- Résumé -->
+                <div class="group-form">
+                    <label>Résumé</label>
+                    <textarea formControlName="summary"></textarea>
+                    <div *ngIf="mangaForm.get('summary')?.touched && mangaForm.get('summary')?.errors">
+                        <small *ngIf="mangaForm.get('summary')?.errors?.['required']">Le résumé est requis.</small>
+                        <small *ngIf="mangaForm.get('summary')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                            autorisées.</small>
+                        <small *ngIf="mangaForm.get('summary')?.errors?.['maxlength']">le rèsumé fait plus de 1000
+                            caractère
+                        </small>
+                    </div>
+                </div>
+
+
+                <!-- Prix -->
+
+                <div class="group-form">
+                    <label>Prix</label>
+                    <input type="number" formControlName="price" min="0" step="0.01" />
+                    <div *ngIf="mangaForm.get('price')?.touched && mangaForm.get('price')?.errors">
+                        <small *ngIf="mangaForm.get('price')?.errors?.['required']">Le prix est requis.</small>
+                        <small *ngIf="mangaForm.get('price')?.errors?.['min']">Le prix doit être positif.</small>
+                    </div>
+                </div>
+
+
+                <!-- En stock -->
+                <div class="group-form">
+                    <div>
+                        <label>En stock</label>
+                        <input type="checkbox" formControlName="inStock" />
+                    </div>
+                </div>
+
+
+
+
+
+                <!-- Est actif -->
+                <div class="group-form">
+                    <div>
+                        <label>Est actif</label>
+                        <input type="checkbox" formControlName="active" />
+                    </div>
+                </div>
+
+
+
+                <!-- Catégorie -->
+
+
+                <div class="group-form">
+                    <label for="idCategories">Catégorie</label>
+                    <select formControlName="idCategories" id="idCategories">
+                        <option [ngValue]="null" disabled selected>-- Sélectionner une catégorie --</option>
+                        <option *ngFor="let category of categories?.content" [ngValue]="{ id: category.id }">
+                            {{ category.label }}
+                        </option>
+                    </select>
+                    <div
+                        *ngIf="mangaForm.get('idCategories')?.touched && mangaForm.get('idCategories')?.errors?.['required']">
+                        <small>La catégorie est requise.</small>
+                    </div>
+                </div>
+
+
+                <div class="group-form">
+                    <label>Genres</label>
+                    <ng-select [items]="genres?.content" bindLabel="label" bindValue="id" [multiple]="true"
+                        [searchable]="true" formControlName="genres" placeholder="Sélectionnez un ou plusieurs genres">
+                    </ng-select>
+                </div>
+                <div *ngIf="mangaForm.get('genres')?.touched && mangaForm.get('genres')?.errors">
+                    <small *ngIf="mangaForm.get('genres')?.errors?.['minlength']">Veuillez sélectionner au moins un
+                        genre.</small>
+                </div>
+
+
+                <div class="group-form">
+                    <label>Auteurs</label>
+                    <ng-select [items]="authors?.content" bindValue="id" [multiple]="true" formControlName="authors"
+                        placeholder="Sélectionnez un ou plusieurs Auteurs">
+                        >
+
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.firstname}} {{item.lastname}}
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item">
+                            {{item.firstname}} {{item.lastname}}
+                        </ng-template>
+
+                    </ng-select>
+                </div>
+
+                <div *ngIf="mangaForm.get('authors')?.touched && mangaForm.get('authors')?.errors">
+                    <small *ngIf="mangaForm.get('authors')?.errors?.['minlength']">Veuillez sélectionner au moins un
+                        auteur.</small>
+                </div>
+
+
+
+                <div formArrayName="pictures">
+                    <div *ngFor="let img of pictures.controls; let i = index" [formGroupName]="i"
+                        style="margin-bottom: 1em;">
+                        <input formControlName="url" placeholder="URL de l'image" />
+                        <label>
+                            <input type="radio" name="mainImage" [checked]="img.value.isMain"
+                                (change)="setMainImage(i)" />
+                            Principale
+                        </label>
+                        <button type="button" (click)="deleteImage(i)">Supprimer</button>
+                    </div>
+                </div>
+                <button type="button" (click)="addImage('')">Ajouter une image</button>
+                <button type="submit">Créer</button>
+
+            </form>
+
+
+        </div>
+    </div>
+
+
+
+
 
     <div>
         <div class="section-admin__title">
             <h1>Mangas:</h1>
         </div>
-<table class="section-admin__content">
-    <thead>
-        <tr>
-            <th scope="col">Titre</th>
-            <th scope="col">Date de création</th>
-            <th scope="col">Image</th>
-            <th scope="col">Description</th>
-            <th scope="col">Actions</th>
-        </tr>
-    </thead>
+        <table class="section-admin__content">
+            <thead>
+                <tr>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date de création</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Auteurs</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
 
-    <tbody>
-        <tr *ngFor="let manga of mangas?.content; let i = index">
-            <td>{{ manga.title }}</td>
-            <td></td>
-            <td><img class="image" [src]="manga.pictureUrl" alt="{{ manga.title }}" /></td>
-            <td>
-               
-            </td>
-            <td>
-                <a [routerLink]="['/admin/categories/edit', manga.id]" class="btn btn-edit">Modifier</a>
-                <a href="#" class="btn btn-delete"
-                    >Supprimer</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            <tbody>
+                <tr *ngFor="let manga of mangas?.content; let i = index">
+                    <td>{{ manga.title }}</td>
+                    <td></td>
+                    <td><img class="image" [src]="manga.picture" alt="{{ manga.title }}" /></td>
+                    <td>
+                        @for (author of manga.authors; track $index) {
+                        {{author.firstname}} {{author.lastname}}
+                        }
+                    </td>
+                    <td>
+                        <a [routerLink]="['/admin/categories/edit', manga.id_mangas]" class="btn btn-edit">Modifier</a>
+                        <a href="#" (click)="deleteManga(manga.id_mangas); $event.preventDefault()"
+                            class="btn btn-delete">Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </section>
-
