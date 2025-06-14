@@ -66,8 +66,9 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
 
-        // Autorise Railway en prod et localhost en dev
+        
         corsConfiguration.addAllowedOrigin("https://mangaup-production.up.railway.app");
+        corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
         corsConfiguration.addAllowedOrigin("http://localhost:4200");
 
         corsConfiguration.addAllowedHeader("*");
