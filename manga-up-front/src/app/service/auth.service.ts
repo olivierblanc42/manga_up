@@ -10,9 +10,9 @@ import { environment } from '../../environments/environment.prod';
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = `${environment.apiUrl}/api/auth`;
-    private apiRegisterUrl = `${environment.apiUrl}/api/auth/register`;
-    private apiGender = `${environment.apiUrl}/api/public/genderUser`;
+    private apiUrl = `${environment.apiUrl}api/auth`;
+    private apiRegisterUrl = `${environment.apiUrl}api/auth/register`;
+    private apiGender = `${environment.apiUrl}api/public/genderUser`;
 
 
        appUserRegister = new BehaviorSubject<AppUserRegister | null>(null)

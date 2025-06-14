@@ -12,10 +12,10 @@ import { environment } from '../../environments/environment.prod';
 
 
 export class CategoryService {
-    url = `${environment.apiUrl}/api/categories`
-    urlPagination = `${environment.apiUrl}/api/public/categories/pagination`;
-    urlCategori = `${environment.apiUrl}/api/public/category/`; 
-    urlAdd = `${environment.apiUrl}/api/categories/add`;  
+    url = `${environment.apiUrl}api/categories`
+    urlPagination = `${environment.apiUrl}api/public/categories/pagination`;
+    urlCategori = `${environment.apiUrl}api/public/category/`; 
+    urlAdd = `${environment.apiUrl}api/categories/add`;  
 
     options = {
         headers: new HttpHeaders({
