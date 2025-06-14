@@ -71,6 +71,7 @@ public ResponseEntity<?> logout(HttpServletResponse response) {
             .httpOnly(true)
             .secure(true) 
             .path("/")
+            .sameSite("None")
             .maxAge(0) 
             .build();
 
