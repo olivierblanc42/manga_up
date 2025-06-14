@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -40,32 +41,33 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            return http
-                            .csrf(AbstractHttpConfigurer::disable)
-                            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                            .authorizeHttpRequests(auth -> auth
-                                            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()                                                      
-                                            .requestMatchers(
-                                                            "/swagger-ui/**",
-                                                            "/v3/api-docs/**",
-                                                            "/swagger-ui.html",
-                                                            "/my-swagger/**",
-                                                            "/my-api-docs/**",
-                                                            "/api/auth/register",
-                                                            "/api/auth/login",
-                                                            "/api/public/**")
-                                            .permitAll()
-                                            .anyRequest().authenticated())
-                            .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
-                                            UsernamePasswordAuthenticationFilter.class)
-                            .build();
+        return http
+                .csrf((csrf) -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/my-swagger/**",
+                                "/my-api-docs/**",
+                                "/api/auth/register",
+                                "/api/auth/login",
+                                "/api/public/**")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
+                        UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
-    
+
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.setAllowCredentials(true); 
+        corsConfiguration.setAllowCredentials(true);
 
         corsConfiguration.addAllowedOriginPattern("https://mangaup42.netlify.app");
         corsConfiguration.addAllowedOriginPattern("http://localhost:4200");
@@ -74,11 +76,11 @@ public class SecurityConfig {
         corsConfiguration.addAllowedMethod("*");
 
         corsConfiguration.addExposedHeader("Authorization");
-
+        corsConfiguration.addExposedHeader("XSRF-TOKEN");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
 
         return source;
     }
-    
+
 }
