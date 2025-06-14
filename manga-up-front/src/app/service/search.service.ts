@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { MangaBaseProjection, MangaBaseProjections, UserTest } from '../type';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root',
 })
 export class SearchService{
-    urlSearch = "${environment.apiUrl}api/public/search";
+    urlSearch = `${environment.apiUrl}api/public/search`;
 
     options = {
         headers: new HttpHeaders({

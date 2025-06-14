@@ -4,14 +4,15 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
 import { AuthUserInfo } from '../type'; 
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = '${environment.apiUrl}/api/auth';
-    private apiRegisterUrl = '${environment.apiUrl}/api/auth/register';
-    private apiGender = '${environment.apiUrl}/api/public/genderUser';
+    private apiUrl = `${environment.apiUrl}/api/auth`;
+    private apiRegisterUrl = `${environment.apiUrl}/api/auth/register`;
+    private apiGender = `${environment.apiUrl}/api/public/genderUser`;
 
 
        appUserRegister = new BehaviorSubject<AppUserRegister | null>(null)

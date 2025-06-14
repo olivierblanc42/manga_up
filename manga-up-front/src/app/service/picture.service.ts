@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections, PictureDto, PictureProjection, PictureProjections } from '../type';
+import { environment } from '../../environments/environment.prod';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProject
 
 export class PictureService{
 
-    url = "${environment.apiUrl}/api/picture"
+    url = `${environment.apiUrl}/api/picture`
 
 
     options = {
