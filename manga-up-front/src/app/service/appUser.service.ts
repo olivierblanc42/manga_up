@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { UserTest } from '../type';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AppUserService {
 
-    private apiUrl = '${environment.apiUrl}/api/users/me';
+    private apiUrl = `${environment.apiUrl}/api/users/me`;
     
 
     options = {
