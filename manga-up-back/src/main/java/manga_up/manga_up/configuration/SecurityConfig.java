@@ -65,22 +65,19 @@ public class SecurityConfig {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowCredentials(true); 
 
-        corsConfiguration.addAllowedOrigin("https://mangaup-production.up.railway.app");
-        corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
-        corsConfiguration.addAllowedOrigin("http://localhost:4200");
-        corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
+        corsConfiguration.addAllowedOriginPattern("https://mangaup42.netlify.app");
+        corsConfiguration.addAllowedOriginPattern("http://localhost:4200");
 
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
 
         corsConfiguration.addExposedHeader("Authorization");
 
-        System.out.println("CORS configuration source chargée");
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
+
         return source;
     }
     
