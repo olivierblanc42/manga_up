@@ -55,7 +55,6 @@ public class MangaMapperTest {
 
     @Test
     void shoulmangaToMangaDto() {
-        // Exemples d'entités correspondantes
         Category categoryEntity = new Category();
         categoryEntity.setId(1);
 
@@ -98,7 +97,6 @@ public class MangaMapperTest {
 
     @Test
     void shoultoEntityManga() {
-        // Création des DTO utilisés dans MangaDto
         CategoryLittleDto categoryDto = new CategoryLittleDto(1);
         PictureLightDto picDto1 = new PictureLightDto(1, "http://example.com/image1.jpg", true);
         PictureLightDto picDto2 = new PictureLightDto(2, "http://example.com/image2.jpg", false);
@@ -116,24 +114,20 @@ public class MangaMapperTest {
                 true,
                 categoryDto,
                 genreIds,
-                Set.of(), // auteurs non utilisés dans ta méthode
+                Set.of(), 
                 Set.of(picDto1, picDto2),
                 userFavs);
 
-        // Mocks des dépendances
 
-        // categoryMapper.categoryLittleDto(...) doit retourner une entité Category
         Category categoryEntity = new Category();
         categoryEntity.setId(1);
         when(categoryMapper.categoryLittleDto(categoryDto)).thenReturn(categoryEntity);
 
-        // genreDao.findById(10) doit retourner un Genre valide
         Genre genreEntity = new Genre();
         genreEntity.setId(10);
         genreEntity.setLabel("Aventure");
         when(genreDao.findById(10)).thenReturn(Optional.of(genreEntity));
 
-        // pictureMapper.toEntityPictures(...) doit retourner un Set de Picture
         Picture picture1 = new Picture();
         picture1.setId(1);
         Picture picture2 = new Picture();
@@ -141,14 +135,11 @@ public class MangaMapperTest {
         Set<Picture> picturesEntity = Set.of(picture1, picture2);
         when(pictureMapper.toEntityPictures(Set.of(picDto1, picDto2))).thenReturn(picturesEntity);
 
-        // appUserMapper.toEntityAppUserFavoriteSet(...) doit retourner un Set d'AppUser
         Set<AppUser> appUsersEntity = Set.of();
         when(appUserMapper.toEntityAppUserFavoriteSet(userFavs)).thenReturn(appUsersEntity);
 
-        // Appel de la méthode testée
         Manga manga = mangaMapper.mangaToEntity(mangaDto);
 
-        // Vérifications
         assertNotNull(manga);
         assertEquals("One Piece", manga.getTitle());
         assertEquals(categoryEntity, manga.getIdCategories());

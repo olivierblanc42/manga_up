@@ -14,16 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,27 +29,18 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.configuration.SecurityConfig;
-import manga_up.manga_up.controller.AuthController;
 import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
-import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.login.LoginRequestDto;
-import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CustomUserDetailsService;
 import manga_up.manga_up.service.LoginService;
 import manga_up.manga_up.dao.UserDao;

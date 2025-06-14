@@ -543,10 +543,8 @@ class MangaServiceTest {
                 Set.of(mainPicture),
                 Set.of());
 
-        // Simule que authorDao.findById renvoie Optional.empty pour authorId
         when(authorDao.findById(authorId)).thenReturn(Optional.empty());
 
-        // Vérifie que l'exception IllegalArgumentException est bien levée
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             mangaService.save(mangaDto);
         });
@@ -581,10 +579,8 @@ class MangaServiceTest {
 
         when(authorDao.findById(authorId)).thenReturn(Optional.of(new Author()));
 
-        // Simule que genre.findById renvoie Optional.empty pour authorId
         when(genreDao.findById(genreId)).thenReturn(Optional.empty());
 
-        // Vérifie que l'exception IllegalArgumentException est bien levée
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             mangaService.save(mangaDto);
         });
@@ -625,7 +621,6 @@ class MangaServiceTest {
         genre.setId(genreId);
         when(genreDao.findById(genreId)).thenReturn(Optional.of(genre));
 
-        // Mock du mapper : MangaDto -> Manga
         Manga mangaEntity = new Manga();
         mangaEntity.setAuthors(Set.of(author));
         mangaEntity.setGenres(Set.of(genre));
@@ -634,10 +629,8 @@ class MangaServiceTest {
         mangaEntity.setTitle(mangaDto.getTitle());
         when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
 
-        // Mock du mapper inverse : Manga -> MangaDto
         when(mangaMapper.mangaToMangaDto(any(Manga.class))).thenReturn(mangaDto);
 
-        // Mock des saves DAO
         when(mangaDao.save(any(Manga.class))).thenAnswer(invocation -> {
             Manga m = invocation.getArgument(0);
             m.setId(123);
@@ -650,16 +643,13 @@ class MangaServiceTest {
             return p;
         });
 
-        // Appel de la méthode testée
         MangaDto savedMangaDto = mangaService.save(mangaDto);
 
-        // Assertions
         assertNotNull(savedMangaDto);
         assertEquals("One Piece", savedMangaDto.getTitle());
         assertFalse(savedMangaDto.getPictures().isEmpty());
         assertTrue(savedMangaDto.getPictures().stream().anyMatch(PictureLightDto::getIsMain));
 
-        // Vérifications des interactions
         verify(authorDao).findById(authorId);
         verify(genreDao).findById(genreId);
         verify(mangaMapper).mangaToEntity(mangaDto);
@@ -670,7 +660,6 @@ class MangaServiceTest {
 
     @Test
     void save_shouldThrowException_whenPicturesIsNull() {
-        // Pas besoin de stubber authorDao et genreDao si exception avant
 
         CategoryLittleDto category = new CategoryLittleDto(1);
 
@@ -680,7 +669,7 @@ class MangaServiceTest {
                 Instant.parse("1999-10-20T00:00:00Z"),
                 "Un jeune garçon veut devenir roi des pirates.",
                 new BigDecimal("10.00"),
-                null, // pictures null => exception
+                null, 
                 true,
                 true,
                 category,

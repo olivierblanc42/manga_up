@@ -69,9 +69,9 @@ public ResponseEntity<?> login(@RequestBody LoginRequestDto user, HttpServletRes
 public ResponseEntity<?> logout(HttpServletResponse response) {
     ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
             .httpOnly(true)
-            .secure(false) // true en production (HTTPS)
+            .secure(true) 
             .path("/")
-            .maxAge(0) // Supprime immédiatement le cookie
+            .maxAge(0) 
             .build();
 
     response.addHeader("Set-Cookie", deleteCookie.toString());

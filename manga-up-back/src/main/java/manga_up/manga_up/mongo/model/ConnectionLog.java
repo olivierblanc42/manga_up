@@ -12,9 +12,7 @@ public class ConnectionLog {
     private String username;
     private LocalDateTime loginTime;
 
-    // Constructeurs
-
-    // Getters et setters
+ 
     public String getId() {
         return id;
     }

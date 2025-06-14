@@ -164,7 +164,6 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
 
     @Test
     void shouldUpdatePictureAndSetAsMain() {
-        // Given
         Integer pictureId = 1;
         Integer mangaId = 42;
 
@@ -191,10 +190,8 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
         when(pictureDao.findByIdMangasIdAndIsMainTrue(mangaId)).thenReturn(List.of(otherMainPicture));
         when(pictureMapper.toPictureLightDto(existingPicture)).thenReturn(pictureDto);
 
-        // When
         PictureLightDto result = pictureService.updatePicture(pictureId, pictureDto);
 
-        // Then
         assertThat(result).isNotNull();
         assertThat(existingPicture.getUrl()).isEqualTo("image.com/updated");
         assertThat(existingPicture.getMain()).isTrue();

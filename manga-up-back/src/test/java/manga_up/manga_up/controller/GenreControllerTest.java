@@ -197,7 +197,6 @@ void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
                 }
             """;
 
-    // Simuler une exception lancée par le service
     when(genreService.updateGenre(eq(1), any(GenreDto.class)))
             .thenThrow(new RuntimeException("Database error"));
 
