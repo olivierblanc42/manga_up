@@ -70,7 +70,7 @@ public class SecurityConfig {
         corsConfiguration.addAllowedOrigin("https://mangaup-production.up.railway.app");
         corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
         corsConfiguration.addAllowedOrigin("http://localhost:4200");
-
+        corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
 
