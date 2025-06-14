@@ -49,7 +49,7 @@ export class AuthService {
     }
 
     logout(): void {
-        this.http.post('http://localhost:8080/api/auth/logout', {}, { withCredentials: true })
+        this.http.post(`${environment.apiUrl}api/auth/logout`, {}, { withCredentials: true })
             .subscribe({
                 next: () => {
                     console.log('Déconnecté avec succès.');
@@ -65,7 +65,7 @@ export class AuthService {
 
 
     isLoggedIn(): Observable<boolean> {
-        return this.http.get('/api/auth/check', { withCredentials: true }).pipe(
+        return this.http.get('${environment.apiUrl}api/auth/check', { withCredentials: true }).pipe(
             map(() => true),
             catchError(() => of(false))
         );
