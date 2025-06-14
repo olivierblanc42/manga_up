@@ -11,11 +11,11 @@ import { environment } from '../../environments/environment.prod';
 
 
 export class GenreService {
-    url =`${environment.apiUrl}/api/genres/`
-    urlPagination = `${environment.apiUrl}/api/public/genres/pagination`;
-    urlFour = `${environment.apiUrl}/api/public/genres/four`;
-    urlGenre = `${environment.apiUrl}/api/public/genres/`
-    urlAdd = `${environment.apiUrl}/api/genres/add`
+    url =`${environment.apiUrl}api/genres/`
+    urlPagination = `${environment.apiUrl}api/public/genres/pagination`;
+    urlFour = `${environment.apiUrl}api/public/genres/four`;
+    urlGenre = `${environment.apiUrl}api/public/genres/`
+    urlAdd = `${environment.apiUrl}api/genres/add`
 
 
     options = {
