@@ -65,7 +65,7 @@ export class AuthService {
 
 
     isLoggedIn(): Observable<boolean> {
-        return this.http.get('${environment.apiUrl}api/auth/check', { withCredentials: true }).pipe(
+        return this.http.get(`${environment.apiUrl}api/auth/check`, { withCredentials: true }).pipe(
             map(() => true),
             catchError(() => of(false))
         );
