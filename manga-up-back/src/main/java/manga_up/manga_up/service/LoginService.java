@@ -75,10 +75,10 @@ public class LoginService {
 
                 ResponseCookie cookie = ResponseCookie.from("jwt", jwt)
                         .httpOnly(true)
-                        .secure(false)
+                        .secure(true)
                         .path("/")
                         .maxAge(7 * 24 * 60 * 60)
-                        .sameSite("Strict")
+                        .sameSite("None")
                         .build();
 
                 response.setHeader("Set-Cookie", cookie.toString());
