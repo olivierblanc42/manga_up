@@ -55,7 +55,6 @@ export class GenreService {
 
 
     getFourGenre() {
-       // console.log('Request to fetch four genres is being sent...');
         lastValueFrom(this.http.get<GenreDto[]>(this.urlFour))
             .then((r) => {
                 if (!r) return;

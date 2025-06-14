@@ -41,11 +41,10 @@ describe('CategoriesAdminComponent', () => {
   };
 
   beforeEach(async () => {
-    // Simulation du service avec BehaviorSubjects
     categoryService = {
       categoriesProjections: new BehaviorSubject<CategoriesProjections | null>(null),
       currentCategoriesProjection: new BehaviorSubject<CategoriesProjections | null>(mockCategories),
-      getAllCategoriesWithPagination: jasmine.createSpy('getAllCategoriesWithPagination').and.returnValue(of()),
+      getAllCategoriesWithPagination: jasmine.createSpy('getAllCategoriesWithPagination').and.returnValue(of(mockCategories)),
     };
 
     await TestBed.configureTestingModule({
@@ -105,35 +104,6 @@ describe('CategoriesAdminComponent', () => {
     const img = fixture.nativeElement.querySelector('.image');
     expect(img.src).toBe('https://example.com/naruto.jpg');
   });
-
-  // Vérifie la pagination : boutons, clics, méthodes appelées
-  // it('should display pagination buttons and call the right methods', () => {
-  //   spyOn(component, 'pagePrevious');
-  //   spyOn(component, 'pageNext');
-  //   spyOn(component, 'pageCategories');
-
-  //   component.pages = [0, 1, 2];
-  //   component.currentPage = 0;
-  //   component.lastPage = 3;
-
-  //   fixture.detectChanges();
-
-  //   const buttons = fixture.nativeElement.querySelectorAll('button');
-  //   expect(buttons.length).toBe(5);
-
-  //   expect(buttons[1].textContent.trim()).toBe('1');
-  //   expect(buttons[2].textContent.trim()).toBe('2');
-  //   expect(buttons[3].textContent.trim()).toBe('3');
-
-  //   buttons[0].click();
-  //   expect(component.pagePrevious).toHaveBeenCalled();
-
-  //   buttons[2].click();
-  //   expect(component.pageCategories).toHaveBeenCalledWith(1);
-
-  //   buttons[4].click();
-  //   expect(component.pageNext).toHaveBeenCalled();
-  // });
 
   // Vérifie le titre affiché
   it('should have the correct title', () => {

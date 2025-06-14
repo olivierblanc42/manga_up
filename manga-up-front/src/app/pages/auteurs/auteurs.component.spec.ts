@@ -48,7 +48,7 @@ describe('AuteursComponent', () => {
     authorServiceMock = {
       authorProjection: authorProjectionSubject,
       currentauthorProjection: authorProjectionSubject.asObservable(),
-      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of())
+      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of(mockAuthorData))
     };
 
     await TestBed.configureTestingModule({
@@ -93,7 +93,7 @@ describe('AuteursComponent', () => {
   it('should display author images correctly', () => {
     component.authors = {
       ...mockAuthorData,
-      content: [mockAuthorData.content[1]] // Juste Tite Kubo
+      content: [mockAuthorData.content[1]] 
     };
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector('.image');
@@ -112,7 +112,7 @@ describe('AuteursComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toBe(5); // Previous + 3 pages + Next
+    expect(buttons.length).toBe(5); 
 
     expect(buttons[1].textContent.trim()).toBe('1');
     expect(buttons[2].textContent.trim()).toBe('2');
@@ -121,7 +121,7 @@ describe('AuteursComponent', () => {
     buttons[0].click();
     expect(component.pagePrevious).toHaveBeenCalled();
 
-    buttons[2].click(); // page 2
+    buttons[2].click(); 
     expect(component.pageAuthor).toHaveBeenCalledWith(1);
 
     buttons[4].click();

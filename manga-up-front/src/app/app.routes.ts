@@ -50,7 +50,6 @@ export const routes: Routes = [
         path: 'search/:query',
         loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent)
       } , 
-        // Routes administratives protégées par RoleGuard
     {
         path: 'admin', component: AdminLayoutComponent,
         canActivate: [AuthGuard, RoleGuard], 

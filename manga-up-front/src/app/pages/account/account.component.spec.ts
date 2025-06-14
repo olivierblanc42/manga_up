@@ -18,7 +18,6 @@ describe('AccountComponent', () => {
          providers: [
               provideHttpClient(),
               provideHttpClientTesting(),
-              // { provide: authorService, useValue: authorService },
               {
                 provide: ActivatedRoute,
                 useValue: {

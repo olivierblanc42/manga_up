@@ -54,7 +54,7 @@ describe('MangasAdminComponent', () =>  {
     mangaServiceMock = {
       mangaPagination: mangaPaginationSubject,
       currentMangaPaginations: mangaPaginationSubject,
-      getMangas: jasmine.createSpy('getMangas').and.returnValue(of())
+      getMangas: jasmine.createSpy('getMangas').and.returnValue(of(mockPaginationData))
     };
 
     await TestBed.configureTestingModule({
@@ -102,37 +102,6 @@ describe('MangasAdminComponent', () =>  {
     expect(img.src).toBe('https://example.com/manga1.jpg');
   });
 
-  // it('should have the correct title', () => {
-  //   const titleElement = fixture.nativeElement.querySelector('h1');
-  //   expect(titleElement.textContent).toContain('Mangas');
-  // });
-
-  // it('should display pagination buttons and call related methods', () => {
-  //   spyOn(component, 'pagePrevious');
-  //   spyOn(component, 'pageNext');
-  //   spyOn(component, 'pageMangas');
-
-  //   component.pages = [0, 1, 2];
-  //   component.currentPage = 0;
-  //   component.lastPage = 3;
-  //   fixture.detectChanges();
-
-  //   const buttons = fixture.nativeElement.querySelectorAll('button');
-  //   expect(buttons.length).toBe(5); // Previous + 3 pages + Next
-
-  //   expect(buttons[1].textContent.trim()).toBe('1');
-  //   expect(buttons[2].textContent.trim()).toBe('2');
-  //   expect(buttons[3].textContent.trim()).toBe('3');
-
-  //   buttons[0].click();
-  //   expect(component.pagePrevious).toHaveBeenCalled();
-
-  //   buttons[2].click(); // Page 2 => index 1
-  //   expect(component.pageMangas).toHaveBeenCalledWith(1);
-
-  //   buttons[4].click();
-  //   expect(component.pageNext).toHaveBeenCalled();
-  // });
 
   it('should handle null mangaPagination gracefully', () => {
     mangaPaginationSubject.next(null);

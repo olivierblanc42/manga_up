@@ -49,7 +49,7 @@ describe('AuthorsAdminComponent', () =>{
     authorServiceMock = {
       authorProjection: authorProjectionSubject,
       currentauthorProjection: authorProjectionSubject.asObservable(),
-      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of())
+      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of(mockAuthorData))
     };
 
     await TestBed.configureTestingModule({
@@ -94,7 +94,7 @@ describe('AuthorsAdminComponent', () =>{
   it('should display author images correctly', () => {
     component.authors = {
       ...mockAuthorData,
-      content: [mockAuthorData.content[1]] // Juste Tite Kubo
+      content: [mockAuthorData.content[1]] 
     };
     fixture.detectChanges();
     const img = fixture.nativeElement.querySelector('.image');

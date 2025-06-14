@@ -54,7 +54,7 @@ describe('MangasComponent', () => {
     mangaServiceMock = {
       mangaPagination: mangaPaginationSubject,
       currentMangaPaginations: mangaPaginationSubject,
-      getMangas: jasmine.createSpy('getMangas').and.returnValue(of())
+      getMangas: jasmine.createSpy('getMangas').and.returnValue(of(mockPaginationData))
     };
 
     await TestBed.configureTestingModule({
@@ -118,7 +118,7 @@ describe('MangasComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toBe(5); // Previous + 3 pages + Next
+    expect(buttons.length).toBe(5); 
 
     expect(buttons[1].textContent.trim()).toBe('1');
     expect(buttons[2].textContent.trim()).toBe('2');
@@ -127,7 +127,7 @@ describe('MangasComponent', () => {
     buttons[0].click();
     expect(component.pagePrevious).toHaveBeenCalled();
 
-    buttons[2].click(); // Page 2 => index 1
+    buttons[2].click(); 
     expect(component.pageMangas).toHaveBeenCalledWith(1);
 
     buttons[4].click();

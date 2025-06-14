@@ -16,7 +16,6 @@ describe('UsersRegisterComponent', () => {
                providers: [
                     provideHttpClient(),
                     provideHttpClientTesting(),
-                    // { provide: authorService, useValue: authorService },
                     {
                       provide: ActivatedRoute,
                       useValue: {

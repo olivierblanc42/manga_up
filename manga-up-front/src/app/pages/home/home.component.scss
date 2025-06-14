@@ -80,7 +80,6 @@ swiper-container {
 }
 
 
-/* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {
 
     .swiper-genre,.swiper-manga{
@@ -91,7 +90,6 @@ swiper-container {
 }
 
 
-/* Tablette en mode paysage et petits PC portables (1024px et plus) */
 @media (min-width: 1024px) {
     .infos {
 
@@ -121,12 +119,10 @@ swiper-container {
         }
 }
 
-/* Écran PC standard et laptop (1280px et plus) */
 @media (min-width: 1280px) {
     
 }
 
-/* Grand écran PC (1440px et plus) */
 @media (min-width: 1440px) {}
 
 @media (min-width: 1920px) {}

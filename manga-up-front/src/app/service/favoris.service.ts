@@ -10,7 +10,6 @@ export class FavorisService {
 
     constructor(private http: HttpClient) { }
 
-    // Stocke l'état favori du manga (true/false)
     private favorite = new BehaviorSubject<boolean>(false);
     currentFavorite = this.favorite.asObservable();
 
