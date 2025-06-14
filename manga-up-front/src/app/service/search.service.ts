@@ -7,7 +7,7 @@ import { MangaBaseProjection, MangaBaseProjections, UserTest } from '../type';
     providedIn: 'root',
 })
 export class SearchService{
-    urlSearch= "api/public/search";
+    urlSearch = "${environment.apiUrl}api/public/search";
 
     options = {
         headers: new HttpHeaders({

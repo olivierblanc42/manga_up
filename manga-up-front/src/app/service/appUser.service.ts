@@ -8,7 +8,7 @@ import { UserTest } from '../type';
 })
 export class AppUserService {
 
-    private apiUrl = '/api/users/me';
+    private apiUrl = '${environment.apiUrl}/api/users/me';
     
 
     options = {
