@@ -1,16 +1,16 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, lastValueFrom } from "rxjs";
+import { environment } from "../../environments/environment.prod";
 
 @Injectable({
     providedIn: 'root',
 })
 export class FavorisService {
-    private apiUrl = 'http://localhost:8080/api/users';
+    private apiUrl = `${environment.apiUrl}/api/users`;
 
     constructor(private http: HttpClient) { }
 
-    // Stocke l'état favori du manga (true/false)
     private favorite = new BehaviorSubject<boolean>(false);
     currentFavorite = this.favorite.asObservable();
 

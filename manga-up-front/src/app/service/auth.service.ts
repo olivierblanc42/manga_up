@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
-import { AuthUserInfo } from '../type'; // adapte le chemin si besoin
+import { AuthUserInfo } from '../type'; 
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = 'http://localhost:8080/api/auth';
-    private apiRegisterUrl = 'api/auth/register';
-    private apiGender = 'http://localhost:8080/api/public/genderUser';
+    private apiUrl = `${environment.apiUrl}/api/auth`;
+    private apiRegisterUrl = `${environment.apiUrl}/api/auth/register`;
+    private apiGender = `${environment.apiUrl}/api/public/genderUser`;
 
 
        appUserRegister = new BehaviorSubject<AppUserRegister | null>(null)
@@ -44,7 +45,6 @@ export class AuthService {
     }
 
     login(credentials: { username: string; password: string }): Observable<any> {
-        // Ajout de `withCredentials: true`
         return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true });  
     }
 
@@ -53,8 +53,8 @@ export class AuthService {
             .subscribe({
                 next: () => {
                     console.log('Déconnecté avec succès.');
-                    this.clearAuthState(); // Nettoie les données locales
-                    // Redirection ou autre ici si besoin
+                    this.clearAuthState(); 
+                    
                 },
                 error: (err) => {
                     console.error('Erreur lors de la déconnexion :', err);
@@ -104,7 +104,7 @@ export class AuthService {
     
     clearAuthState(): void {
         this.userInfo.next(null);
-        this.setUserRole(null); // met aussi à jour le BehaviorSubject
+        this.setUserRole(null); 
         localStorage.removeItem('username');
     }
       
@@ -120,7 +120,7 @@ export class AuthService {
                 };
                 this.userInfo.next(userInfo);
                 localStorage.setItem('username', userInfo.username);
-                this.setUserRole(userInfo.role); // ici !
+                this.setUserRole(userInfo.role); 
                 return response;
             })
         );

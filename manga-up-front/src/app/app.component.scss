@@ -196,14 +196,11 @@ footer {
     }
 }
 
-/* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {}
 
-/* Tablette en mode paysage et petits PC portables (1024px et plus) */
 @media (min-width: 1024px) {
     .first-nav {
-        // margin-left: $margin-content;
-        // margin-right: $margin-content;
+
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -328,10 +325,8 @@ footer {
 
 }
 
-/* Écran PC standard et laptop (1280px et plus) */
 @media (min-width: 1280px) {}
 
-/* Grand écran PC (1440px et plus) */
 @media (min-width: 1440px) {}
 
 @media (min-width: 1920px) {

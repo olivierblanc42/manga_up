@@ -2,7 +2,6 @@
 @use './variables.scss' as *;
 
 :root {
-    /* Change la couleur des flèches dans swiper*/
     --swiper-navigation-color: black;
     --swiper-pagination-color: black;
 
@@ -436,7 +435,6 @@ body.home-page .breadcrumb {
 }
 
 
-/* Tablette en mode portrait (768px et plus) */
 @media (min-width: 768px) {
     .link-admin {
         display: block;
@@ -741,7 +739,6 @@ body.home-page .breadcrumb {
     }
 }
 
-/* Grand écran PC (1440px et plus) */
 @media (min-width: 1440px) {
 
     .section {

@@ -44,7 +44,7 @@ describe('CategoriesComponent', () => {
     categoryService = {
       categoriesProjections: new BehaviorSubject<CategoriesProjections | null>(null),
       currentCategoriesProjection: new BehaviorSubject<CategoriesProjections | null>(mockCategories),
-      getAllCategoriesWithPagination: jasmine.createSpy('getAllCategoriesWithPagination').and.returnValue(of()),
+      getAllCategoriesWithPagination: jasmine.createSpy('getAllCategoriesWithPagination').and.returnValue(of(mockCategories)),
     };
 
     await TestBed.configureTestingModule({

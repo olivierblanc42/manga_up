@@ -10,7 +10,6 @@ describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
-  // Création d'un mock de SearchService
   let mangasSearchSubject: BehaviorSubject<MangaBaseProjections | null>;
   let searchServiceMock: {
     currentmangasSearch: BehaviorSubject<MangaBaseProjections | null>,

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
+import { environment } from '../../environments/environment.prod';
 
 
 @Injectable({
@@ -9,13 +10,13 @@ import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProject
 })
 
 export class MangaService{
-    urlOne = "api/public/one";
-    urlFourDate= "api/public/four";
-    urlPagination = "api/public/mangas/paginations";
-    url = "/api/public/manga/"
-    urlRandom ="/api/public/randomFour"
-    urlAdd = "/api/mangas/add"
-    urldelete ="/api/mangas"
+    urlOne = `${environment.apiUrl}/api/public/one`;
+    urlFourDate = `${environment.apiUrl}/api/public/four`;
+    urlPagination = `${environment.apiUrl}/api/public/mangas/paginations`;
+    url = `${environment.apiUrl}/api/public/manga/`
+    urlRandom =`${environment.apiUrl}/api/public/randomFour`
+    urlAdd = `${environment.apiUrl}/api/mangas/add`
+    urldelete =`${environment.apiUrl}/api/mangas`
 
     options = {
         headers: new HttpHeaders({
