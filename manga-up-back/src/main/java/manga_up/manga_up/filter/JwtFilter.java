@@ -48,7 +48,6 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Lecture du cookie JWT
         String jwt = null;
         if (request.getCookies() == null) {
             System.out.println("No cookies found");
@@ -75,10 +74,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 if (jwtUtils.validateToken(jwt, userDetails)) {
                     System.out.println("JWT token validated");
 
-                    // Extraction des rôles depuis le token
                     List<String> roles = jwtUtils.extractRoles(jwt);
 
-                    // Construction des authorities
                     List<GrantedAuthority> authorities = roles.stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());

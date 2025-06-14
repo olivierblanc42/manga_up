@@ -154,7 +154,6 @@ class GenreUserServiceTest {
         genderUserEntity.setId(genderUserDto.getId());
         genderUserEntity.setLabel(genderUserDto.getLabel());
 
-        // Appelle les méthodes sur le MOCK, pas la classe
         when(genderUserMapper.toEntity(genderUserDto)).thenReturn(genderUserEntity);
         when(genderUserDao.save(genderUserEntity)).thenReturn(genderUserEntity);
         when(genderUserMapper.toDto(genderUserEntity)).thenReturn(genderUserDto);
@@ -168,7 +167,6 @@ class GenreUserServiceTest {
 
 @Test
 void shouldThrowExceptionWhenSaveErreur() {
-    // Arrange
     GenderUserDto genderUserDto = new GenderUserDto(1, "Man");
     GenderUser genderUserEntity = new GenderUser();
     genderUserEntity.setId(genderUserDto.getId());
@@ -177,7 +175,6 @@ void shouldThrowExceptionWhenSaveErreur() {
     when(genderUserMapper.toEntity(genderUserDto)).thenReturn(genderUserEntity);
     when(genderUserDao.save(genderUserEntity)).thenThrow(new RuntimeException("Error saving GenderUser"));
 
-    // Act + Assert
     RuntimeException exception = assertThrows(RuntimeException.class, () -> {
         genreUserService.saveGenreUser(genderUserDto);
     });

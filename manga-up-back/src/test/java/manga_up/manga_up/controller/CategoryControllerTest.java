@@ -127,10 +127,8 @@ public class CategoryControllerTest {
         Page<MangaDtoRandom> mangasPage = new PageImpl<>(mangasList);
 
         CategoryWithMangaResponse response = new CategoryWithMangaResponse(category, mangasPage);
-        // Mock du service
         when(categoryService.getCategoryWithMangas(any(Integer.class), any(Pageable.class))).thenReturn(response);
 
-        // Appel GET sur le controller
         mockMvc.perform(get("/api/categories/category/1/mangas").with(csrf())
                 .param("page", "0")
                 .param("size", "5"))
@@ -207,7 +205,6 @@ public class CategoryControllerTest {
                     }
                 """;
 
-        // Simuler une exception lancée par le service
         when(categoryService.update(eq(1), any(CategoryDto.class)))
                 .thenThrow(new RuntimeException("Database error"));
 

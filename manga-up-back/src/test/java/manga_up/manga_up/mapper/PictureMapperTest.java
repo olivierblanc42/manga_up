@@ -4,18 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.Instant;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
-import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.picture.PictureDto;
 import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.Picture;
-import manga_up.manga_up.model.UserAddress;
 
 @ActiveProfiles("test")
 public class PictureMapperTest {

@@ -219,7 +219,6 @@ void shouldgetRandomFourGenres(){
         int genreId = 1;
         Pageable pageable = PageRequest.of(0, 5);
 
-        // GIVEN
         GenreProjection genreProjection = mock(GenreProjection.class);
         when(genreDao.findGenreProjectionById(eq(genreId))).thenReturn(Optional.of(genreProjection));
 
@@ -232,10 +231,8 @@ void shouldgetRandomFourGenres(){
         MangaDtoRandom dto = new MangaDtoRandom(1, "Naruto", Set.of(), "http://img1");
         when(mangaMapper.mapToDto(eq(projection1))).thenReturn(dto);
 
-        // WHEN
         GenreWithMangasResponse response = genreService.getGenreWithMangas(genreId, pageable);
 
-        // THEN
         assertNotNull(response);
         assertEquals(genreProjection, response.getGenre());
         assertEquals(1, response.getMangas().getTotalElements());

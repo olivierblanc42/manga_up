@@ -193,14 +193,7 @@ public class PublicController {
 
      // All public requests for GenderUser
 
-   // @GetMapping("categories")
-//    @GetMapping("genderUser")
-//    public ResponseEntity<List<GenderUserDto>> getGenderUserDto() {
-//        LOGGER.info("Get GenderUserDto");
-//        List<GenderUserDto> genders = genderUserService.getAllGenreUsers();
-//        LOGGER.info("Found {} genres ", genders.size());
-//        return new ResponseEntity<>(genders, HttpStatus.OK);
-//    }
+
 
 
     // All public requests for Categories

@@ -47,20 +47,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getComment(id));
     }
 
-    // @PreAuthorize("hasRole('ADMIN')")
-    // @Operation(summary = "Update Comment")
-    // @PutMapping("{id}")
-    // public ResponseEntity<CommentLightDto> updateComment(@PathVariable Integer id,
-    //         @RequestBody CommentLightDto commentLightDto) {
-    //     LOGGER.info("Updating address");
-    //     try {
-    //         CommentLightDto commentDto = commentService.updateComment(id, commentLightDto);
-    //         return new ResponseEntity<>(commentDto, HttpStatus.OK);
-    //     } catch (Exception e) {
-    //         LOGGER.error("Error updating Comment", e);
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    //     }
-    // }
+
 
     @PreAuthorize("hasRole('ADMIN')")
 

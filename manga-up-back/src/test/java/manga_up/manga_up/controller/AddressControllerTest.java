@@ -16,14 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import manga_up.manga_up.configuration.JwtUtils;
 import manga_up.manga_up.dao.AddressDao;
-import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
-import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
-import manga_up.manga_up.projection.author.AuthorProjection;
-import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
-import manga_up.manga_up.service.AuthorService;
 import manga_up.manga_up.service.CustomUserDetailsService;
 import manga_up.manga_up.service.UserAddressService;
 
@@ -35,7 +30,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -171,14 +165,12 @@ public class AddressControllerTest {
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldReturnAllAddress() throws Exception {
-        // Création d'utilisateurs simulés
         AppUserLittleProjection user1 = new AppUserLittleProjectionTest(1, "jdoe", "John", "Doe");
         AppUserLittleProjection user2 = new AppUserLittleProjectionTest(2, "asmith", "Alice", "Smith");
 
         Set<AppUserLittleProjection> usersSet1 = new HashSet<>(Set.of(user1));
         Set<AppUserLittleProjection> usersSet2 = new HashSet<>(Set.of(user1, user2));
 
-        // Première adresse utilisateur de test
         UserAddressProjection address1 = new UserAddressProjectionTest(
                 100,
                 "123 Rue Principale",
@@ -189,7 +181,6 @@ public class AddressControllerTest {
                 "75001",
                 usersSet1);
 
-        // Deuxième adresse utilisateur de test
         UserAddressProjection address2 = new UserAddressProjectionTest(
                 101,
                 "456 Avenue des Champs",
@@ -223,7 +214,6 @@ public class AddressControllerTest {
 
         Set<AppUserLittleProjection> usersSet1 = new HashSet<>(Set.of(user1));
 
-        // Première adresse utilisateur de test
         UserAddressProjection address1 = new UserAddressProjectionTest(
                 100,
                 "123 Rue Principale",

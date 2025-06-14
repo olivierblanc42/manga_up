@@ -109,7 +109,6 @@ public class MangaService {
             throw new IllegalArgumentException("A manga must contain at least one image.");
         }
 
-        // 1. Prepare authors and genres
         Set<Author> authors = mangaDto.getAuthors().stream()
                 .map(id -> authorDao.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
@@ -120,7 +119,6 @@ public class MangaService {
                         .orElseThrow(() -> new IllegalArgumentException("Genre not found")))
                 .collect(Collectors.toSet());
 
-        // 2. Map and save Manga WITHOUT images
         Manga manga = mangaMapper.mangaToEntity(mangaDto);
         manga.setAuthors(authors);
         manga.setGenres(genres);
@@ -148,7 +146,6 @@ public class MangaService {
             throw new IllegalArgumentException("Only one image can be marked as main.");
         }
 
-        // 3. Create images and associate them with the manga
         Set<Picture> pictures = new HashSet<>();
         for (PictureLightDto pictureDto : mangaDto.getPictures()) {
             Picture picture;
@@ -167,7 +164,6 @@ public class MangaService {
             }
         }
 
-        // 4. Associate the image list with the manga
         manga.setPictures(pictures);
         mangaDao.save(manga);
 
