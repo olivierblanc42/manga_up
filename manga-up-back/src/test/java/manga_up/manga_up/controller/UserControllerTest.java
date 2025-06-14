@@ -204,7 +204,6 @@ public class UserControllerTest {
         Set<MangaLightDto> mangas = new HashSet<>();
         mangas.add(new MangaLightDto(1, "Naruto"));
         mangas.add(new MangaLightDto(2, "One Piece"));
-        // Création d'un UserProfilDto mocké
         UserProfilDto userProfile = new UserProfilDto(
                 1,
                 "johndoe",
@@ -218,11 +217,9 @@ public class UserControllerTest {
                 gender,
                 mangas);
 
-        // Mock du service pour retourner ce profil
         when(userService.getCurrentUser())
                 .thenReturn(ResponseEntity.ok(userProfile));
 
-        // Test de la requête GET /api/users/me
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
@@ -241,7 +238,6 @@ public class UserControllerTest {
 
         int mangaId = 42;
 
-        // Mock comportement
         when(userService.getAuthenticatedUserEntity()).thenReturn(mockUser);
         when(userService.isFavorite(1, mangaId)).thenReturn(true);
 
@@ -308,9 +304,7 @@ public class UserControllerTest {
 
         int mangaId = 42;
 
-        // Mock getAuthenticatedUserEntity OK
         when(userService.getAuthenticatedUserEntity()).thenReturn(mockUser);
-        // Simuler une exception à l’appel de addFavorite
         doThrow(new RuntimeException("Erreur")).when(userService).removeFavorite(anyInt(), anyInt());
 
         mockMvc.perform(delete("/api/users/manga/{mangaId}", mangaId).with(csrf()))
@@ -326,9 +320,7 @@ public class UserControllerTest {
 
         int mangaId = 42;
 
-        // Mock getAuthenticatedUserEntity OK
         when(userService.getAuthenticatedUserEntity()).thenReturn(mockUser);
-        // Simuler une exception à l’appel de addFavorite
         doThrow(new RuntimeException("Erreur")).when(userService).addFavorite(anyInt(), anyInt());
 
         mockMvc.perform(post("/api/users/manga/{mangaId}", mangaId).with(csrf()))

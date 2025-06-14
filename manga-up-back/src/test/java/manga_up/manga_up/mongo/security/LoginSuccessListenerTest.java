@@ -52,7 +52,7 @@ public class LoginSuccessListenerTest {
         String username = "testuser";
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, "password");
         AuthenticationSuccessEvent event = new AuthenticationSuccessEvent(auth);
-     // Act
+        // Act
         loginSuccessListener.onApplicationEvent(event);
 
         // Assert

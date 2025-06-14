@@ -49,19 +49,16 @@ public class JwtUtils {
 
     }
 
-    // public Boolean validateToken(String token, UserDetails userDetails) {
-    //    String username = extractUsername(token);
-    //    return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    // }
+
     public boolean validateToken(String token, UserDetails userDetails) {
     try {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     } catch (ExpiredJwtException e) {
-        // Le token est expiré, donc invalide
+        // Le token n'est plus bon est expiré
         return false;
     } catch (Exception e) {
-        // Pour toute autre erreur de validation, considérer le token comme invalide
+        // autre erreur token mauvais
         return false;
     }
 }

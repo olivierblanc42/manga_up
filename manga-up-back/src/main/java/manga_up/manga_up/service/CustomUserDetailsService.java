@@ -69,15 +69,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public RegisterDto saveUserDtoRegister(RegisterDto registerDto) {
         LOGGER.info("saveUserDtoRegister registerDTO : {}", registerDto);
 
-        // 3. Encoder le mot de passe ici, après validation par Spring
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         registerDto.setPassword(encodedPassword);
 
-        // 4. Mapper et sauvegarder l'utilisateur
         AppUser appUser = registerMapper.toAppUser(registerDto);
         LOGGER.info("saveUserDtoRegister user: {}", appUser);
 
-        // 5. Gestion de l'adresse (s'il y en a une)
         if (appUser.getIdUserAddress() != null && appUser.getIdUserAddress().getId() == null) {
             appUser.setIdUserAddress(addressDao.save(appUser.getIdUserAddress()));
         } else if (appUser.getIdUserAddress() != null) {
@@ -94,7 +91,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new RuntimeException("Erreur lors de la sauvegarde de l'utilisateur", e);
         }
 
-        // 6. Mapper l'objet AppUser vers un DTO et le retourner
         RegisterDto rDto = registerMapper.toDtoRegister(appUser);
         LOGGER.info("saveUserDtoRegister user : {}", rDto);
 

@@ -60,7 +60,6 @@ public class LoginServiceTest {
 
    @Test
     void login_shouldReturnSuccessResponse_whenCredentialsAreValid() {
-        // Given
         String username = "john";
         String password = "password";
         String role = "USER";
@@ -81,10 +80,8 @@ public class LoginServiceTest {
 
         ArgumentCaptor<String> cookieCaptor = ArgumentCaptor.forClass(String.class);
 
-        // When
         ResponseEntity<Map<String, Object>> response = loginService.login(loginRequest, httpServletResponse);
 
-        // Then
         assertNotNull(response.getBody());
         Map<String, Object> body = response.getBody(); // tu peux faire ça si tu préfères
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -100,19 +97,15 @@ public class LoginServiceTest {
 
 @Test
 void login_shouldReturnBadRequest_whenAuthenticationFails() {
-    // Données d’entrée
     LoginRequestDto loginRequest = new LoginRequestDto();
     loginRequest.setUsername("wrong");
     loginRequest.setPassword("bad");
 
-    // Mock : simulate auth exception
     when(authenticationManager.authenticate(any(Authentication.class)))
             .thenThrow(new BadCredentialsException("Bad credentials"));
 
-    // Appel
     ResponseEntity<Map<String, Object>> response = loginService.login(loginRequest, httpServletResponse);
 
-    // Vérifications
     assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     assertEquals("Invalid username or password", response.getBody().get("error"));
 }

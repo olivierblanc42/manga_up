@@ -201,7 +201,6 @@ void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
                 }
             """;
 
-    // Simuler une exception lancée par le service
     when(pictureService.updatePicture(eq(1), any(
             PictureLightDto.class)))
             .thenThrow(new RuntimeException("Database error"));

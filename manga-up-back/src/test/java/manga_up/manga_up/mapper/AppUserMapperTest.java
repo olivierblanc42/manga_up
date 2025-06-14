@@ -17,7 +17,6 @@ import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.manga.MangaLightDto;
-import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.model.UserAddress;

@@ -22,8 +22,7 @@ class JwtUtilsTest {
     void setUp() {
         jwtUtils = new JwtUtils();
 
-        // Injecter la clé secrète et expiration (valeurs de test)
-        // Utilisation de réflexion pour setter les champs privés (car ils sont @Value)
+ 
         setField(jwtUtils, "secretKey", "01234567890123456789012345678901");
         setField(jwtUtils, "expirationTime", 1000 * 60 * 60L);
     }
@@ -38,7 +37,6 @@ class JwtUtilsTest {
         }
     }
 
-    // Méthode utilitaire pour accéder à getSignKey() privé via réflexion
     private Key getSignKey() {
         try {
             Method method = JwtUtils.class.getDeclaredMethod("getSignKey");
@@ -90,7 +88,7 @@ class JwtUtilsTest {
         UserDetails userDetails = mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("user1");
 
-        Thread.sleep(200); // attendre expiration
+        Thread.sleep(200); 
 
         boolean valid = shortExpiryJwtUtils.validateToken(token, userDetails);
         assertFalse(valid);
@@ -98,7 +96,6 @@ class JwtUtilsTest {
 
     @Test
     void extractRoles_shouldReturnEmptyList_whenNoRoles() {
-        // Création d'un token sans claim "roles" manuellement avec la clé privée
         String token = Jwts.builder()
                 .setSubject("user1")
                 .signWith(getSignKey(), io.jsonwebtoken.SignatureAlgorithm.HS256)

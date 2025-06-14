@@ -28,29 +28,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    // @Operation(summary = "All Categories with pagination")
-    // @ApiResponse(responseCode =  "201", description = "All Categories have been retrieved")
-    // @GetMapping("pagination")
-    // public ResponseEntity<Page<CategoryProjection>> getCategories(
-    //         @PageableDefault(
-    //         page = 0,
-    //         size = 8,
-    //         sort = "createdAt",
-    //         direction = Sort.Direction.DESC
-    // ) @ParameterObject Pageable pageable)
-    // {
-    //     LOGGER.info("Find all Categories with pagination");
-    //     Page<CategoryProjection> categories = categoryService.findAllCategorisByPage(pageable);
-    //     LOGGER.info("Found {} categories", categories.getTotalElements());
-    //     return new ResponseEntity<>(categories, HttpStatus.OK);
-    // }
-
-    // @Operation(summary = "Find category by id ")
-    // @GetMapping("{id}")
-    // public ResponseEntity<CategoryProjection> getCategory(@PathVariable Integer id) {
-    //     LOGGER.info("Find category by id {}", id);
-    //     return ResponseEntity.ok(categoryService.findCategoryById(id));
-    // }
+ 
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete category by id ")
