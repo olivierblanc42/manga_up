@@ -10,11 +10,11 @@ import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWith
 
 
 export class GenreService {
-    url ="/api/genres/"
-    urlPagination = "/api/public/genres/pagination";
-    urlFour = "api/public/genres/four";
-    urlGenre= "/api/public/genres/"
-    urlAdd = "/api/genres/add"
+    url ="${environment.apiUrl}/api/genres/"
+    urlPagination = "${environment.apiUrl}/api/public/genres/pagination";
+    urlFour = "${environment.apiUrl}/api/public/genres/four";
+    urlGenre = "${environment.apiUrl}/api/public/genres/"
+    urlAdd = "${environment.apiUrl}/api/genres/add"
 
 
     options = {
@@ -55,7 +55,6 @@ export class GenreService {
 
 
     getFourGenre() {
-       // console.log('Request to fetch four genres is being sent...');
         lastValueFrom(this.http.get<GenreDto[]>(this.urlFour))
             .then((r) => {
                 if (!r) return;

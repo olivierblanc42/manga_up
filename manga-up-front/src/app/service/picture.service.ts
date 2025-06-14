@@ -10,7 +10,7 @@ import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProject
 
 export class PictureService{
 
-    url = "/api/picture"
+    url = "${environment.apiUrl}/api/picture"
 
 
     options = {

@@ -40,7 +40,6 @@ export class CategoryAdminComponent implements OnInit {
     this.categoryService.currentcategoriesWithManga.subscribe(data => {
       this.category = data;
       if (this.category) {
-        // On met à jour le formulaire avec les données existantes
         this.categoryForm.patchValue({
           label: this.category.label,
           description: this.category.description,

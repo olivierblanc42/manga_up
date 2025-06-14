@@ -11,10 +11,10 @@ import { GenreProjections, GenreProjection, GenreDto } from '../type';
 
 
 export class AuthorService {
-    url = "/api/authors/";
-    urlPagination = "/api/public/authors/pagination";
-    urlOne = "/api/public/author/"
-    urlAdd = "/api/authors/add"
+    url = "${environment.apiUrl}/api/authors/";
+    urlPagination = "${environment.apiUrl}/api/public/authors/pagination";
+    urlOne = "${environment.apiUrl}/api/public/author/"
+    urlAdd = "${environment.apiUrl}/api/authors/add"
     
 
 

@@ -43,7 +43,6 @@ export class AuthorAdminComponent implements OnInit {
     this.authorService.currentAuthorOneProjection.subscribe(data=>{
       this.author = data;
       if (this.author) {
-        // On met à jour le formulaire avec les données existantes
 
         this.authorForm.patchValue({
           firstname: this.author.firstname,

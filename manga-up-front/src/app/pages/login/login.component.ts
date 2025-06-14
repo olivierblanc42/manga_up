@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    // Callback global appelé par hCaptcha (déclaré dans index.html)
     window.onCaptchaSuccess = (token: string) => {
       this.captchaToken = token;
       console.log('hCaptcha token reçu :', token);
@@ -37,7 +36,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    // Tu peux maintenant envoyer le token au backend avec les credentials
     this.authService.login(this.credentials).subscribe({
       next: () => {
         console.log('Utilisateur connecté avec succès');
@@ -50,10 +48,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginTest(): void {
-    // if (!this.captchaToken) {
-    //   this.errorMessage = 'Veuillez valider le captcha avant de continuer.';
-    //   return;
-    // }
+  
 
     const loginData = {
       ...this.credentials,
