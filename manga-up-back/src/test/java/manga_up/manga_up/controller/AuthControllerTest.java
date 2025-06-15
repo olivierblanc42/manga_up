@@ -137,8 +137,9 @@ public class AuthControllerTest {
     mockMvc.perform(post("/api/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(json)
+        .with(csrf()))
 
-    )
+    
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
