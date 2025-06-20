@@ -1,7 +1,7 @@
 import { register } from 'swiper/element/bundle';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, firstValueFrom, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
 import { AuthUserInfo } from '../type'; 
 import { environment } from '../../environments/environment.prod';
@@ -36,7 +36,7 @@ export class AuthService {
 
     async getGender() {
         try {
-            const r = await lastValueFrom(this.http.get<GenderRegister[]>(`${this.apiGender}`));
+            const r = await firstValueFrom(this.http.get<GenderRegister[]>(`${this.apiGender}`));
             if (!r) return;
             this.appUserGender.next(r);
             console.log('Genres récupérés avec succès :', r);
@@ -98,7 +98,7 @@ export class AuthService {
 
     async getRegisterTest(registerDto: AppUserRegister) {
         try {
-            const r = await lastValueFrom(this.http.post<AppUserRegister>(`${this.apiRegisterUrl}`, registerDto));
+            const r = await firstValueFrom(this.http.post<AppUserRegister>(`${this.apiRegisterUrl}`, registerDto));
             if (!r) return;
             this.appUserRegister.next(r);
             console.log('Genres récupérés avec succès :', r);

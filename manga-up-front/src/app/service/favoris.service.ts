@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, lastValueFrom } from "rxjs";
+import { BehaviorSubject, firstValueFrom, lastValueFrom } from "rxjs";
 import { environment } from "../../environments/environment.prod";
 
 @Injectable({
@@ -27,7 +27,7 @@ export class FavorisService {
     // Vérifier si un manga est en favori
     async isFavorite(mangaId: number) {
         try {
-            const isFav = await lastValueFrom(
+            const isFav = await firstValueFrom(
                 this.http.get<boolean>(`${this.apiUrl}/manga/${mangaId}/is-favorite`, { withCredentials: true })
             );
             this.favorite.next(isFav);

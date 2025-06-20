@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { Csrf } from '../type';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class CsrfService {
 
     async fetchCsrfToken(): Promise<void> {
         try {
-            const response = await lastValueFrom(this.http.get<Csrf>(this.apiUrl));
+            const response = await firstValueFrom(this.http.get<Csrf>(this.apiUrl));
             if (!response) return;
             this.csrfProjections.next(response);
         } catch (error) {

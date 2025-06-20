@@ -45,7 +45,7 @@ export class GenreService {
 
     async getAllGenreWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<GenreProjections>(`${this.urlPagination}?page=${page}`));
+            const r = await firstValueFrom(this.http.get<GenreProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.genresProjectionPaginations.next(r);
             console.log('Genres récupérés avec succès :', r);
@@ -58,7 +58,7 @@ export class GenreService {
     
 
     getFourGenre() {
-        lastValueFrom(this.http.get<GenreDto[]>(this.urlFour))
+        firstValueFrom(this.http.get<GenreDto[]>(this.urlFour))
             .then((r) => {
                 if (!r) return;
                 this.genreFour.next(r);
@@ -71,7 +71,7 @@ export class GenreService {
 
     async getGenreManga(id: number, page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<{ genre: GenreWithMangas, mangas: MangasWithImages }>(`${this.urlGenre}${id}/mangas?page=${page}`));
+            const r = await firstValueFrom(this.http.get<{ genre: GenreWithMangas, mangas: MangasWithImages }>(`${this.urlGenre}${id}/mangas?page=${page}`));
           if(r){
             const genreWithMangas: GenreWithMangas = {
                 ...r.genre,
@@ -113,7 +113,7 @@ export class GenreService {
     async updateGenre(genre: GenreDto): Promise<GenreDto> {
         try {
             const urlWithId = `${this.url}/${genre.id}`; 
-            const updatedGenre = await lastValueFrom(
+            const updatedGenre = await firstValueFrom(
                 this.http.put<GenreDto>(urlWithId, genre, { withCredentials: true })
             );
             this.genreDto.next(updatedGenre);

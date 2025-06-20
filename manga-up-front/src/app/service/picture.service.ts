@@ -38,7 +38,7 @@ export class PictureService{
 
 async getPicture(id: number){
             try {
-                const r = await lastValueFrom(this.http.get<PictureProjection>(`${this.url}/${id}`, {
+                const r = await firstValueFrom(this.http.get<PictureProjection>(`${this.url}/${id}`, {
                     withCredentials: true
                 }));
                 if (!r) return;
@@ -51,7 +51,7 @@ async getPicture(id: number){
 
     async getAllpictures(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<PictureProjections>(`${this.url}?page=${page}`, {
+            const r = await firstValueFrom(this.http.get<PictureProjections>(`${this.url}?page=${page}`, {
                 withCredentials: true
             }));
             if (!r) return;
@@ -75,7 +75,7 @@ async getPicture(id: number){
     async updatePicture(picture: PictureDto): Promise<PictureDto> {
         try {
             const urlWithId = `${this.url}/${picture.id}`; 
-            const updatedPicture = await lastValueFrom(
+            const updatedPicture = await firstValueFrom(
                 this.http.put<PictureDto>(urlWithId, picture, { withCredentials: true })
             );
             this.picturesDto.next(updatedPicture);
