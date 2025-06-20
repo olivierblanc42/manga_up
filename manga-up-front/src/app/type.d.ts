@@ -533,3 +533,8 @@ export type PictureSoloManga = {
     isMain: Boolean;
 }
 
+// csrf
+
+export type Csrf = {
+    csrfToken: string;
+  };
