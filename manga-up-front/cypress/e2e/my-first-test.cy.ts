@@ -117,7 +117,7 @@ describe('Page d\'accueil Manga', () => {
 
 
 
-    it('le lien pour la page genre', () => {
+    it('Test link to the genre page', () => {
         cy.get('.genre-link').should('exist');
         cy.get('.genre-link').click();
         cy.visit("http://localhost:4200/genres")
