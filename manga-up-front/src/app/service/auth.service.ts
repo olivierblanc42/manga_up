@@ -1,18 +1,19 @@
 import { register } from 'swiper/element/bundle';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, catchError, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
 import { AppUserRegister, AuthorProjections, GenderRegister } from '../type';
 import { AuthUserInfo } from '../type'; 
 import { environment } from '../../environments/environment.prod';
+import { CsrfService } from './csrf.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-    private apiUrl = `${environment.apiUrl}api/auth`;
-    private apiRegisterUrl = `${environment.apiUrl}api/auth/register`;
-    private apiGender = `${environment.apiUrl}api/public/genderUser`;
+    private apiUrl = `api/auth`;
+    private apiRegisterUrl = `api/auth/register`;
+    private apiGender = `api/public/genderUser`;
 
 
        appUserRegister = new BehaviorSubject<AppUserRegister | null>(null)
@@ -29,7 +30,7 @@ export class AuthService {
     
 
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private csrfService: CsrfService) { }
 
 
 
@@ -45,11 +46,14 @@ export class AuthService {
     }
 
     login(credentials: { username: string; password: string }): Observable<any> {
-        return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true });  
-    }
+        return this.http.post(`${this.apiUrl}/login`, credentials, {
+            withCredentials: true
+        });
+      }
+      
 
     logout(): void {
-        this.http.post(`${environment.apiUrl}api/auth/logout`, {}, { withCredentials: true })
+        this.http.post(`api/auth/logout`, {}, { withCredentials: true })
             .subscribe({
                 next: () => {
                     console.log('Déconnecté avec succès.');
@@ -65,11 +69,13 @@ export class AuthService {
 
 
     isLoggedIn(): Observable<boolean> {
-        return this.http.get(`${environment.apiUrl}api/auth/check`, { withCredentials: true }).pipe(
+        return this.http.get(`api/auth/check`, {
+            withCredentials: true
+        }).pipe(
             map(() => true),
             catchError(() => of(false))
         );
-    }
+      }
 
 
    register(user: AppUserRegister): Observable<any> {

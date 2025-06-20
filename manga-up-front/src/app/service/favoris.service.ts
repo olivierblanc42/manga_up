@@ -7,7 +7,7 @@ import { environment } from "../../environments/environment.prod";
     providedIn: 'root',
 })
 export class FavorisService {
-    private apiUrl = `${environment.apiUrl}api/users`;
+    private apiUrl = `api/users`;
 
     constructor(private http: HttpClient) { }
 

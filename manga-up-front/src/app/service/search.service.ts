@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.prod';
     providedIn: 'root',
 })
 export class SearchService{
-    urlSearch = `${environment.apiUrl}api/public/search`;
+    urlSearch = `api/public/search`;
 
     options = {
         headers: new HttpHeaders({

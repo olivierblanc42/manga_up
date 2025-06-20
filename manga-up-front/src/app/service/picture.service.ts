@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment.prod';
 
 export class PictureService{
 
-    url = `${environment.apiUrl}api/picture`
+    url = `api/picture`
 
 
     options = {
