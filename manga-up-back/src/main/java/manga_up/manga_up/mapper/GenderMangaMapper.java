@@ -27,8 +27,6 @@ public class GenderMangaMapper {
         );
     }
 
-
-
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
       

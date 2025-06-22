@@ -51,6 +51,7 @@ public class LoginService {
         this.userDao = userDao;
         this.jwtUtils = jwtUtils;
         this.authenticationManager = authenticationManager;
+
     }
 
     /**
@@ -65,6 +66,9 @@ public class LoginService {
      *         or a bad request status with error message if authentication fails
      */
     public ResponseEntity<Map<String, Object>> login(LoginRequestDto user, HttpServletResponse response) {
+        Map<String, Object> errorBody = new HashMap<>();
+        errorBody.put("error", "Invalid username or password");
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -90,13 +94,10 @@ public class LoginService {
 
                 return ResponseEntity.ok(responseBody);
             }
-            Map<String, Object> errorBody = new HashMap<>();
-            errorBody.put("error", "Invalid username or password");
+       
             return ResponseEntity.badRequest().body(errorBody);
         } catch (AuthenticationException e) {
             log.error("Authentication failed: {}", e.getMessage());
-            Map<String, Object> errorBody = new HashMap<>();
-            errorBody.put("error", "Invalid username or password");
             return ResponseEntity.badRequest().body(errorBody);
         }
     }

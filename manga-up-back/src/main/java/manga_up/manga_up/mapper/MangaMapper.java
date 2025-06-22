@@ -150,7 +150,7 @@ public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
 
 }
 
-
+// avoir ci je met ses fonction dans un autre fichier 
     public MangaDtoOne mapToDto(MangaProjectionOne p) {
         if (p == null)
             return null;

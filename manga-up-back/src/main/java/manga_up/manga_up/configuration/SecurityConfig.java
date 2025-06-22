@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 "/my-api-docs/**",
                                 "/api/auth/register",
                                 "/api/auth/login",
+                                 "/api/csrf",
                                 "/api/public/**")
                         .permitAll()
                         .anyRequest().authenticated())
