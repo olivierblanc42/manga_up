@@ -30,6 +30,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -140,24 +141,57 @@ private static class TestLittleMangaProjection implements MangaLittleProjection 
 
     }
 
+
     @Test
-    void findById() {
-        MangaLittleProjection mangaLittleProjection1 =  new TestLittleMangaProjection(
-                1
-                , "Naruto",
-                Set.of()
-        );
-        PictureProjection pictureProjection = new TestPictureProjection(
-                1,
-                "www.picture.com",
-                true,
-                mangaLittleProjection1
-        ) ;
+    void shouldReturnAllPicturesByPageUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+
+        PictureProjection pictureProjection1 = mock(PictureProjection.class);
+        PictureProjection pictureProjection2 = mock(PictureProjection.class);
+
+        Page<PictureProjection> page = new PageImpl<>(List.of(pictureProjection1, pictureProjection2));
+        when(pictureDao.findAllByPage(pageable)).thenReturn(page);
+
+        Page<PictureProjection> result = pictureService.findAllByPage(pageable);
+        assertNotNull(result);
+        assertEquals(2, result.getTotalElements());
+        assertThat(result).hasSize(2).containsExactly(pictureProjection1, pictureProjection2);
+
+    }
+
+
+
+
+    @Test
+    void findByIdUsingMockedProjections() {
+
+        PictureProjection pictureProjection = mock(PictureProjection.class);
         when(pictureDao.findPictureProjectionById(1)).thenReturn(Optional.of(pictureProjection));
 
     PictureProjection result = pictureService.findById(1);
     assertNotNull(result);
     assertThat(result).isEqualTo(pictureProjection);
+
+    }
+
+
+
+    @Test
+    void findById() {
+        MangaLittleProjection mangaLittleProjection1 = new TestLittleMangaProjection(
+                1, "Naruto",
+                Set.of());
+        PictureProjection pictureProjection = new TestPictureProjection(
+                1,
+                "www.picture.com",
+                true,
+                mangaLittleProjection1);
+        when(pictureDao.findPictureProjectionById(1)).thenReturn(Optional.of(pictureProjection));
+
+        PictureProjection result = pictureService.findById(1);
+        assertNotNull(result);
+        assertThat(result).isEqualTo(pictureProjection);
 
     }
 

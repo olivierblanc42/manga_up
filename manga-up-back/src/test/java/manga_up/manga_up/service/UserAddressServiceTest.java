@@ -5,6 +5,7 @@ import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
+import manga_up.manga_up.projection.pictureProjection.PictureProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
 
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,130 +34,127 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 class UserAddressServiceTest {
 
-  @Mock
-  private AddressDao addressDao;
-  @Mock
-  private UserAddressMapper userAddressMapper;
-  @InjectMocks
-  private UserAddressService userAddressService;
+    @Mock
+    private AddressDao addressDao;
+    @Mock
+    private UserAddressMapper userAddressMapper;
+    @InjectMocks
+    private UserAddressService userAddressService;
 
-   private static class TestUserAddress implements UserAddressProjection {
-       private final  Integer id;
-       private final  String line1;
-       private final  String line2;
-       private final  String line3;
-       private final  String city;
-       private final LocalDateTime createdAt;
-       private final  String postalCode;
-       private final Set<AppUserLittleProjection> appUsers;
+    private static class TestUserAddress implements UserAddressProjection {
+        private final Integer id;
+        private final String line1;
+        private final String line2;
+        private final String line3;
+        private final String city;
+        private final LocalDateTime createdAt;
+        private final String postalCode;
+        private final Set<AppUserLittleProjection> appUsers;
 
-       private TestUserAddress(Integer id, String line1, String line2, String line3, String city, LocalDateTime createdAt, String postalCode, Set<AppUserLittleProjection> appUsers) {
-           this.id = id;
-           this.line1 = line1;
-           this.line2 = line2;
-           this.line3 = line3;
-           this.city = city;
-           this.createdAt = createdAt;
-           this.postalCode = postalCode;
-           this.appUsers = appUsers;
-       }
+        private TestUserAddress(Integer id, String line1, String line2, String line3, String city,
+                LocalDateTime createdAt, String postalCode, Set<AppUserLittleProjection> appUsers) {
+            this.id = id;
+            this.line1 = line1;
+            this.line2 = line2;
+            this.line3 = line3;
+            this.city = city;
+            this.createdAt = createdAt;
+            this.postalCode = postalCode;
+            this.appUsers = appUsers;
+        }
 
-       @Override
-       public Integer getId() {
-           return id;
-       }
+        @Override
+        public Integer getId() {
+            return id;
+        }
 
-       @Override
-       public String getLine1() {
-           return line1;
-       }
+        @Override
+        public String getLine1() {
+            return line1;
+        }
 
-       @Override
-       public String getLine2() {
-           return line2;
-       }
+        @Override
+        public String getLine2() {
+            return line2;
+        }
 
-       @Override
-       public String getLine3() {
-           return line3;
-       }
+        @Override
+        public String getLine3() {
+            return line3;
+        }
 
-       @Override
-       public String getCity() {
-           return city;
-       }
+        @Override
+        public String getCity() {
+            return city;
+        }
 
-       @Override
-       public LocalDateTime getCreatedAt() {
-           return createdAt;
-       }
+        @Override
+        public LocalDateTime getCreatedAt() {
+            return createdAt;
+        }
 
-       @Override
-       public String getPostalCode() {
-           return postalCode;
-       }
+        @Override
+        public String getPostalCode() {
+            return postalCode;
+        }
 
-       @Override
-       public Set<AppUserLittleProjection> getAppUsers() {
-           return appUsers;
-       }
-   }
+        @Override
+        public Set<AppUserLittleProjection> getAppUsers() {
+            return appUsers;
+        }
+    }
 
-   private static class TestUserLittleProjection implements AppUserLittleProjection {
-       private final Integer id;
-       private final String username;
-       private final String firstname;
-       private final String lastname;
+    private static class TestUserLittleProjection implements AppUserLittleProjection {
+        private final Integer id;
+        private final String username;
+        private final String firstname;
+        private final String lastname;
 
-       private TestUserLittleProjection(Integer id, String username, String firstname, String lastname) {
-           this.id = id;
-           this.username = username;
-           this.firstname = firstname;
-           this.lastname = lastname;
-       }
+        private TestUserLittleProjection(Integer id, String username, String firstname, String lastname) {
+            this.id = id;
+            this.username = username;
+            this.firstname = firstname;
+            this.lastname = lastname;
+        }
 
-       @Override
-       public Integer getId() {
-           return id;
-       }
+        @Override
+        public Integer getId() {
+            return id;
+        }
 
-       @Override
-       public String getUsername() {
-           return username;
-       }
+        @Override
+        public String getUsername() {
+            return username;
+        }
 
-       @Override
-       public String getFirstname() {
-           return firstname;
-       }
+        @Override
+        public String getFirstname() {
+            return firstname;
+        }
 
-       @Override
-       public String getLastname() {
-           return lastname;
-       }
-   }
-
+        @Override
+        public String getLastname() {
+            return lastname;
+        }
+    }
 
     @Test
     void shouldReturnAllUserAddressByPage() {
         Pageable pageable = PageRequest.of(0, 5);
 
-
         AppUserLittleProjection projection1 = new TestUserLittleProjection(
                 1,
                 "Bobo",
                 "John",
-                "Doe"
-        );
+                "Doe");
         AppUserLittleProjection projection2 = new TestUserLittleProjection(
                 2,
                 "Bobo",
                 "John",
-                "Doe"
-        );
+                "Doe");
         Set<AppUserLittleProjection> appUsers = Set.of(projection1, projection2);
 
-        UserAddressProjection userAddress= new TestUserAddress(
+        UserAddressProjection userAddress = new TestUserAddress(
                 1,
                 "123 Main St",
                 "Apt 4B",
@@ -163,8 +162,7 @@ class UserAddressServiceTest {
                 "Paris",
                 LocalDateTime.now(),
                 "75001",
-                appUsers
-        );
+                appUsers);
         UserAddressProjection userAddress2 = new TestUserAddress(
                 1,
                 "1234 Main St",
@@ -173,29 +171,54 @@ class UserAddressServiceTest {
                 "Paris",
                 LocalDateTime.now(),
                 "75001",
-                appUsers
-        );
+                appUsers);
 
-  Page<UserAddressProjection> page = new PageImpl<>(List.of(userAddress,userAddress2));
+        Page<UserAddressProjection> page = new PageImpl<>(List.of(userAddress, userAddress2));
 
-   when(addressDao.findAllByPage(pageable)).thenReturn(page);
+        when(addressDao.findAllByPage(pageable)).thenReturn(page);
 
-   Page<UserAddressProjection> result = userAddressService.findAllByPage(pageable);
-   assertThat(result).hasSize(2).containsExactly(userAddress, userAddress2);
+        Page<UserAddressProjection> result = userAddressService.findAllByPage(pageable);
+        assertThat(result).hasSize(2).containsExactly(userAddress, userAddress2);
 
     }
 
     @Test
-    void findById()  {
+    void shouldReturnAllUserAddressByPageUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        UserAddressProjection userAddress = mock(UserAddressProjection.class);
+        UserAddressProjection userAddress2 = mock(UserAddressProjection.class);
+        Page<UserAddressProjection> page = new PageImpl<>(List.of(userAddress, userAddress2));
+
+        when(addressDao.findAllByPage(pageable)).thenReturn(page);
+
+        Page<UserAddressProjection> result = userAddressService.findAllByPage(pageable);
+        assertThat(result).hasSize(2).containsExactly(userAddress, userAddress2);
+
+    }
+
+    @Test
+    void findByIdUsingMockedProjections() {
+;
+
+        UserAddressProjection userAddress = mock(UserAddressProjection.class);
+
+        when(addressDao.findUserAddressProjectionById(1)).thenReturn(Optional.of(userAddress));
+        UserAddressProjection result = userAddressService.findById(1);
+        assertThat(result).isEqualTo(userAddress);
+
+    }
+
+    @Test
+    void findById() {
         AppUserLittleProjection projection1 = new TestUserLittleProjection(
                 1,
                 "Bobo",
                 "John",
-                "Doe"
-        );
+                "Doe");
         Set<AppUserLittleProjection> appUsers = Set.of(projection1);
 
-        UserAddressProjection userAddress= new TestUserAddress(
+        UserAddressProjection userAddress = new TestUserAddress(
                 1,
                 "123 Main St",
                 "Apt 4B",
@@ -203,15 +226,16 @@ class UserAddressServiceTest {
                 "Paris",
                 LocalDateTime.now(),
                 "75001",
-                appUsers
-        );
+                appUsers);
 
         when(addressDao.findUserAddressProjectionById(1)).thenReturn(Optional.of(userAddress));
         UserAddressProjection result = userAddressService.findById(1);
         assertThat(result).isEqualTo(userAddress);
 
-
     }
+
+
+
 
     @Test
     void shouldSaveUserAddress() {
@@ -241,7 +265,6 @@ class UserAddressServiceTest {
 
         UserAddressDto result = userAddressService.save(userAddressDto);
 
-
         assertThat(result).isNotNull();
         assertThat(result.getCity()).isEqualTo("city");
 
@@ -249,26 +272,26 @@ class UserAddressServiceTest {
 
     @Test
     void deleteUserAddress() {
-       int id = 1;
+        int id = 1;
 
-       UserAddress userAddress = new UserAddress();
-       userAddress.setId(id);
-       userAddress.setLine1("123 Main St");
-       userAddress.setLine2("Apt 4B");
-       userAddress.setLine3("Near the Park");
-       userAddress.setCity("city");
-       userAddress.setCreatedAt(Instant.now());
-       userAddress.setPostalCode("75001");
+        UserAddress userAddress = new UserAddress();
+        userAddress.setId(id);
+        userAddress.setLine1("123 Main St");
+        userAddress.setLine2("Apt 4B");
+        userAddress.setLine3("Near the Park");
+        userAddress.setCity("city");
+        userAddress.setCreatedAt(Instant.now());
+        userAddress.setPostalCode("75001");
 
-       when(addressDao.findUserAddressById(id)).thenReturn(Optional.of(userAddress));
-       userAddressService.deleteUserAddress(1);
-       verify(addressDao).delete(userAddress);
+        when(addressDao.findUserAddressById(id)).thenReturn(Optional.of(userAddress));
+        userAddressService.deleteUserAddress(1);
+        verify(addressDao).delete(userAddress);
     }
 
     @Test
     void updateUserAddress() {
-       int id = 1;
-       Instant fixedInstant = Instant.parse("2024-01-01T12:00:00Z");
+        int id = 1;
+        Instant fixedInstant = Instant.parse("2024-01-01T12:00:00Z");
 
         UserAddressDto userAddressDto = new UserAddressDto(
                 "1234 Main St",

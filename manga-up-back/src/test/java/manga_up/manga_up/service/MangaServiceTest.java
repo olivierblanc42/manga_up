@@ -21,6 +21,7 @@ import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.model.Picture;
 import manga_up.manga_up.projection.author.AuthorLittleProjection;
 import manga_up.manga_up.projection.category.CategoryLittleProjection;
+import manga_up.manga_up.projection.genderUser.GenderUserProjection;
 import manga_up.manga_up.projection.genre.GenreLittleProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
@@ -379,6 +380,37 @@ class MangaServiceTest {
     }
 
     @Test
+    void shouldAllMangaUsingMockedProjections() {
+       
+        Pageable pageable = PageRequest.of(0, 5);
+
+        PictureLittleProjection pictureLittleProjection =  mock(PictureLittleProjection.class);
+        Set<PictureLittleProjection> pictures = new HashSet<>();
+        pictures.add(pictureLittleProjection);
+
+        GenreLittleProjection genreLittleProjection = mock(GenreLittleProjection.class);
+        AuthorLittleProjection authorLittleProjection = mock(AuthorLittleProjection.class);
+
+        Set<AuthorLittleProjection> authors = new HashSet<>();
+        authors.add(authorLittleProjection);
+        Set<GenreLittleProjection> genres = new HashSet<>();
+        genres.add(genreLittleProjection);
+
+        MangaBaseProjection mangaBaseProjection1 = mock(MangaBaseProjection.class);
+
+        MangaBaseProjection mangaBaseProjection2 = mock(MangaBaseProjection.class);
+
+        Page<MangaBaseProjection> page = new PageImpl<>(List.of(mangaBaseProjection1, mangaBaseProjection2));
+        when(mangaDao.findAllMangas(pageable)).thenReturn(page);
+
+        Page<MangaBaseProjection> result = mangaService.findAllByPage(pageable);
+
+        assertThat(result).hasSize(2).containsExactly(mangaBaseProjection1, mangaBaseProjection2);
+        verify(mangaDao).findAllMangas(pageable);
+    }
+
+
+    @Test
     void shouldReturnMangaDtoWhenFoundById() {
         int id = 1;
 
@@ -466,6 +498,42 @@ class MangaServiceTest {
         assertThat(result).isEqualTo(mangaProjection);
         verify(mangaDao).findMangaById(id);
     }
+
+
+
+
+
+    @Test
+    void shouldMangaByIdUsingMockedProjections() {
+        int id = 1;
+
+        PictureLittleProjection pictureLittleProjection = mock(PictureLittleProjection.class);
+        Set<PictureLittleProjection> pictures = new HashSet<>();
+        pictures.add(pictureLittleProjection);
+
+        GenreLittleProjection genreLittleProjection = mock(GenreLittleProjection.class);
+        AuthorLittleProjection authorLittleProjection = mock(AuthorLittleProjection.class);
+        Set<AuthorLittleProjection> authors = new HashSet<>();
+        authors.add(authorLittleProjection);
+        Set<GenreLittleProjection> genres = new HashSet<>();
+        genres.add(genreLittleProjection);
+
+        MangaProjection mangaProjection = mock(MangaProjection.class);
+
+        when(mangaDao.findMangaById(id)).thenReturn(Optional.of(mangaProjection));
+
+        MangaProjection result = mangaService.findMangaById(id);
+
+        assertThat(result).isEqualTo(mangaProjection);
+        verify(mangaDao).findMangaById(id);
+    }
+
+
+
+
+
+
+
 
     @Test
     void shouldThrowExceptionWhenMangaNotFound() {

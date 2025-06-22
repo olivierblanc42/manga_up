@@ -207,6 +207,9 @@ public class AddressControllerTest {
                 .andExpect(jsonPath("$.content[1].line1").value("456 Avenue des Champs"));
     }
 
+
+    
+
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldReturnAddressByid() throws Exception {
