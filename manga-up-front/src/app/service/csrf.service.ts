@@ -17,7 +17,7 @@ export class CsrfService {
 
     async fetchCsrfToken(): Promise<void> {
         try {
-            const response = await firstValueFrom(this.http.get<Csrf>(this.apiUrl));
+            const response = await firstValueFrom(this.http.get<Csrf>(this.apiUrl, { withCredentials: true }));
             if (!response) return;
             this.csrfProjections.next(response);
         } catch (error) {
