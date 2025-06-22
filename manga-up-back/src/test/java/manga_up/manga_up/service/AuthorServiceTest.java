@@ -154,8 +154,30 @@ class AuthorServiceTest {
         assertThat(result).hasSize(2).containsExactly(author1, author2);
     }
 
+
+
     @Test
-    void shouldReturnAuthorById() {
+    void shouldReturnAllAuthorsUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        AuthorProjection author1 = mock(AuthorProjection.class);
+        AuthorProjection author2 = mock(AuthorProjection.class);
+
+        Page<AuthorProjection> page = new PageImpl<>(List.of(author1, author2));
+        when(authorDao.findAllByPage(pageable)).thenReturn(page);
+
+        Page<AuthorProjection> result = authorService.getAllAuthors(pageable);
+
+        assertThat(result).hasSize(2).containsExactly(author1, author2);
+    }
+
+
+
+
+
+
+    @Test
+    void shouldReturnAuthorByIdUsingMockedProjections() {
         AuthorProjection a = new TestAuthorProjection(
                 1,
                 "Akira",
@@ -172,6 +194,22 @@ class AuthorServiceTest {
         assertThat(author).isEqualTo(a);
 
     }
+
+
+
+    @Test
+    void shouldReturnAuthorById() {
+        AuthorProjection authorProjection = mock(AuthorProjection.class);
+
+        when(authorDao.findAuthorProjectionById(1)).thenReturn(Optional.of(authorProjection));
+
+        AuthorProjection author = authorService.getAuthorById(1);
+        assertThat(author).isEqualTo(authorProjection);
+
+    }
+
+
+
 
     @Test
     void shouldReturnAuthorSave() {
@@ -234,7 +272,8 @@ class AuthorServiceTest {
         assertThat(result.getFirstname()).isEqualTo("Tite");
         assertThat(result.getLastname()).isEqualTo("Kubo");
         assertThat(result.getDescription()).isEqualTo("bleach");
-
+        assertThat(authorEntity.getId()).isEqualTo(id);
+        assertThat(authorEntity.getCreatedAt()).isNotNull();
         assertThat(authorEntity.getFirstname()).isEqualTo("Tite");
         assertThat(authorEntity.getLastname()).isEqualTo("Kubo");
         assertThat(authorEntity.getDescription()).isEqualTo("bleach");

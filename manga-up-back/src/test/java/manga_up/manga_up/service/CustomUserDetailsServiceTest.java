@@ -68,6 +68,8 @@ public class CustomUserDetailsServiceTest {
         assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("unknown"));
     }
 
+    
+
   @Test
     void shouldSaveUserDtoRegister() {
         RegisterDto dto = new RegisterDto();
