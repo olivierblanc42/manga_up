@@ -57,7 +57,7 @@ public class SecurityConfig {
                                 "/my-api-docs/**",
                                 "/api/auth/register",
                                 "/api/auth/login",
-                                "api/csrf",
+                                "/api/csrf",
                                 "/api/public/**")
                         .permitAll()
                         .anyRequest().authenticated())
@@ -70,7 +70,7 @@ public class SecurityConfig {
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com/");
+        corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
         corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
         
         corsConfiguration.addAllowedHeader("*");
