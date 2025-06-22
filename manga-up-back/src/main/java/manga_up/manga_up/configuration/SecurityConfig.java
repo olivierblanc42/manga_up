@@ -23,61 +23,65 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
-    private final JwtUtils jwtUtils;
+        private final CustomUserDetailsService customUserDetailsService;
+        private final JwtUtils jwtUtils;
 
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtUtils jwtUtils) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.jwtUtils = jwtUtils;
-    }
+        public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtUtils jwtUtils) {
+                this.customUserDetailsService = customUserDetailsService;
+                this.jwtUtils = jwtUtils;
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
-            throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder);
-        return authenticationManagerBuilder.build();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder)
+                        throws Exception {
+                AuthenticationManagerBuilder authenticationManagerBuilder = http
+                                .getSharedObject(AuthenticationManagerBuilder.class);
+                authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+                                .passwordEncoder(passwordEncoder);
+                return authenticationManagerBuilder.build();
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/my-swagger/**",
-                                "/my-api-docs/**",
-                                "/api/auth/register",
-                                "/api/auth/login",
-                                "/api/csrf",
-                                "/api/public/**")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
-                        UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                return http
+                                .csrf(csrf -> csrf
+                                                .ignoringRequestMatchers(
+                                                                "/api/auth/login",
+                                                                "/api/auth/register")
+                                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                                                .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                                .requestMatchers(
+                                                                "/swagger-ui/**",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-ui.html",
+                                                                "/my-swagger/**",
+                                                                "/my-api-docs/**",
+                                                                "/api/auth/register",
+                                                                "/api/auth/login",
+                                                                "/api/csrf",
+                                                                "/api/public/**")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .build();
+        }
 
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
-        corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
-        
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
+        @Bean
+        public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration corsConfiguration = new CorsConfiguration();
+                corsConfiguration.setAllowCredentials(true);
+                corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com");
+                corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+                corsConfiguration.addAllowedHeader("*");
+                corsConfiguration.addAllowedMethod("*");
+
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", corsConfiguration);
+                return source;
+        }
 }
