@@ -71,6 +71,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.addAllowedOrigin("https://manga-up.onrender.com/");
+        corsConfiguration.addAllowedOrigin("https://mangaup42.netlify.app");
         
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
