@@ -1,7 +1,7 @@
 import { AuthorDto, AuthorProjection, AuthorProjections, AuthorWithMangas, CategoriesProjections, MangasWithImages, MangaWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject,  firstValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto } from '../type';
 import { environment } from '../../environments/environment.prod';
 
@@ -46,7 +46,7 @@ export class AuthorService {
 
     async getAllAuthorWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<AuthorProjections>(`${this.urlPagination}?page=${page}`));
+            const r = await firstValueFrom(this.http.get<AuthorProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.authorProjection.next(r);
             console.log('Genres récupérés avec succès :', r);
@@ -58,7 +58,7 @@ export class AuthorService {
 
     async getAuthor(id: number, page: number = 0) {
         try {
-            const response = await lastValueFrom(this.http.get<{ author: AuthorWithMangas, mangas: MangasWithImages }>(`${this.urlOne}${id}/mangas?page=${page}`));
+            const response = await firstValueFrom(this.http.get<{ author: AuthorWithMangas, mangas: MangasWithImages }>(`${this.urlOne}${id}/mangas?page=${page}`));
 
             if (response) {
                 const authorWithMangas: AuthorWithMangas = {
@@ -102,7 +102,7 @@ export class AuthorService {
     async updateAuthor(author: AuthorDto): Promise<AuthorDto> {
             try {
                 const urlWithId = `${this.url}/${author.id}`; 
-                const updatedCategory = await lastValueFrom(
+                const updatedCategory = await firstValueFrom(
                     this.http.put<AuthorDto>(urlWithId, author, { withCredentials: true })
                 );
                 this.authorDto.next(updatedCategory);
