@@ -129,6 +129,7 @@ public class GenreControllerTest {
                 .andExpect(jsonPath("$.label").value("Action"))
                 .andExpect(jsonPath("$.url").value("/action"));
     }
+    
    @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldReturnCreatedGenre() throws Exception {

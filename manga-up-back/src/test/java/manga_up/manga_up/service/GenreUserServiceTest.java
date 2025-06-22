@@ -8,6 +8,7 @@ import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.GenderUser;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
 import manga_up.manga_up.projection.genderUser.GenderUserProjection;
+import manga_up.manga_up.projection.genre.GenreProjection;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,6 +75,35 @@ class GenreUserServiceTest {
     }
 
     @Test
+    void shouldReturnAllGenreUsersUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        GenderUserProjection gender1 = mock(GenderUserProjection.class);
+        GenderUserProjection gender2 = mock(GenderUserProjection.class);
+
+        Page<GenderUserProjection> page = new PageImpl<>(List.of(gender1, gender2));
+        when(genderUserDao.getGenderUser(pageable)).thenReturn(page);
+
+        Page<GenderUserProjection> result = genreUserService.getGenreUsers(pageable);
+
+        assertThat(result).hasSize(2).containsExactly(gender1, gender2);
+    }
+
+    @Test
+    void shouldReturnGenreUserByIdUsingMockedProjections() {
+
+        GenderUserProjection gender = mock(GenderUserProjection.class);
+
+        when(genderUserDao.findGenderUserProjectionById(1)).thenReturn(Optional.of(gender));
+
+        GenderUserProjection result = genreUserService.getGenreUserById(1);
+        assertThat(result).isEqualTo(gender);
+
+    }
+
+
+
+    @Test
     void shouldReturnAllGenreUsers() {
         Pageable pageable = PageRequest.of(0, 5);
 
@@ -107,6 +138,11 @@ class GenreUserServiceTest {
         assertThat(result).isEqualTo(gender);
 
     }
+
+
+
+
+
 
     @Test
     void shouldThrowExceptionWhenGenderUserHasUser() {

@@ -9,6 +9,7 @@ import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.GenderMangaMapper;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Genre;
+import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
@@ -119,7 +120,6 @@ class GenreServiceTest {
         Page<GenreProjection> result = genreService.findAllByGenre(pageable);
 
         assertThat(result).hasSize(2).containsExactly(genreProjection1, genreProjection2);
-
     }
 
     @Test
@@ -131,6 +131,35 @@ class GenreServiceTest {
         GenreProjection genre = genreService.findGenreUserById(1);
         assertThat(genre).isEqualTo(g);
     }
+
+
+    @Test
+    void shouldGetAllGenresUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+        GenreProjection genreProjection1 =mock(GenreProjection.class);
+        GenreProjection genreProjection2 = mock(GenreProjection.class);
+
+        Page<GenreProjection> page = new PageImpl<>(List.of(genreProjection1, genreProjection2));
+        when(genreDao.findAllByPage(pageable)).thenReturn(page);
+
+        Page<GenreProjection> result = genreService.findAllByGenre(pageable);
+
+        assertThat(result).hasSize(2).containsExactly(genreProjection1, genreProjection2);
+    }
+
+    @Test
+    void shouldGetGenreByIdUsingMockedProjections() {
+        GenreProjection g = mock(GenreProjection.class);
+
+        when(genreDao.findGenreProjectionById(1)).thenReturn(Optional.of(g));
+
+        GenreProjection genre = genreService.findGenreUserById(1);
+        assertThat(genre).isEqualTo(g);
+    }
+
+
+
 
     @Test
     void shouldSaveGenre() {

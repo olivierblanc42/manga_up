@@ -42,6 +42,8 @@ import manga_up.manga_up.mapper.AppUserMapper;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressLittleProjection;
+import manga_up.manga_up.projection.userAdress.UserAddressProjection;
+
 import org.springframework.security.core.Authentication;
 
 @ExtendWith(MockitoExtension.class)
@@ -178,6 +180,29 @@ class UserServiceTest {
 
     }
 
+
+    @Test
+    void shouldFindAllByPageUsingMockedProjections() {
+        Pageable pageable = PageRequest.of(0, 5);
+
+
+
+        TestUserProjection user1 = mock(TestUserProjection.class);
+        TestUserProjection user2 = mock(TestUserProjection.class);
+        Page<AppUserProjection> page = new PageImpl<>(List.of(user1, user2));
+
+        when(userDao.FindAllUser(pageable)).thenReturn(page);
+        Page<AppUserProjection> result = userService.findAllByPage(pageable);
+
+        assertThat(result).hasSize(2).containsExactly(user1, user2);
+
+    }
+
+
+
+
+    
+
     @Test
     void shouldaddFavorite() {
 
@@ -187,7 +212,6 @@ class UserServiceTest {
         userService.addFavorite(userId, mangaId);
 
         verify(userDao, times(1)).addUserInFavorite(userId, mangaId);
-
     }
 
     @Test
