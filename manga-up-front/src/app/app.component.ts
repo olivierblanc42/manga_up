@@ -6,6 +6,7 @@ import { AuthService } from './service/auth.service';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CsrfService } from './service/csrf.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterModule, BreadcrumbComponent, CommonModule, ReactiveFormsModule, FormsModule],
@@ -20,7 +21,7 @@ export class AppComponent  implements OnInit {
   searchTerm = '';
 
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private csrfService: CsrfService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
@@ -32,6 +33,12 @@ export class AppComponent  implements OnInit {
     });
   }
     ngOnInit(): void {
+      this.csrfService.fetchCsrfToken();
+      this.csrfService.currentCsrfProjection.subscribe(token => {
+        console.log('Token CSRF actuel:', token);
+      });
+
+
       this.authService.userRole$.subscribe(role => {
         this.isAdmin = role === 'ROLE_ADMIN';
       });
