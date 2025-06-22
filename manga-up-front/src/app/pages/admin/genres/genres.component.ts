@@ -70,8 +70,10 @@ export class GenresAdminComponent implements OnInit {
   initForm(): void {
     this.genreForm = this.fb.group({
           label: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(100)]],
+
           description: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(500)]],
-          url: ['', [Validators.required, urlValidator]]
+          
+          url: ['', [Validators.required, noHtmlTagsValidator, urlValidator]]
         });
   }
 
@@ -83,6 +85,9 @@ export class GenresAdminComponent implements OnInit {
     this.isModalOpen = false;
     this.genreForm.reset();
   }
+
+
+  
   async createGenre() {
     if (this.genreForm.valid) {
       const newGen = {

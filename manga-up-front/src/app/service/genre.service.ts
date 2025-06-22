@@ -88,9 +88,9 @@ export class GenreService {
     }
 
 
-    async addGenre(category: GenreDto): Promise<GenreDto> {
+    async addGenre(genre: GenreDto): Promise<GenreDto> {
         const response = await firstValueFrom(
-            this.http.post<GenreDto>(this.urlAdd, category,{ withCredentials: true } )
+            this.http.post<GenreDto>(this.urlAdd, genre,{ withCredentials: true } )
         );
 
         this.genreDto.next(response);
@@ -111,18 +111,14 @@ export class GenreService {
 
 
     async updateGenre(genre: GenreDto): Promise<GenreDto> {
-        try {
-            const urlWithId = `${this.url}/${genre.id}`; 
-            const updatedGenre = await firstValueFrom(
-                this.http.put<GenreDto>(urlWithId, genre, { withCredentials: true })
-            );
-            this.genreDto.next(updatedGenre);
-            return updatedGenre;
-        } catch (error) {
-            console.error('Erreur lors de la mise à jour de la catégorie :', error);
-            throw error;
-        }
+        const urlWithId = `${this.url}/${genre.id}`;
+        const updatedGenre = await firstValueFrom(
+            this.http.put<GenreDto>(urlWithId, genre, { withCredentials: true })
+        );
+        this.genreDto.next(updatedGenre);
+        return updatedGenre;
     }
+          
 
 
 }
