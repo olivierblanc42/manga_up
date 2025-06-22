@@ -1,7 +1,7 @@
 import { CategoriesProjections, CategoryDto, CategoryProjection, CategoryWithMangas, MangasWithImages } from './../type.d';
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto } from '../type';
 import { environment } from '../../environments/environment.prod';
 
@@ -38,7 +38,7 @@ export class CategoryService {
 
     async getAllCategoriesWithPagination(page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<CategoriesProjections>(`${this.urlPagination}?page=${page}`));
+            const r = await firstValueFrom(this.http.get<CategoriesProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
             this.categoriesProjections.next(r);
             console.log('Categories récupérés avec succès :', r);
@@ -49,7 +49,7 @@ export class CategoryService {
 
     async getCategory(id: number, page: number = 0) {
         try {
-            const r = await lastValueFrom(this.http.get<{ category: CategoryWithMangas, mangas: MangasWithImages }>(`${this.urlCategori}${id}/mangas?page=${page}`));
+            const r = await firstValueFrom(this.http.get<{ category: CategoryWithMangas, mangas: MangasWithImages }>(`${this.urlCategori}${id}/mangas?page=${page}`));
             if (r) {
                 const categoryWithMangas: CategoryWithMangas = {
                     ...r.category,
@@ -93,7 +93,7 @@ export class CategoryService {
     async updateCategory(category: CategoryDto): Promise<CategoryDto> {
         try {
             const urlWithId = `${this.url}/${category.id}`; 
-            const updatedCategory = await lastValueFrom(
+            const updatedCategory = await firstValueFrom(
                 this.http.put<CategoryDto>(urlWithId, category, { withCredentials: true })
             );
             this.categoryDto.next(updatedCategory);

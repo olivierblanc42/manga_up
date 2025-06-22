@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { MangaBaseProjection, MangaBaseProjections, UserTest } from '../type';
 import { environment } from '../../environments/environment.prod';
 
@@ -29,7 +29,7 @@ export class SearchService{
     async getMangas(letter: string, page: number = 0) {
         try {
             const url = `${this.urlSearch}/${letter}?page=${page}`;
-            const r = await lastValueFrom(this.http.get<MangaBaseProjections>(url));
+            const r = await firstValueFrom(this.http.get<MangaBaseProjections>(url));
             if (!r) return;
             this.mangasSearch.next(r);
             console.log(r)
