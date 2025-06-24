@@ -58,22 +58,16 @@ export class MangaService{
         try {
             const r = await firstValueFrom(this.http.get<MangaPaginations>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
-
             this.mangaPagination.next(r);
         } catch (err) {
             console.error('Erreur lors de la récupération du manga :', err);
         }
     }
 
-
-
     async getMangaOne() {
         try {
             const r = await firstValueFrom(this.http.get<MangaOne>(this.urlOne));
             if (!r) return;
-
-
-            
             this.mangaOne.next(r);
         } catch (err) {
             console.error('Erreur lors de la récupération du manga :', err);
