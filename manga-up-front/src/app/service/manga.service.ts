@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom,  Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { Manga, MangaDto, MangaDtoRandom, MangaOne,MangaPaginations,MangaProjection,MangaProjections } from '../type';
 import { environment } from '../../environments/environment.prod';
 
@@ -65,8 +65,6 @@ export class MangaService{
         }
     }
 
-
-
     async getMangaOne() {
         try {
             const r = await firstValueFrom(this.http.get<MangaOne>(this.urlOne));
@@ -81,9 +79,8 @@ export class MangaService{
     async getMangaFour() {
         try {
             const r = await firstValueFrom(this.http.get<MangaDtoRandom[]>(this.urlFourDate));
-            if (!r) return;
-            console.log(r)
-            this.mangaFour.next(r);
+            if (!r) return;       
+                this.mangaFour.next(r);                   
         } catch (err) {
             console.error('Erreur lors de la récupération du manga :', err);
         }
@@ -93,7 +90,6 @@ export class MangaService{
         try {
             const r = await firstValueFrom(this.http.get<MangaDtoRandom[]>(this.urlRandom));
             if (!r) return;
-            console.log(r)
             this.mangaFourRandom.next(r);
         } catch (err) {
             console.error('Erreur lors de la récupération du manga :', err);
@@ -106,8 +102,8 @@ export class MangaService{
          try {
              const r = await firstValueFrom(this.http.get<MangaProjection>(`${this.url}${id}`));
              if (!r) return;
-             console.log(r)
-             this.mangaProjection.next(r);
+                 this.mangaProjection.next(r);
+    
          } catch (err) {
              console.error('Erreur lors de la récupération du manga :', err);
          }

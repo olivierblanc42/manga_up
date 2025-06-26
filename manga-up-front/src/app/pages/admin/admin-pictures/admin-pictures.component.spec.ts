@@ -13,20 +13,21 @@ describe('AdminPicturesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AdminPicturesComponent],
-                  providers: [
+              providers: [
                     provideHttpClient(),
                     provideHttpClientTesting(),
                     {
                       provide: ActivatedRoute,
                       useValue: {
+                        params: of({ id: '1' }),
                         snapshot: {
                           paramMap: {
-                            get: (key: string) => '123',
-                          },
-                        },
-                        params: of({ id: '123' }),
-                      },
-                    }]
+                            get: () => '1'
+                          }
+                        }
+                      }
+                    }
+                  ]
     })
     .compileComponents();
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom,  Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { GenreProjections, GenreProjection, GenreDto, GenreWithMangas, MangaWithImages, MangasWithImages } from '../type';
 import { environment } from '../../environments/environment.prod';
 
@@ -44,10 +44,11 @@ export class GenreService {
 
 
     async getAllGenreWithPagination(page: number = 0) {
+        
         try {
             const r = await firstValueFrom(this.http.get<GenreProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
-            this.genresProjectionPaginations.next(r);
+                this.genresProjectionPaginations.next(r);
             console.log('Genres récupérés avec succès :', r);
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
@@ -55,16 +56,31 @@ export class GenreService {
     }
 
 
-    getFourGenre() {
-        firstValueFrom(this.http.get<GenreDto[]>(this.urlFour))
-            .then((r) => {
-                if (!r) return;
+    // getFourGenre() {
+    //     firstValueFrom(this.http.get<GenreDto[]>(this.urlFour))
+    //         .then((r) => {
+    //             if (!r) return;
+    //             this.genreFour.next(r);
+    //             console.log(r)
+    //         })
+    //         .catch((err) => {
+    //             console.error('Erreur lors de la récupération des genres :', err);
+    //         });
+    // }
+
+
+    async getFourGenre() {
+        try {
+            const r = await firstValueFrom(this.http.get<GenreDto[]>(this.urlFour));
+            if (!r) return;
+            console.log(r)
                 this.genreFour.next(r);
-            })
-            .catch((err) => {
-                console.error('Erreur lors de la récupération des genres :', err);
-            });
+        } catch (err) {
+            console.error('Erreur lors de la récupération des genres :', err);
+        }
     }
+
+
 
 
     async getGenreManga(id: number, page: number = 0) {

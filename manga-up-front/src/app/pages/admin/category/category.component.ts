@@ -5,11 +5,12 @@ import { CategoryService } from '../../../service/category.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { noHtmlTagsValidator, urlValidator } from '../../../validator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-category-admin',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatProgressSpinnerModule],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
@@ -18,7 +19,8 @@ export class CategoryAdminComponent implements OnInit {
   idOfUrl!: number;
   category: CategoryWithMangas | null = null;
   categoryForm!: FormGroup;
-
+  isLoading = true;
+  showEmptyMessage = false;
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,

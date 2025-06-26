@@ -12,8 +12,15 @@
             <h2>Nouveauté Mangas</h2>
         </a>
     </div>
-    <swiper-container class="swiper-manga" navigation="true">
-        @for (manga of mangaDtoRandom; track $index) {
+
+    <div class="loading-spinner" *ngIf="!isLoadingcurrentfour && mangaDtoFour.length === 0">
+        <mat-spinner diameter="40" color="primary"></mat-spinner>
+        </div>
+
+        <div *ngIf="!isLoadingcurrentfour && mangaDtoFour.length === 0 && showEmptyMessage">
+            <p>Aucun manga trouvé.</p>    </div>
+    <swiper-container class="swiper-manga" navigation="true"  *ngIf="!isLoadingcurrentfour && mangaDtoFour.length > 0  ">    
+        @for (manga of mangaDtoFour; track $index) {
         <swiper-slide>
             <ui-card size="card-manga">
                 <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
@@ -39,7 +46,7 @@
     </swiper-container>
 
     <div class="section__grid section__grid--home">
-        @for (manga of mangaDtoRandom; track $index) {
+        @for (manga of mangaDtoFour; track $index) {
         <ui-card size="card-manga">
             <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
             <div>
@@ -67,6 +74,7 @@
 
 </section>
 
+  
 <div class="infos">
     <div>
         <div class="info">
@@ -94,8 +102,15 @@
     <div class="section__title">
         <h2>Mangas populaires</h2>
     </div>
-    <swiper-container class="swiper-manga" navigation="true">
-        @for (manga of mangaDtoRandomFour; track $index) {
+
+    <div class="loading-spinner" *ngIf="!isLoadingcurrentfour && mangaDtoRandomFourDate.length === 0">
+        <mat-spinner diameter="40" color="primary"></mat-spinner>
+    </div>
+    <div *ngIf="!isLoadingcurrentfour && mangaDtoRandomFourDate.length === 0 && showEmptyMessage">
+        <p>Aucun manga trouvé.</p></div>
+
+    <swiper-container class="swiper-manga" navigation="true" *ngIf="!isLoadingcurrentfour && mangaDtoRandomFourDate.length > 0"    >
+        @for (manga of mangaDtoRandomFourDate; track $index) {
         <swiper-slide>
             <ui-card size="card-manga">
                 <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
@@ -121,7 +136,7 @@
     </swiper-container>
 
     <div class="section__grid section__grid--home">
-        @for (manga of mangaDtoRandomFour; track $index) {
+        @for (manga of mangaDtoRandomFourDate; track $index) {
         <ui-card size="card-manga">
             <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
             <div>
@@ -161,7 +176,17 @@
         </a>
 
     </div>
-    <swiper-container navigation="true" class="swiper-genre">
+
+    <div class="loading-spinner" *ngIf="!isLoadingcurrentfourDate && genres.length === 0">
+        <mat-spinner diameter="40" color="primary"></mat-spinner>
+    </div>
+    
+    <div *ngIf="!isLoadingcurrentfourDate && genres.length === 0 && showEmptyMessage">
+        <p>Aucun manga trouvé.</p>
+    </div>
+
+
+    <swiper-container navigation="true" class="swiper-genre" *ngIf="!isLoadingcurrentfourDate && genres.length > 0">
 
         @for (genre of genres; track $index) {
         <swiper-slide>
@@ -230,41 +255,47 @@
 </div>
 
 
-<section class="section">
+
+<section  class="section" >
     <div class="section__title">
         <h2>Manga du moment</h2>
     </div>
-    <div class="card single-card">
-        <img class="single-image" [src]="mangaOne?.picture" alt="image du manga {{mangaOne?.title}}" />
+    <div *ngIf="isLoadingMangaOne" class="loading-spinner">
+    <mat-spinner  diameter="40" color="primary"></mat-spinner>
+</div>
+    <div class="card single-card" *ngIf="!isLoadingMangaOne && mangaOne  ">
+        <img class="single-image" [src]="mangaOne.picture" alt="image du manga {{mangaOne.title}}" />
 <div class="single-card__content">
     <div class="single-card__infos">
         <div class="title__infos">
             <p>Information</p>
         </div>
-        <p><span>Titre :</span> {{ mangaOne?.title }}</p>
+        <p><span>Titre :</span> {{ mangaOne.title }}</p>
         <p><span>Auteur :</span>
-            @for (author of mangaOne?.authors; track $index) {
+            @for (author of mangaOne.authors; track $index) {
             <a [routerLink]="'/auteur/' + author.id"
                 [attr.aria-label]="'Voir la fiche de '+ author?.firstname +author?.lastname +'auteur du manga' ">{{author?.firstname}}
                 {{author?.lastname}}</a>
             }
         </p>
         <p><span>ANNÉE DE SORTIE :</span> 2002</p>
-        <p><span>PRIX :</span> {{ mangaOne?.price }} €</p>
+        <p><span>PRIX :</span> {{ mangaOne.price }} €</p>
     </div>
 
     <div class="single-card__summary">
         <div class="title__summary">
             <p>Résumé</p>
         </div>
-        <p>{{mangaOne?.summary!.length > 200 ? (mangaOne?.summary | slice:0:200) + '...' :
-            mangaOne?.summary}}</p>
+        <p>{{mangaOne.summary.length > 200 ? (mangaOne.summary | slice:0:200) + '...' :
+            mangaOne.summary}}</p>
     </div>
 
-    <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne?.id"
-        [attr.aria-label]="'Voir la fiche du manga' + mangaOne?.title">
+    <a class="btn btn-card" [routerLink]="'/manga/' + mangaOne.id"
+        [attr.aria-label]="'Voir la fiche du manga' + mangaOne.title">
         <img src="svg/mdi_magnify.svg" alt="">Voir plus</a>
 </div> 
     </div>
 
 </section>
+
+
