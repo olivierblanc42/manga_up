@@ -21,16 +21,26 @@ describe('MangasAdminComponent', () =>  {
   const mockPaginationData: MangaPaginations = {
     content: [
       {
-        id: 1,
+        id_mangas: 1,
         pictureId: '1',
-        pictureUrl: 'https://example.com/manga1.jpg',
-        title: 'Manga 1'
+        picture: 'https://example.com/manga1.jpg',
+        title: 'Manga 1',
+        authors: [{
+          id: 1,
+          lastname: "string",
+          firstname: "string"
+        }]
       },
       {
-        id: 2,
+        id_mangas: 2,
         pictureId: '2',
-        pictureUrl: 'https://example.com/manga2.jpg',
-        title: 'Manga 2'
+        picture: 'https://example.com/manga2.jpg',
+        title: 'Manga 2',
+        authors: [{
+          id: 1,
+          lastname: "string",
+          firstname: "string"
+        }]
       }
     ],
     size: 10,

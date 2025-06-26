@@ -1,6 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminPictureComponent } from './admin-picture.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { PictureService } from '../../../service/picture.service';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AdminPictureComponent', () => {
   let component: AdminPictureComponent;
@@ -8,7 +13,22 @@ describe('AdminPictureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminPictureComponent]
+      imports: [AdminPictureComponent],
+        providers: [
+              provideHttpClient(),
+              provideHttpClientTesting(),
+              {
+                provide: ActivatedRoute,
+                useValue: {
+                  params: of({ id: '1' }),
+                  snapshot: {
+                    paramMap: {
+                      get: () => '1'
+                    }
+                  }
+                }
+              }
+            ]
     })
     .compileComponents();
 
