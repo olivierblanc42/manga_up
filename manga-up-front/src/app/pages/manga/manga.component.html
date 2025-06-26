@@ -1,21 +1,14 @@
 <article class="section">
-
-    <div class="loading-spinner" *ngIf="isLoadingManga">
-        <mat-spinner diameter="40" color="primary"></mat-spinner>
-    </div>
-    <div *ngIf="!isLoadingManga && !manga && showEmptyMessage">
-        <p>Aucun manga trouvé.</p>
-    </div>
-    <div class="card card-single-manga"    *ngIf="!isLoadingManga && manga  ">
+    <div class="card card-single-manga">
         <div class="card-single-manga__title">
-            <h1>{{manga.title}}</h1>
+            <h1>{{manga?.title}}</h1>
         </div>
         <div class="card-padding">
             <div class="card-single-manga__content">
                 <div class="card-single-manga__img">
-                    @for (picture of manga.pictures; track $index) {
+                    @for (picture of manga?.pictures; track $index) {
                     @if (picture.isMain == true) {
-                    <img src="{{picture.url}}" alt="Image principaelle du manga {{manga.title}}">
+                    <img src="{{picture.url}}" alt="Image principaelle du manga {{manga?.title}}">
                     }
                     }
 
@@ -29,7 +22,7 @@
                         <h2>information</h2>
                     </div>
                     <div class="card-content__infos">
-                        <div><span>Titre:</span> {{manga.title}}</div>
+                        <div><span>Titre:</span> {{manga?.title}}</div>
                          
                         <div *ngIf="manga?.authors as authors">
                             <span>Auteurs:</span>
@@ -43,8 +36,8 @@
                           
                        
                         <div><span>Catégorie : </span>
-                            <a [routerLink]="['/categorie', manga.idCategories.id]">
-                            {{manga.idCategories.label}}
+                            <a [routerLink]="['/categorie', manga?.idCategories?.id]">
+                            {{manga?.idCategories?.label}}
                             </a>
                         </div>
 
@@ -58,8 +51,8 @@
                             </div>
                         </div>
 
-                        <p><span>Année de publication:</span> {{ getYearFromDate(manga.releaseDate) }}</p>
-                        <div><span>Prix:</span> {{manga.price}} €</div>
+                        <p><span>Année de publication:</span> {{ getYearFromDate(manga?.releaseDate) }}</p>
+                        <div><span>Prix:</span> {{manga?.price}} €</div>
                         <div><span>France:</span> Oui</div>
                     </div>
                 </div>
@@ -71,7 +64,7 @@
                     <h2>summary</h2>
                 </div>
                 <div class="card-single__summary-content">
-                    <p>{{manga.summary}}</p>
+                    <p>{{manga?.summary}}</p>
                 </div>
             </div>
         </div>

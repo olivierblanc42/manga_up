@@ -1,15 +1,9 @@
 <section class="section">
     <div class="section__title">
         <h1>Auteurs</h1>
-        <div class="loading-spinner" *ngIf="isLoading">
-            <mat-spinner diameter="40" color="primary"></mat-spinner>
-        </div>
-        <div *ngIf="!isLoading && !authors && showEmptyMessage">
-            <p>Aucun auteurs trouvé.</p></div>
 
-            
-        <div class="section__grid" *ngIf="!isLoading && authors  "  >
-            @for (author of authors.content; track author.id) {
+        <div class="section__grid">
+            @for (author of authors?.content; track author.id) {
             <ui-card size="card-genre">
                 <img class="image" src="{{author.url}}" alt="Portrait de {{author.firstname}} {{author.lastname}}">
 

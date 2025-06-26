@@ -1,23 +1,15 @@
 <article class="section">
-
-    <div class="loading-spinner" *ngIf="isLoading">
-        <mat-spinner diameter="40" color="primary"></mat-spinner>
-    </div>
-    <div *ngIf="!isLoading && !category && showEmptyMessage">
-        <p>Aucune Catégorie trouvé.</p>
-    </div>
-
-    <div class="card card-single-other" *ngIf="!isLoading && category  ">
+    <div class="card card-single-other">
         <div class="card-single-other__title">
-            <h1>{{category.label}}</h1>
+            <h1>{{category?.label}}</h1>
         </div>
         <div class="card-single-other__content">
-            <img src="{{category.url}}" alt="Image de presentation de la catégorie {{category.label}}"  >
+            <img src="{{category?.url}}" alt="Image de presentation de la catégorie {{category?.label}}"  >
             <div class=" card card-single-other__info">
                 <div class="card-single-other__info-title">
                     <h2>Présentation</h2>
                 </div>
-                <p>{{category.description}}</p>
+                <p>{{category?.description}}</p>
             </div>
         </div>
 

@@ -2,17 +2,8 @@
    <div class="section__title">
       <h1>Mangas</h1>
    </div>
-
-
-
-   <div class="loading-spinner" *ngIf="isLoadingManga">
-      <mat-spinner diameter="40" color="primary"></mat-spinner>
-   </div>
-   <div *ngIf="!isLoadingManga && !mangas && showEmptyMessage">
-      <p>Aucun mangas trouvé.</p>
-   </div>
-   <div class="section__grid" *ngIf="!isLoadingManga && mangas  "  >
-      @for (manga of mangas.content; track $index) {
+   <div class="section__grid">
+      @for (manga of mangas?.content; track $index) {
       <ui-card size="card-manga">
                <img class="image" src="{{manga.picture}}" alt="Image du manga  {{manga.title}}">
          <div>

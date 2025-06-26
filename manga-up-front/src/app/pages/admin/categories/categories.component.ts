@@ -5,12 +5,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { noHtmlTagsValidator, urlValidator } from '../../../validator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
@@ -19,8 +18,7 @@ export class CategoriesAdminComponent implements OnInit {
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
-  isLoading = true;
-  showEmptyMessage = false;
+
   isModalOpen = false;
 
   categoryForm!: FormGroup;
@@ -41,20 +39,7 @@ export class CategoriesAdminComponent implements OnInit {
     this.categoryService.getAllCategoriesWithPagination();
 
     this.categoryService.currentCategoriesProjection.subscribe((data) => {
-      if (!data) {
-        this.isLoading = true;
-        setTimeout(() => {
-          if (!this.categories) {
-            this.showEmptyMessage = true;
-            this.isLoading = false;
-          }
-        }, 10000);
-        return;
-      } else {
-        this.categories = data;
-        this.isLoading = false;
-        this.showEmptyMessage = false;
-      }
+      this.categories = data;
       this.pages = this.convertNumberToArray(this.categories?.totalPages!);
       this.lastPage = this.categories?.totalPages!;
       console.log("categories : ", this.categories);

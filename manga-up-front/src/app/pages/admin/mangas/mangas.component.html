@@ -180,14 +180,7 @@
         <div class="section-admin__title">
             <h1>Mangas:</h1>
         </div>
-        <div class="loading-spinner" *ngIf="isLoadingManga">
-            <mat-spinner diameter="40" color="primary"></mat-spinner>
-        </div>
-        <div *ngIf="!isLoadingManga && !mangas && showEmptyMessage">
-            <p>Aucun mangas trouvé.</p></div>
-
-
-        <table class="section-admin__content" *ngIf="!isLoadingManga && mangas">
+        <table class="section-admin__content">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>

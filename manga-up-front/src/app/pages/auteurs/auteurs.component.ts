@@ -3,12 +3,11 @@ import { AuthorProjections } from '../../type';
 import { AuthorService } from '../../service/author.service';
 import { CardComponent } from "../../components/card/card.component";
 import { RouterModule } from '@angular/router';
-import { CommonModule, NgClass } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-auteurs',
-  imports: [CardComponent, RouterModule, NgClass, MatProgressSpinnerModule, CommonModule],
+  imports: [CardComponent, RouterModule, NgClass],
   standalone: true,
   templateUrl: './auteurs.component.html',
   styleUrl: './auteurs.component.scss'
@@ -18,11 +17,6 @@ export class AuteursComponent implements OnInit{
   lastPage!: number;
   currentPage!: number;
   authors: AuthorProjections | null = null;
-  isLoading = true;
-  showEmptyMessage = false;
-
-
-
  constructor(
     private authorService : AuthorService,
     
@@ -32,25 +26,10 @@ export class AuteursComponent implements OnInit{
 
    this.authorService.getAllAuthorWithPagination();
    this.authorService.currentauthorProjection.subscribe((data)=>{
-     if (!data) {
-       this.isLoading = true;
-       setTimeout(() => {
-         if (!this.authors) {
-           this.showEmptyMessage = true;
-           this.isLoading = false;
-         }
-       }, 10000);
-       return;
-     } else {
-       this.authors = data;
-       this.isLoading = false;
-       this.showEmptyMessage = false;
-     }
+     this.authors = data;
+     console.log("Genres récupérés :", this.authors);
      this.pages = this.convertNumberToArray(this.authors?.totalPages!)
      this.lastPage = this.authors?.totalPages!;
-
-
-     
    })
 
 

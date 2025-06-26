@@ -2,16 +2,8 @@
     <div class="section__title">
         <h1>Catégories</h1>
 
-        <div class="loading-spinner" *ngIf="isLoading">
-            <mat-spinner diameter="40" color="primary"></mat-spinner>
-        </div>
-        <div *ngIf="!isLoading && !categories && showEmptyMessage">
-            <p>Aucune catégories trouvé.</p>
-        </div>
-
-
-        <div class="section__grid" *ngIf="!isLoading && categories  " >
-            @for (category of categories.content; track category.id) {
+        <div class="section__grid">
+            @for (category of categories?.content; track category.id) {
 
             <ui-card size="card-genre">
                 <img class="image" src="{{category.url}}" alt="{{category.label}}" title="{{category.label}}">

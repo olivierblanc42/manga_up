@@ -3,12 +3,10 @@ import { GenreProjection, GenreWithMangas } from '../../type';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { GenreService } from '../../service/genre.service';
 import { CardComponent } from "../../components/card/card.component";
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-genre',
-  imports: [CardComponent, RouterModule,MatProgressSpinnerModule, CommonModule],
+  imports: [CardComponent, RouterModule],
   standalone: true,
   templateUrl: './genre.component.html',
   styleUrl: './genre.component.scss'
@@ -17,8 +15,7 @@ export class GenreComponent implements OnInit {
   id: string | null = null; 
   idOfUrl!: number; 
   genre: GenreWithMangas | null = null;
-  isLoading = true;
-  showEmptyMessage = false;
+
 
   constructor(
     @Inject(ActivatedRoute) private activatedRoute: ActivatedRoute,
@@ -36,21 +33,7 @@ export class GenreComponent implements OnInit {
     }
 
     this.genreService.curentGenreSolo.subscribe((data)=>{
-      if (!data) {
-        this.isLoading = true;
-        setTimeout(() => {
-          if (!this.genre) {
-            this.showEmptyMessage = true;
-            this.isLoading = false;
-          }
-        }, 10000);
-        return;
-      } else {
-        this.genre = data;
-        this.isLoading = false;
-        this.showEmptyMessage = false;
-      }
-      
+      this.genre =data;
     })
 
 

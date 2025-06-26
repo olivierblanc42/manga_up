@@ -4,11 +4,10 @@ import { AuthorService } from '../../../service/author.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-authors',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule,MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   standalone: true,
   templateUrl: './authors.component.html',
   styleUrl: './authors.component.scss'
@@ -20,8 +19,6 @@ export class AuthorsAdminComponent implements OnInit {
   authors: AuthorProjections | null = null;
      authorForm: FormGroup;
     isModalOpen = false;
-  isLoading = true;
-  showEmptyMessage = false;
  constructor(
     private authorService : AuthorService,
          private fb: FormBuilder
@@ -42,20 +39,7 @@ export class AuthorsAdminComponent implements OnInit {
    this.authorService.getAllAuthorWithPagination();
    this.authorService.currentauthorProjection.subscribe((data)=>{
      this.authors = data;
-     if (!data) {
-       this.isLoading = true;
-       setTimeout(() => {
-         if (!this.authors) {
-           this.showEmptyMessage = true;
-           this.isLoading = false;
-         }
-       }, 10000);
-       return;
-     } else {
-       this.authors = data;
-       this.isLoading = false;
-       this.showEmptyMessage = false;
-     }
+     console.log("Genres récupérés :", this.authors);
      this.pages = this.convertNumberToArray(this.authors?.totalPages!)
      this.lastPage = this.authors?.totalPages!;
    })

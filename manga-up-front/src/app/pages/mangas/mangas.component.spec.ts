@@ -27,8 +27,8 @@ describe('MangasComponent', () => {
         title: 'Manga 1',
         authors: [{
           id: 1,
-          lastname: "string",
-          firstname: "string"
+          lastname: "test",
+          firstname: "test"
         }]
       },
       {
@@ -37,9 +37,9 @@ describe('MangasComponent', () => {
         picture: 'https://example.com/manga2.jpg',
         title: 'Manga 2',
         authors: [{
-          id: 1,
-          lastname: "string",
-          firstname: "string"
+          id: 2,
+          lastname: "test",
+          firstname: "test"
         }]
       }
     ],
@@ -94,22 +94,18 @@ describe('MangasComponent', () => {
   });
 
   it('should display manga images correctly', () => {
-    mangaPaginationSubject.next(mockPaginationData);
-        fixture.detectChanges();
+    component.mangas = mockPaginationData;
+    fixture.detectChanges();
 
     const img = fixture.nativeElement.querySelector('.image');
     expect(img).toBeTruthy();
     expect(img.src).toBe('https://example.com/manga1.jpg');
   });
 
-
-
   it('should have the correct title', () => {
     const titleElement = fixture.nativeElement.querySelector('h1');
     expect(titleElement.textContent).toContain('Mangas');
   });
-
-
 
   it('should display pagination buttons and call related methods', () => {
     spyOn(component, 'pagePrevious');

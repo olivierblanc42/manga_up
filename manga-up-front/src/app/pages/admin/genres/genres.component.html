@@ -62,13 +62,8 @@
         <div class="section-admin__title">
             <h1>Genres</h1>
         </div>
-        <div class="loading-spinner" *ngIf="isLoadingGenre">
-            <mat-spinner diameter="40" color="primary"></mat-spinner>
-        </div>
-        <div *ngIf="!isLoadingGenre && !genres && showEmptyMessage">
-            <p>Aucun genres trouvé.</p>
-            </div>
-        <table class="section-admin__content" *ngIf="!isLoadingGenre && genres">
+    
+        <table class="section-admin__content">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>

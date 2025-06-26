@@ -25,10 +25,10 @@ describe('MangasAdminComponent', () =>  {
         pictureId: '1',
         picture: 'https://example.com/manga1.jpg',
         title: 'Manga 1',
-        authors: [{
-          id: 1,
-          lastname: "string",
-          firstname: "string"
+        authors:[{
+          id:  1,
+          lastname: "test",
+          firstname: "test"
         }]
       },
       {
@@ -37,9 +37,9 @@ describe('MangasAdminComponent', () =>  {
         picture: 'https://example.com/manga2.jpg',
         title: 'Manga 2',
         authors: [{
-          id: 1,
-          lastname: "string",
-          firstname: "string"
+          id: 2,
+          lastname: "test",
+          firstname: "test"
         }]
       }
     ],

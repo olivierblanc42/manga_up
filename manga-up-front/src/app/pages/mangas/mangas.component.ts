@@ -3,12 +3,11 @@ import { MangaService } from './../../service/manga.service';
 import { Component, OnInit } from '@angular/core';
 import { CardComponent } from '../../components/card/card.component';
 import { RouterModule } from '@angular/router';
-import { CommonModule, NgClass } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-mangas',
-  imports: [CardComponent, CommonModule, RouterModule, NgClass, MatProgressSpinnerModule],
+  imports: [CardComponent, RouterModule, NgClass],
   standalone: true,
   templateUrl: './mangas.component.html',
   styleUrl: './mangas.component.scss'
@@ -22,9 +21,6 @@ export class MangasComponent implements OnInit{
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
-  isLoadingManga = true;
-  showEmptyMessage = false;
-
  constructor(
     private mangaservice : MangaService,
     
@@ -35,21 +31,8 @@ export class MangasComponent implements OnInit{
    
     this.mangaservice.getMangas();
     this.mangaservice.currentMangaPaginations.subscribe((data) => {
-      
-      if (!data) {
-        this.isLoadingManga = true;
-        setTimeout(() => {
-          if (!this.mangas) {
-            this.showEmptyMessage = true;
-            this.isLoadingManga = false;
-          }
-        }, 10000);
-        return;
-      } else {
-        this.mangas = data;
-        this.isLoadingManga = false;
-        this.showEmptyMessage = false;
-      }
+      this.mangas = data;
+      console.log("manga récupérés :", this.mangas);
       this.pages = this.convertNumberToArray(this.mangas?.totalPages!)
       this.lastPage = this.mangas?.totalPages!;
     })

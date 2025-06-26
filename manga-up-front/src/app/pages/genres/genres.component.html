@@ -2,15 +2,8 @@
     <div class="section__title">
         <h1>Genres</h1>
     </div>
-
-    <div class="loading-spinner" *ngIf="isLoadingGenre">
-        <mat-spinner diameter="40" color="primary"></mat-spinner>
-    </div>
-    <div *ngIf="!isLoadingGenre && !genres && showEmptyMessage">
-        <p>Aucun genres trouvé.</p>
-        </div>
-    <div class="section__grid" *ngIf="!isLoadingGenre && genres" >
-        @for (genre of genres.content; track genre.id) {
+    <div class="section__grid">
+        @for (genre of genres?.content; track genre.id) {
     
         <ui-card size="card-genre">
             <img class="image" src="{{genre.url}}" alt="{{genre.label}}">
