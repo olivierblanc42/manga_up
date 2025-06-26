@@ -81,11 +81,14 @@ describe('GenresComponent', () => {
 
   // Test rapide pour voir si l’image s’affiche avec la bonne URL
   it('should display genres images correctly', () => {
-    component.genres = mockGenres;
+    mockGenresSubject.next(mockGenres); 
     fixture.detectChanges();
-    const img = fixture.nativeElement.querySelector('.image');
-    expect(img.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
+
+    const img: HTMLImageElement | null = fixture.nativeElement.querySelector('.image');
+    expect(img).not.toBeNull();
+    expect(img?.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
   });
+  
 
   // Juste pour vérifier que le titre est bien “Genres”
   it('should have the correct title', () => {
