@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit{
         this.isloadingGenre = true;
         return;
       }
-      if (data.length === 0) {
+      if (this.genres.length === 0) {
         this.genres = [];
 
         setTimeout(() => {
@@ -73,16 +73,16 @@ export class HomeComponent implements OnInit{
       if (!data) {
         this.isLoadingMangaOne = true;
         setTimeout(() => {
-          if (this.mangaDtoFour.length === 0) {
+          if (!this.mangaOne) {
             this.showEmptyMessage = true;
             this.isLoadingMangaOne = false;
-
           }
         }, 10000);
-        return; 
+        return;
       } else {
         this.mangaOne = data;
         this.isLoadingMangaOne = false;
+        this.showEmptyMessage = false;
       }
     })
 

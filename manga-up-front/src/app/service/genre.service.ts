@@ -43,10 +43,11 @@ export class GenreService {
 
 
     async getAllGenreWithPagination(page: number = 0) {
+        
         try {
             const r = await firstValueFrom(this.http.get<GenreProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
-            this.genresProjectionPaginations.next(r);
+                this.genresProjectionPaginations.next(r);
             console.log('Genres récupérés avec succès :', r);
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);

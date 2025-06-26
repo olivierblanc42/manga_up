@@ -18,6 +18,8 @@ export class AuthorAdminComponent implements OnInit {
   idOfUrl!: number;
   author: AuthorWithMangas | null = null;
   authorForm!: FormGroup;
+  isLoading = true;
+  showEmptyMessage = false;
   
   constructor(
     private activatedRoute: ActivatedRoute,

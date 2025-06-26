@@ -1,15 +1,21 @@
 <article class="section">
-    <div class="card card-single-other">
+    <div class="loading-spinner" *ngIf="isLoading">
+        <mat-spinner diameter="40" color="primary"></mat-spinner>
+    </div>
+    <div *ngIf="!isLoading && !genre && showEmptyMessage">
+        <p>Aucun genre trouvé.</p>
+    </div>
+    <div class="card card-single-other " *ngIf="!isLoading && genre  ">
         <div class="card-single-other__title">
-            <h1>{{genre?.label}}</h1>
+            <h1>{{genre.label}}</h1>
         </div>
         <div class="card-single-other__content">
-            <img src="{{genre?.url}}" alt="Image de présentaion du genre{{genre?.label}}">
+            <img src="{{genre.url}}" alt="Image de présentaion du genre{{genre.label}}">
             <div class=" card card-single-other__info">
                 <div class="card-single-other__info-title">
                     <h2>Résumé</h2>
                 </div>
-                <p>{{genre?.description}}</p>
+                <p>{{genre.description}}</p>
             </div>
         </div>
     </div>

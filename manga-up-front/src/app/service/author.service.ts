@@ -47,8 +47,7 @@ export class AuthorService {
         try {
             const r = await lastValueFrom(this.http.get<AuthorProjections>(`${this.urlPagination}?page=${page}`));
             if (!r) return;
-            this.authorProjection.next(r);
-            console.log('Genres récupérés avec succès :', r);
+                this.authorProjection.next(r);
         } catch (err) {
             console.error('Erreur lors de la récupération des genres :', err);
         }
@@ -67,7 +66,6 @@ export class AuthorService {
 
                 this.authorOneProjection.next(authorWithMangas);
 
-                console.log('Auteur récupérés avec succès :', authorWithMangas);
             }
         } catch (err) {
             console.error('Erreur lors de la récupération de l\'auteur :', err);
