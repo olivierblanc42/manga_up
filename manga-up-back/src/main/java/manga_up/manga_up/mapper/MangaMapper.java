@@ -136,21 +136,18 @@ public class MangaMapper {
                 .collect(Collectors.toSet());
     }
 
+    public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
+        Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
 
-   
-public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
-    Set<AuthorDtoRandom> authors = parseAuthors(projection.getAuthors());
+        return new MangaDtoRandom(
+                projection.getMangaId(),
+                projection.getTitle(),
+                authors,
+                projection.getPicture());
 
-    return new MangaDtoRandom(
-            projection.getMangaId(),
-            projection.getTitle(),
-            authors,
-            projection.getPicture()
-    );
+    }
 
-}
-
-// avoir ci je met ses fonction dans un autre fichier 
+    // avoir ci je met ses fonction dans un autre fichier
     public MangaDtoOne mapToDto(MangaProjectionOne p) {
         if (p == null)
             return null;
@@ -160,13 +157,13 @@ public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
                 p.getSubtitle(),
                 p.getSummary(),
                 p.getPrice(),
-                parseCategory(p.getCategory()), 
+                parseCategory(p.getCategory()),
                 parseGenres(p.getGenres()),
                 parseAuthors(p.getAuthors()),
-                p.getPicture());           
-    }    
+                p.getPicture());
+    }
 
-    public  CategoryDto parseCategory(String cat) {
+    public CategoryDto parseCategory(String cat) {
         if (cat == null || cat.isEmpty())
             return null;
 
@@ -177,20 +174,20 @@ public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
                 parts[2],
                 parts[3]);
     }
-    
-    public  Set<GenreDto> parseGenres(String genres) {
+
+    public Set<GenreDto> parseGenres(String genres) {
         if (genres == null || genres.isEmpty())
             return Collections.emptySet();
 
         return Arrays.stream(genres.split("\\|"))
                 .map(s -> {
                     String[] parts = s.split("@");
-                    return new GenreDto(parts[0], parts[1], parts[2]);
+                    return new GenreDto(Integer.parseInt(parts[0]), parts[1], parts[2], parts[3]);
                 })
                 .collect(Collectors.toSet());
     }
 
-    public   Set<AuthorDtoRandom> parseAuthors(String authors) {
+    public Set<AuthorDtoRandom> parseAuthors(String authors) {
         if (authors == null || authors.isEmpty())
             return Collections.emptySet();
 
@@ -201,5 +198,5 @@ public MangaDtoRandom mapToDto(MangaProjectionWithAuthor projection) {
                 })
                 .collect(Collectors.toSet());
     }
-    
+
 }

@@ -55,7 +55,7 @@ class GenreServiceTest {
     @Mock
     private GenderMangaMapper genderMangaMapper;
     @Mock
-    private MangaService mangaService; 
+    private MangaService mangaService;
     @Mock
     private MangaMapper mangaMapper;
     @Mock
@@ -132,12 +132,11 @@ class GenreServiceTest {
         assertThat(genre).isEqualTo(g);
     }
 
-
     @Test
     void shouldGetAllGenresUsingMockedProjections() {
         Pageable pageable = PageRequest.of(0, 5);
 
-        GenreProjection genreProjection1 =mock(GenreProjection.class);
+        GenreProjection genreProjection1 = mock(GenreProjection.class);
         GenreProjection genreProjection2 = mock(GenreProjection.class);
 
         Page<GenreProjection> page = new PageImpl<>(List.of(genreProjection1, genreProjection2));
@@ -158,12 +157,9 @@ class GenreServiceTest {
         assertThat(genre).isEqualTo(g);
     }
 
-
-
-
     @Test
     void shouldSaveGenre() {
-        GenreDto genreDto = new GenreDto(
+        GenreDto genreDto = new GenreDto(1,
                 "url",
                 "baston",
                 "description");
@@ -183,12 +179,11 @@ class GenreServiceTest {
 
     }
 
-
     @Test
     void shouldUpdateGenre() {
         int id = 1;
 
-        GenreDto genreDto = new GenreDto("url", "baston", "baston");
+        GenreDto genreDto = new GenreDto(1, "url", "baston", "baston");
 
         Genre genreEntity = new Genre();
         genreEntity.setId(id);
@@ -225,23 +220,20 @@ class GenreServiceTest {
         verify(genreDao).delete(genre);
     }
 
+    @Test
+    void shouldgetRandomFourGenres() {
+        GenreDto genreDto1 = new GenreDto(1, "url", "baston", "baston");
+        GenreDto genreDto2 = new GenreDto(2, "url", "baston", "baston");
+        GenreDto genreDto3 = new GenreDto(3, "url", "baston", "baston");
+        GenreDto genreDto4 = new GenreDto(4, "url", "baston", "baston");
 
+        List<GenreDto> dtos = List.of(genreDto1, genreDto2, genreDto3, genreDto4);
 
+        when(genreDao.findRandomGenres()).thenReturn(dtos);
+        List<GenreDto> result = genreService.getRandomFourGenres();
 
-@Test 
-void shouldgetRandomFourGenres(){
-    GenreDto genreDto1 = new GenreDto("url", "baston", "baston");
-    GenreDto genreDto2 = new GenreDto("url", "baston", "baston");
-    GenreDto genreDto3 = new GenreDto("url", "baston", "baston");
-    GenreDto genreDto4 = new GenreDto("url", "baston", "baston");
-
-    List<GenreDto> dtos = List.of(genreDto1,genreDto2, genreDto3, genreDto4);  
-    
-    when(genreDao.findRandomGenres()).thenReturn(dtos);
-    List<GenreDto> result = genreService.getRandomFourGenres();
-
-    assertThat(result).hasSize(4);
-}
+        assertThat(result).hasSize(4);
+    }
 
     @Test
     void shouldReturnGenreWithMangas() {
@@ -252,7 +244,6 @@ void shouldgetRandomFourGenres(){
         when(genreDao.findGenreProjectionById(eq(genreId))).thenReturn(Optional.of(genreProjection));
 
         MangaProjectionWithAuthor projection1 = mock(MangaProjectionWithAuthor.class);
-
 
         Page<MangaProjectionWithAuthor> projectionPage = new PageImpl<>(List.of(projection1), pageable, 1);
         when(mangaDao.findMangasByGenre2(eq(genreId), eq(pageable))).thenReturn(projectionPage);
@@ -280,7 +271,7 @@ void shouldgetRandomFourGenres(){
         when(genreDao.findGenreProjectionById(genreId)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
-            () -> genreService.getGenreWithMangas(genreId, pageable));
+                () -> genreService.getGenreWithMangas(genreId, pageable));
 
         assertEquals("Genre with id 404 not found", exception.getMessage());
         verify(genreDao).findGenreProjectionById(genreId);

@@ -36,7 +36,7 @@ public interface GenreDao extends JpaRepository<Genre, Integer> {
 
 
 
-    @Query(value = "SELECT genre.url, genre.label, genre.description " +
+    @Query(value = "SELECT genre.id_gender_mangas, genre.url, genre.label, genre.description  " +
             "FROM genre ORDER BY RAND() LIMIT 4", nativeQuery = true)
     List<GenreDto> findRandomGenres();
 
