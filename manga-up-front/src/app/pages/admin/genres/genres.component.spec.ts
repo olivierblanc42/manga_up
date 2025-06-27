@@ -74,10 +74,10 @@ describe('GenresAdminComponent', () => {
   });
 
   it('should display genres images correctly', () => {
-    component.genres = mockGenres;
+    mockGenresSubject.next(mockGenres);
     fixture.detectChanges();
-    const img = fixture.nativeElement.querySelector('.image');
-    expect(img.src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
+    const img = fixture.nativeElement.querySelectorAll('.image');
+    expect(img[0].src).toBe('https://i.postimg.cc/brcT8vY2/apr-s-la-pluie-resultat.webp');
   });
 
   

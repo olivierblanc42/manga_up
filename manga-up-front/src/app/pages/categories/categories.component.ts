@@ -20,7 +20,8 @@ export class CategoriesComponent implements OnInit {
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
-
+  isLoading = true;
+  showEmptyMessage = false;
  constructor(
    public categoryService : CategoryService,
     
@@ -33,7 +34,21 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.getAllCategoriesWithPagination();
     
     this.categoryService.currentCategoriesProjection.subscribe((data)=>{
-      this.categories = data;
+      if (!data) {
+        this.categories = null;
+        this.isLoading = true;
+        setTimeout(() => {
+          if (!this.categories) {
+            this.showEmptyMessage = true;
+            this.isLoading = false;
+          }
+        }, 10000);
+        return;
+      } else {
+        this.categories = data;
+        this.isLoading = false;
+        this.showEmptyMessage = false;
+      }
       this.pages = this.convertNumberToArray(this.categories?.totalPages!)
       this.lastPage = this.categories?.totalPages!;
       console.log("categories : ", this.categories);

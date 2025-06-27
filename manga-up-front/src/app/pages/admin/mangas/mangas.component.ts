@@ -31,7 +31,8 @@ export class MangasAdminComponent implements OnInit {
   categories: CategoriesProjections | null = null;
   genres: GenreProjections | null = null;
   authors: AuthorProjections | null = null;
-
+  isLoadingManga = true;
+  showEmptyMessage = false;
   constructor(
     private mangaservice: MangaService,
     public categoryService: CategoryService,
@@ -81,8 +82,22 @@ export class MangasAdminComponent implements OnInit {
 
     this.mangaservice.getMangas();
     this.mangaservice.currentMangaPaginations.subscribe((data) => {
-      this.mangas = data;
-      console.log("manga récupérés :", this.mangas);
+      if (!data) {
+        this.mangas = null;
+
+        this.isLoadingManga = true;
+        setTimeout(() => {
+          if (!this.mangas) {
+            this.showEmptyMessage = true;
+            this.isLoadingManga = false;
+          }
+        }, 10000);
+        return;
+      } else {
+        this.mangas = data;
+        this.isLoadingManga = false;
+        this.showEmptyMessage = false;
+      }
       this.pages = this.convertNumberToArray(this.mangas?.totalPages!)
       this.lastPage = this.mangas?.totalPages!;
     })

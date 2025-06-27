@@ -94,13 +94,15 @@ describe('MangasAdminComponent', () =>  {
   });
 
   it('should display manga images correctly', () => {
-    component.mangas = mockPaginationData;
+    mangaPaginationSubject.next(mockPaginationData);
     fixture.detectChanges();
 
-    const img = fixture.nativeElement.querySelector('.image');
-    expect(img).toBeTruthy();
-    expect(img.src).toBe('https://example.com/manga1.jpg');
+    const images = fixture.nativeElement.querySelectorAll('.image');
+    expect(images.length).toBe(2);
+    expect(images[0].src).toContain('manga1.jpg');
+    expect(images[1].src).toContain('manga2.jpg');
   });
+  
 
 
   it('should handle null mangaPagination gracefully', () => {
