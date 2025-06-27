@@ -149,7 +149,7 @@ class GenreServiceTest {
     }
 
     @Test
-    void shouldGetGenreByIdUsingMockedProjections() {
+    void shouldGetGenreByIdWithoutUsingMockedProjections() {
         GenreProjection g = mock(GenreProjection.class);
 
         when(genreDao.findGenreProjectionById(1)).thenReturn(Optional.of(g));
@@ -162,7 +162,7 @@ class GenreServiceTest {
 
 
     @Test
-    void shouldGetAllGenresUsingMockedProjections() {
+    void shouldGetAllGenreswithoutMockedProjections() {
         Pageable pageable = PageRequest.of(0, 5);
 
         GenreProjection genreProjection1 = mock(GenreProjection.class);
