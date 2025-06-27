@@ -8,7 +8,7 @@
             <p>Aucun auteurs trouvé.</p></div>
 
             
-        <div class="section__grid" *ngIf="!isLoading && authors  "  >
+        <div class="section__grid" *ngIf="!isLoading && authors">
             @for (author of authors.content; track author.id) {
             <ui-card size="card-genre">
                 <img class="image" src="{{author.url}}" alt="Portrait de {{author.firstname}} {{author.lastname}}">

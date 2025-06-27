@@ -84,6 +84,8 @@ export class MangasAdminComponent implements OnInit {
     this.mangaservice.getMangas();
     this.mangaservice.currentMangaPaginations.subscribe((data) => {
       if (!data) {
+        this.mangas = null;
+
         this.isLoadingManga = true;
         setTimeout(() => {
           if (!this.mangas) {

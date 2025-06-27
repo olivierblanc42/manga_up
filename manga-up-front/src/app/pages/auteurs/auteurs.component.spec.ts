@@ -91,13 +91,12 @@ describe('AuteursComponent', () => {
   });
 
   it('should display author images correctly', () => {
-    component.authors = {
-      ...mockAuthorData,
-      content: [mockAuthorData.content[1]] // Juste Tite Kubo
-    };
+    authorProjectionSubject.next(mockAuthorData);
     fixture.detectChanges();
-    const img = fixture.nativeElement.querySelector('.image');
-    expect(img.src).toBe('https://example.com/bleach.jpg');
+    const img = fixture.nativeElement.querySelectorAll('.image');
+    expect(img.length).toBe(2);
+
+    expect(img[0].src).toContain('https://example.com/naruto.jpg');
   });
 
   it('should display pagination buttons and call the right methods', () => {

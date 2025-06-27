@@ -42,6 +42,7 @@ export class CategoriesAdminComponent implements OnInit {
 
     this.categoryService.currentCategoriesProjection.subscribe((data) => {
       if (!data) {
+        this.categories = null;
         this.isLoading = true;
         setTimeout(() => {
           if (!this.categories) {
