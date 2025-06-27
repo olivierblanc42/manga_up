@@ -114,10 +114,9 @@ public class MangaMapperTest {
                 true,
                 categoryDto,
                 genreIds,
-                Set.of(), 
+                Set.of(),
                 Set.of(picDto1, picDto2),
                 userFavs);
-
 
         Category categoryEntity = new Category();
         categoryEntity.setId(1);
@@ -175,26 +174,25 @@ public class MangaMapperTest {
 
     @Test
     void shouldParseGenresCorrectly() {
-        String genresStr = "someUrl1@Baston@resumé|someUrl2@comédie@resumé";
+        String genresStr = "1@someUrl1@Baston@resumé|2@someUrl2@comédie@resumé";
 
         Set<GenreDto> result = mangaMapper.parseGenres(genresStr);
 
         Set<GenreDto> expected = Set.of(
-                new GenreDto("someUrl1", "Baston", "resumé"),
-                new GenreDto("someUrl2", "comédie", "resumé")      );
+                new GenreDto(1, "someUrl1", "Baston", "resumé"),
+                new GenreDto(2, "someUrl2", "comédie", "resumé"));
 
         assertEquals(expected, result);
     }
-
 
     @Test
     void shouldParseCategoryCorrectly() {
         String categoryStr = "1:shonen:resumé:url.com";
 
-       CategoryDto result = mangaMapper.parseCategory(categoryStr);
+        CategoryDto result = mangaMapper.parseCategory(categoryStr);
 
-      CategoryDto expected = new CategoryDto(1,"shonen","resumé","url.com" );
-       assertEquals(expected, result);
+        CategoryDto expected = new CategoryDto(1, "shonen", "resumé", "url.com");
+        assertEquals(expected, result);
     }
 
 }

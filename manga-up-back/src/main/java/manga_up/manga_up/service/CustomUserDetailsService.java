@@ -87,8 +87,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         try {
             appUser = userDao.save(appUser);
         } catch (Exception e) {
-            LOGGER.error("Erreur lors de la sauvegarde de l'utilisateur : ", e);
-            throw new RuntimeException("Erreur lors de la sauvegarde de l'utilisateur", e);
+            LOGGER.error("Error while saving the user: ", e);
+            throw new RuntimeException("Error while saving the user", e);
         }
 
         RegisterDto rDto = registerMapper.toDtoRegister(appUser);

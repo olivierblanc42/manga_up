@@ -381,10 +381,10 @@ class MangaServiceTest {
 
     @Test
     void shouldAllMangaUsingMockedProjections() {
-       
+
         Pageable pageable = PageRequest.of(0, 5);
 
-        PictureLittleProjection pictureLittleProjection =  mock(PictureLittleProjection.class);
+        PictureLittleProjection pictureLittleProjection = mock(PictureLittleProjection.class);
         Set<PictureLittleProjection> pictures = new HashSet<>();
         pictures.add(pictureLittleProjection);
 
@@ -408,7 +408,6 @@ class MangaServiceTest {
         assertThat(result).hasSize(2).containsExactly(mangaBaseProjection1, mangaBaseProjection2);
         verify(mangaDao).findAllMangas(pageable);
     }
-
 
     @Test
     void shouldReturnMangaDtoWhenFoundById() {
@@ -499,10 +498,6 @@ class MangaServiceTest {
         verify(mangaDao).findMangaById(id);
     }
 
-
-
-
-
     @Test
     void shouldMangaByIdUsingMockedProjections() {
         int id = 1;
@@ -527,13 +522,6 @@ class MangaServiceTest {
         assertThat(result).isEqualTo(mangaProjection);
         verify(mangaDao).findMangaById(id);
     }
-
-
-
-
-
-
-
 
     @Test
     void shouldThrowExceptionWhenMangaNotFound() {
@@ -587,7 +575,7 @@ class MangaServiceTest {
         verify(mangaDao).findMangaId(99); // ici c'est bon
         verifyNoMoreInteractions(mangaDao);
     }
-    
+
     @Test
     void shouldThrowExceptionWhenAuthorNotFound() {
         Integer authorId = 1;
@@ -737,7 +725,7 @@ class MangaServiceTest {
                 Instant.parse("1999-10-20T00:00:00Z"),
                 "Un jeune garçon veut devenir roi des pirates.",
                 new BigDecimal("10.00"),
-                null, 
+                null,
                 true,
                 true,
                 category,
@@ -751,7 +739,7 @@ class MangaServiceTest {
         });
 
         assertEquals("A manga must contain at least one image.", thrown.getMessage());
-    }    
+    }
 
     @Test
     void save_shouldThrowException_whenPicturesIsEmpty() {
@@ -778,7 +766,7 @@ class MangaServiceTest {
         });
 
         assertEquals("A manga must contain at least one image.", thrown.getMessage());
-    }    
+    }
 
     @Test
     void shouldReturnRandomMangaDtoList() {
@@ -814,7 +802,7 @@ class MangaServiceTest {
         assertThat(result.get(1).getAuthors()).containsExactly(authorDtoRandom2);
 
         verify(mangaDao).findFourMangasRandom();
-    }    
+    }
 
     @Test
     void shouldReturnGetReleaseDateRaw() {
@@ -850,7 +838,7 @@ class MangaServiceTest {
         assertThat(result.get(1).getAuthors()).containsExactly(authorDtoRandom2);
 
         verify(mangaDao).findMangasReleaseDateRaw();
-    }    
+    }
 
     @Test
     void ShouldMapToDto() {
@@ -858,8 +846,8 @@ class MangaServiceTest {
 
         CategoryDto categoryDto = new CategoryDto(1, "Shonen", "Manga destiné aux jeunes garçons",
                 "http://example.com/shonen.jpg");
-        GenreDto genreDto1 = new GenreDto("Action", "action", "Manga avec beaucoup d'action");
-        GenreDto genreDto2 = new GenreDto("Aventure", "adventure", "Manga d'aventure");
+        GenreDto genreDto1 = new GenreDto(1, "Action", "action", "Manga avec beaucoup d'action");
+        GenreDto genreDto2 = new GenreDto(2, "Aventure", "adventure", "Manga d'aventure");
 
         Set<GenreDto> genreDtos = new HashSet<>();
         genreDtos.add(genreDto1);
@@ -900,6 +888,6 @@ class MangaServiceTest {
 
         verify(mangaDao).findRandomOneManga();
         verify(mangaMapper).mapToDto(projection);
-    }    
+    }
 
 }

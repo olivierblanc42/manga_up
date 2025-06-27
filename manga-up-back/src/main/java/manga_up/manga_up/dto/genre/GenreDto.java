@@ -10,8 +10,8 @@ import java.util.Objects;
  * DTO for {@link manga_up.manga_up.model.Genre}
  */
 public class GenreDto implements Serializable {
-
-
+    @NotNull
+    private final Integer id;
     @NotNull
     @Size(max = 255)
     private final String url;
@@ -21,26 +21,28 @@ public class GenreDto implements Serializable {
     @NotNull
     private final String description;
 
-    public GenreDto( String url, String label, String description) {
+    public GenreDto(Integer id, String url, String label, String description) {
+        this.id = id;
         this.url = url;
         this.label = label;
-        this.description =description;
+        this.description = description;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
     public String getLabel() {
         return label;
     }
-   public String getDescription() {
+
+    public String getDescription() {
         return description;
     }
 
     public String getUrl() {
         return url;
     }
-
-
-
-
-
 
     @Override
     public boolean equals(Object o) {

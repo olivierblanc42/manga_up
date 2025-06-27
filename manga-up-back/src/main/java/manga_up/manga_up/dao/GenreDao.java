@@ -20,10 +20,23 @@ import java.util.Optional;
  */
 @Repository
 public interface GenreDao extends JpaRepository<Genre, Integer> {
-    @Query("SELECT g FROM Genre g")
-    Page<GenreProjection> findAllByPage(Pageable pageable);
 
-    @Query(value = "SELECT genre.url, genre.label, genre.description " +
+
+    @Query(value = """
+            SELECT
+                g.Id_gender_mangas AS id,
+                g.label AS label,
+                g.url AS url,
+                g.description AS description,
+                g.created_at AS createdAt
+            FROM genre g
+            ORDER BY g.created_at DESC
+            """, countQuery = "SELECT COUNT(*) FROM genre", nativeQuery = true)
+    Page<GenreProjection> findAllByPage(Pageable pageable);    
+
+
+
+    @Query(value = "SELECT genre.id_gender_mangas, genre.url, genre.label, genre.description  " +
             "FROM genre ORDER BY RAND() LIMIT 4", nativeQuery = true)
     List<GenreDto> findRandomGenres();
 
