@@ -27,8 +27,8 @@ describe('MangasComponent', () => {
         title: 'Manga 1',
         authors: [{
           id: 1,
-          lastname: "test",
-          firstname: "test"
+          lastname: "string",
+          firstname: "string"
         }]
       },
       {
@@ -37,9 +37,9 @@ describe('MangasComponent', () => {
         picture: 'https://example.com/manga2.jpg',
         title: 'Manga 2',
         authors: [{
-          id: 2,
-          lastname: "test",
-          firstname: "test"
+          id: 1,
+          lastname: "string",
+          firstname: "string"
         }]
       }
     ],
@@ -54,7 +54,7 @@ describe('MangasComponent', () => {
     mangaServiceMock = {
       mangaPagination: mangaPaginationSubject,
       currentMangaPaginations: mangaPaginationSubject,
-      getMangas: jasmine.createSpy('getMangas').and.returnValue(of(mockPaginationData))
+      getMangas: jasmine.createSpy('getMangas').and.returnValue(of())
     };
 
     await TestBed.configureTestingModule({
@@ -94,18 +94,22 @@ describe('MangasComponent', () => {
   });
 
   it('should display manga images correctly', () => {
-    component.mangas = mockPaginationData;
-    fixture.detectChanges();
+    mangaPaginationSubject.next(mockPaginationData);
+        fixture.detectChanges();
 
     const img = fixture.nativeElement.querySelector('.image');
     expect(img).toBeTruthy();
     expect(img.src).toBe('https://example.com/manga1.jpg');
   });
 
+
+
   it('should have the correct title', () => {
     const titleElement = fixture.nativeElement.querySelector('h1');
     expect(titleElement.textContent).toContain('Mangas');
   });
+
+
 
   it('should display pagination buttons and call related methods', () => {
     spyOn(component, 'pagePrevious');
@@ -118,7 +122,7 @@ describe('MangasComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toBe(5); 
+    expect(buttons.length).toBe(5); // Previous + 3 pages + Next
 
     expect(buttons[1].textContent.trim()).toBe('1');
     expect(buttons[2].textContent.trim()).toBe('2');
@@ -127,7 +131,7 @@ describe('MangasComponent', () => {
     buttons[0].click();
     expect(component.pagePrevious).toHaveBeenCalled();
 
-    buttons[2].click(); 
+    buttons[2].click(); // Page 2 => index 1
     expect(component.pageMangas).toHaveBeenCalledWith(1);
 
     buttons[4].click();

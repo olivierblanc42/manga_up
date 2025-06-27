@@ -66,7 +66,8 @@ public class GenreControllerTest {
     private GenreDao GenreDao;
     @Mock
     private CategoryMapper CategoryMapper;
- private static class TestGenreProjection implements GenreProjection {
+
+    private static class TestGenreProjection implements GenreProjection {
         private final Integer id;
         private final String label;
         private final String url;
@@ -107,8 +108,6 @@ public class GenreControllerTest {
         }
     }
 
-
-
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldReturnGenreByid() throws Exception {
@@ -118,10 +117,6 @@ public class GenreControllerTest {
                 "/action",
                 "Genre focused on action-packed stories",
                 LocalDateTime.of(2023, 1, 10, 12, 0));
-
-
-
-
 
         when(genreService.findGenreUserById(1)).thenReturn(genre);
         mockMvc.perform(get("/api/genres/1"))
@@ -138,11 +133,11 @@ public class GenreControllerTest {
                         "label": "Toriyama",
                         "url": "Toriyama",
                         "description": "Mangaka japonais, créateur de Dragon Ball."
-                       
+
                     }
                 """;
 
-        GenreDto a = new GenreDto( "Toriyama", "Toriyama", "Mangaka japonais, créateur de Dragon Ball.");
+        GenreDto a = new GenreDto(1, "Toriyama", "Toriyama", "Mangaka japonais, créateur de Dragon Ball.");
 
         when(genreService.save(any())).thenReturn(a);
 
@@ -156,70 +151,63 @@ public class GenreControllerTest {
                 .andExpect(jsonPath("$.label").value("Toriyama"));
     }
 
+    @Test
+    @WithMockUser(username = "user", roles = { "ADMIN" })
+    void shouldUpdateCreatedGenre() throws Exception {
+        String json = """
+                    {
+                        "label": "Toriyama",
+                        "url": "Toriyama",
+                        "description": "Mangaka japonais, créateur de Dragon Ball."
 
-@Test
-@WithMockUser(username = "user", roles = { "ADMIN" })
-void shouldUpdateCreatedGenre() throws Exception {
-    String json = """
-                {
-                    "label": "Toriyama",
-                    "url": "Toriyama",
-                    "description": "Mangaka japonais, créateur de Dragon Ball."
+                    }
+                """;
 
-                }
-            """;
+        GenreDto genreUpdate = new GenreDto(2, "Toriyama", "Test", "Mangaka japonais, créateur de Dragon Ball.");
 
-    GenreDto genreUpdate = new GenreDto("Toriyama", "Test", "Mangaka japonais, créateur de Dragon Ball.");
+        when(genreService.updateGenre(eq(1), any(GenreDto.class))).thenReturn(genreUpdate);
 
-    
-    when(genreService.updateGenre(eq(1), any(GenreDto.class))).thenReturn(genreUpdate);
+        mockMvc.perform(put("/api/genres/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .with(csrf()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.label").value("Test"));
 
-    mockMvc.perform(put("/api/genres/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json)
-            .with(csrf()))
-            .andDo(print())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.label").value("Test"));
+    }
 
-}
+    @Test
+    @WithMockUser(username = "user", roles = { "ADMIN" })
+    void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
+        String json = """
+                    {
+                        "label": "Toriyama",
+                        "url": "Toriyama",
+                        "description": "Mangaka japonais, créateur de Dragon Ball."
 
+                    }
+                """;
 
-@Test
-@WithMockUser(username = "user", roles = { "ADMIN" })
-void shouldReturnInternalServerErrorWhenUpdateFails() throws Exception {
-    String json = """
-                {
-                    "label": "Toriyama",
-                    "url": "Toriyama",
-                    "description": "Mangaka japonais, créateur de Dragon Ball."
+        when(genreService.updateGenre(eq(1), any(GenreDto.class)))
+                .thenThrow(new RuntimeException("Database error"));
 
-                }
-            """;
+        mockMvc.perform(put("/api/genres/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .with(csrf()))
+                .andExpect(status().isInternalServerError());
+    }
 
-    when(genreService.updateGenre(eq(1), any(GenreDto.class)))
-            .thenThrow(new RuntimeException("Database error"));
+    @Test
+    @WithMockUser(username = "user", roles = { "ADMIN" })
+    void shouldDeleteAuthor() throws Exception {
+        mockMvc.perform(delete("/api/genres/1").with(csrf()))
+                .andExpect(status().isOk());
 
-    mockMvc.perform(put("/api/genres/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json)
-            .with(csrf()))
-            .andExpect(status().isInternalServerError());
-}
-
-
-
-
-
-@Test
-@WithMockUser(username = "user", roles = { "ADMIN" })
-void shouldDeleteAuthor() throws Exception {
-    mockMvc.perform(delete("/api/genres/1").with(csrf()))
-           .andExpect(status().isOk());
-
-    verify(genreService).deleteGenre(1);;
-}
-
+        verify(genreService).deleteGenre(1);
+        ;
+    }
 
 }

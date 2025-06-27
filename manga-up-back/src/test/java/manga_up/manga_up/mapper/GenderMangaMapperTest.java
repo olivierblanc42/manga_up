@@ -21,60 +21,55 @@ public class GenderMangaMapperTest {
 
     private GenderMangaMapper genderMangaMapper;
 
-       @BeforeEach
+    @BeforeEach
     void setUp() {
-      
+
         genderMangaMapper = new GenderMangaMapper();
-    } 
+    }
 
-@Test
-void shouldToDtoGenre(){
+    @Test
+    void shouldToDtoGenre() {
 
-    Genre genre = new Genre();
-    genre.setUrl("null.com");
-    genre.setLabel("null");
-    genre.setDescritpion("null");
+        Genre genre = new Genre();
+        genre.setUrl("null.com");
+        genre.setLabel("null");
+        genre.setDescritpion("null");
 
-    GenreDto genreDto = genderMangaMapper.toDtoGenre(genre);
-    assertNotNull(genreDto);
-    assertEquals("null", genreDto.getLabel());
-}
+        GenreDto genreDto = genderMangaMapper.toDtoGenre(genre);
+        assertNotNull(genreDto);
+        assertEquals("null", genreDto.getLabel());
+    }
 
-@Test
-void shouldToEntity() {
+    @Test
+    void shouldToEntity() {
 
-    GenreDto genreDto = new GenreDto("null.com","null","null");
-  
+        GenreDto genreDto = new GenreDto(1, "null.com", "null", "null");
 
-    Genre genre = genderMangaMapper.toEntity(genreDto);
-    assertNotNull(genre);
-    assertEquals("null", genreDto.getLabel());
-}
+        Genre genre = genderMangaMapper.toEntity(genreDto);
+        assertNotNull(genre);
+        assertEquals("null", genreDto.getLabel());
+    }
 
-@Test
-void shouldToGenreLightDto() {
+    @Test
+    void shouldToGenreLightDto() {
 
-    Genre genre = new Genre();
-    genre.setId(1);
-    
+        Genre genre = new Genre();
+        genre.setId(1);
 
-    GenreLightDto  genreLightDto = genderMangaMapper.toGenreLightDto(genre);
-    assertNotNull(genreLightDto);
-    assertEquals(1, genreLightDto.getId());
-}
+        GenreLightDto genreLightDto = genderMangaMapper.toGenreLightDto(genre);
+        assertNotNull(genreLightDto);
+        assertEquals(1, genreLightDto.getId());
+    }
 
-@Test
-void shouldToEntityGenre() {
+    @Test
+    void shouldToEntityGenre() {
 
-    GenreLightDto genreLightDto = new GenreLightDto(1);
-  
+        GenreLightDto genreLightDto = new GenreLightDto(1);
 
-    Genre genre = genderMangaMapper.toEntityGenre(genreLightDto);
-    assertNotNull(genre);
-    assertEquals(1, genre.getId());
-}
-
-
+        Genre genre = genderMangaMapper.toEntityGenre(genreLightDto);
+        assertNotNull(genre);
+        assertEquals(1, genre.getId());
+    }
 
     @Test
     void shoulToLightDtoGenres() {
@@ -101,18 +96,6 @@ void shouldToEntityGenre() {
         assertNotNull(genres);
         assertEquals(2, genres.size());
 
-
     }
 
-
-
-
 }
-
-
-
-
-
-
-    
-

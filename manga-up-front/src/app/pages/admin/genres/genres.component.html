@@ -11,6 +11,7 @@
                 <h2>Nouveau genre</h2>
             </div>
     
+            <!-- Formulaire réactif -->
             <form [formGroup]="genreForm" (ngSubmit)="createGenre()">
             
                 <label>Label</label>
@@ -62,8 +63,13 @@
         <div class="section-admin__title">
             <h1>Genres</h1>
         </div>
-    
-        <table class="section-admin__content">
+        <div class="loading-spinner" *ngIf="isLoadingGenre">
+            <mat-spinner diameter="40" color="primary"></mat-spinner>
+        </div>
+        <div *ngIf="!isLoadingGenre && !genres && showEmptyMessage">
+            <p>Aucun genres trouvé.</p>
+            </div>
+        <table class="section-admin__content" *ngIf="!isLoadingGenre && genres">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>

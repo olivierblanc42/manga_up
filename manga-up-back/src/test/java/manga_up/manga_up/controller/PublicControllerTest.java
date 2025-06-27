@@ -480,7 +480,6 @@ class PublicControllerTest {
 
         // Test pour Manga
 
-
         @Test
         void shouldReturnFourMangaReleaseDateRaw() throws Exception {
                 Set<AuthorDtoRandom> authors1 = Set.of(
@@ -776,19 +775,19 @@ class PublicControllerTest {
 
         @Test
         void shouldReturnRandomFourGenre() throws Exception {
-                GenreDto genre1 = new GenreDto(
+                GenreDto genre1 = new GenreDto(1,
                                 "Shonen",
                                 "Shonen",
                                 "Genre destiné principalement aux jeunes garçons.");
-                GenreDto genre2 = new GenreDto(
+                GenreDto genre2 = new GenreDto(2,
                                 "Seinen",
                                 "Seinen",
                                 "Genre plus mature, souvent destiné à un public adulte.");
-                GenreDto genre3 = new GenreDto(
+                GenreDto genre3 = new GenreDto(3,
                                 "Shojo",
                                 "Shojo",
                                 "Genre destiné principalement aux jeunes garçons.");
-                GenreDto genre4 = new GenreDto(
+                GenreDto genre4 = new GenreDto(4,
 
                                 "Josei",
                                 "Josei",
