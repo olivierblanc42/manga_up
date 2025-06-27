@@ -48,7 +48,7 @@ describe('AuteursComponent', () => {
     authorServiceMock = {
       authorProjection: authorProjectionSubject,
       currentauthorProjection: authorProjectionSubject.asObservable(),
-      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of(mockAuthorData))
+      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of())
     };
 
     await TestBed.configureTestingModule({
@@ -111,7 +111,7 @@ describe('AuteursComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toBe(5); 
+    expect(buttons.length).toBe(5); // Previous + 3 pages + Next
 
     expect(buttons[1].textContent.trim()).toBe('1');
     expect(buttons[2].textContent.trim()).toBe('2');
@@ -120,7 +120,7 @@ describe('AuteursComponent', () => {
     buttons[0].click();
     expect(component.pagePrevious).toHaveBeenCalled();
 
-    buttons[2].click(); 
+    buttons[2].click(); // page 2
     expect(component.pageAuthor).toHaveBeenCalledWith(1);
 
     buttons[4].click();

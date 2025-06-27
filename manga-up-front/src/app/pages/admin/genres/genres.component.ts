@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { noHtmlTagsValidator, urlValidator } from '../../../validator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-genres',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatProgressSpinnerModule],
   standalone: true,
   templateUrl: './genres.component.html',
   styleUrl: './genres.component.scss'
@@ -21,6 +22,9 @@ export class GenresAdminComponent implements OnInit {
   currentPage!: number;
     genreForm!: FormGroup;
   isModalOpen = false;
+  isLoadingGenre = true;
+  showEmptyMessage = false;
+
  constructor(
     private genreService : GenreService,
      private fb: FormBuilder
@@ -33,10 +37,22 @@ export class GenresAdminComponent implements OnInit {
     this.initForm();
     this.genreService.getAllGenreWithPagination();
     this.genreService.currentGenresProjectionPaginations.subscribe((data) => {
-      this.genres = data;
+      if (!data) {
+        this.isLoadingGenre = true;
+        setTimeout(() => {
+          if (!this.genres) {
+            this.showEmptyMessage = true;
+            this.isLoadingGenre = false;
+          }
+        }, 10000);
+        return;
+      } else {
+        this.genres = data;
+        this.isLoadingGenre = false;
+        this.showEmptyMessage = false;
+      }
       this.pages = this.convertNumberToArray(this.genres?.totalPages!)
       this.lastPage = this.genres?.totalPages!;
-      console.log("Genres récupérés :", this.genres);
     })
  
   }

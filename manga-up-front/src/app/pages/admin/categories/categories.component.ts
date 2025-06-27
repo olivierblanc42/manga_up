@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { noHtmlTagsValidator, urlValidator } from '../../../validator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatProgressSpinnerModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
@@ -18,10 +19,12 @@ export class CategoriesAdminComponent implements OnInit {
   pages!: number[];
   lastPage!: number;
   currentPage!: number;
-  isModalOpen = false;
-  categoryForm!: FormGroup;
   isLoading = true;
   showEmptyMessage = false;
+  isModalOpen = false;
+
+  categoryForm!: FormGroup;
+
   constructor(
     public categoryService: CategoryService,
     private fb: FormBuilder

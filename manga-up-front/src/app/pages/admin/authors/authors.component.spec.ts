@@ -49,7 +49,7 @@ describe('AuthorsAdminComponent', () =>{
     authorServiceMock = {
       authorProjection: authorProjectionSubject,
       currentauthorProjection: authorProjectionSubject.asObservable(),
-      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of(mockAuthorData))
+      getAllAuthorWithPagination: jasmine.createSpy('getAllAuthorWithPagination').and.returnValue(of())
     };
 
     await TestBed.configureTestingModule({

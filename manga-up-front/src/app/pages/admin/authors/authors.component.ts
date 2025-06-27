@@ -4,45 +4,62 @@ import { AuthorService } from '../../../service/author.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-authors',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, MatProgressSpinnerModule],
   standalone: true,
   templateUrl: './authors.component.html',
   styleUrl: './authors.component.scss'
 })
 export class AuthorsAdminComponent implements OnInit {
- pages!: number[];
+  pages!: number[];
   lastPage!: number;
   currentPage!: number;
   authors: AuthorProjections | null = null;
-     authorForm: FormGroup;
-    isModalOpen = false;
- constructor(
-    private authorService : AuthorService,
-         private fb: FormBuilder
-    
- ) { this.currentPage = 0;
-     this.authorForm = this.fb.group({
-        lastname: ['', Validators.required],
-        firstname: ['', Validators.required],
-        genre: ['', Validators.required],
-        description: ['', Validators.required],
-        url: ['', Validators.required],
-        birthdate: [null, Validators.required]
-      })
+  authorForm: FormGroup;
+  isModalOpen = false;
+  isLoading = true;
+  showEmptyMessage = false;
+  constructor(
+    private authorService: AuthorService,
+    private fb: FormBuilder
+
+  ) {
+    this.currentPage = 0;
+    this.authorForm = this.fb.group({
+      lastname: ['', Validators.required],
+      firstname: ['', Validators.required],
+      genre: ['', Validators.required],
+      description: ['', Validators.required],
+      url: ['', Validators.required],
+      birthdate: [null, Validators.required]
+    })
   }
 
   ngOnInit(): void {
 
-   this.authorService.getAllAuthorWithPagination();
-   this.authorService.currentauthorProjection.subscribe((data)=>{
-     this.authors = data;
-     console.log("Genres récupérés :", this.authors);
-     this.pages = this.convertNumberToArray(this.authors?.totalPages!)
-     this.lastPage = this.authors?.totalPages!;
-   })
+    this.authorService.getAllAuthorWithPagination();
+    this.authorService.currentauthorProjection.subscribe((data) => {
+      this.authors = data;
+      if (!data) {
+        this.isLoading = true;
+        setTimeout(() => {
+          if (!this.authors) {
+            this.showEmptyMessage = true;
+            this.isLoading = false;
+          }
+        }, 10000);
+        return;
+      } else {
+        this.authors = data;
+        this.isLoading = false;
+        this.showEmptyMessage = false;
+      }
+      this.pages = this.convertNumberToArray(this.authors?.totalPages!)
+      this.lastPage = this.authors?.totalPages!;
+    })
 
 
   }
@@ -110,7 +127,7 @@ export class AuthorsAdminComponent implements OnInit {
         console.log("Genres récupérés :", this.authors);
         this.pages = this.convertNumberToArray(this.authors?.totalPages!)
         this.lastPage = this.authors?.totalPages!;
-      
+
       })
     } catch (error) {
       console.error('Erreur lors du chargement des catégories', error);
@@ -122,11 +139,11 @@ export class AuthorsAdminComponent implements OnInit {
     if (!confirmed) return;
     try {
       await this.authorService.deleteAuthor(id);
-      this.loadAuthors(); 
+      this.loadAuthors();
     } catch (error) {
       console.error('Erreur lors de la suppression', error);
     }
   }
-  
+
 
 }

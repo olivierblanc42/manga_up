@@ -59,8 +59,14 @@
         <div class="section-admin__title">
             <h1>Catégories</h1>
         </div>
+        <div class="loading-spinner" *ngIf="isLoading">
+            <mat-spinner diameter="40" color="primary"></mat-spinner>
+        </div>
+        <div *ngIf="!isLoading && !categories && showEmptyMessage">
+            <p>Aucune catégories trouvé.</p>
+        </div>
 
-        <table class="section-admin__content">
+        <table class="section-admin__content" *ngIf="!isLoading && categories  ">
             <thead>
                 <tr>
                     <th scope="col">Titre</th>

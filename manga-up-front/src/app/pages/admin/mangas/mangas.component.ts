@@ -9,10 +9,11 @@ import { CategoryService } from '../../../service/category.service';
 import { GenreService } from '../../../service/genre.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthorService } from '../../../service/author.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-mangas',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, MatProgressSpinnerModule],
   standalone: true,
   templateUrl: './mangas.component.html',
   styleUrl: './mangas.component.scss'
