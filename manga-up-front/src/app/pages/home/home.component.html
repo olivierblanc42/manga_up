@@ -1,4 +1,4 @@
-<swiper-container navigation="true" pagination="true">
+<swiper-container navigation="true" pagination="true" #container >
     <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
     <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
     <swiper-slide><img src="images/ban.webp" alt="" class="ban-img"></swiper-slide>
@@ -95,7 +95,7 @@
         <h2>Mangas populaires</h2>
     </div>
     <swiper-container class="swiper-manga" navigation="true">
-        @for (manga of mangaDtoRandomFour; track $index) {
+        @for (manga of mangaDtoRandomFourDate; track $index) {
         <swiper-slide>
             <ui-card size="card-manga">
                 <img [src]="manga.picture" [alt]="'images du manga' + manga.title">
@@ -121,7 +121,7 @@
     </swiper-container>
 
     <div class="section__grid section__grid--home">
-        @for (manga of mangaDtoRandomFour; track $index) {
+        @for (manga of mangaDtoRandomFourDate; track $index) {
         <ui-card size="card-manga">
             <img src="{{manga.picture}}" [alt]="'images du manga'+manga.title">
             <div>

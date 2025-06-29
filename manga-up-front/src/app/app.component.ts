@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, viewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, viewChild } from '@angular/core';
 import { NavigationEnd, RouterModule, RouterOutlet,Router } from '@angular/router';
 import { BreadcrumbComponent, BreadcrumbItemDirective } from 'xng-breadcrumb';
 import { CardComponent } from "./components/card/card.component";
@@ -16,7 +16,7 @@ import { CsrfService } from './service/csrf.service';
 })
 export class AppComponent  implements OnInit {
   title = 'manga-up-front';
-  sidenav = viewChild<ElementRef<HTMLElement>>('mySidenav');
+  @ViewChild('mySidenav') sidenav!: ElementRef<HTMLElement>;
   isAdmin: boolean = false;
   searchTerm = '';
 
@@ -45,17 +45,13 @@ export class AppComponent  implements OnInit {
   }
 
    openNav() {
-    const element = this.sidenav();
-    if (element) {
-      element.nativeElement.style.width = '100%';
-    }
+     this.sidenav.nativeElement.style.width = '100%';
+
   }
   
   closeNav() {
-    const element = this.sidenav();
-    if (element) {
-      element.nativeElement.style.width = '0';
-    }
+    this.sidenav.nativeElement.style.width = '0';
+
   }
   redirect() {
     if (this.searchTerm.trim()) {
