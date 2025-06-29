@@ -274,7 +274,7 @@ body {
     padding: $padding-s;
     align-items: center;
     justify-content: space-between;
-
+    width: 300px;
 
     .single-image {
         width: 80%;
@@ -662,7 +662,7 @@ body.home-page .breadcrumb {
         padding: $padding-s;
         align-items: center;
         justify-content: space-between;
-
+     
 
         .single-image {
             width: 520px;
@@ -798,3 +798,11 @@ body.home-page .breadcrumb {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+.swiper-button-next svg,
+.swiper-button-prev svg  {
+     width: 50%; 
+ 
+}
