@@ -68,7 +68,7 @@ public class Manga {
             inverseJoinColumns = @JoinColumn(name = "Id_authors"))
     private Set<Author> authors = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idMangas")
+    @OneToMany(mappedBy = "idMangas", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Picture> pictures = new LinkedHashSet<>();
 
 

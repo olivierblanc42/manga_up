@@ -10,6 +10,7 @@ import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.mapper.AuthorMapper;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Author;
+import manga_up.manga_up.model.Manga;
 import manga_up.manga_up.dao.AuthorDao;
 import manga_up.manga_up.dao.MangaDao;
 import manga_up.manga_up.projection.author.AuthorProjection;
