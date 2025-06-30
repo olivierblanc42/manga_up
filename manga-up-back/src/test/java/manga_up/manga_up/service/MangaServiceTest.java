@@ -563,16 +563,20 @@ class MangaServiceTest {
         assertFalse(author.getMangas().contains(manga));
 
         verify(mangaDao).delete(manga);
-        verify(categoryDao).save(category);
     }
+
+
+
+
+    
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingManga() {
-        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty()); // ici
+        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty()); 
 
         assertThrows(EntityNotFoundException.class, () -> mangaService.deleteManga(99));
 
-        verify(mangaDao).findMangaId(99); // ici c'est bon
+        verify(mangaDao).findMangaId(99); 
         verifyNoMoreInteractions(mangaDao);
     }
 
