@@ -82,8 +82,14 @@ public class MangaController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update a Manga")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MangaDto> updateManga(@PathVariable Integer id, @RequestBody MangaDto mangaDto) {
+        LOGGER.info("Updating Manga with id {}", id);
+        MangaDto updatedManga = mangaService.update(id, mangaDto);
+        return ResponseEntity.ok(updatedManga);
+    }
 
 
 }
