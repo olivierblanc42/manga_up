@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.author.AuthorProjection;
 import manga_up.manga_up.projection.category.CategoryProjection;
+import manga_up.manga_up.projection.genderUser.GenderUserProjection;
 import manga_up.manga_up.projection.genre.GenreProjection;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
 import manga_up.manga_up.projection.manga.MangaProjection;
@@ -181,6 +183,21 @@ public class PublicController {
     }
 
     // All public requests for GenderUser
+
+
+ 
+    @Operation(summary = "All genreUsers ")
+    @GetMapping("genderUser")
+    public ResponseEntity<List<GenderUserDto>> getAllGenreUsers() 
+     {
+        LOGGER.info("Getting genreUsers");
+        List<GenderUserDto> genderUserProjections = genderUserService.getAllGenreUsers();
+        return new ResponseEntity<>(genderUserProjections, HttpStatus.OK);
+    }
+
+
+
+
 
     // All public requests for Categories
     @Operation(summary = "All Categories with pagination")
