@@ -19,7 +19,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './manga.component.html',
   styleUrl: './manga.component.scss'
 })
-export class MangaComponent {
+export class MangaAdminComponent {
   idOfUrl!: number;
   genreForm!: FormGroup;
   genre: GenreWithMangas | null = null;

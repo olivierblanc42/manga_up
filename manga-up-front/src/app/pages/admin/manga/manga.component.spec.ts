@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MangaComponent } from './manga.component';
+import { MangaAdminComponent } from './manga.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('MangaComponent', () => {
-  let component: MangaComponent;
-  let fixture: ComponentFixture<MangaComponent>;
+describe('MangaAdminComponent', () => {
+  let component: MangaAdminComponent;
+  let fixture: ComponentFixture<MangaAdminComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MangaComponent],
+      imports: [MangaAdminComponent],
    providers: [
         provideHttpClient(),
         provideHttpClientTesting(), {
@@ -30,7 +30,7 @@ describe('MangaComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MangaComponent);
+    fixture = TestBed.createComponent(MangaAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
