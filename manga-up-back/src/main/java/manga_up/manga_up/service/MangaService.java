@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,7 @@ public class MangaService {
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
     private final CategoryMapper categoryMapper;
+
     public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao, CategoryDao categoryDao,
             AuthorDao authorDao, GenreDao genreDao, CategoryMapper categoryMapper) {
         this.mangaDao = mangaDao;
@@ -51,7 +53,7 @@ public class MangaService {
         this.categoryDao = categoryDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
-        this.categoryMapper =categoryMapper;
+        this.categoryMapper = categoryMapper;
     }
 
     /**
@@ -124,7 +126,7 @@ public class MangaService {
         Manga manga = mangaMapper.mangaToEntity(mangaDto);
         manga.setAuthors(authors);
         manga.setGenres(genres);
-        manga.setPictures(new HashSet<>());
+        manga.setPictures(new ArrayList<>());
 
         if (manga.getPriceHt() != null) {
             BigDecimal priceHt = manga.getPriceHt();
@@ -148,7 +150,7 @@ public class MangaService {
             throw new IllegalArgumentException("Only one image can be marked as main.");
         }
 
-        Set<Picture> pictures = new HashSet<>();
+        List<Picture> pictures = new ArrayList<>();
         for (PictureLightDto pictureDto : mangaDto.getPictures()) {
             Picture picture;
             if (pictureDto.getId() == null) {
@@ -171,7 +173,6 @@ public class MangaService {
 
         return mangaMapper.mangaToMangaDto(manga);
     }
-
 
     @Transactional
     public MangaDto update(Integer id, MangaDto mangaDto) {
@@ -254,14 +255,14 @@ public class MangaService {
                 pictures.add(picture);
             }
         }
-        existingManga.setPictures(pictures);
+        existingManga.getPictures().clear();
+        existingManga.getPictures().addAll(pictures);
 
         mangaDao.save(existingManga);
 
         return mangaMapper.mangaToMangaDto(existingManga);
-    }    
+    }
 
-    
     /**
      * Retrieves a list of four random mangas.
      *
@@ -285,12 +286,12 @@ public class MangaService {
         return projections.stream()
                 .map(mangaMapper::mapToDto)
                 .collect(Collectors.toList());
-    }    
+    }
 
     /**
      * Retrieves a single random manga.
      *
-     * @return a  one random {@link MangaDtoOne}
+     * @return a one random {@link MangaDtoOne}
      */
     public MangaDtoOne getRandomManga() {
         MangaProjectionOne projection = mangaDao.findRandomOneManga();
@@ -301,8 +302,6 @@ public class MangaService {
 
         return mangaMapper.mapToDto(projection);
     }
-
-
 
     /**
      * Searches mangas by their title.
@@ -365,11 +364,5 @@ public class MangaService {
 
         mangaDao.delete(manga);
     }
-    
 
-
-
-
-
-    
 }

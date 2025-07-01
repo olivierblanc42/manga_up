@@ -9,6 +9,7 @@ import manga_up.manga_up.dto.picture.PictureLightDto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,10 +35,10 @@ public class MangaDto implements Serializable {
     private final Set<Integer> authors;
     @NotNull(message = "A manga must have at least one image.")
     @Size(min = 1, message = "A manga must contain at least one image.")
-    private final Set<PictureLightDto> pictures;
+    private final List<PictureLightDto> pictures;
     private final Set<UserFavoriteDto> usersFavorites;
 
-    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt,BigDecimal price, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<Integer> genres, Set<Integer> authors, Set<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
+    public MangaDto(String title, String subtitle, Instant releaseDate, String summary, BigDecimal priceHt,BigDecimal price, Boolean inStock, Boolean active, CategoryLittleDto idCategories, Set<Integer> genres, Set<Integer> authors, List<PictureLightDto> pictures, Set<UserFavoriteDto> usersFavorites) {
         this.title = title;
         this.subtitle = subtitle;
         this.releaseDate = releaseDate;
@@ -97,7 +98,7 @@ public class MangaDto implements Serializable {
         return authors;
     }
 
-    public Set<PictureLightDto> getPictures() {
+    public List<PictureLightDto> getPictures() {
         return pictures;
     }
 

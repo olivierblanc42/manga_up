@@ -561,35 +561,35 @@ public class MangaControllerTest {
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldReturnCreatedManga() throws Exception {
         String json = """
-               {
-                  "title": "Fullmetal Alchemist",
-                  "subtitle": "La quête de la pierre philosophale",
-                  "summary": "Deux frères alchimistes cherchent la vérité dans un monde fantastique.",
-                  "releaseDate": "2001-07-12T00:00:00Z",
-                  "priceHt": 7.99,
-                  "price": 9.59,
-                  "inStock": true,
-                  "active": false,
-                  "idCategories": {
-                    "id": 3
-                  },
-                  "genres": [1, 4],
-                  "authors": [10],
-                  "pictures": [
-                    {
-                      "id": 1,
-                      "url": "https://example.com/images/fma_cover.jpg",
-                      "main": true
-                    },
-                    {
-                      "id": 2,
-                      "url": "https://example.com/images/fma_alt.jpg",
-                      "main": false
-                    }
-                  ],
-                  "usersFavorites": []
-                }
-                """;
+                {
+                   "title": "Fullmetal Alchemist",
+                   "subtitle": "La quête de la pierre philosophale",
+                   "summary": "Deux frères alchimistes cherchent la vérité dans un monde fantastique.",
+                   "releaseDate": "2001-07-12T00:00:00Z",
+                   "priceHt": 7.99,
+                   "price": 9.59,
+                   "inStock": true,
+                   "active": false,
+                   "idCategories": {
+                     "id": 3
+                   },
+                   "genres": [1, 4],
+                   "authors": [10],
+                   "pictures": [
+                     {
+                       "id": 1,
+                       "url": "https://example.com/images/fma_cover.jpg",
+                       "main": true
+                     },
+                     {
+                       "id": 2,
+                       "url": "https://example.com/images/fma_alt.jpg",
+                       "main": false
+                     }
+                   ],
+                   "usersFavorites": []
+                 }
+                 """;
 
         MangaDto mangaDto = new MangaDto(
                 "Fullmetal Alchemist",
@@ -601,14 +601,12 @@ public class MangaControllerTest {
                 true,
                 false,
                 new CategoryLittleDto(3),
-                Set.of(1, 4), 
+                Set.of(1, 4),
                 Set.of(10),
-                Set.of(
-                        new PictureLightDto(1,"https://example.com/images/fma_cover.jpg", true),
-                        new PictureLightDto(2,"https://example.com/images/fma_alt.jpg", false)),
-                Set.of() 
-        );
-
+                List.of(
+                        new PictureLightDto(1, "https://example.com/images/fma_cover.jpg", true),
+                        new PictureLightDto(2, "https://example.com/images/fma_alt.jpg", false)),
+                Set.of());
 
         when(mangaService.save(any())).thenReturn(mangaDto);
 
@@ -622,9 +620,6 @@ public class MangaControllerTest {
                 .andExpect(jsonPath("$.title").value("Fullmetal Alchemist"));
     }
 
-
-
-
     @Test
     @WithMockUser(username = "user", roles = { "ADMIN" })
     void shouldDeleteAuthor() throws Exception {
@@ -634,21 +629,18 @@ public class MangaControllerTest {
         verify(mangaService).deleteManga(1);
     }
 
-
-
     @Test
     void shouldReturnMangaDtoRandom() throws Exception {
         AuthorDtoRandom author1 = new AuthorDtoRandom(1, "Arakawa", "Hiromu");
         AuthorDtoRandom author2 = new AuthorDtoRandom(2, "Toriyama", "Akira");
         AuthorDtoRandom author3 = new AuthorDtoRandom(3, "Takeuchi", "Naoko");
         AuthorDtoRandom author4 = new AuthorDtoRandom(4, "Oda", "Eiichiro");
-        
+
         MangaDtoRandom manga1 = new MangaDtoRandom(
                 101,
                 "Fullmetal Alchemist",
                 Set.of(author1),
-                "https://example.com/fma.jpg"
-        );
+                "https://example.com/fma.jpg");
 
         MangaDtoRandom manga2 = new MangaDtoRandom(
                 102,
@@ -666,7 +658,7 @@ public class MangaControllerTest {
                 "One Piece",
                 Set.of(author4),
                 "https://example.com/onepiece.jpg");
-            
+
         List<MangaDtoRandom> list = new ArrayList<>();
         list.add(manga2);
         list.add(manga1);
@@ -682,8 +674,5 @@ public class MangaControllerTest {
                 .andExpect(jsonPath("$[0].title").value("Fullmetal Alchemist2"));
 
     }
-
-
-
 
 }
