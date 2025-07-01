@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -102,7 +103,7 @@ public class MangaMapper {
                 .collect(Collectors.toSet());
         manga.setGenres(genres);
 
-        Set<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
+        List<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
         manga.setPictures(pictures);
 
         Set<AppUser> appUsers = appUserMapper.toEntityAppUserFavoriteSet(mangaDto.getUsersFavorites());

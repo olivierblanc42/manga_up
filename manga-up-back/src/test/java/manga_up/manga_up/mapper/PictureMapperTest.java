@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,16 +72,14 @@ public class PictureMapperTest {
         assertEquals("picture.com", picture.getUrl());
     }
 
-
     @Test
     void shoulToPictureLightDtoSet() {
         Picture picture = new Picture();
         picture.setUrl("picture.com");
         picture.setId(1);
         picture.setMain(true);
-        Set<Picture> pictures = Set.of(picture);
-        Set<PictureLightDto> dtos = pictureMapper.toPictureLightDtoSet(pictures);
-
+        List<Picture> pictures = List.of(picture);
+        List<PictureLightDto> dtos = pictureMapper.toPictureLightDtoSet(pictures);
 
         assertNotNull(dtos);
         assertEquals(1, pictures.size());
@@ -93,10 +92,6 @@ public class PictureMapperTest {
         }
         assertTrue(found);
     }
-    
-
-
-
 
     @Test
     void shouldtoEntityPicturesSet() {
@@ -109,18 +104,18 @@ public class PictureMapperTest {
                 "picture.com",
                 true);
 
-        Set<PictureLightDto> dtos = Set.of(dto1, dto2);
-        Set<Picture> pictures = pictureMapper.toEntityPictures(dtos);
+        List<PictureLightDto> dtos = List.of(dto1, dto2);
+        List<Picture> pictures = pictureMapper.toEntityPictures(dtos);
         assertNotNull(pictures);
         assertEquals(2, pictures.size());
         boolean found = false;
-        for(Picture picture :pictures){
-            if("picture.com".equals(picture.getUrl())){
+        for (Picture picture : pictures) {
+            if ("picture.com".equals(picture.getUrl())) {
                 found = true;
                 break;
-            } 
+            }
         }
-                assertTrue(found);
+        assertTrue(found);
     }
 
 }

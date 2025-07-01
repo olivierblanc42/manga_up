@@ -47,6 +47,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -429,7 +430,7 @@ class MangaServiceTest {
                 new CategoryLittleDto(1),
                 Set.of(1, 2),
                 Set.of(1),
-                Set.of(),
+                List.of(),
                 Set.of());
 
         when(mangaDao.findManga2ById(id)).thenReturn(Optional.of(mangaEntity));
@@ -565,18 +566,13 @@ class MangaServiceTest {
         verify(mangaDao).delete(manga);
     }
 
-
-
-
-    
-
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingManga() {
-        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty()); 
+        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> mangaService.deleteManga(99));
 
-        verify(mangaDao).findMangaId(99); 
+        verify(mangaDao).findMangaId(99);
         verifyNoMoreInteractions(mangaDao);
     }
 
@@ -600,7 +596,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                Set.of(mainPicture),
+                List.of(mainPicture),
                 Set.of());
 
         when(authorDao.findById(authorId)).thenReturn(Optional.empty());
@@ -634,7 +630,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                Set.of(mainPicture),
+                List.of(mainPicture),
                 Set.of());
 
         when(authorDao.findById(authorId)).thenReturn(Optional.of(new Author()));
@@ -670,7 +666,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                Set.of(mainPicture),
+                List.of(mainPicture),
                 Set.of());
 
         Author author = new Author();
@@ -684,7 +680,7 @@ class MangaServiceTest {
         Manga mangaEntity = new Manga();
         mangaEntity.setAuthors(Set.of(author));
         mangaEntity.setGenres(Set.of(genre));
-        mangaEntity.setPictures(new HashSet<>());
+        mangaEntity.setPictures(new ArrayList<>());
         mangaEntity.setPriceHt(mangaDto.getPriceHt());
         mangaEntity.setTitle(mangaDto.getTitle());
         when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
@@ -748,7 +744,7 @@ class MangaServiceTest {
     @Test
     void save_shouldThrowException_whenPicturesIsEmpty() {
         CategoryLittleDto category = new CategoryLittleDto(1);
-        Set<PictureLightDto> pictureLightDtos = new HashSet<>(); // vide
+        List<PictureLightDto> pictureLightDtos = new ArrayList<>();
 
         MangaDto mangaDto = new MangaDto(
                 "One Piece",

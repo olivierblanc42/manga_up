@@ -9,6 +9,7 @@ import manga_up.manga_up.model.Picture;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,16 +42,16 @@ public class PictureMapper {
         return picture;
     }
 
-    public Set<PictureLightDto> toPictureLightDtoSet(Set<Picture> pictures) {
+    public List<PictureLightDto> toPictureLightDtoSet(List<Picture> pictures) {
         return pictures.stream()
                 .map(this::toPictureLightDto)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<Picture> toEntityPictures(Set<PictureLightDto> pictureLightDtos) {
+    public List<Picture> toEntityPictures(List<PictureLightDto> pictureLightDtos) {
         return pictureLightDtos.stream()
                 .map(this::toEntityPicture)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     // Set<AppUser> result = new HashSet<>();
