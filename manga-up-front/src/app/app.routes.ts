@@ -11,6 +11,8 @@ import { AuteursComponent } from './pages/auteurs/auteurs.component';
 import { AuteurComponent } from './pages/auteur/auteur.component';
 import { AdminLayoutComponent } from './pages/admin/admin-layout/admin-layout.component';
 import { MangasAdminComponent } from './pages/admin/mangas/mangas.component';
+import { MangaAdminComponent } from './pages/admin/manga/manga.component';
+
 import { AuthorsAdminComponent } from './pages/admin/authors/authors.component';
 import { CategoriesAdminComponent } from './pages/admin/categories/categories.component';
 import { CategoryAdminComponent } from './pages/admin/category/category.component';
@@ -57,6 +59,7 @@ export const routes: Routes = [
         data: { role: 'ROLE_ADMIN' }, 
         children: [
             { path: 'mangasAdmin', component: MangasAdminComponent },
+            { path: 'manga/:id', component: MangaAdminComponent },
             { path: 'genresAdmin', component: GenresAdminComponent },
             { path: 'genre/:id', component: GenreAdminComponent },
             { path: 'categoriesAdmin', component: CategoriesAdminComponent },
