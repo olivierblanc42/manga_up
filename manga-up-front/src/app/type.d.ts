@@ -324,6 +324,7 @@ export type MangaProjections = {
 
 
 export interface MangaDto {
+    id:number;
     title: string;
     subtitle?: string;
     releaseDate?: Date;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { MangaService } from '../../../service/manga.service';
 import { AuthorProjections, CategoriesProjections, CategoryDto, CategoryWithMangas, GenreProjections, MangaPaginations } from '../../../type';
 import { CommonModule } from '@angular/common';
@@ -10,6 +10,7 @@ import { GenreService } from '../../../service/genre.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthorService } from '../../../service/author.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PictureService } from '../../../service/picture.service';
 
 @Component({
   selector: 'app-mangas',
@@ -34,14 +35,15 @@ export class MangasAdminComponent implements OnInit {
   authors: AuthorProjections | null = null;
   isLoadingManga = true;
   showEmptyMessage = false;
+
   constructor(
     private mangaservice: MangaService,
     public categoryService: CategoryService,
         private genreService : GenreService,
         private authorService : AuthorService,
+    private pictureService: PictureService ,
+    private fb: FormBuilder,
     
-    private fb: FormBuilder
-
 
   ) {
     this.currentPage = 0;
@@ -56,8 +58,6 @@ export class MangasAdminComponent implements OnInit {
     this.mangaForm.get('authors')!.valueChanges.subscribe(val => {
       console.log('Auteurs sélectionnés (avec valueChanges):', val);
     });
-
-
     this.categoryService.currentCategoriesProjection.subscribe((data) => {
       this.categories = data;
       this.pages = this.convertNumberToArray(this.categories?.totalPages!);
@@ -98,7 +98,8 @@ export class MangasAdminComponent implements OnInit {
         this.mangas = data;
         this.isLoadingManga = false;
         this.showEmptyMessage = false;
-      }
+      } 
+       
       this.pages = this.convertNumberToArray(this.mangas?.totalPages!)
       this.lastPage = this.mangas?.totalPages!;
     })
@@ -230,8 +231,6 @@ export class MangasAdminComponent implements OnInit {
     } catch (error) {
       console.error('Erreur lors du chargement des mangas', error);
     }
-  }
-  
-
+  } 
 
 }

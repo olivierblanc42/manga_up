@@ -4,7 +4,8 @@ section {
     margin-bottom: 100px;
 
     .card-single-other {
-        width: 50%;
+        width: 100%;
+        max-width: 500px;
         margin-left: auto;
         margin-right: auto;
 
@@ -18,11 +19,11 @@ section {
             h1 {
                 margin: 0px;
                 padding: $padding-s;
-                
+
             }
         }
 
-        .login-register{
+        .login-register {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,6 +40,7 @@ section {
                 .form-group {
                     display: flex;
                     flex-direction: column;
+
                     input {
                         border-color: $secondary;
                         padding: 14px;
@@ -79,14 +81,52 @@ input::placeholder {
 }
 
 
-.info-error{
+.info-error {
     max-width: 300px;
 }
 
-.gender-user{
+.gender-user {
     min-width: 300px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+
+@media (min-width: 577px) {
+    section {
+        margin-bottom: 100px;
+
+
+        .card-single-other {
+            width: 550px;
+            max-width: 550px;
+        }
+    }
+}
+
+
+@media (min-width: 769px) {
+
+    section {
+        .card-single-other {
+            width: 750px;
+            max-width: 750px;
+        }
+    }
+
+
+}
+
+
+@media (min-width: 993px) {
+    section {
+        .card-single-other {
+            width: 900px;
+            max-width: 900px;
+
+        }
+    }
+
 }
