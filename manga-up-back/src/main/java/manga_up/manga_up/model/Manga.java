@@ -67,7 +67,7 @@ public class Manga {
     private Set<Author> authors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "idMangas", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Picture> pictures = new ArrayList<>();
+    private Set<Picture> pictures = new LinkedHashSet<>();
 
     @ManyToMany(mappedBy = "mangas")
     private Set<AppUser> appUsers = new LinkedHashSet<>();
@@ -176,11 +176,11 @@ public class Manga {
         this.authors = authors;
     }
 
-    public List<Picture> getPictures() {
+    public Set<Picture> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<Picture> pictures) {
+    public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
 

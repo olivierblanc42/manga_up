@@ -78,8 +78,8 @@ public class PictureMapperTest {
         picture.setUrl("picture.com");
         picture.setId(1);
         picture.setMain(true);
-        List<Picture> pictures = List.of(picture);
-        List<PictureLightDto> dtos = pictureMapper.toPictureLightDtoSet(pictures);
+        Set<Picture> pictures = Set.of(picture);
+        Set<PictureLightDto> dtos = pictureMapper.toPictureLightDtoSet(pictures);
 
         assertNotNull(dtos);
         assertEquals(1, pictures.size());
@@ -104,8 +104,8 @@ public class PictureMapperTest {
                 "picture.com",
                 true);
 
-        List<PictureLightDto> dtos = List.of(dto1, dto2);
-        List<Picture> pictures = pictureMapper.toEntityPictures(dtos);
+        Set<PictureLightDto> dtos = Set.of(dto1, dto2);
+        Set<Picture> pictures = pictureMapper.toEntityPictures(dtos);
         assertNotNull(pictures);
         assertEquals(2, pictures.size());
         boolean found = false;

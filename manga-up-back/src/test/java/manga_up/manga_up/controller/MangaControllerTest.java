@@ -603,7 +603,7 @@ public class MangaControllerTest {
                 new CategoryLittleDto(3),
                 Set.of(1, 4),
                 Set.of(10),
-                List.of(
+                Set.of(
                         new PictureLightDto(1, "https://example.com/images/fma_cover.jpg", true),
                         new PictureLightDto(2, "https://example.com/images/fma_alt.jpg", false)),
                 Set.of());

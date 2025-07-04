@@ -70,7 +70,7 @@ public class MangaMapperTest {
         picture2.setId(2);
 
         Set<Genre> genreEntities = Set.of(genreEntity);
-        List<Picture> pictureEntities = List.of(picture1, picture2);
+        Set<Picture> pictureEntities = Set.of(picture1, picture2);
         Set<AppUser> appUsers = Set.of();
 
         Manga manga = new Manga();
@@ -116,7 +116,7 @@ public class MangaMapperTest {
                 categoryDto,
                 genreIds,
                 Set.of(),
-                List.of(picDto1, picDto2),
+                Set.of(picDto1, picDto2),
                 userFavs);
 
         Category categoryEntity = new Category();
@@ -132,8 +132,8 @@ public class MangaMapperTest {
         picture1.setId(1);
         Picture picture2 = new Picture();
         picture2.setId(2);
-        List<Picture> picturesEntity = List.of(picture1, picture2);
-        when(pictureMapper.toEntityPictures(List.of(picDto1, picDto2))).thenReturn(picturesEntity);
+        Set<Picture> picturesEntity = Set.of(picture1, picture2);
+        when(pictureMapper.toEntityPictures(Set.of(picDto1, picDto2))).thenReturn(picturesEntity);
 
         Set<AppUser> appUsersEntity = Set.of();
         when(appUserMapper.toEntityAppUserFavoriteSet(userFavs)).thenReturn(appUsersEntity);
