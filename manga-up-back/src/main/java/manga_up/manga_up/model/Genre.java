@@ -79,11 +79,11 @@ public class Genre {
         this.url = url;
     }
 
-    public String getDescritpion() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescritpion(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 

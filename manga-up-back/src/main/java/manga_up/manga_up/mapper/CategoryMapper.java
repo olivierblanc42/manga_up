@@ -4,6 +4,8 @@ import manga_up.manga_up.dto.category.CategoryDto;
 import manga_up.manga_up.dto.category.CategoryLittleDto;
 import manga_up.manga_up.model.Category;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,12 +24,11 @@ public class CategoryMapper {
     public Category toEntity(CategoryDto categoryDto) {
         Category category = new Category();
         category.setId(categoryDto.getId());
-        category.setLabel(categoryDto.getLabel());
-        category.setDescription(categoryDto.getDescription());
-        category.setUrl(categoryDto.getUrl());
+        category.setLabel(Jsoup.clean(categoryDto.getLabel(), Safelist.none()));
+        category.setDescription(Jsoup.clean(categoryDto.getDescription(), Safelist.none()));
+        category.setUrl(Jsoup.clean(categoryDto.getUrl(), Safelist.none()));
         return category;
     }
-
 
 
 

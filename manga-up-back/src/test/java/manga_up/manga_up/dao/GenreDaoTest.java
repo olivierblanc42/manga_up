@@ -39,7 +39,7 @@ class GenreDaoTest {
         Genre genre = new Genre();
         genre.setLabel("Shojo");
         genre.setCreatedAt(Instant.parse("2023-04-10T10:00:00Z"));
-        genre.setDescritpion("null");
+        genre.setDescription("null");
         genre.setUrl(".com");
         Genre saveGenre = genreDao.save(genre);
         assertNotNull(saveGenre.getId());

@@ -59,7 +59,7 @@ class UserDaoTest {
         appUser.setLastname("Doe2");
         appUser.setRole("ROLE_USER");
         appUser.setPhoneNumber("0123456789");
-        appUser.setPassword("123456");
+        appUser.setPassword("password123");
         appUser.setEmail("johndoe2@gmail.com");
         appUser.setCreatedAt(Instant.parse("2023-04-10T10:00:00Z"));
         appUser.setIdGendersUser(saveGenderUser);

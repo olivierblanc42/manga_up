@@ -189,7 +189,7 @@ class GenreServiceTest {
         genreEntity.setId(id);
         genreEntity.setUrl("oldUrl");
         genreEntity.setLabel("oldLabel");
-        genreEntity.setDescritpion("oldDescription");
+        genreEntity.setDescription("oldDescription");
         genreEntity.setCreatedAt(Instant.now());
 
         when(genreDao.findGenreById(id)).thenReturn(Optional.of(genreEntity));
@@ -213,7 +213,7 @@ class GenreServiceTest {
         genre.setId(1);
         genre.setLabel("Genre");
         genre.setUrl("null");
-        genre.setDescritpion("null");
+        genre.setDescription("null");
         genre.setCreatedAt(Instant.now());
         when(genreDao.findGenreById(1)).thenReturn(Optional.of(genre));
         genreService.deleteGenre(1);

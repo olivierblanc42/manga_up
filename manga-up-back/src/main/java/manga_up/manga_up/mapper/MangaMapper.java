@@ -12,6 +12,8 @@ import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
@@ -84,13 +86,14 @@ public class MangaMapper {
 
         );
     }
+    // picture.setUrl(Jsoup.clean(pictureLightDto.getUrl(),Safelist.none()));
 
     public Manga mangaToEntity(MangaDto mangaDto) {
         Manga manga = new Manga();
-        manga.setTitle(mangaDto.getTitle());
-        manga.setSubtitle(mangaDto.getSubtitle());
+        manga.setTitle(Jsoup.clean(mangaDto.getTitle(),Safelist.none()));
+        manga.setSubtitle(Jsoup.clean(mangaDto.getSubtitle(), Safelist.none()));
         manga.setReleaseDate(mangaDto.getReleaseDate());
-        manga.setSummary(mangaDto.getSummary());
+        manga.setSummary(Jsoup.clean(mangaDto.getSummary(), Safelist.none()));
         manga.setPriceHt(mangaDto.getPriceHt());
         manga.setPrice(mangaDto.getPrice());
         manga.setInStock(mangaDto.getInStock());

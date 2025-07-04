@@ -73,6 +73,7 @@ CREATE TABLE app_user(
                          password VARCHAR(128) NOT NULL,
                          Id_user_address INT NOT NULL,
                          Id_genders_user INT NOT NULL,
+                        avatar_url VARCHAR(255),
                          CONSTRAINT app_user_PK PRIMARY KEY(Id_users),
                          CONSTRAINT app_user_AK UNIQUE(username),
                          CONSTRAINT app_user_user_address_FK FOREIGN KEY(Id_user_address) REFERENCES user_address(Id_user_address),
@@ -227,10 +228,10 @@ VALUES
     ('Dragon Ball', 'Un voyage épique', '2023-03-01 00:00:00', 'L’histoire de Goku et ses amis dans un monde fantastique.', 20.00, 18.00, TRUE, TRUE, 1),
     ('One Piece', 'Les aventures de Luffy', '2023-04-15 00:00:00', 'Luffy et son équipage à la recherche du trésor légendaire.', 25.00, 22.00, TRUE, TRUE, 1);
 
-INSERT INTO app_user (username, firstname, lastname, role, phone_number, email, created_at, password, Id_user_address, Id_genders_user)
+INSERT INTO app_user (username, firstname, lastname, role, phone_number, email, avatar_url,created_at, password, Id_user_address, Id_genders_user)
 VALUES
-    ('johndoe', 'John', 'Doe', 'user', '0123456789', 'johndoe@example.com', '2023-04-10', 'password123', 1, 1),
-    ('janedoe', 'Jane', 'Doe', 'admin', '0987654321', 'janedoe@example.com', '2023-02-20', 'password456', 2, 2);
+    ('johndoe', 'John', 'Doe', 'user', '0123456789', 'johndoe@example.com', 'https://example.com/dragonball_main.jpg', '2023-04-10', 'password123', 1, 1),
+    ('janedoe', 'Jane', 'Doe', 'admin', '0987654321', 'janedoe@example.com','https://example.com/dragonball_main.jpg', '2023-02-20', 'password456', 2, 2);
 
 INSERT INTO comment (rating, comment, created_at, Id_mangas, Id_users)
 VALUES
