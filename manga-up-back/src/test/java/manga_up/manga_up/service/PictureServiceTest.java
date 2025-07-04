@@ -264,7 +264,7 @@ class PictureServiceTest {
 
         Manga manga = new Manga();
         manga.setId(42);
-        List<Picture> pictures = new ArrayList<>();
+        Set<Picture> pictures = new HashSet<>();
         pictures.add(picture);
         manga.setPictures(pictures);
         picture.setIdMangas(manga);

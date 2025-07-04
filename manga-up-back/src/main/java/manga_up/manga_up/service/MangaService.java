@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -105,44 +106,11 @@ public class MangaService {
      */
     @Transactional
     public MangaDto save(MangaDto mangaDto) {
-        LOGGER.info("Save manga");
-        LOGGER.info("manga mangaDto : {}", mangaDto);
 
         if (mangaDto.getPictures() == null || mangaDto.getPictures().isEmpty()) {
-            LOGGER.error("Validation failed: A manga must have at least one image.");
             throw new IllegalArgumentException("A manga must contain at least one image.");
         }
-
-        Set<Author> authors = mangaDto.getAuthors().stream()
-                .map(id -> authorDao.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
-                .collect(Collectors.toSet());
-
-        Set<Genre> genres = mangaDto.getGenres().stream()
-                .map(id -> genreDao.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Genre not found")))
-                .collect(Collectors.toSet());
-
-        Manga manga = mangaMapper.mangaToEntity(mangaDto);
-        manga.setAuthors(authors);
-        manga.setGenres(genres);
-        manga.setPictures(new ArrayList<>());
-
-        if (manga.getPriceHt() != null) {
-            BigDecimal priceHt = manga.getPriceHt();
-            BigDecimal multiplier = new BigDecimal("0.1");
-            BigDecimal TVAmount = priceHt.multiply(multiplier);
-            manga.setPriceHt(priceHt.add(TVAmount));
-            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, manga.getPriceHt());
-        } else {
-            LOGGER.warn("The price excluding VAT is NULL, no VAT calculation carried out!");
-        }
-        mangaDao.save(manga);
-
-        long countMain = mangaDto.getPictures().stream()
-                .filter(PictureLightDto::getIsMain)
-                .count();
-
+        long countMain = mangaDto.getPictures().stream().filter(PictureLightDto::getIsMain).count();
         if (countMain == 0) {
             throw new IllegalArgumentException("At least one image must be marked as main.");
         }
@@ -150,26 +118,45 @@ public class MangaService {
             throw new IllegalArgumentException("Only one image can be marked as main.");
         }
 
-        List<Picture> pictures = new ArrayList<>();
-        for (PictureLightDto pictureDto : mangaDto.getPictures()) {
-            Picture picture;
-            if (pictureDto.getId() == null) {
-                picture = new Picture();
-                picture.setUrl(pictureDto.getUrl());
-                picture.setMain(pictureDto.getIsMain());
-                picture.setIdMangas(manga);
-                Picture saved = pictureDao.save(picture);
-                pictures.add(saved);
-            } else {
-                picture = pictureDao.findById(pictureDto.getId())
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "Image with ID " + pictureDto.getId() + " does not exist."));
-                pictures.add(picture);
-            }
+  
+
+        Set<Author> authors = mangaDto.getAuthors().stream()
+                .map(id -> authorDao.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
+                .collect(Collectors.toSet());
+        Set<Genre> genres = mangaDto.getGenres().stream()
+                .map(id -> genreDao.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Genre with id " + id + " not found")))
+                .collect(Collectors.toSet());
+
+        Manga manga = mangaMapper.mangaToEntity(mangaDto);
+        manga.setAuthors(authors);
+        manga.setGenres(genres);
+        if (manga.getPriceHt() != null) {
+            BigDecimal priceHt = manga.getPriceHt();
+            BigDecimal tv = priceHt.multiply(new BigDecimal("0.1"));
+            manga.setPriceHt(priceHt.add(tv));
+            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, manga.getPriceHt());
         }
 
-        manga.setPictures(pictures);
-        mangaDao.save(manga);
+        manga.setPictures(new LinkedHashSet<>());
+
+        manga = mangaDao.save(manga);
+
+        int savedCount = 0;
+        for (PictureLightDto picDto : mangaDto.getPictures()) {
+            LOGGER.info("→ saving picture #{}: url='{}', isMain={}", savedCount, picDto.getUrl(), picDto.getIsMain());
+            Picture pic = new Picture();
+            pic.setUrl(picDto.getUrl());
+            pic.setMain(picDto.getIsMain());
+            pic.setIdMangas(manga); 
+            pic = pictureDao.save(pic); 
+            manga.getPictures().add(pic); 
+            savedCount++;
+        }
+
+
+        manga = mangaDao.save(manga);
 
         return mangaMapper.mangaToMangaDto(manga);
     }
@@ -185,7 +172,6 @@ public class MangaService {
             throw new IllegalArgumentException("A manga must contain at least one image.");
         }
 
-        // Récupérer auteurs et genres à partir des IDs
         Set<Author> authors = mangaDto.getAuthors().stream()
                 .map(authorId -> authorDao.findById(authorId)
                         .orElseThrow(() -> new IllegalArgumentException("Author with id " + authorId + " not found")))
@@ -196,7 +182,6 @@ public class MangaService {
                         .orElseThrow(() -> new IllegalArgumentException("Genre with id " + genreId + " not found")))
                 .collect(Collectors.toSet());
 
-        // Mettre à jour les champs de l'entité existante
         existingManga.setTitle(mangaDto.getTitle());
         existingManga.setSubtitle(mangaDto.getSubtitle());
         existingManga.setReleaseDate(mangaDto.getReleaseDate());
@@ -209,7 +194,6 @@ public class MangaService {
         existingManga.setAuthors(authors);
         existingManga.setGenres(genres);
 
-        // Gestion du prix HT + TVA 10%
         if (existingManga.getPriceHt() != null) {
             BigDecimal priceHt = existingManga.getPriceHt();
             BigDecimal multiplier = new BigDecimal("0.1");
@@ -220,7 +204,6 @@ public class MangaService {
             LOGGER.warn("The price excluding VAT is NULL, no VAT calculation carried out!");
         }
 
-        // Validation images principales
         long countMain = mangaDto.getPictures().stream()
                 .filter(PictureLightDto::getIsMain)
                 .count();
@@ -232,12 +215,10 @@ public class MangaService {
             throw new IllegalArgumentException("Only one image can be marked as main.");
         }
 
-        // Mettre à jour les images
         Set<Picture> pictures = new HashSet<>();
         for (PictureLightDto pictureDto : mangaDto.getPictures()) {
             Picture picture;
             if (pictureDto.getId() == null) {
-                // Nouvelle image à ajouter
                 picture = new Picture();
                 picture.setUrl(pictureDto.getUrl());
                 picture.setMain(pictureDto.getIsMain());
@@ -245,11 +226,9 @@ public class MangaService {
                 Picture saved = pictureDao.save(picture);
                 pictures.add(saved);
             } else {
-                // Image existante à récupérer pour mise à jour éventuelle
                 picture = pictureDao.findById(pictureDto.getId())
                         .orElseThrow(() -> new IllegalArgumentException(
                                 "Image with ID " + pictureDto.getId() + " does not exist."));
-                // Mettre à jour URL et main si besoin
                 picture.setUrl(pictureDto.getUrl());
                 picture.setMain(pictureDto.getIsMain());
                 pictures.add(picture);
@@ -262,7 +241,7 @@ public class MangaService {
 
         return mangaMapper.mangaToMangaDto(existingManga);
     }
-
+    
     /**
      * Retrieves a list of four random mangas.
      *

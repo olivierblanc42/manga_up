@@ -103,7 +103,7 @@ public class MangaMapper {
                 .collect(Collectors.toSet());
         manga.setGenres(genres);
 
-        List<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
+        Set<Picture> pictures = pictureMapper.toEntityPictures(mangaDto.getPictures());
         manga.setPictures(pictures);
 
         Set<AppUser> appUsers = appUserMapper.toEntityAppUserFavoriteSet(mangaDto.getUsersFavorites());

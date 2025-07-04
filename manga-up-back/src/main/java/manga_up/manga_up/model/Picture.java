@@ -58,4 +58,31 @@ public class Picture {
     public void setMain(Boolean main) {
         isMain = main;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Picture))
+            return false;
+        Picture other = (Picture) o;
+
+        if (id != null && other.id != null) {
+            return id.equals(other.id);
+        }
+        // Si id null, on compare sur url et isMain
+        return (url != null ? url.equals(other.url) : other.url == null)
+                && (isMain != null ? isMain.equals(other.isMain) : other.isMain == null);
+    }
+
+    @Override
+    public int hashCode() {
+        if (id != null) {
+            return id.hashCode();
+        }
+        int result = (url != null) ? url.hashCode() : 0;
+        result = 31 * result + ((isMain != null) ? isMain.hashCode() : 0);
+        return result;
+    }
+    
 }

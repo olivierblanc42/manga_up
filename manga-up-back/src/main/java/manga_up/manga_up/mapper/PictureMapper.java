@@ -42,16 +42,16 @@ public class PictureMapper {
         return picture;
     }
 
-    public List<PictureLightDto> toPictureLightDtoSet(List<Picture> pictures) {
+    public Set<PictureLightDto> toPictureLightDtoSet(Set<Picture> pictures) {
         return pictures.stream()
                 .map(this::toPictureLightDto)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
-    public List<Picture> toEntityPictures(List<PictureLightDto> pictureLightDtos) {
+    public Set<Picture> toEntityPictures(Set<PictureLightDto> pictureLightDtos) {
         return pictureLightDtos.stream()
                 .map(this::toEntityPicture)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     // Set<AppUser> result = new HashSet<>();
