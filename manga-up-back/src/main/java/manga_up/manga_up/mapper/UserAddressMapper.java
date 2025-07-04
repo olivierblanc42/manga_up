@@ -2,6 +2,9 @@ package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.model.UserAddress;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.mapstruct.Mapper;
 
 import org.springframework.stereotype.Component;
@@ -26,14 +29,14 @@ public  UserAddressDto toDto(UserAddress userAddress) {
 
 public  UserAddress toEntity(UserAddressDto userAddressDto) {
     UserAddress  userAddress = new UserAddress();
-    userAddress.setLine1(userAddressDto.getLine1());
-    userAddress.setLine2(userAddressDto.getLine2());
-    userAddress.setLine3(userAddressDto.getLine3());
+    userAddress.setLine1( Jsoup.clean(userAddressDto.getLine1(), Safelist.none())  );
+    userAddress.setLine2(Jsoup.clean(userAddressDto.getLine1(),Safelist.none()));
+    userAddress.setLine3(Jsoup.clean(userAddressDto.getLine3(), Safelist.none() ));
     userAddress.setCity(userAddressDto.getCity());
     userAddress.setCreatedAt(Instant.now());
-    userAddress.setPostalCode(userAddressDto.getPostalCode());
+    userAddress.setPostalCode(Jsoup.clean(userAddressDto.getPostalCode(), Safelist.none()));
     return userAddress;
 }
 
-
+// Jsoup.clean(registerDto.getUsername(), Safelist.none())
 }

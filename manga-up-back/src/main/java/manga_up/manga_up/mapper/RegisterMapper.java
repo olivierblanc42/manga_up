@@ -3,6 +3,8 @@ package manga_up.manga_up.mapper;
 import manga_up.manga_up.dto.register.RegisterDto;
 import manga_up.manga_up.model.AppUser;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,11 +36,11 @@ public class RegisterMapper {
 
     public AppUser toAppUser(RegisterDto registerDto) {
         AppUser appUser = new AppUser();
-        appUser.setUsername(registerDto.getUsername());
-        appUser.setFirstname(registerDto.getFirstname());
-        appUser.setLastname(registerDto.getLastname());
+        appUser.setUsername(Jsoup.clean(registerDto.getUsername(), Safelist.none()));
+        appUser.setFirstname(Jsoup.clean(registerDto.getFirstname(), Safelist.none()));
+        appUser.setLastname(Jsoup.clean(registerDto.getLastname(), Safelist.none()));
         appUser.setRole(registerDto.getRole());
-        appUser.setPhoneNumber(registerDto.getPhoneNumber());
+        appUser.setPhoneNumber(Jsoup.clean(registerDto.getPhoneNumber(), Safelist.none()));
         appUser.setEmail(registerDto.getEmail());
         appUser.setPassword(registerDto.getPassword());
         appUser.setIdUserAddress(userAddressMapper.toEntity(registerDto.getAddress()));

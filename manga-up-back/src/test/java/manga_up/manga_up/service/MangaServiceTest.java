@@ -430,7 +430,7 @@ class MangaServiceTest {
                 new CategoryLittleDto(1),
                 Set.of(1, 2),
                 Set.of(1),
-                List.of(),
+                Set.of(),
                 Set.of());
 
         when(mangaDao.findManga2ById(id)).thenReturn(Optional.of(mangaEntity));
@@ -596,7 +596,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                List.of(mainPicture),
+                Set.of(mainPicture),
                 Set.of());
 
         when(authorDao.findById(authorId)).thenReturn(Optional.empty());
@@ -630,7 +630,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                List.of(mainPicture),
+                Set.of(mainPicture),
                 Set.of());
 
         when(authorDao.findById(authorId)).thenReturn(Optional.of(new Author()));
@@ -641,7 +641,7 @@ class MangaServiceTest {
             mangaService.save(mangaDto);
         });
 
-        assertTrue(exception.getMessage().contains("Genre not found"));
+        assertTrue(exception.getMessage().contains("Genre with id 1 not found"));
 
         verify(genreDao).findById(genreId);
     }
@@ -666,7 +666,7 @@ class MangaServiceTest {
                 category,
                 Set.of(genreId),
                 Set.of(authorId),
-                List.of(mainPicture),
+                Set.of(mainPicture),
                 Set.of());
 
         Author author = new Author();
@@ -680,7 +680,7 @@ class MangaServiceTest {
         Manga mangaEntity = new Manga();
         mangaEntity.setAuthors(Set.of(author));
         mangaEntity.setGenres(Set.of(genre));
-        mangaEntity.setPictures(new ArrayList<>());
+        mangaEntity.setPictures(new  HashSet<>());
         mangaEntity.setPriceHt(mangaDto.getPriceHt());
         mangaEntity.setTitle(mangaDto.getTitle());
         when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
@@ -744,7 +744,7 @@ class MangaServiceTest {
     @Test
     void save_shouldThrowException_whenPicturesIsEmpty() {
         CategoryLittleDto category = new CategoryLittleDto(1);
-        List<PictureLightDto> pictureLightDtos = new ArrayList<>();
+        Set<PictureLightDto> pictureLightDtos = new  HashSet<>();
 
         MangaDto mangaDto = new MangaDto(
                 "One Piece",
