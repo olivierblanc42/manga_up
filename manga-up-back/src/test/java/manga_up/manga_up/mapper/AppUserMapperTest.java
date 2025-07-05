@@ -14,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import manga_up.manga_up.dao.GenreDao;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
+import manga_up.manga_up.dto.appUser.UpdateUserDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.manga.MangaLightDto;
@@ -118,5 +120,68 @@ void shouldtoUserProfilDto() {
         assertNotNull(appUser);
         assertEquals("Doe", appUser.getLastname());
     }
+
+
+    @Test
+    void shouldtoDtoUpdateAppUser() {
+        UserAddress address = new UserAddress();
+        address.setId(1);
+        address.setLine1("12 rue de l'exemple");
+        address.setLine2("Bâtiment A");
+        address.setLine3("Appartement 302");
+        address.setCity("Paris");
+        address.setPostalCode("75001");
+        address.setCreatedAt(Instant.now());
+        GenderUser genderUser = new GenderUser();
+        genderUser.setId(1);
+        genderUser.setLabel("Homme");
+
+        AppUser appUser = new AppUser();
+        appUser.setUsername("John");
+        appUser.setFirstname("John");
+        appUser.setLastname("Doe");
+        appUser.setRole("USER");
+        appUser.setPhoneNumber("+3307541232");
+        appUser.setEmail("abc@gmail.com");
+        appUser.setPassword("password");
+        appUser.setIdUserAddress(address);
+        appUser.setIdGendersUser(genderUser);
+        appUser.setUrl("www.elair.com");
+
+        UpdateUserDto userProfilDto = appUserMapper.toDtoUpdateAppUser(appUser);
+        assertNotNull(userProfilDto);
+        assertEquals("Doe", userProfilDto.getLastname());
+        assertEquals("www.elair.com", userProfilDto.getUrl());
+
+    }
+
+    @Test
+    void shoultoUpdateUserDto() {
+        UserAdressDtoUpdate addressDto = new UserAdressDtoUpdate(
+                "12 rue de l'exemple",
+                "Bâtiment A",
+                "Appartement 302",
+                "Paris",
+                "42230");
+
+        GenderUserDto genderUser = new GenderUserDto(1, "homme");
+        UpdateUserDto userProfilDto = new UpdateUserDto(
+                1,
+                "John",
+                "Doe",
+                "+33612345678",
+                "john.doe@example.com",
+                "test.com", 
+                addressDto,
+                genderUser      );
+
+        AppUser appUser = appUserMapper.toEntityUpdateUserDto(userProfilDto);
+        assertNotNull(appUser);
+        assertEquals("Doe", appUser.getLastname());
+    }    
+
+
+
+
 
 }

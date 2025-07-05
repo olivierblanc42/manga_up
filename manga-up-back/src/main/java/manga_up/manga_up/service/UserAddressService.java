@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
 import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
@@ -115,5 +116,29 @@ public class UserAddressService {
         userAddress.setPostalCode(userAddressDto.getPostalCode());
         addressDao.save(userAddress);
         return userAddressMapper.toDto(userAddress);
+    }
+
+
+        /**
+     * Updates an existing user address.
+     *
+     * @param userAddressId  the ID of the user address to update
+     * @param userAddressDto the DTO containing updated information
+     * @return the updated user address as a DTO
+     * @throws RuntimeException if the user address is not found
+     */
+    @Transactional
+    public UserAdressDtoUpdate updateUserAdressDtoUpdate(Integer userAddressId, UserAdressDtoUpdate userAddressDto) {
+
+
+        UserAddress userAddress = addressDao.findUserAddressById(userAddressId)
+                .orElseThrow(() -> new RuntimeException("Adress not found"));
+        userAddress.setLine1(userAddressDto.getLine1());
+        userAddress.setLine2(userAddressDto.getLine2());
+        userAddress.setLine3(userAddressDto.getLine3());
+        userAddress.setCity(userAddressDto.getCity());
+        userAddress.setPostalCode(userAddressDto.getPostalCode());
+        addressDao.save(userAddress);
+        return userAddressMapper.toDtoUserAdressDtoUpdate(userAddress);
     }
 }

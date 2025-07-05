@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import manga_up.manga_up.dto.appUser.UpdateUserDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.model.AppUser;
 
@@ -64,6 +65,32 @@ public class AppUserMapper {
     }
 
 
+    public UpdateUserDto toDtoUpdateAppUser(AppUser appUser) {
+        LOGGER.info("AppUser size before mapping: {}", appUser.getUsername());
 
+        return new UpdateUserDto(
+                appUser.getId(),
+                appUser.getFirstname(),
+                appUser.getLastname(),
+                appUser.getPhoneNumber(),
+                appUser.getEmail(),
+                appUser.getUrl(),
+                userAddressMapper.toDtoUserAdressDtoUpdate(appUser.getIdUserAddress()),
+                genderUserMapper.toDto(appUser.getIdGendersUser()));
+    }
+
+    public AppUser toEntityUpdateUserDto(UpdateUserDto updateUserDto) {
+
+        AppUser appUser = new AppUser();
+        appUser.setId(updateUserDto.getId());
+        appUser.setFirstname(updateUserDto.getFirstname());
+        appUser.setLastname(updateUserDto.getLastname());
+        appUser.setPhoneNumber(updateUserDto.getPhoneNumber());
+        appUser.setEmail(updateUserDto.getEmail());
+        appUser.setUrl(updateUserDto.getUrl());
+        appUser.setIdUserAddress(userAddressMapper.toEntityUserAdressDtoUpdate(updateUserDto.getIdUserAddress()));
+        appUser.setIdGendersUser(genderUserMapper.toEntity(updateUserDto.getIdGendersUser()));
+        return appUser;
+    }
 
 }

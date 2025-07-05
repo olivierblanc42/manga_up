@@ -1,6 +1,7 @@
 package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
 import manga_up.manga_up.model.UserAddress;
 
 import org.jsoup.Jsoup;
@@ -38,5 +39,21 @@ public  UserAddress toEntity(UserAddressDto userAddressDto) {
     return userAddress;
 }
 
-// Jsoup.clean(registerDto.getUsername(), Safelist.none())
-}
+    public UserAdressDtoUpdate toDtoUserAdressDtoUpdate(UserAddress userAddress) {
+        return new UserAdressDtoUpdate(
+                userAddress.getLine1(),
+                userAddress.getLine2(),
+                userAddress.getLine3(),
+                userAddress.getCity(),
+                userAddress.getPostalCode());
+    }
+
+    public UserAddress toEntityUserAdressDtoUpdate(UserAdressDtoUpdate userAddressDto) {
+        UserAddress userAddress = new UserAddress();
+        userAddress.setLine1(userAddressDto.getLine1());
+        userAddress.setLine2(userAddressDto.getLine2());
+        userAddress.setLine3(userAddressDto.getLine3());
+        userAddress.setCity(userAddressDto.getCity());
+        userAddress.setPostalCode(userAddressDto.getPostalCode());
+        return userAddress;
+    }}

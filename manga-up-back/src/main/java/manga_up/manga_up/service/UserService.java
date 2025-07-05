@@ -1,13 +1,16 @@
 package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.UserDao;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
+import manga_up.manga_up.dto.appUser.UpdateUserDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.mapper.AppUserMapper;
+import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.mapper.UserResponseMapper;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
-import java.nio.file.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 /**
  * Service class for managing user-related operations.
@@ -29,10 +34,16 @@ public class UserService {
 
     private final UserDao userdao;
     private final AppUserMapper userMapper;
+     private final UserAddressMapper userAddressMapper;
+     private final UserAddressService userAddressService;
 
-    public UserService(UserDao userdao, UserResponseMapper userResponseMapper, AppUserMapper userMapper) {
+    public UserService(UserDao userdao, UserResponseMapper userResponseMapper, AppUserMapper userMapper,
+            UserAddressMapper userAddressMapper,UserAddressService userAddressService) {
         this.userdao = userdao;
         this.userMapper = userMapper;
+        this.userAddressMapper = userAddressMapper;
+        this.userAddressService = userAddressService;
+
     }
 
     /**
@@ -124,4 +135,43 @@ public class UserService {
         LOGGER.info("[SERVICE] COUNT result = {}", count);
         return count > 0;
     }
+
+
+
+
+    @Transactional
+    public UpdateUserDto updateCurrentUser(UpdateUserDto userProfilDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AccessDeniedException("Utilisateur non authentifié.");
+        }
+
+        String username = authentication.getName();
+
+        AppUser appUser = userdao.findAppUserByUsername(username);
+        if (appUser == null) {
+            throw new UsernameNotFoundException("Utilisateur connecté non trouvé");
+        }
+
+        appUser.setFirstname(userProfilDto.getFirstname());
+        appUser.setLastname(userProfilDto.getLastname());
+        appUser.setEmail(userProfilDto.getEmail());
+        appUser.setPhoneNumber(userProfilDto.getPhoneNumber());
+
+        if (appUser.getIdUserAddress() != null) {
+
+            Integer idAdress = appUser.getIdUserAddress().getId();
+            UserAdressDtoUpdate userAdressDtoUpdate = userAddressMapper
+                    .toDtoUserAdressDtoUpdate(appUser.getIdUserAddress());
+            userAdressDtoUpdate.setLine1(userProfilDto.getIdUserAddress().getLine1());
+            userAddressService.updateUserAdressDtoUpdate(idAdress, userAdressDtoUpdate);
+
+        }
+        userdao.save(appUser);
+
+        UpdateUserDto updatedDto = userMapper.toDtoUpdateAppUser(appUser);
+        return updatedDto;
+    }
+
 }
