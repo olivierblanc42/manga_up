@@ -97,8 +97,8 @@ void shouldtoUserProfilDto() {
                 "42230");
        
         GenderUserDto genderUser = new GenderUserDto(1,"homme");
-        MangaLightDto mangaLightDto1 = new MangaLightDto(1, "titre");
-        MangaLightDto mangaLightDto2 = new MangaLightDto(2, "titre");
+        MangaLightDto mangaLightDto1 = new MangaLightDto(1, "titre",null );
+        MangaLightDto mangaLightDto2 = new MangaLightDto(2, "titre", null);
 
         Set<MangaLightDto> mangaLightDtos = Set.of(mangaLightDto1, mangaLightDto2);
 
