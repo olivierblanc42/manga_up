@@ -212,6 +212,7 @@ public class UserControllerTest {
                 "USER",
                 "0123456789",
                 "john.doe@example.com",
+                "image.vom",
                 Instant.now(),
                 address,
                 gender,

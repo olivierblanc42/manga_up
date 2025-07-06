@@ -36,6 +36,7 @@ public class AppUserMapper {
                 appUser.getRole(),
                 appUser.getPhoneNumber(),
                 appUser.getEmail(),
+                appUser.getUrl(),
                 appUser.getCreatedAt(),
                 userAddressMapper.toDto(appUser.getIdUserAddress()),
                 genderUserMapper.toDto(appUser.getIdGendersUser()),
@@ -57,6 +58,7 @@ public class AppUserMapper {
         appUser.setRole(userProfilDto.getRole());
         appUser.setPhoneNumber(userProfilDto.getPhoneNumber());
         appUser.setEmail(userProfilDto.getEmail());
+        appUser.setUrl(userProfilDto.getUrl());
         appUser.setCreatedAt(userProfilDto.getCreatedAt());
         appUser.setIdUserAddress(userAddressMapper.toEntity(userProfilDto.getIdUserAddress()));
         appUser.setIdGendersUser(genderUserMapper.toEntity(userProfilDto.getIdGendersUser()));

@@ -11,7 +11,7 @@ import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
 import org.springframework.security.access.AccessDeniedException;
-
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,11 +34,11 @@ public class UserService {
 
     private final UserDao userdao;
     private final AppUserMapper userMapper;
-     private final UserAddressMapper userAddressMapper;
-     private final UserAddressService userAddressService;
+    private final UserAddressMapper userAddressMapper;
+    private final UserAddressService userAddressService;
 
     public UserService(UserDao userdao, UserResponseMapper userResponseMapper, AppUserMapper userMapper,
-            UserAddressMapper userAddressMapper,UserAddressService userAddressService) {
+            UserAddressMapper userAddressMapper, UserAddressService userAddressService) {
         this.userdao = userdao;
         this.userMapper = userMapper;
         this.userAddressMapper = userAddressMapper;
@@ -69,14 +69,12 @@ public class UserService {
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
 
-            // Load the full user entity with related data
             AppUser appUser = userdao.findAppUserByUsername(username);
 
             if (appUser == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Map entity to DTO
             UserProfilDto userDto = userMapper.toDtoAppUser(appUser);
 
             return ResponseEntity.ok(userDto);
@@ -94,7 +92,9 @@ public class UserService {
     public AppUser getAuthenticatedUserEntity() throws AccessDeniedException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken)) {
             String username = authentication.getName();
             return userdao.findAppUserByUsername(username);
         }
@@ -136,9 +136,6 @@ public class UserService {
         return count > 0;
     }
 
-
-
-
     @Transactional
     public UpdateUserDto updateCurrentUser(UpdateUserDto userProfilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -165,6 +162,11 @@ public class UserService {
             UserAdressDtoUpdate userAdressDtoUpdate = userAddressMapper
                     .toDtoUserAdressDtoUpdate(appUser.getIdUserAddress());
             userAdressDtoUpdate.setLine1(userProfilDto.getIdUserAddress().getLine1());
+            userAdressDtoUpdate.setLine2(userProfilDto.getIdUserAddress().getLine2());
+            userAdressDtoUpdate.setLine3(userProfilDto.getIdUserAddress().getLine3());
+            userAdressDtoUpdate.setCity(userProfilDto.getIdUserAddress().getCity());
+            userAdressDtoUpdate.setPostalCode(userProfilDto.getIdUserAddress().getPostalCode());
+
             userAddressService.updateUserAdressDtoUpdate(idAdress, userAdressDtoUpdate);
 
         }

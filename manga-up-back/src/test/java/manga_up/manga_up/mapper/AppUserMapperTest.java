@@ -110,6 +110,7 @@ void shouldtoUserProfilDto() {
                 "USER", 
                 "+33612345678", 
                 "john.doe@example.com", 
+                "image.com",
                 Instant.now(),
                 addressDto,
                 genderUser,

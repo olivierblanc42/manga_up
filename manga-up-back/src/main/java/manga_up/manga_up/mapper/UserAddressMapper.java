@@ -50,10 +50,10 @@ public  UserAddress toEntity(UserAddressDto userAddressDto) {
 
     public UserAddress toEntityUserAdressDtoUpdate(UserAdressDtoUpdate userAddressDto) {
         UserAddress userAddress = new UserAddress();
-        userAddress.setLine1(userAddressDto.getLine1());
-        userAddress.setLine2(userAddressDto.getLine2());
-        userAddress.setLine3(userAddressDto.getLine3());
-        userAddress.setCity(userAddressDto.getCity());
-        userAddress.setPostalCode(userAddressDto.getPostalCode());
+        userAddress.setLine1(Jsoup.clean(userAddressDto.getLine1(), Safelist.none()));
+        userAddress.setLine2(Jsoup.clean(userAddressDto.getLine2(), Safelist.none()));
+        userAddress.setLine3(Jsoup.clean(userAddressDto.getLine3(), Safelist.none()));
+        userAddress.setCity(Jsoup.clean(userAddressDto.getCity(), Safelist.none()));
+        userAddress.setPostalCode(Jsoup.clean(userAddressDto.getPostalCode(), Safelist.none()));
         return userAddress;
     }}

@@ -32,6 +32,8 @@ public class UserProfilDto implements Serializable {
     @NotNull
     @Size(max = 320)
     private String email;
+    @Size(max = 255)
+    private String url;
     private Instant createdAt;
     @NotNull
     private UserAddressDto idUserAddress;
@@ -41,7 +43,7 @@ public class UserProfilDto implements Serializable {
     
     
  
-    public UserProfilDto(Integer id, String username, String firstname, String lastname, String role, String phoneNumber, String email, Instant createdAt, UserAddressDto idUserAddress, GenderUserDto idGendersUser, Set<MangaLightDto> mangas) {
+    public UserProfilDto(Integer id, String username, String firstname, String lastname, String role, String phoneNumber, String email, String url, Instant createdAt, UserAddressDto idUserAddress, GenderUserDto idGendersUser, Set<MangaLightDto> mangas) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
@@ -49,6 +51,7 @@ public class UserProfilDto implements Serializable {
         this.role = role;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.url = url;
         this.createdAt = createdAt;
         this.idUserAddress = idUserAddress;
         this.idGendersUser = idGendersUser;
@@ -112,6 +115,13 @@ public class UserProfilDto implements Serializable {
         this.email = email;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
     public Instant getCreatedAt() {
         return createdAt;
     }
