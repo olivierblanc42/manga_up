@@ -34,7 +34,6 @@ public class UpdateUserDto implements Serializable {
     private GenderUserDto idGendersUser;
 
     public UpdateUserDto() {
-        // constructeur par défaut requis par Jackson
     }
     
     public UpdateUserDto(Integer id, String firstname, String lastname, String phoneNumber,

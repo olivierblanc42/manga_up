@@ -94,25 +94,25 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
             "LIMIT 4", nativeQuery = true)
     List<MangaProjectionWithAuthor> findFourMangasRandom();
 
-@Query(value = "SELECT " +
+    @Query(value = "SELECT " +
         "m.Id_mangas AS id_mangas, " +
         "m.title, m.subtitle, m.summary, m.price, " +
         "CONCAT(c.Id_categories, ':', c.label, ':', c.description, ':', c.url) AS category, " +
-    "GROUP_CONCAT(DISTINCT CONCAT(g.Id_gender_mangas,'@', g.url, '@', g.label, '@', g.description) SEPARATOR '|') AS genres, "+
+        "GROUP_CONCAT(DISTINCT CONCAT(g.Id_gender_mangas, '@', g.url, '@', g.label, '@', g.description) SEPARATOR '|') AS genres, "
+        +
         "GROUP_CONCAT(DISTINCT CONCAT(a.Id_authors, ':', a.firstname, ':', a.lastname) SEPARATOR '|') AS authors, " +
-        "p.url AS picture " +
+        "(SELECT p1.url FROM picture p1 WHERE p1.Id_mangas = m.Id_mangas AND p1.is_main = true LIMIT 1) AS picture " +
         "FROM manga m " +
         "LEFT JOIN mangas_authors ma ON m.Id_mangas = ma.Id_mangas " +
         "LEFT JOIN author a ON ma.Id_authors = a.Id_authors " +
-        "LEFT JOIN picture p ON p.Id_mangas = m.Id_mangas " +
         "LEFT JOIN category c ON c.Id_categories = m.Id_categories " +
         "LEFT JOIN genres_manga gm ON gm.Id_mangas = m.Id_mangas " +
         "LEFT JOIN genre g ON g.Id_gender_mangas = gm.Id_gender_mangas " +
-        "GROUP BY m.Id_mangas, m.title ,p.url " +
+        "GROUP BY m.Id_mangas, m.title, m.subtitle, m.summary, m.price, c.Id_categories, c.label, c.description, c.url "
+        +
         "ORDER BY RAND() " +
         "LIMIT 1", nativeQuery = true)
-MangaProjectionOne findRandomOneManga();
-
+    MangaProjectionOne findRandomOneManga();
  
 
 
