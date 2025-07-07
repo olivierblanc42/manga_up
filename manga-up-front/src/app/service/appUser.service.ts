@@ -30,7 +30,9 @@ export class AppUserService {
 
     async loadCurrentUser() {
         try {
-            const user = await firstValueFrom(this.http.get<UserTest>(this.apiUrl));
+            const user = await firstValueFrom(
+                this.http.get<UserTest>(this.apiUrl, { withCredentials: true })
+            );
             if (user) {
                 console.log('Utilisateur chargé :', user);
                 this.userMe.next(user);
@@ -39,6 +41,7 @@ export class AppUserService {
             console.error('Erreur lors du chargement de l\'utilisateur :', error);
         }
     }
+    
 
 }
 
