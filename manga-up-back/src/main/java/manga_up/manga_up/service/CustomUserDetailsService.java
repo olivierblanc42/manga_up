@@ -83,7 +83,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         appUser.setCreatedAt(Instant.now());
         appUser.setRole("ROLE_USER");
-
+        appUser.setUrl("https://i.postimg.cc/kX1TfT6G/225-default-avatar.png");
         try {
             appUser = userDao.save(appUser);
         } catch (Exception e) {

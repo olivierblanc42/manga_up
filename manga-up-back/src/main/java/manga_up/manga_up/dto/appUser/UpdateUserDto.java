@@ -1,63 +1,55 @@
 package manga_up.manga_up.dto.appUser;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
-import manga_up.manga_up.dto.manga.MangaLightDto;
 
-/**
- * DTO for {@link manga_up.manga_up.model.AppUser}
- */
-public class UserProfilDto implements Serializable {
+public class UpdateUserDto implements Serializable {
     private Integer id;
     @NotNull
-    @Size(max = 50)
-    private String username;
+
     @NotNull
     @Size(max = 80)
     private String firstname;
     @NotNull
     @Size(max = 80)
     private String lastname;
-    @Size(max = 10)
-    private String role;
+
+
+    @Size(max = 255)
+    private String url;
     @Size(max = 15)
     private String phoneNumber;
     @NotNull
     @Size(max = 320)
     private String email;
-    @Size(max = 255)
-    private String url;
-    private Instant createdAt;
     @NotNull
-    private UserAddressDto idUserAddress;
+    private UserAdressDtoUpdate idUserAddress;
     @NotNull
     private GenderUserDto idGendersUser;
-    private Set<MangaLightDto> mangas;
+
+    public UpdateUserDto() {
+    }
     
-    
- 
-    public UserProfilDto(Integer id, String username, String firstname, String lastname, String role, String phoneNumber, String email, String url, Instant createdAt, UserAddressDto idUserAddress, GenderUserDto idGendersUser, Set<MangaLightDto> mangas) {
+    public UpdateUserDto(Integer id, String firstname, String lastname, String phoneNumber,
+            String email,
+            String url,
+            UserAdressDtoUpdate idUserAddress, GenderUserDto idGendersUser) {
         this.id = id;
-        this.username = username;
+     
         this.firstname = firstname;
         this.lastname = lastname;
-        this.role = role;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.url = url;
-        this.createdAt = createdAt;
+        this.url =url;
         this.idUserAddress = idUserAddress;
         this.idGendersUser = idGendersUser;
-        this.mangas = mangas;
     }
-
 
     public Integer getId() {
         return id;
@@ -67,13 +59,7 @@ public class UserProfilDto implements Serializable {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -89,14 +75,6 @@ public class UserProfilDto implements Serializable {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getPhoneNumber() {
@@ -115,26 +93,11 @@ public class UserProfilDto implements Serializable {
         this.email = email;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public UserAddressDto getIdUserAddress() {
+    public UserAdressDtoUpdate getIdUserAddress() {
         return idUserAddress;
     }
 
-    public void setIdUserAddress(UserAddressDto idUserAddress) {
+    public void setIdUserAddress(UserAdressDtoUpdate idUserAddress) {
         this.idUserAddress = idUserAddress;
     }
 
@@ -146,49 +109,44 @@ public class UserProfilDto implements Serializable {
         this.idGendersUser = idGendersUser;
     }
 
-
-    public Set<MangaLightDto> getMangas() {
-        return mangas;
+    public String getUrl() {
+        return url;
     }
 
-    public void setIdManga(Set<MangaLightDto> mangas) {
-        this.mangas = mangas;
+    public void setUrl(String url) {
+        this.url = url;
     }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserProfilDto entity = (UserProfilDto) o;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        UpdateUserDto entity = (UpdateUserDto) o;
         return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.username, entity.username) &&
                 Objects.equals(this.firstname, entity.firstname) &&
                 Objects.equals(this.lastname, entity.lastname) &&
-                Objects.equals(this.role, entity.role) &&
                 Objects.equals(this.phoneNumber, entity.phoneNumber) &&
                 Objects.equals(this.email, entity.email) &&
-                Objects.equals(this.createdAt, entity.createdAt) &&
                 Objects.equals(this.idUserAddress, entity.idUserAddress) &&
                 Objects.equals(this.idGendersUser, entity.idGendersUser);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstname, lastname, role, phoneNumber, email, createdAt, idUserAddress, idGendersUser);
+        return Objects.hash(id,  firstname, lastname, phoneNumber, email, idUserAddress, idGendersUser);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "username = " + username + ", " +
                 "firstname = " + firstname + ", " +
                 "lastname = " + lastname + ", " +
-                "role = " + role + ", " +
                 "phoneNumber = " + phoneNumber + ", " +
                 "email = " + email + ", " +
-                "createdAt = " + createdAt + ", " +
                 "idUserAddress = " + idUserAddress + ", " +
                 "idGendersUser = " + idGendersUser + ")";
     }
+
 }

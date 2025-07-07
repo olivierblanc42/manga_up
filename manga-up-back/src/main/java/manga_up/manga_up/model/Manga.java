@@ -8,7 +8,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,24 +59,18 @@ public class Manga {
     private Set<Comment> comments = new LinkedHashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "genres_manga",
-            joinColumns = @JoinColumn(name = "Id_mangas"),
-            inverseJoinColumns = @JoinColumn(name = "Id_gender_mangas"))
+    @JoinTable(name = "genres_manga", joinColumns = @JoinColumn(name = "Id_mangas"), inverseJoinColumns = @JoinColumn(name = "Id_gender_mangas"))
     private Set<Genre> genres = new LinkedHashSet<>();
 
     @ManyToMany
-    @JoinTable(name = "mangas_authors",
-            joinColumns = @JoinColumn(name = "Id_mangas"),
-            inverseJoinColumns = @JoinColumn(name = "Id_authors"))
+    @JoinTable(name = "mangas_authors", joinColumns = @JoinColumn(name = "Id_mangas"), inverseJoinColumns = @JoinColumn(name = "Id_authors"))
     private Set<Author> authors = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "idMangas")
+    @OneToMany(mappedBy = "idMangas", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Picture> pictures = new LinkedHashSet<>();
 
-
-    @ManyToMany(mappedBy = "mangas") 
+    @ManyToMany(mappedBy = "mangas")
     private Set<AppUser> appUsers = new LinkedHashSet<>();
-
 
     public Integer getId() {
         return id;
@@ -187,7 +183,6 @@ public class Manga {
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
-
 
     public Set<AppUser> getAppUsers() {
         return appUsers;

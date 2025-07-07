@@ -6,9 +6,12 @@ import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.model.Picture;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +39,7 @@ public class PictureMapper {
     public Picture toEntityPicture(PictureLightDto pictureLightDto) {
         Picture picture = new Picture();
         picture.setId(pictureLightDto.getId());
-        picture.setUrl(pictureLightDto.getUrl());
+        picture.setUrl(Jsoup.clean(pictureLightDto.getUrl(),Safelist.none()));
         picture.setMain(pictureLightDto.getIsMain());
         return picture;
     }

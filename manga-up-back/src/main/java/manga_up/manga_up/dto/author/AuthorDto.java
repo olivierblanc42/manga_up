@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.author;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -17,14 +18,18 @@ public class AuthorDto implements Serializable {
     @NotNull
     @Size(max = 50)
     private final String firstname;
+    
     @NotNull
     private final String description;
+
     @NotNull
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\-,\\s]+$", message = "Genre contains invalid characters")
     private final String genre;
     @NotNull
     private final LocalDate birthdate;
 
     @NotNull
+    @Pattern(regexp = "^(https?://).*$", message = "URL must be valid and start with http or https")
     private final String url;
 
     public AuthorDto(Integer id, String lastname, String firstname, String description, String genre, LocalDate birthdate,String url) {

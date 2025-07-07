@@ -9,6 +9,7 @@ import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.picture.PictureLightDto;
+import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
@@ -24,8 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -41,15 +44,17 @@ public class MangaService {
     private final CategoryDao categoryDao;
     private final AuthorDao authorDao;
     private final GenreDao genreDao;
+    private final CategoryMapper categoryMapper;
 
     public MangaService(MangaDao mangaDao, MangaMapper mangaMapper, PictureDao pictureDao, CategoryDao categoryDao,
-            AuthorDao authorDao, GenreDao genreDao) {
+            AuthorDao authorDao, GenreDao genreDao, CategoryMapper categoryMapper) {
         this.mangaDao = mangaDao;
         this.mangaMapper = mangaMapper;
         this.pictureDao = pictureDao;
         this.categoryDao = categoryDao;
         this.authorDao = authorDao;
         this.genreDao = genreDao;
+        this.categoryMapper = categoryMapper;
     }
 
     /**
@@ -101,8 +106,66 @@ public class MangaService {
      */
     @Transactional
     public MangaDto save(MangaDto mangaDto) {
-        LOGGER.info("Save manga");
-        LOGGER.info("manga mangaDto : {}", mangaDto);
+
+        if (mangaDto.getPictures() == null || mangaDto.getPictures().isEmpty()) {
+            throw new IllegalArgumentException("A manga must contain at least one image.");
+        }
+        long countMain = mangaDto.getPictures().stream().filter(PictureLightDto::getIsMain).count();
+        if (countMain == 0) {
+            throw new IllegalArgumentException("At least one image must be marked as main.");
+        }
+        if (countMain > 1) {
+            throw new IllegalArgumentException("Only one image can be marked as main.");
+        }
+
+  
+
+        Set<Author> authors = mangaDto.getAuthors().stream()
+                .map(id -> authorDao.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
+                .collect(Collectors.toSet());
+        Set<Genre> genres = mangaDto.getGenres().stream()
+                .map(id -> genreDao.findById(id)
+                        .orElseThrow(() -> new IllegalArgumentException("Genre with id " + id + " not found")))
+                .collect(Collectors.toSet());
+
+        Manga manga = mangaMapper.mangaToEntity(mangaDto);
+        manga.setAuthors(authors);
+        manga.setGenres(genres);
+        if (manga.getPriceHt() != null) {
+            BigDecimal priceHt = manga.getPriceHt();
+            BigDecimal tv = priceHt.multiply(new BigDecimal("0.1"));
+            manga.setPriceHt(priceHt.add(tv));
+            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, manga.getPriceHt());
+        }
+
+        manga.setPictures(new LinkedHashSet<>());
+
+        manga = mangaDao.save(manga);
+
+        int savedCount = 0;
+        for (PictureLightDto picDto : mangaDto.getPictures()) {
+            LOGGER.info("→ saving picture #{}: url='{}', isMain={}", savedCount, picDto.getUrl(), picDto.getIsMain());
+            Picture pic = new Picture();
+            pic.setUrl(picDto.getUrl());
+            pic.setMain(picDto.getIsMain());
+            pic.setIdMangas(manga); 
+            pic = pictureDao.save(pic); 
+            manga.getPictures().add(pic); 
+            savedCount++;
+        }
+
+
+        manga = mangaDao.save(manga);
+
+        return mangaMapper.mangaToMangaDto(manga);
+    }
+
+    @Transactional
+    public MangaDto update(Integer id, MangaDto mangaDto) {
+        LOGGER.info("Update manga with id {}", id);
+        Manga existingManga = mangaDao.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Manga with id " + id + " not found"));
 
         if (mangaDto.getPictures() == null || mangaDto.getPictures().isEmpty()) {
             LOGGER.error("Validation failed: A manga must have at least one image.");
@@ -110,30 +173,36 @@ public class MangaService {
         }
 
         Set<Author> authors = mangaDto.getAuthors().stream()
-                .map(id -> authorDao.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Author with id " + id + " not found")))
+                .map(authorId -> authorDao.findById(authorId)
+                        .orElseThrow(() -> new IllegalArgumentException("Author with id " + authorId + " not found")))
                 .collect(Collectors.toSet());
 
         Set<Genre> genres = mangaDto.getGenres().stream()
-                .map(id -> genreDao.findById(id)
-                        .orElseThrow(() -> new IllegalArgumentException("Genre not found")))
+                .map(genreId -> genreDao.findById(genreId)
+                        .orElseThrow(() -> new IllegalArgumentException("Genre with id " + genreId + " not found")))
                 .collect(Collectors.toSet());
 
-        Manga manga = mangaMapper.mangaToEntity(mangaDto);
-        manga.setAuthors(authors);
-        manga.setGenres(genres);
-        manga.setPictures(new HashSet<>());
+        existingManga.setTitle(mangaDto.getTitle());
+        existingManga.setSubtitle(mangaDto.getSubtitle());
+        existingManga.setReleaseDate(mangaDto.getReleaseDate());
+        existingManga.setSummary(mangaDto.getSummary());
+        existingManga.setPriceHt(mangaDto.getPriceHt());
+        existingManga.setPrice(mangaDto.getPrice());
+        existingManga.setInStock(mangaDto.getInStock());
+        existingManga.setActive(mangaDto.getActive());
+        existingManga.setIdCategories(categoryMapper.categoryLittleDto(mangaDto.getIdCategories()));
+        existingManga.setAuthors(authors);
+        existingManga.setGenres(genres);
 
-        if (manga.getPriceHt() != null) {
-            BigDecimal priceHt = manga.getPriceHt();
+        if (existingManga.getPriceHt() != null) {
+            BigDecimal priceHt = existingManga.getPriceHt();
             BigDecimal multiplier = new BigDecimal("0.1");
-            BigDecimal TVAmount = priceHt.multiply(multiplier);
-            manga.setPriceHt(priceHt.add(TVAmount));
-            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, manga.getPriceHt());
+            BigDecimal tvAmount = priceHt.multiply(multiplier);
+            existingManga.setPriceHt(priceHt.add(tvAmount));
+            LOGGER.info("Price adjusted with VAT (10%): {} → {}", priceHt, existingManga.getPriceHt());
         } else {
             LOGGER.warn("The price excluding VAT is NULL, no VAT calculation carried out!");
         }
-        mangaDao.save(manga);
 
         long countMain = mangaDto.getPictures().stream()
                 .filter(PictureLightDto::getIsMain)
@@ -153,26 +222,25 @@ public class MangaService {
                 picture = new Picture();
                 picture.setUrl(pictureDto.getUrl());
                 picture.setMain(pictureDto.getIsMain());
-                picture.setIdMangas(manga);
+                picture.setIdMangas(existingManga);
                 Picture saved = pictureDao.save(picture);
                 pictures.add(saved);
             } else {
                 picture = pictureDao.findById(pictureDto.getId())
                         .orElseThrow(() -> new IllegalArgumentException(
                                 "Image with ID " + pictureDto.getId() + " does not exist."));
+                picture.setUrl(pictureDto.getUrl());
+                picture.setMain(pictureDto.getIsMain());
                 pictures.add(picture);
             }
         }
+        existingManga.getPictures().clear();
+        existingManga.getPictures().addAll(pictures);
 
-        manga.setPictures(pictures);
-        mangaDao.save(manga);
+        mangaDao.save(existingManga);
 
-        return mangaMapper.mangaToMangaDto(manga);
+        return mangaMapper.mangaToMangaDto(existingManga);
     }
-
-
-
-
     
     /**
      * Retrieves a list of four random mangas.
@@ -197,12 +265,12 @@ public class MangaService {
         return projections.stream()
                 .map(mangaMapper::mapToDto)
                 .collect(Collectors.toList());
-    }    
+    }
 
     /**
      * Retrieves a single random manga.
      *
-     * @return a  one random {@link MangaDtoOne}
+     * @return a one random {@link MangaDtoOne}
      */
     public MangaDtoOne getRandomManga() {
         MangaProjectionOne projection = mangaDao.findRandomOneManga();
@@ -213,8 +281,6 @@ public class MangaService {
 
         return mangaMapper.mapToDto(projection);
     }
-
-
 
     /**
      * Searches mangas by their title.
@@ -246,23 +312,40 @@ public class MangaService {
      */
     @Transactional
     public void deleteManga(Integer id) {
-        LOGGER.info("Deleting Manga by id");
+        LOGGER.info("Deleting Manga by id {}", id);
+
         Manga manga = mangaDao.findMangaId(id)
-                .orElseThrow(() -> new EntityNotFoundException("manga with id " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Manga with id " + id + " not found"));
 
         Category category = manga.getIdCategories();
-        if (category != null) {
+        if (category != null && category.getMangas() != null) {
             category.getMangas().remove(manga);
-            categoryDao.save(category);
         }
-        for (Genre genre : manga.getGenres()) {
-            genre.getMangas().remove(manga);
+        manga.setIdCategories(null);
+
+        if (manga.getGenres() != null) {
+            for (Genre genre : manga.getGenres()) {
+                if (genre.getMangas() != null) {
+                    genre.getMangas().remove(manga);
+                }
+            }
+            manga.getGenres().clear();
         }
-        for (Author author : manga.getAuthors()) {
-            author.getMangas().remove(manga);
+
+        if (manga.getAuthors() != null) {
+            for (Author author : manga.getAuthors()) {
+                if (author.getMangas() != null) {
+                    author.getMangas().remove(manga);
+                }
+            }
+            manga.getAuthors().clear();
         }
-        manga.getGenres().clear();
-        manga.getAuthors().clear();
+
         mangaDao.delete(manga);
     }
+
+    public boolean existsByTitle(String title) {
+        return mangaDao.existsByTitle(title);
+    }
+    
 }

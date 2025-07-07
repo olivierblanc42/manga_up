@@ -8,9 +8,10 @@
             <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
 
                 <div class="form-group">
-                    <label>Nom d'utilisateur</label>
-                    <input formControlName="username" />
-                    <div class="info-error" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+                    <label for="username">Nom d'utilisateur</label>
+                    <input id="username" formControlName="username" />
+                    <div class="info-error"
+                        *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
                         <small *ngIf="registerForm.get('username')?.errors?.['required']">Nom d'utilisateur
                             requis</small>
                         <small *ngIf="registerForm.get('username')?.errors?.['minlength']">Minimum 3 caractères</small>
@@ -19,16 +20,18 @@
 
                 <div>
                     <div class="form-group">
-                        <label>Prénom</label>
-                        <input formControlName="firstname" />
-                        <div class="info-error" *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
+                        <label for="firstname">Prénom</label>
+                        <input id="firstname" formControlName="firstname" />
+                        <div class="info-error"
+                            *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
                             <small *ngIf="registerForm.get('firstname')?.errors?.['required']">Prénom requis</small>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Nom</label>
-                        <input formControlName="lastname" />
-                        <div class="info-error" *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
+                        <label for="lastname">Nom</label>
+                        <input id="lastname" formControlName="lastname" />
+                        <div class="info-error"
+                            *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
                             <small *ngIf="registerForm.get('lastname')?.errors?.['required']">Nom requis</small>
                         </div>
                     </div>
@@ -36,9 +39,10 @@
 
 
                 <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" formControlName="password" />
-                    <div class="info-error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                    <label for="password">Mot de passe</label>
+                    <input id="password" type="password" formControlName="password" />
+                    <div class="info-error"
+                        *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
                         <small *ngIf="registerForm.get('password')?.errors?.['required']">Mot de passe requis.</small>
                         <small *ngIf="registerForm.get('password')?.errors?.['minlength']">Minimum 6 caractères.</small>
                         <small *ngIf="registerForm.get('password')?.errors?.['pattern']">
@@ -48,9 +52,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" formControlName="email" />
-                    <div class="info-error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" formControlName="email" />
+                    <div class="info-error"
+                        *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
                         <small *ngIf="registerForm.get('email')?.errors?.['required']">Email requis</small>
                         <small *ngIf="registerForm.get('email')?.errors?.['email']">Format invalide</small>
                     </div>
@@ -60,29 +65,29 @@
                 <div class="">
                     <h4>Adresse</h4>
                     <div formGroupName="address" class="form-group">
-                        <label>Ligne 1</label>
-                        <input formControlName="line1" placeholder="Adresse ligne 1" />
+                        <label for="line1">Ligne 1</label>
+                        <input id="line1" formControlName="line1" placeholder="Adresse ligne 1" />
 
-                        <label>Ligne 2</label>
-                        <input formControlName="line2" placeholder="Adresse ligne 2" />
+                        <label for="line2">Ligne 2</label>
+                        <input id="line2" formControlName="line2" placeholder="Adresse ligne 2" />
 
-                        <label>Ville</label>
-                        <input formControlName="city" placeholder="Ville" />
+                        <label for="city">Ville</label>
+                        <input id="city" formControlName="city" placeholder="Ville" />
 
-                        <label>Code postal</label>
-                        <input formControlName="postalCode" placeholder="Code postal" />
+                        <label for="postalCode">Code postal</label>
+                        <input id="postalCode" formControlName="postalCode" placeholder="Code postal" />
                     </div>
                 </div>
-<div class="gender-user ">
-    <h4>Genre</h4>
-    <div formGroupName="genderUserId">
-        <select formControlName="id">
-            @for (genre of genderUserId; track genre.id) {
-            <option [value]="genre.id">{{ genre.label }}</option>
-            }
-        </select>
-    </div>
-</div>
+                <div class="gender-user ">
+                    <label for="gender">Genre</label>
+                    <div id="gender" formGroupName="genderUserId">
+                        <select formControlName="id">
+                            @for (genre of genderUserId; track genre.id) {
+                            <option [value]="genre.id">{{ genre.label }}</option>
+                            }
+                        </select>
+                    </div>
+                </div>
 
                 <button type="submit">S'inscrire</button>
             </form>

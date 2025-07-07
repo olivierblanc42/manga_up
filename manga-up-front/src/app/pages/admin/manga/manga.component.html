@@ -1,1 +1,149 @@
-<p>manga works!</p>
+<div class="manga-form-container card card-single-other" *ngIf="mangaForm">
+    <div class="card-single-other__title">
+        <h1>Modifier le manga : {{ manga?.title }}</h1>
+    </div>
+
+    <form [formGroup]="mangaForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label for="title">Titre</label>
+            <input id="title" type="text" formControlName="title" />
+            <div *ngIf="mangaForm.get('title')?.invalid && mangaForm.get('title')?.touched" class="error">
+                Le titre est obligatoire (max 100 caractères, sans balises HTML).
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="subtitle">Sous-titre</label>
+            <input id="subtitle" type="text" formControlName="subtitle" />
+            <div *ngIf="mangaForm.get('subtitle')?.invalid && mangaForm.get('subtitle')?.touched" class="error">
+                Le sous-titre ne doit pas contenir de balises HTML et ne doit pas dépasser 100 caractères.
+            </div>
+        </div>
+
+        <!-- <div class="form-group">
+            <label for="releaseDate">Date de sortie</label>
+            <input id="releaseDate" type="date" formControlName="releaseDate" />
+            <div *ngIf="mangaForm.get('releaseDate')?.invalid && mangaForm.get('releaseDate')?.touched" class="error">
+                La date de sortie est obligatoire.
+            </div>
+        </div> -->
+
+        <div class="form-group">
+            <label for="summary">Résumé</label>
+            <textarea id="summary" formControlName="summary"></textarea>
+            <div *ngIf="mangaForm.get('summary')?.invalid && mangaForm.get('summary')?.touched" class="error">
+                Le résumé est obligatoire (max 1000 caractères, sans balises HTML).
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Prix (€)</label>
+            <input id="price" type="number" formControlName="price" min="1" />
+            <div *ngIf="mangaForm.get('price')?.invalid && mangaForm.get('price')?.touched" class="error">
+                Le prix doit être supérieur ou égal à 1.
+            </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" formControlName="inStock" /> En stock
+            </label>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" formControlName="active" /> Actif
+            </label>
+        </div>
+
+        <div class="form-group">
+            <div class="group-form">
+                <label for="idCategories">Catégorie</label>
+                <p>{{manga?.idCategories?.label}}</p>
+
+                <select formControlName="idCategories" id="idCategories">
+                    <option [ngValue]="null" disabled selected>-- Sélectionner une catégorie --</option>
+                    <option *ngFor="let category of categories?.content" [ngValue]="category">
+                        {{ category.label }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="group-form">
+            <label>Genres</label>
+            @for(genre of manga?.genres; track $index ){
+            <p>{{genre.label}}</p> }
+
+            <ng-select [items]="genres?.content" bindLabel="label" bindValue="id" [multiple]="true" [searchable]="true"
+                formControlName="genres" placeholder="Sélectionnez un ou plusieurs genres">
+            </ng-select>
+        </div>
+        <div *ngIf="mangaForm.get('genres')?.touched && mangaForm.get('genres')?.errors">
+            <small *ngIf="mangaForm.get('genres')?.errors?.['minlength']">Veuillez sélectionner au moins un
+                genre.</small>
+        </div>
+
+        <div class="group-form">
+            <label>Auteurs</label>
+            @for(author of manga?.authors; track $index ){
+            <p>{{author?.lastname}} {{author?.firstname}}</p>
+            }
+
+
+
+            <ng-select [items]="authors?.content" bindValue="id" [multiple]="true" formControlName="authors"
+                placeholder="Sélectionnez un ou plusieurs Auteurs">
+                >
+
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.firstname}} {{item.lastname}}
+                </ng-template>
+                <ng-template ng-option-tmp let-item="item">
+                    {{item.firstname}} {{item.lastname}}
+                </ng-template>
+
+            </ng-select>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <label>Images</label>
+            <div formArrayName="pictures">
+                <div *ngFor="let picture of pictures.controls; let i = index" [formGroupName]="i" class="picture-input">
+                    <!-- URL de l'image -->
+                    <input formControlName="url" type="text" />
+        
+                    <!-- Radio pour marquer l'image principale -->
+                    <label>
+                        <input type="radio" name="mainImage" 
+                        [checked]="picture.value.isMain" 
+                        (change)="setAsMain(i)" 
+                        />
+                        Principale
+                    </label>
+        
+                    <button type="button" (click)="deleteImage(i)">Supprimer</button>
+                </div>
+            </div>
+        </div>
+          
+
+
+
+
+
+        <button class="btn btn-card" type="submit">Enregistrer</button>
+
+    </form>
+
+
+
+
+
+
+</div>

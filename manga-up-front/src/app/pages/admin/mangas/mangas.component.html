@@ -4,7 +4,7 @@
 
     <button (click)="openModal()" class="btn btn-primary">+ Ajouter un manga</button>
 
-    <div class="modal" [class.show]="isModalOpen">
+    <div class="modal" [class.show]="isModalOpen" [class.modal-overflow]="isModalOpen"   >
         <div class="modal-content">
             <span class="close" (click)="closeModal()">&times;</span>
 
@@ -184,7 +184,8 @@
             <mat-spinner diameter="40" color="primary"></mat-spinner>
         </div>
         <div *ngIf="!isLoadingManga && !mangas && showEmptyMessage">
-            <p>Aucun mangas trouvé.</p></div>
+            <p>Aucun mangas trouvé.</p>
+        </div>
 
 
         <table class="section-admin__content" *ngIf="!isLoadingManga && mangas">
@@ -209,7 +210,7 @@
                         }
                     </td>
                     <td>
-                        <a [routerLink]="['/admin/categories/edit', manga.id_mangas]" class="btn btn-edit">Modifier</a>
+                        <a [routerLink]="['/admin/manga', manga.id_mangas]" class="btn btn-edit">Modifier</a>
                         <a href="#" (click)="deleteManga(manga.id_mangas); $event.preventDefault()"
                             class="btn btn-delete">Supprimer</a>
                     </td>
@@ -219,3 +220,36 @@
     </div>
 
 </section>
+<nav aria-label="Pagination">
+    <ul class="pagination">
+        @for(page of pages; track page; let count=$index){
+        @if(count===0){
+        <li>
+            <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                aria-label="Page précédente"
+                class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg">
+                Previous
+            </button>
+        </li>
+        }
+
+        <li>
+            <button (click)="pageMangas(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                [attr.aria-label]="'Page ' + (count + 1)"
+                class="flex items-center justify-center px-4 h-10 leading-tight text-black bg-white border border-gray-300">
+                {{count + 1}}
+            </button>
+        </li>
+
+        @if(count===lastPage-1){
+        <li>
+            <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                aria-label="Page suivante"
+                class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg">
+                Next
+            </button>
+        </li>
+        }
+        }
+    </ul>
+</nav>

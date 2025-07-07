@@ -47,6 +47,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -563,16 +564,15 @@ class MangaServiceTest {
         assertFalse(author.getMangas().contains(manga));
 
         verify(mangaDao).delete(manga);
-        verify(categoryDao).save(category);
     }
 
     @Test
     void shouldThrowExceptionWhenDeletingNonExistingManga() {
-        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty()); // ici
+        when(mangaDao.findMangaId(99)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> mangaService.deleteManga(99));
 
-        verify(mangaDao).findMangaId(99); // ici c'est bon
+        verify(mangaDao).findMangaId(99);
         verifyNoMoreInteractions(mangaDao);
     }
 
@@ -641,7 +641,7 @@ class MangaServiceTest {
             mangaService.save(mangaDto);
         });
 
-        assertTrue(exception.getMessage().contains("Genre not found"));
+        assertTrue(exception.getMessage().contains("Genre with id 1 not found"));
 
         verify(genreDao).findById(genreId);
     }
@@ -680,7 +680,7 @@ class MangaServiceTest {
         Manga mangaEntity = new Manga();
         mangaEntity.setAuthors(Set.of(author));
         mangaEntity.setGenres(Set.of(genre));
-        mangaEntity.setPictures(new HashSet<>());
+        mangaEntity.setPictures(new  HashSet<>());
         mangaEntity.setPriceHt(mangaDto.getPriceHt());
         mangaEntity.setTitle(mangaDto.getTitle());
         when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
@@ -744,7 +744,7 @@ class MangaServiceTest {
     @Test
     void save_shouldThrowException_whenPicturesIsEmpty() {
         CategoryLittleDto category = new CategoryLittleDto(1);
-        Set<PictureLightDto> pictureLightDtos = new HashSet<>(); // vide
+        Set<PictureLightDto> pictureLightDtos = new  HashSet<>();
 
         MangaDto mangaDto = new MangaDto(
                 "One Piece",

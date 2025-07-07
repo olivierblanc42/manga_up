@@ -2,6 +2,7 @@ package manga_up.manga_up.service;
 
 import manga_up.manga_up.dao.AddressDao;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
 import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.appUser.AppUserLittleProjection;
@@ -320,6 +321,42 @@ class UserAddressServiceTest {
         when(userAddressMapper.toDto(userAddressEntity)).thenReturn(userAddressDto);
 
         UserAddressDto result = userAddressService.updateUserAddress(id, userAddressDto);
+        assertThat(result).isNotNull();
+        assertThat(result.getCity()).isEqualTo("city");
+        assertThat(result.getLine1()).isEqualTo("1234 Main St");
+        assertThat(result.getLine2()).isEqualTo("Apt 4B");
+    }
+
+
+    @Test
+    void updateUserAdressDtoUpdate() {
+        int id = 1;
+
+        UserAdressDtoUpdate userAddressDto = new UserAdressDtoUpdate(
+                "1234 Main St",
+                "Apt 4B",
+                "Near the Park",
+                "city",
+                "75001");
+
+        UserAddress userAddressEntity = new UserAddress();
+        userAddressEntity.setId(id);
+        userAddressEntity.setLine1("1234 Main St");
+        userAddressEntity.setLine2("Apt 3B");
+        userAddressEntity.setLine3("the Park");
+        userAddressEntity.setCity("city2");
+        userAddressEntity.setPostalCode("75004");
+
+        when(addressDao.findUserAddressById(id)).thenReturn(Optional.of(userAddressEntity));
+        userAddressEntity.setLine1(userAddressDto.getLine1());
+        userAddressEntity.setLine2(userAddressDto.getLine2());
+        userAddressEntity.setLine3(userAddressDto.getLine3());
+        userAddressEntity.setCity(userAddressDto.getCity());
+        userAddressEntity.setPostalCode(userAddressDto.getPostalCode());
+        when(addressDao.save(userAddressEntity)).thenReturn(userAddressEntity);
+        when(userAddressMapper.toDtoUserAdressDtoUpdate(userAddressEntity)).thenReturn(userAddressDto);
+
+        UserAdressDtoUpdate result = userAddressService.updateUserAdressDtoUpdate(id, userAddressDto);
         assertThat(result).isNotNull();
         assertThat(result.getCity()).isEqualTo("city");
         assertThat(result.getLine1()).isEqualTo("1234 Main St");

@@ -2,7 +2,7 @@ package manga_up.manga_up.service;
 
 import static org.mockito.Mockito.when;
 
-import java.nio.file.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -299,6 +299,7 @@ class UserServiceTest {
                 "USER",
                 "0123456789",
                 "john.doe@example.com",
+                "image.com",
                 Instant.now(),
                 addressDto,
                 genderDto,

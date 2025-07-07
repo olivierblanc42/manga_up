@@ -8,14 +8,18 @@ import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.manga.MangaLightDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -83,13 +87,14 @@ public class MangaMapper {
 
         );
     }
+    // picture.setUrl(Jsoup.clean(pictureLightDto.getUrl(),Safelist.none()));
 
     public Manga mangaToEntity(MangaDto mangaDto) {
         Manga manga = new Manga();
-        manga.setTitle(mangaDto.getTitle());
-        manga.setSubtitle(mangaDto.getSubtitle());
+        manga.setTitle(Jsoup.clean(mangaDto.getTitle(),Safelist.none()));
+        manga.setSubtitle(Jsoup.clean(mangaDto.getSubtitle(), Safelist.none()));
         manga.setReleaseDate(mangaDto.getReleaseDate());
-        manga.setSummary(mangaDto.getSummary());
+        manga.setSummary(Jsoup.clean(mangaDto.getSummary(), Safelist.none()));
         manga.setPriceHt(mangaDto.getPriceHt());
         manga.setPrice(mangaDto.getPrice());
         manga.setInStock(mangaDto.getInStock());
@@ -112,10 +117,21 @@ public class MangaMapper {
     }
 
     public MangaLightDto toMangaLightDto(Manga manga) {
+        PictureLightDto mainPicture = manga.getPictures().stream()
+                .filter(Picture::getMain)
+                .findFirst()
+                .map(pic -> new PictureLightDto(
+                        pic.getId(),
+                        pic.getUrl(),
+                        pic.getMain()))
+                .orElse(null);
+
         return new MangaLightDto(
                 manga.getId(),
-                manga.getTitle());
-    }
+                manga.getTitle(),
+                mainPicture);
+    }    
+
 
     public Set<MangaLightDto> toMangaLightDtoSet(Set<Manga> mangas) {
         return mangas.stream()

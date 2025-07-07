@@ -17,6 +17,7 @@ export class MangaService{
     urlRandom =`${environment.apiUrl}api/public/randomFour`
     urlAdd = `${environment.apiUrl}api/mangas/add`
     urldelete =`${environment.apiUrl}api/mangas`
+    urlUpdate = `${environment.apiUrl}api/mangas/update`
 
     options = {
         headers: new HttpHeaders({
@@ -134,4 +135,18 @@ export class MangaService{
         return response; 
     }
      
+    async updateManga(manga: MangaDto) : Promise<MangaDto>{
+        try{
+            const urlWithid= `${this.urlUpdate}/${manga.id}`
+            const response = await firstValueFrom(this.http.put<MangaDto>(urlWithid, manga, { withCredentials: true }))
+            this.mangaDto.next(response);
+            return response
+        }catch (error) {
+            console.error('Erreur lors de la mise à jour de du manga :', error);
+            throw error;
+        }
+    }
+
+
+
 }

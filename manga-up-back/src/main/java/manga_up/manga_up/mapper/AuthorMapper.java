@@ -3,6 +3,9 @@ package manga_up.manga_up.mapper;
 import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.dto.author.AuthorLigthDto;
 import manga_up.manga_up.model.Author;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,12 +38,12 @@ public class AuthorMapper {
         LOGGER.info("Author size before mapping: {}", authorDto.getFirstname());
 
         Author author = new Author();
-        author.setFirstname(authorDto.getFirstname());
-        author.setLastname(authorDto.getLastname());
-        author.setDescription(authorDto.getDescription());
-        author.setGenre(authorDto.getGenre());
+        author.setFirstname(Jsoup.clean(authorDto.getFirstname(), Safelist.none()));
+        author.setLastname(Jsoup.clean(authorDto.getLastname(), Safelist.none()));
+        author.setDescription(Jsoup.clean(authorDto.getDescription(), Safelist.none()));
+        author.setGenre(Jsoup.clean(authorDto.getGenre(), Safelist.none()));
         author.setBirthdate(authorDto.getBirthdate());
-        author.setUrl(authorDto.getUrl());
+        author.setUrl(Jsoup.clean(authorDto.getUrl(), Safelist.none()));
         return author;
     }
 
@@ -73,5 +76,10 @@ public class AuthorMapper {
         author.setId(authorLightDto.getId());
         return author;
     }
+
+
+
+ 
+
 
 }

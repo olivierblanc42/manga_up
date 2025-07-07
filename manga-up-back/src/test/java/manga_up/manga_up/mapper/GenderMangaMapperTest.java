@@ -33,7 +33,7 @@ public class GenderMangaMapperTest {
         Genre genre = new Genre();
         genre.setUrl("null.com");
         genre.setLabel("null");
-        genre.setDescritpion("null");
+        genre.setDescription("null");
 
         GenreDto genreDto = genderMangaMapper.toDtoGenre(genre);
         assertNotNull(genreDto);

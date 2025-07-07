@@ -48,8 +48,7 @@ public class AppUser {
     @Column(name = "role", length = 10)
     private String role;
 
-    /** Phone number in French format (e.g., +33612345678 or 0612345678). */
-    @Pattern(regexp = "^(\\+33|0)[1-9](\\d{2}){4}$", message = "Invalid phone number")
+
     @Size(max = 15)
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
@@ -61,11 +60,19 @@ public class AppUser {
     @Column(name = "email", nullable = false, length = 320)
     private String email;
 
+
+    @Size(max = 255)
+    @Column(name = "avatar_url")
+    private String url;
+
+
+
     /** Date and time when the user was created. */
     @Column(name = "created_at")
     private Instant createdAt;
 
     /** Hashed password for authentication. */
+    @Size(min = 8, max = 128, message = "The password must be between 8 and 128 characters long.")
     @Column(name = "password", nullable = false, length = 128)
     private String password;
 
@@ -220,4 +227,14 @@ public class AppUser {
     public void setMangas(Set<Manga> mangas) {
         this.mangas = mangas;
     }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
 }

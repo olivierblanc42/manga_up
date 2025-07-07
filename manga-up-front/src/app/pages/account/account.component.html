@@ -1,4 +1,3 @@
-
 <app-logout></app-logout>
 <article class="section">
     <div class="card card-single-account">
@@ -16,33 +15,63 @@
                         <h2>Informations</h2>
                     </div>
 
-                    <dl class="card-content__infos">
-                        <div>
+                    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="card-content__infos">
 
-                            <dt>Nom d'utilisateur :</dt>
-                            <dd>{{user?.username}}</dd>
+                        <label>Nom d'utilisateur</label>
+                        <input type="text" formControlName="username" />
+                        <div *ngIf="userForm.get('username')?.touched && userForm.get('username')?.errors">
+                            <small *ngIf="userForm.get('username')?.errors?.['required']">Le nom d'utilisateur est
+                                requis.</small>
+                            <small *ngIf="userForm.get('username')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                                autorisées.</small>
+                            <small *ngIf="userForm.get('username')?.errors?.['maxlength']">Maximum 100
+                                caractères.</small>
                         </div>
-                        <div>
-                            <dt>Nom :</dt>
-                            <dd>{{user?.lastname}}</dd>
+
+                        <label>Prénom</label>
+                        <input type="text" formControlName="firstname" />
+                        <div *ngIf="userForm.get('firstname')?.touched && userForm.get('firstname')?.errors">
+                            <small *ngIf="userForm.get('firstname')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                                autorisées.</small>
+                            <small *ngIf="userForm.get('firstname')?.errors?.['maxlength']">Maximum 100
+                                caractères.</small>
                         </div>
-                        <div>
-                            <dt>Prénom :</dt>
-                            <dd>{{user?.firstname}}</dd>
+
+                        <label>Nom</label>
+                        <input type="text" formControlName="lastname" />
+                        <div *ngIf="userForm.get('lastname')?.touched && userForm.get('lastname')?.errors">
+                            <small *ngIf="userForm.get('lastname')?.errors?.['required']">Le nom est requis.</small>
+                            <small *ngIf="userForm.get('lastname')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                                autorisées.</small>
+                            <small *ngIf="userForm.get('lastname')?.errors?.['maxlength']">Maximum 1000
+                                caractères.</small>
                         </div>
-                        <div>
-                            <dt>Email :</dt>
-                            <dd>{{user?.email}}</dd>
+
+                        <label>Email</label>
+                        <input type="email" formControlName="email" />
+                        <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.errors">
+                            <small *ngIf="userForm.get('email')?.errors?.['required']">L'email est requis.</small>
+                            <small *ngIf="userForm.get('email')?.errors?.['noHtml']">Les balises HTML ne sont pas
+                                autorisées.</small>
+                            <small *ngIf="userForm.get('email')?.errors?.['maxlength']">Maximum 1000 caractères.</small>
+                            <small *ngIf="userForm.get('email')?.errors?.['email']">Email invalide.</small>
                         </div>
-                        <div>
-                            <dt>Numéro :</dt>
-                            <dd>{{user?.phoneNumber}}</dd>
+
+                        <label>Numéro de téléphone</label>
+                        <input type="text" formControlName="phoneNumber" />
+                        <div *ngIf="userForm.get('phoneNumber')?.touched && userForm.get('phoneNumber')?.errors">
+                            <small *ngIf="userForm.get('phoneNumber')?.errors?.['required']">Le numéro de téléphone est
+                                requis.</small>
+                            <small *ngIf="userForm.get('phoneNumber')?.errors?.['pattern']">Numéro de téléphone
+                                invalide.</small>
                         </div>
-                        <div>
-                            <dt>Date de création du compte : </dt>
-                            <dd></dd>
-                        </div>
-                    </dl>
+
+                        <button type="submit" [disabled]="userForm.invalid">Mettre à jour</button>
+                    </form>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -53,35 +82,35 @@
 
 <section class="section">
     @if(mangas.length > 0){
-        <div class="section__title">
-            <h2>Mangas favoris de {{user?.username}} </h2>
-            </div>
-     @if(mangas.length == 1 ){
-        <p>il y a actuellement {{mangas.length}} favori dans tes favoris</p>
-     }@else{
-        <p>il y a actuellement {{mangas.length}} favoris dans tes favoris</p>
-     }
-    <div class="section__grid">
- @for(manga of mangas; track $index ){
-    <ui-card size="card-manga">
-        <img class="image" src="" alt="Image du manga {{manga.title}}">
-        <div>
-            <h3 class="card-manga__title">{{manga.title}}</h3>
-    
-        </div>
-    
-        <a [routerLink]="'/manga/' + manga.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche de '">
-            <img src="svg/mdi_magnify.svg">
-            <p>voir plus</p>
-        </a>
-    </ui-card>
+    <div class="section__title">
+        <h2>Mangas favoris de {{user?.username}} </h2>
+    </div>
+    @if(mangas.length == 1 ){
+    <p>il y a actuellement {{mangas.length}} favori dans tes favoris</p>
+    }@else{
+    <p>il y a actuellement {{mangas.length}} favoris dans tes favoris</p>
     }
- 
-</div>
+    <div class="section__grid">
+        @for(manga of mangas; track $index ){
+        <ui-card size="card-manga">
+            <img class="image" src="" alt="Image du manga {{manga.title}}">
+            <div>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+
+            </div>
+
+            <a [routerLink]="'/manga/' + manga.id" class="btn btn-card" [attr.aria-label]="'Voir la fiche de '">
+                <img src="svg/mdi_magnify.svg">
+                <p>voir plus</p>
+            </a>
+        </ui-card>
+        }
+
+    </div>
     } @else{
     <p>Aucun Favoris pour le moment</p>
     }
-  
+
 
 
 </section>

@@ -2,6 +2,9 @@ package manga_up.manga_up.mapper;
 
 import manga_up.manga_up.dto.status.StatusDto;
 import manga_up.manga_up.model.Status;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,9 +26,9 @@ public class StatusMapper {
         LOGGER.info("Converting status to model");
         Status status = new Status();
         status.setId(statusDto.getId());
-        status.setLabel(statusDto.getLabel());
+        status.setLabel(Jsoup.clean(statusDto.getLabel(), Safelist.none()));
         return status;
     }
-
+    // author.setGenre(Jsoup.clean(authorDto.getGenre(),Safelist.none()));
 
 }

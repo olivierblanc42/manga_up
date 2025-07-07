@@ -2,9 +2,11 @@ package manga_up.manga_up.dto.manga;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * DTO for {@link manga_up.manga_up.model.Manga}
@@ -14,10 +16,12 @@ public class MangaLightDto implements Serializable {
     @NotNull
     @Size(max = 255)
     private final String title;
+    private final PictureLightDto pictures;
 
-    public MangaLightDto(Integer id, String title) {
+    public MangaLightDto(Integer id, String title, PictureLightDto pictures) {
         this.id = id;
         this.title = title;
+        this.pictures = pictures;
     }
 
     public Integer getId() {
@@ -26,6 +30,10 @@ public class MangaLightDto implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public PictureLightDto getPicture(){
+        return pictures;
     }
 
     @Override

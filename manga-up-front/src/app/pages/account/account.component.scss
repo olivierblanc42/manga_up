@@ -87,10 +87,27 @@
                     row-gap: 20px;
 
 
-                    dt {
+                    label {
                         text-transform: uppercase;
                         font-weight: $font-bold;
                     }
+
+
+
+                    input {
+                        border-color: $secondary;
+                        padding: 14px;
+                        border-radius: 13px;
+                        -webkit-border-radius: 13px;
+                        -moz-border-radius: 13px;
+                        -ms-border-radius: 13px;
+                        -o-border-radius: 13px;
+                        color: $secondary;
+
+                    }
+
+
+
                 }
             }
 

@@ -59,8 +59,13 @@ public class MangaController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Adding Manga")
     @PostMapping("/add")
-    public ResponseEntity<MangaDto> addManga(@Valid @RequestBody MangaDto mangaDto) {
+    public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
         LOGGER.info("Adding Manga");
+            if (mangaService.existsByTitle(mangaDto.getTitle())) {
+        return ResponseEntity
+                .badRequest()
+                .body("Un manga avec ce titre existe déjà.");
+    }
         return ResponseEntity.ok(mangaService.save(mangaDto));
     }
 
@@ -82,8 +87,14 @@ public class MangaController {
         return new ResponseEntity<>(mangas, HttpStatus.OK);
     }
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Update a Manga")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MangaDto> updateManga(@PathVariable Integer id, @RequestBody MangaDto mangaDto) {
+        LOGGER.info("Updating Manga with id {}", id);
+        MangaDto updatedManga = mangaService.update(id, mangaDto);
+        return ResponseEntity.ok(updatedManga);
+    }
 
 
 }

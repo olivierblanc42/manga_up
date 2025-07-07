@@ -1,5 +1,6 @@
 package manga_up.manga_up.dto.register;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -14,24 +15,34 @@ import java.util.Objects;
  */
 public class RegisterDto implements Serializable {
     @NotNull
-    @Size(max = 50)
+    @Pattern(regexp = "^[a-zA-Z0-9_.-]{3,50}$", message = "The username contains invalid characters.")
+    @Size(min = 3, max = 50)
     private String username;
+
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\-\\s]+$", message = "Only letters, spaces and hyphens allowed")
     @NotNull
     @Size(max = 80)
     private String firstname;
+    
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\-\\s]+$", message = "Only letters, spaces and hyphens allowed")
     @NotNull
     @Size(max = 80)
     private String lastname;
     @Size(max = 10)
     private String role;
+
+    /** Phone number in French format (e.g., +33612345678 or 0612345678). */
+    @Pattern(regexp = "^(\\+33|0)[1-9](\\d{2}){4}$", message = "Invalid phone number")
     @Size(max = 15)
     private String phoneNumber;
+
+    @Email(message = "Invalid email format")
     @NotNull
     @Size(max = 320)
     private String email;
 
     @NotNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Mot de passe invalide")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Invalid password.")
     @Size(max = 128)
     private String password;
     private UserAddressDto address;

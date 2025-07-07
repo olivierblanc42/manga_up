@@ -806,3 +806,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
      width: 50%; 
  
 }
+
+// body.your-class {
+//     overflow: hidden !important;
+// }
+
+.modal-overflow {
+    overflow: auto;
+}

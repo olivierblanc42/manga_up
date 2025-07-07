@@ -4,6 +4,8 @@ import manga_up.manga_up.dto.genre.GenreDto;
 import manga_up.manga_up.dto.genre.GenreLightDto;
 import manga_up.manga_up.model.Genre;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,17 +23,18 @@ public class GenderMangaMapper {
                 genre.getId(),
                 genre.getUrl(),
                 genre.getLabel(),
-                genre.getDescritpion());
+                genre.getDescription());
     }
 
     public Genre toEntity(GenreDto genreDto) {
         Genre genre = new Genre();
 
-        genre.setUrl(genreDto.getUrl());
-        genre.setLabel(genreDto.getLabel());
-        genre.setDescritpion(genreDto.getDescription());
+        genre.setUrl(Jsoup.clean(genreDto.getUrl(), Safelist.none()));
+        genre.setLabel(Jsoup.clean(genreDto.getLabel(), Safelist.none()));
+        genre.setDescription(Jsoup.clean(genreDto.getDescription(),Safelist.none()));
         return genre;
     }
+    // manga.setTitle(Jsoup.clean(mangaDto.getTitle(),Safelist.none()));
 
     public GenreLightDto toGenreLightDto(Genre genre) {
         return new GenreLightDto(
