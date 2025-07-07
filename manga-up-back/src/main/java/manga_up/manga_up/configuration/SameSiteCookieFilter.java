@@ -7,7 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SameSiteCookieFilter extends OncePerRequestFilter {
 
@@ -18,26 +20,26 @@ public class SameSiteCookieFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
         Collection<String> headers = response.getHeaders("Set-Cookie");
-        boolean firstHeader = true;
+        List<String> newHeaders = new ArrayList<>();
+
         for (String header : headers) {
             if (header.startsWith("XSRF-TOKEN")) {
                 StringBuilder newHeader = new StringBuilder(header);
-
-                // On ajoute SameSite=None et Secure si ce n'est pas déjà présent
                 if (!header.toLowerCase().contains("samesite")) {
                     newHeader.append("; SameSite=None");
                 }
                 if (!header.toLowerCase().contains("secure")) {
                     newHeader.append("; Secure");
                 }
-
-                if (firstHeader) {
-                    response.setHeader("Set-Cookie", newHeader.toString());
-                    firstHeader = false;
-                } else {
-                    response.addHeader("Set-Cookie", newHeader.toString());
-                }
+                newHeaders.add(newHeader.toString());
+            } else {
+                newHeaders.add(header);
             }
+        }
+
+        response.setHeader("Set-Cookie", null); // Supprime tous les Set-Cookie existants
+        for (String header : newHeaders) {
+            response.addHeader("Set-Cookie", header);
         }
     }
 }
