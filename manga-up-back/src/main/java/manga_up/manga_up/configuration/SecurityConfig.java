@@ -63,7 +63,7 @@ public class SecurityConfig {
                                 .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .build();
-        }        
+        }            
 
         @Bean
         public UrlBasedCorsConfigurationSource corsConfigurationSource() {
