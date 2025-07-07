@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.prod';
 })
 export class AppUserService {
 
-    private apiUrl = `${environment.apiUrl}api/users/me`;
+    private apiUrl = `api/users/me`;
     
 
     options = {
