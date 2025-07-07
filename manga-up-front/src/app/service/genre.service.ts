@@ -14,7 +14,7 @@ export class GenreService {
     url =`api/genres/`
     urlPagination = `api/public/genres/pagination`;
     urlFour = `api/public/genres/four`;
-    urlGenre = `api/public/genres`
+    urlGenre = `api/public/genres/`
     urlAdd = `api/genres/add`
 
 

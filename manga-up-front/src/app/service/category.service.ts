@@ -14,7 +14,7 @@ import { environment } from '../../environments/environment.prod';
 export class CategoryService {
     url = `api/categories`
     urlPagination = `api/public/categories/pagination`;
-    urlCategori = `}api/public/category/`; 
+    urlCategori = `api/public/category/`; 
     urlAdd = `api/categories/add`;  
 
     options = {
