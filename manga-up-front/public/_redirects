@@ -1,1 +1,5 @@
-/*    /index.html   200
+# Rediriger les appels API vers ton backend sur Render
+/api/*    https://manga-up.onrender.com/api/:splat    200
+
+# Puis rediriger le reste vers index.html pour Angular
+/*        /index.html                                   200
