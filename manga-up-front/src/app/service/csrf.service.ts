@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment.prod';
     providedIn: 'root'
 })
 export class CsrfService {
-    private apiUrl = `${environment.apiUrl}api/csrf`;
+    private apiUrl = `api/csrf`;
 
     csrfProjections = new BehaviorSubject<Csrf | null>(null);
     currentCsrfProjection = this.csrfProjections.asObservable();

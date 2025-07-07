@@ -10,14 +10,14 @@ import { environment } from '../../environments/environment.prod';
 })
 
 export class MangaService{
-    urlOne = `${environment.apiUrl}api/public/one`;
-    urlFourDate = `${environment.apiUrl}api/public/four`;
-    urlPagination = `${environment.apiUrl}api/public/mangas/paginations`;
-    url = `${environment.apiUrl}api/public/manga/`
-    urlRandom =`${environment.apiUrl}api/public/randomFour`
-    urlAdd = `${environment.apiUrl}api/mangas/add`
-    urldelete =`${environment.apiUrl}api/mangas`
-    urlUpdate = `${environment.apiUrl}api/mangas/update`
+    urlOne = `api/public/one`;
+    urlFourDate = `api/public/four`;
+    urlPagination = `api/public/mangas/paginations`;
+    url = `api/public/manga/`
+    urlRandom =`api/public/randomFour`
+    urlAdd = `api/mangas/add`
+    urldelete =`api/mangas`
+    urlUpdate = `api/mangas/update`
 
     options = {
         headers: new HttpHeaders({

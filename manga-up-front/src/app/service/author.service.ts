@@ -12,10 +12,10 @@ import { environment } from '../../environments/environment.prod';
 
 
 export class AuthorService {
-    url = `${environment.apiUrl}api/authors/`;
-    urlPagination = `${environment.apiUrl}api/public/authors/pagination`;
-    urlOne = `${environment.apiUrl}api/public/author/`
-    urlAdd = `${environment.apiUrl}api/authors/add`
+    url = `api/authors/`;
+    urlPagination = `api/public/authors/pagination`;
+    urlOne = `api/public/author/`
+    urlAdd = `api/authors/add`
     
 
 
