@@ -16,7 +16,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url("http://localhost:8080")))
+                .servers(List.of(new Server().url("https://manga-up.onrender.com/")))
                 .info(new Info()
                         .title("MangaUp API")
                         .version("1.0")
