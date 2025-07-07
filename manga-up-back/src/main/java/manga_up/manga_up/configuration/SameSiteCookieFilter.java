@@ -2,12 +2,12 @@ package manga_up.manga_up.configuration;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collection;
 
 public class SameSiteCookieFilter extends OncePerRequestFilter {
 
@@ -17,19 +17,25 @@ public class SameSiteCookieFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("XSRF-TOKEN".equals(cookie.getName())) {
-                    // Re-créer le cookie avec SameSite=None; Secure
-                    StringBuilder cookieValue = new StringBuilder();
-                    cookieValue.append(cookie.getName()).append("=").append(cookie.getValue());
-                    cookieValue.append("; Path=").append(cookie.getPath() != null ? cookie.getPath() : "/");
-                    cookieValue.append("; Secure");
-                    cookieValue.append("; HttpOnly=false");
-                    cookieValue.append("; SameSite=None");
+        Collection<String> headers = response.getHeaders("Set-Cookie");
+        boolean firstHeader = true;
+        for (String header : headers) {
+            if (header.startsWith("XSRF-TOKEN")) {
+                StringBuilder newHeader = new StringBuilder(header);
 
-                    response.setHeader("Set-Cookie", cookieValue.toString());
+                // On ajoute SameSite=None et Secure si ce n'est pas déjà présent
+                if (!header.toLowerCase().contains("samesite")) {
+                    newHeader.append("; SameSite=None");
+                }
+                if (!header.toLowerCase().contains("secure")) {
+                    newHeader.append("; Secure");
+                }
+
+                if (firstHeader) {
+                    response.setHeader("Set-Cookie", newHeader.toString());
+                    firstHeader = false;
+                } else {
+                    response.addHeader("Set-Cookie", newHeader.toString());
                 }
             }
         }
