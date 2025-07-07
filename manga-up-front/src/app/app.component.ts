@@ -7,6 +7,8 @@ import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CsrfService } from './service/csrf.service';
+import { HttpClientXsrfModule } from '@angular/common/http';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterModule, BreadcrumbComponent, CommonModule, ReactiveFormsModule, FormsModule],
