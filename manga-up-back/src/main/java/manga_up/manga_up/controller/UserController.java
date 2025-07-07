@@ -2,9 +2,9 @@ package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
+import manga_up.manga_up.dto.appUser.UpdateUserDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
-
+import manga_up.manga_up.dto.author.AuthorDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.service.UserService;
@@ -20,15 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.prepost.PreAuthorize;
-
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -36,14 +32,13 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-  
 
     public UserController(UserService userService) {
         this.userService = userService;
-      
+
     }
 
-    @PreAuthorize("hasRole('ADMIN')")  
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "All users with pagination")
     @ApiResponse(responseCode = "201", description = "All users have been retrieved")
     @GetMapping
@@ -60,40 +55,43 @@ public class UserController {
         return userService.getCurrentUser();
     }
 
+    @Operation(summary = "Update Current User")
+    @PutMapping("update/me")
+    public ResponseEntity<UpdateUserDto> updateCurrentUser(@RequestBody UpdateUserDto updateUserDto) {
+        LOGGER.info("Updating current user");
 
-
-
-@PostMapping("/manga/{mangaId}")
-public ResponseEntity<?> addFavorite(@PathVariable Integer mangaId) {
-    try {
-        AppUser user = userService.getAuthenticatedUserEntity();
-        userService.addFavorite(user.getId(), mangaId);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Manga ajouté aux favoris avec succès.");
-        return ResponseEntity.ok(response);
-    } catch (Exception e) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", "Erreur lors de l'ajout aux favoris.");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        return ResponseEntity.ok(userService.updateCurrentUser(updateUserDto));
     }
-}
 
-@DeleteMapping("/manga/{mangaId}")
-public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
-    try {
-        AppUser user = userService.getAuthenticatedUserEntity();
-        userService.removeFavorite(user.getId(), mangaId);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Manga supprimé des favoris avec succès.");
-        return ResponseEntity.ok(response);
-    } catch (Exception e) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", "Erreur lors de la suppression des favoris.");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    @PostMapping("/manga/{mangaId}")
+    public ResponseEntity<?> addFavorite(@PathVariable Integer mangaId) {
+        try {
+            AppUser user = userService.getAuthenticatedUserEntity();
+            userService.addFavorite(user.getId(), mangaId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Manga ajouté aux favoris avec succès.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Erreur lors de l'ajout aux favoris.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        }
     }
-}  
+
+    @DeleteMapping("/manga/{mangaId}")
+    public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
+        try {
+            AppUser user = userService.getAuthenticatedUserEntity();
+            userService.removeFavorite(user.getId(), mangaId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Manga supprimé des favoris avec succès.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Erreur lors de la suppression des favoris.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+        }
+    }
 
     @GetMapping("/manga/{mangaId}/is-favorite")
     public ResponseEntity<?> isFavorite(@PathVariable Integer mangaId) {
@@ -109,5 +107,5 @@ public ResponseEntity<?> removeFavorite(@PathVariable Integer mangaId) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Utilisateur non authentifié");
         }
     }
-    
+
 }

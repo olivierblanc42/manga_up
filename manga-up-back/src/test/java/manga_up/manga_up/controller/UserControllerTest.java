@@ -42,6 +42,7 @@ import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.manga.MangaLightDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressLittleProjection;
@@ -201,9 +202,15 @@ public class UserControllerTest {
                 Instant.now(),
                 "75001");
         GenderUserDto gender = new GenderUserDto(1, "Male");
+        PictureLightDto narutoPictures = 
+                new PictureLightDto(1, "https://url.image/1.jpg", true);
+
+        PictureLightDto onePiecePictures = 
+                new PictureLightDto(2, "https://url.image/2.jpg", true);
+
         Set<MangaLightDto> mangas = new HashSet<>();
-        mangas.add(new MangaLightDto(1, "Naruto"));
-        mangas.add(new MangaLightDto(2, "One Piece"));
+        mangas.add(new MangaLightDto(1, "Naruto", narutoPictures));
+        mangas.add(new MangaLightDto(2, "One Piece", onePiecePictures));
         UserProfilDto userProfile = new UserProfilDto(
                 1,
                 "johndoe",
@@ -212,6 +219,7 @@ public class UserControllerTest {
                 "USER",
                 "0123456789",
                 "john.doe@example.com",
+                "image.vom",
                 Instant.now(),
                 address,
                 gender,
@@ -246,7 +254,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$").value(true));
     }
 
-
     @Test
     @WithMockUser(username = "testuser")
     void shouldReturnIsFavoriteNonAuthenticate() throws Exception {
@@ -258,9 +265,6 @@ public class UserControllerTest {
                 .andExpect(status().isForbidden())
                 .andExpect(content().string("Utilisateur non authentifié"));
     }
-
-
-
 
     @Test
     @WithMockUser(username = "testuser")
@@ -328,14 +332,10 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.error").value("Erreur lors de l'ajout aux favoris."));
     }
 
-
-
-
-
-
     @Test
     void shouldReturnForbiddenWhenUserNotAuthenticated() throws Exception {
         mockMvc.perform(get("/api/users/me"))
                 .andExpect(status().isUnauthorized());
     }
+
 }

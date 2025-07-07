@@ -59,8 +59,13 @@ public class MangaController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Adding Manga")
     @PostMapping("/add")
-    public ResponseEntity<MangaDto> addManga(@Valid @RequestBody MangaDto mangaDto) {
+    public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
         LOGGER.info("Adding Manga");
+            if (mangaService.existsByTitle(mangaDto.getTitle())) {
+        return ResponseEntity
+                .badRequest()
+                .body("Un manga avec ce titre existe déjà.");
+    }
         return ResponseEntity.ok(mangaService.save(mangaDto));
     }
 

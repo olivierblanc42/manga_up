@@ -344,4 +344,8 @@ public class MangaService {
         mangaDao.delete(manga);
     }
 
+    public boolean existsByTitle(String title) {
+        return mangaDao.existsByTitle(title);
+    }
+    
 }

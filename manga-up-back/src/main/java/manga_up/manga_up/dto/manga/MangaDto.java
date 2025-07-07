@@ -46,11 +46,9 @@ public class MangaDto implements Serializable {
 
     private Set<UserFavoriteDto> usersFavorites;
 
-    // No-arg constructor for Jackson
     public MangaDto() {
     }
 
-    // All-args constructor
     public MangaDto(String title,
             String subtitle,
             Instant releaseDate,

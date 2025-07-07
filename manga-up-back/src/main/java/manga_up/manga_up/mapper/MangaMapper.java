@@ -8,6 +8,7 @@ import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.manga.MangaLightDto;
+import manga_up.manga_up.dto.picture.PictureLightDto;
 import manga_up.manga_up.model.*;
 import manga_up.manga_up.projection.manga.MangaProjectionOne;
 import manga_up.manga_up.projection.manga.MangaProjectionWithAuthor;
@@ -116,10 +117,21 @@ public class MangaMapper {
     }
 
     public MangaLightDto toMangaLightDto(Manga manga) {
+        PictureLightDto mainPicture = manga.getPictures().stream()
+                .filter(Picture::getMain)
+                .findFirst()
+                .map(pic -> new PictureLightDto(
+                        pic.getId(),
+                        pic.getUrl(),
+                        pic.getMain()))
+                .orElse(null);
+
         return new MangaLightDto(
                 manga.getId(),
-                manga.getTitle());
-    }
+                manga.getTitle(),
+                mainPicture);
+    }    
+
 
     public Set<MangaLightDto> toMangaLightDtoSet(Set<Manga> mangas) {
         return mangas.stream()
