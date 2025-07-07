@@ -26,6 +26,7 @@ public interface MangaDao extends JpaRepository<Manga, Integer> {
     @Query("From Author ")
     Page<Manga> findMangasByPage(Pageable pageable);
 
+    boolean existsByTitle(String title);
 
     @Query("SELECT DISTINCT m FROM Manga m " +
             "LEFT JOIN FETCH m.authors a " +

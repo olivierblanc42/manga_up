@@ -1,5 +1,6 @@
 package manga_up.manga_up.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -60,7 +61,10 @@ public class AuthController {
         return ResponseEntity.ok(resultDto);
     }
 
- @PostMapping("/login")
+
+
+@ApiResponse(responseCode =  "400", description = "Invalid username or password")
+@PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody LoginRequestDto user, HttpServletResponse response) {
     return loginService.login(user, response);
 }
