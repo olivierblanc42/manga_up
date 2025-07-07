@@ -43,24 +43,34 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                CookieCsrfTokenRepository csrfRepo = CookieCsrfTokenRepository.withHttpOnlyFalse();
+                csrfRepo.setCookieCustomizer(builder -> builder
+                                .secure(true)
+                                .sameSite("None"));
+
                 return http
                                 .csrf(csrf -> csrf
-                                                .ignoringRequestMatchers("/api/auth/login", "/api/auth/register",
+                                                .ignoringRequestMatchers(
+                                                                "/api/auth/login",
+                                                                "/api/auth/register",
                                                                 "/api/auth/logout")
-                                                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                                                .csrfTokenRepository(csrfRepo)
                                                 .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers(
-                                                                "/", "/index.html", "/swagger-ui/**", "/v3/api-docs/**",
-                                                                "/swagger-ui.html", "/my-swagger/**", "/my-api-docs/**",
-                                                                "/api/auth/register", "/api/auth/login", "/api/csrf",
+                                                                "/", "/index.html",
+                                                                "/swagger-ui/**", "/v3/api-docs/**",
+                                                                "/swagger-ui.html",
+                                                                "/my-swagger/**", "/my-api-docs/**",
+                                                                "/api/auth/register", "/api/auth/login",
+                                                                "/api/csrf",
                                                                 "/api/public/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
-                                .addFilterAfter(new SameSiteCookieFilter(), UsernamePasswordAuthenticationFilter.class)
-                                .addFilterBefore(new JwtFilter(customUserDetailsService, jwtUtils),
+                                .addFilterBefore(
+                                                new JwtFilter(customUserDetailsService, jwtUtils),
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
