@@ -138,11 +138,15 @@ describe('MangasComponent', () => {
     expect(component.pageNext).toHaveBeenCalled();
   });
 
+
   it('should handle null mangaPagination gracefully', () => {
     mangaPaginationSubject.next(null);
     fixture.detectChanges();
     expect(component.mangas).toBeNull();
   });
+
+
+  
 
   it('should handle error from getMangas', () => {
     (mangaServiceMock.getMangas as jasmine.Spy).and.returnValue(

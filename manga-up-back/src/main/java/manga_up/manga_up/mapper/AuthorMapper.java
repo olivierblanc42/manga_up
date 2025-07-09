@@ -21,7 +21,6 @@ public class AuthorMapper {
   
 
     public AuthorDto toDtoAuthor(Author author) {
-        LOGGER.info("AuthorDto size before mapping: {}", author.getMangas().size());
         return new AuthorDto(
                 author.getId(),
                 author.getLastname(),
@@ -35,8 +34,6 @@ public class AuthorMapper {
     }
 
     public Author toEntity(AuthorDto authorDto) {
-        LOGGER.info("Author size before mapping: {}", authorDto.getFirstname());
-
         Author author = new Author();
         author.setFirstname(Jsoup.clean(authorDto.getFirstname(), Safelist.none()));
         author.setLastname(Jsoup.clean(authorDto.getLastname(), Safelist.none()));

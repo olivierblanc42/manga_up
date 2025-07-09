@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.category;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -14,8 +15,13 @@ public class CategoryDto implements Serializable {
     @NotNull
     @Size(max = 50)
     private final String label;
+
     @NotNull
+    @Size(max = 1000)
     private final String description;
+
+    @Pattern(regexp = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$", message = "URL invalide")
+    @Size(max = 2083)
     private final String url;
 
 

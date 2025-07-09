@@ -33,7 +33,7 @@ public class AddressController {
 
     }
 
-   @PreAuthorize("hasRole('ADMIN')")  
+    @PreAuthorize("hasRole('ADMIN')")  
     @Operation(summary = "All addresses with pagination")
     @ApiResponse(responseCode =  "201", description = "All addresses have been retrieved")
     @GetMapping
