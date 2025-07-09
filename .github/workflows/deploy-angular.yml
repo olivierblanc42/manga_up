@@ -11,7 +11,7 @@ jobs:
 
     environment:
       name: production
-      url: https://ton-site.netlify.app  
+      url: https://mangaup42.netlify.app  
 
     steps:
       - uses: actions/checkout@v3
@@ -31,9 +31,10 @@ jobs:
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         with:
           publish-dir: './manga-up-front/dist/manga-up-front'
           production-branch: 'main'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          production-deploy: true
