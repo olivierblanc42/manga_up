@@ -11,6 +11,7 @@ import manga_up.manga_up.model.AppUser;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,6 +138,7 @@ public class UserService {
     }
 
     @Transactional
+    @PreAuthorize("#userProfilDto.id == authentication.principal.id")
     public UpdateUserDto updateCurrentUser(UpdateUserDto userProfilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
