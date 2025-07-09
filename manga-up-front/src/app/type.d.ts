@@ -29,9 +29,23 @@ export type UserTest = {
     lastname: string;
     email: string;
     phoneNumber: string;
-    userAddressLitle: UserAddressLitle;
+    url:string;
+    idUserAddress: idUserAddress;
     mangas: Manga[];
 };
+
+export type UserUpdate = {
+    id: number;
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber: string;
+    url: string;
+    idUserAddress: idUserAddress;
+};
+
+
 
 
 export type UserResponse = {
@@ -293,6 +307,8 @@ export type GenderRegister = {
 export type Manga = {
     id: number;
     title: string;
+    picture: PictureLightDto;
+
 }
 
 export type FavoriteManga = {
@@ -339,6 +355,9 @@ export interface MangaDto {
     pictures: PictureLightDto[];
     usersFavorites?: UserFavoriteDto[];
 }
+
+
+
 
 export type PictureLightDto = {
     id: number;
@@ -473,7 +492,8 @@ export type UserAddressLittleProjection = {
     postalCode: string;
 }
 
-export type UserAddressLitle = {
+export type IdUserAddress
+= {
     line1: string;
     line2: string;
     line3: string;
@@ -481,6 +501,7 @@ export type UserAddressLitle = {
     createdAt: Date;
     postalCode: string;
 }
+
 
 export type UserRegister = {
     line1: string;
@@ -539,3 +560,6 @@ export type PictureSoloManga = {
 export type Csrf = {
     csrfToken: string;
   };
+
+
+type AuthorWithFullName = AuthorProjections & { fullName: string };

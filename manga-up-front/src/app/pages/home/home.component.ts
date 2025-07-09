@@ -112,8 +112,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       if (nextBtnsvg) {
         nextBtnsvg.style.width = '60%';
       }
-
-
     }
   }
   
