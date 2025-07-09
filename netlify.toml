@@ -1,7 +1,4 @@
-[build]
-  base = "manga-up-front"
-  publish = "dist/manga-up-front/browser"
-  command = "npm ci && npx ng build --configuration=production"
+
 
 [[redirects]]
   from = "/*"
