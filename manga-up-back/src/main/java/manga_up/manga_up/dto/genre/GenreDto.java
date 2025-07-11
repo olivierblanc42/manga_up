@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.genre;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public class GenreDto implements Serializable {
     private final Integer id;
     @NotNull
     @Size(max = 255)
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)(:[0-9]{1,5})?(/.*)?$", message = "L'URL n'est pas valide")
     private final String url;
     @NotNull
     @Size(max = 50)

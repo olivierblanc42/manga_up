@@ -87,7 +87,6 @@ public class MangaMapper {
 
         );
     }
-    // picture.setUrl(Jsoup.clean(pictureLightDto.getUrl(),Safelist.none()));
 
     public Manga mangaToEntity(MangaDto mangaDto) {
         Manga manga = new Manga();

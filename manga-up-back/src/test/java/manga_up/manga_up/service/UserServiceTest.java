@@ -28,18 +28,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import manga_up.manga_up.dao.UserDao;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
+import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
+import manga_up.manga_up.dto.appUser.UpdateUserDto;
 import manga_up.manga_up.dto.appUser.UserProfilDto;
 import manga_up.manga_up.dto.genderUser.GenderUserDto;
 import manga_up.manga_up.dto.manga.MangaLightDto;
 import manga_up.manga_up.mapper.AppUserMapper;
+import manga_up.manga_up.mapper.UserAddressMapper;
 import manga_up.manga_up.model.AppUser;
+import manga_up.manga_up.model.UserAddress;
 import manga_up.manga_up.projection.appUser.AppUserProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressLittleProjection;
 import manga_up.manga_up.projection.userAdress.UserAddressProjection;
@@ -57,6 +65,12 @@ class UserServiceTest {
     private UserService userService;
     @Mock
     private AppUserMapper appUserMapper;
+    @Mock
+    private UserAddressMapper userAddressMapper;
+
+    @Mock
+    private UserAddressService userAddressService;
+
 
     private static class TestUserProjection implements AppUserProjection {
         private final Integer id;
@@ -354,6 +368,163 @@ void isFavorite_shouldReturnFalse_whenCountIsZero() {
     verify(userDao, times(1)).countFavorite(userId, mangaId);
 }
 
+@Test
+void updateCurrentUser_shouldUpdateUserAndReturnUpdatedDto() {
+    // Arrange
+    String username = "john";
+    Integer userId = 1;
 
+    UpdateUserDto dto = new UpdateUserDto();
+    dto.setId(userId);
+    dto.setFirstname("John");
+    dto.setLastname("Updated");
+    dto.setEmail("john.updated@example.com");
+    dto.setPhoneNumber("999999999");
+
+    AppUser existingUser = new AppUser();
+    existingUser.setId(userId);
+    existingUser.setUsername(username);
+    existingUser.setFirstname("OldFirstName");
+    existingUser.setLastname("OldLastName");
+    existingUser.setEmail("old.email@example.com");
+    existingUser.setPhoneNumber("000000000");
+
+    Authentication authentication = mock(Authentication.class);
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getName()).thenReturn(username);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(userDao.findAppUserByUsername(username)).thenReturn(existingUser);
+
+    when(appUserMapper.toDtoUpdateAppUser(existingUser)).thenReturn(dto);
+
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = Mockito
+            .mockStatic(SecurityContextHolder.class)) {
+        mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+
+        // Act
+        UpdateUserDto updated = userService.updateCurrentUser(dto);
+
+        // Assert
+        assertNotNull(updated);
+        assertEquals("John", existingUser.getFirstname());
+        assertEquals("Updated", existingUser.getLastname());
+        assertEquals("john.updated@example.com", existingUser.getEmail());
+        assertEquals("999999999", existingUser.getPhoneNumber());
+
+        verify(userDao).save(existingUser);
+        verify(userDao).findAppUserByUsername(username);
+        verify(appUserMapper).toDtoUpdateAppUser(existingUser);
+    }
+}
+
+@Test
+void updateCurrentUser_shouldThrowAccessDeniedException_whenNotAuthenticated() {
+    UpdateUserDto dto = new UpdateUserDto();
+    dto.setId(1);
+
+    Authentication authentication = mock(Authentication.class);
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    when(authentication.isAuthenticated()).thenReturn(false);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = Mockito
+            .mockStatic(SecurityContextHolder.class)) {
+        mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+
+        assertThrows(AccessDeniedException.class, () -> userService.updateCurrentUser(dto));
+    }
+}
+
+@Test
+void updateCurrentUser_shouldThrowUsernameNotFoundException_whenUserNotFound() {
+    String username = "john";
+
+    UpdateUserDto dto = new UpdateUserDto();
+    dto.setId(1);
+
+    Authentication authentication = mock(Authentication.class);
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getName()).thenReturn(username);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+    when(userDao.findAppUserByUsername(username)).thenReturn(null);
+
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = Mockito
+            .mockStatic(SecurityContextHolder.class)) {
+        mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+
+        assertThrows(org.springframework.security.core.userdetails.UsernameNotFoundException.class,
+                () -> userService.updateCurrentUser(dto));
+    }
+}
+
+@Test
+void updateCurrentUser_shouldUpdateUserAndAddress() {
+    String username = "john";
+    Authentication authentication = mock(Authentication.class);
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    when(authentication.isAuthenticated()).thenReturn(true);
+    when(authentication.getName()).thenReturn(username);
+    when(securityContext.getAuthentication()).thenReturn(authentication);
+
+    try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = Mockito
+            .mockStatic(SecurityContextHolder.class)) {
+        mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+
+        AppUser existingUser = new AppUser();
+        existingUser.setUsername(username);
+        existingUser.setFirstname("OldFirstName");
+        existingUser.setLastname("OldLastName");
+        existingUser.setEmail("old.email@example.com");
+        existingUser.setPhoneNumber("0000000000");
+
+        UserAddress existingAddress = new UserAddress();
+        existingAddress.setId(10);
+        existingUser.setIdUserAddress(existingAddress);
+
+        UserAdressDtoUpdate userAddressDtoUpdate = new UserAdressDtoUpdate();
+        userAddressDtoUpdate.setLine1("New Line 1");
+        userAddressDtoUpdate.setLine2("New Line 2");
+        userAddressDtoUpdate.setLine3("New Line 3");
+        userAddressDtoUpdate.setCity("New City");
+        userAddressDtoUpdate.setPostalCode("99999");
+
+        UpdateUserDto updateUserDto = new UpdateUserDto();
+        updateUserDto.setId(existingUser.getId());
+        updateUserDto.setFirstname("NewFirstName");
+        updateUserDto.setLastname("NewLastName");
+        updateUserDto.setEmail("new.email@example.com");
+        updateUserDto.setPhoneNumber("1111111111");
+        updateUserDto.setIdUserAddress(userAddressDtoUpdate);
+
+        when(userDao.findAppUserByUsername(username)).thenReturn(existingUser);
+
+        when(userAddressMapper.toDtoUserAdressDtoUpdate(existingUser.getIdUserAddress()))
+                .thenReturn(userAddressDtoUpdate);
+
+        when(userAddressService.updateUserAdressDtoUpdate(eq(existingAddress.getId()), any(UserAdressDtoUpdate.class)))
+                .thenReturn(userAddressDtoUpdate);
+
+        when(appUserMapper.toDtoUpdateAppUser(existingUser)).thenReturn(updateUserDto);
+
+        UpdateUserDto result = userService.updateCurrentUser(updateUserDto);
+
+        assertNotNull(result);
+        assertEquals("NewFirstName", existingUser.getFirstname());
+        assertEquals("NewLastName", existingUser.getLastname());
+        assertEquals("new.email@example.com", existingUser.getEmail());
+        assertEquals("1111111111", existingUser.getPhoneNumber());
+
+        verify(userDao).save(existingUser);
+        verify(userAddressService).updateUserAdressDtoUpdate(existingAddress.getId(), userAddressDtoUpdate);
+
+        assertEquals(updateUserDto, result);
+    }
+}
 
 }

@@ -22,6 +22,11 @@ class AuthorDaoTest {
  @Autowired
  AuthorDao authorDao;
 
+ @Test
+ void shouldGetAuthorById() {
+     Author author = authorDao.findById(1).get();
+     assertEquals("Toriyama", author.getLastname());
+ }
 
     @Test
     void shouldGetAllAuthors() {
@@ -32,12 +37,6 @@ class AuthorDaoTest {
     }
 
 
-@Test
-    void shouldGetAuthorById() {
-       Author author = authorDao.findById(1).get();
-
-       assertEquals("Toriyama", author.getLastname());
-}
 
 @Test
     void shouldSaveAuthor() {

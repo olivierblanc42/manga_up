@@ -16,12 +16,9 @@ public class AuthorLigthDto implements Serializable {
         this.id = id;
 
     }
-
     public Integer getId() {
         return id;
     }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
