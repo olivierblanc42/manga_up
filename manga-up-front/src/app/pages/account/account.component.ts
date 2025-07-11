@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Manga, UserTest } from '../../type';
+import { Manga, UserTest, UserUpdate } from '../../type';
 import { AppUserService } from '../../service/appUser.service';
 import { LogoutComponent } from "../../components/logout/logout.component";
 import { CardComponent } from '../../components/card/card.component';
@@ -9,22 +9,20 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { noHtmlTagsValidator } from '../../validator';
-
+import { MatExpansionModule } from '@angular/material/expansion';
 @Component({
   selector: 'app-account',
-  imports: [LogoutComponent, CardComponent, RouterModule, CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, MatProgressSpinnerModule],
+  imports: [LogoutComponent, CardComponent, RouterModule, CommonModule, ReactiveFormsModule, RouterModule, NgSelectModule, MatProgressSpinnerModule, MatExpansionModule],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
 export class AccountComponent implements OnInit {
-  onSubmit() {
-    throw new Error('Method not implemented.');
-  }
+
 
   user: UserTest | null = null;
   mangas: Manga[] = [];
   userForm!: FormGroup;
-
+  userUpdate: UserUpdate | null = null;
 
   constructor(
     private appUserService: AppUserService
@@ -33,9 +31,6 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-
-
 
     this.appUserService.loadCurrentUser();
     this.appUserService.currentUserMe.subscribe((data) => {
@@ -46,21 +41,23 @@ export class AccountComponent implements OnInit {
 
       if (this.user) {
         this.userForm.patchValue({
-          username: this.user.username,
           firstname: this.user.firstname,
           lastname: this.user.lastname,
           email: this.user.email,
           phoneNumber: this.user.phoneNumber,
+          url: this.user.url,
+          idUserAddress: {
+            line1: this.user.idUserAddress?.line1 || '',
+            line2: this.user.idUserAddress?.line2 || '',
+            line3: this.user.idUserAddress?.line3 || '',
+            postalCode: this.user.idUserAddress?.postalCode || '',
+            city: this.user.idUserAddress?.city || ''
+          }
         });
       }
-
-
-
     });
 
-    if (this.mangas?.length) {
-      this.mangas = this.mangas;
-    } else {
+    if (!this.mangas?.length) {
       this.mangas = [];
     }
   }
@@ -69,7 +66,6 @@ export class AccountComponent implements OnInit {
 
   initForm(): void {
     this.userForm = this.fb.group({
-      username: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(100)]],
       firstname: ['', [noHtmlTagsValidator, Validators.maxLength(100)]],
       lastname: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(1000)]],
       email: ['', [Validators.required, noHtmlTagsValidator, Validators.maxLength(1000)]],
@@ -77,14 +73,36 @@ export class AccountComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^\+?[0-9\s\-]{7,15}$/)
       ]],
+      url: ['', [noHtmlTagsValidator, Validators.maxLength(100)]],
+      idUserAddress: this.fb.group({
+        line1: ['', [Validators.required, Validators.maxLength(255)]],
+        line2: [''],
+        line3: [''],
+        postalCode: [''],
+        city: ['']
+      })
     });
   }
 
-  // username: string;
-  // firstname: string;
-  // lastname: string;
-  // email: string;
-  // phoneNumber: string;
-  // userAddressLitle: UserAddressLitle;
 
+  async onSubmit() {
+    if (this.userForm.valid) {
+      const formValue = this.userForm.value;
+      const updateUser = {
+        ...formValue,
+      };
+
+      try {
+        console.log(updateUser);
+
+        await this.appUserService.updateCurrentUser(updateUser)
+
+
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour', error);
+      }
+    } else {
+      this.userForm.markAllAsTouched();
+    }
+  }
 }

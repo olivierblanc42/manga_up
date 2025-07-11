@@ -8,26 +8,14 @@
         <div class="card-padding">
             <div class="card-single-account__content">
                 <div class="card-single-account__img">
+                    <img [src]="user?.url" alt="">
                 </div>
-                <img src="" alt="">
+
                 <div class="card card-content">
                     <div class="card-content__title">
                         <h2>Informations</h2>
                     </div>
-
                     <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="card-content__infos">
-
-                        <label>Nom d'utilisateur</label>
-                        <input type="text" formControlName="username" />
-                        <div *ngIf="userForm.get('username')?.touched && userForm.get('username')?.errors">
-                            <small *ngIf="userForm.get('username')?.errors?.['required']">Le nom d'utilisateur est
-                                requis.</small>
-                            <small *ngIf="userForm.get('username')?.errors?.['noHtml']">Les balises HTML ne sont pas
-                                autorisées.</small>
-                            <small *ngIf="userForm.get('username')?.errors?.['maxlength']">Maximum 100
-                                caractères.</small>
-                        </div>
-
                         <label>Prénom</label>
                         <input type="text" formControlName="firstname" />
                         <div *ngIf="userForm.get('firstname')?.touched && userForm.get('firstname')?.errors">
@@ -66,6 +54,90 @@
                                 invalide.</small>
                         </div>
 
+                        <label>Url</label>
+                        <input type="text" formControlName="url" />
+                        <div *ngIf="userForm.get('url')?.touched && userForm.get('url')?.errors">
+                            <small *ngIf="userForm.get('url')?.errors?.['required']">Le numéro de téléphone est
+                                requis.</small>
+                            <small *ngIf="userForm.get('url')?.errors?.['pattern']">Numéro de téléphone
+                                invalide.</small>
+                        </div>
+
+
+
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title> Adresse </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div formGroupName="idUserAddress">
+                                <label>Adresse (ligne 1)</label>
+                                <input type="text" formControlName="line1" />
+                                <div
+                                    *ngIf="userForm.get('idUserAddress.line1')?.touched && userForm.get('idUserAddress.line1')?.errors">
+                                    <small *ngIf="userForm.get('idUserAddress.line1')?.errors?.['required']">Ce champ
+                                        est
+                                        requis.</small>
+                                    <small *ngIf="userForm.get('idUserAddress.line1')?.errors?.['maxlength']">Maximum
+                                        255
+                                        caractères.</small>
+                                </div>
+                            </div>
+
+                            <div formGroupName="idUserAddress">
+                                <label>Adresse (ligne 2)</label>
+                                <input type="text" formControlName="line2" />
+                                <div
+                                    *ngIf="userForm.get('idUserAddress.line2')?.touched && userForm.get('idUserAddress.line2')?.errors">
+                                    <small *ngIf="userForm.get('idUserAddress.line2')?.errors?.['required']">Ce champ
+                                        est
+                                        requis.</small>
+                                    <small *ngIf="userForm.get('idUserAddress.line2')?.errors?.['maxlength']">Maximum
+                                        255
+                                        caractères.</small>
+                                </div>
+                            </div>
+
+                            <div formGroupName="idUserAddress">
+                                <label>Adresse (ligne 3)</label>
+                                <input type="text" formControlName="line3" />
+                                <div
+                                    *ngIf="userForm.get('idUserAddress.line3')?.touched && userForm.get('idUserAddress.line3')?.errors">
+                                    <small *ngIf="userForm.get('idUserAddress.line3')?.errors?.['required']">Ce champ
+                                        est
+                                        requis.</small>
+                                    <small *ngIf="userForm.get('idUserAddress.line3')?.errors?.['maxlength']">Maximum
+                                        255
+                                        caractères.</small>
+                                </div>
+                            </div>
+                            <div formGroupName="idUserAddress">
+                                <label>Adresse (ligne 3)</label>
+                                <input type="text" formControlName="city" />
+                                <div
+                                    *ngIf="userForm.get('idUserAddress.city')?.touched && userForm.get('idUserAddress.city')?.errors">
+                                    <small *ngIf="userForm.get('idUserAddress.city')?.errors?.['required']">Ce champ est
+                                        requis.</small>
+                                    <small *ngIf="userForm.get('idUserAddress.city')?.errors?.['maxlength']">Maximum 255
+                                        caractères.</small>
+                                </div>
+                            </div>
+                            <div formGroupName="idUserAddress">
+                                <label>Adresse (ligne 3)</label>
+                                <input type="text" formControlName="postalCode" />
+                                <div
+                                    *ngIf="userForm.get('idUserAddress.postalCode')?.touched && userForm.get('idUserAddress.postalCode')?.errors">
+                                    <small *ngIf="userForm.get('idUserAddress.postalCode')?.errors?.['required']">Ce
+                                        champ est
+                                        requis.</small>
+                                    <small
+                                        *ngIf="userForm.get('idUserAddress.postalCode')?.errors?.['maxlength']">Maximum
+                                        255
+                                        caractères.</small>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+
+
                         <button type="submit" [disabled]="userForm.invalid">Mettre à jour</button>
                     </form>
 
@@ -86,14 +158,15 @@
         <h2>Mangas favoris de {{user?.username}} </h2>
     </div>
     @if(mangas.length == 1 ){
-    <p>il y a actuellement {{mangas.length}} favori dans tes favoris</p>
+    <p>il y a actuellement {{mangas.length}} manga dans tes favoris</p>
     }@else{
-    <p>il y a actuellement {{mangas.length}} favoris dans tes favoris</p>
+    <p>il y a actuellement {{mangas.length}} mangas dans tes favoris</p>
     }
     <div class="section__grid">
         @for(manga of mangas; track $index ){
         <ui-card size="card-manga">
-            <img class="image" src="" alt="Image du manga {{manga.title}}">
+
+            <img class="image" [src]="manga.picture.url" alt="Image du manga {{manga.title}}">
             <div>
                 <h3 class="card-manga__title">{{manga.title}}</h3>
 
