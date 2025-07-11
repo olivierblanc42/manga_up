@@ -135,7 +135,7 @@ CREATE TABLE picture(
 
 CREATE TABLE user_picture(
                              Id_user_picture INT AUTO_INCREMENT,
-                             url VARCHAR(2083),
+                             url VARCHAR(255),
                              Id_users INT NOT NULL,
                              CONSTRAINT user_picture_PK PRIMARY KEY(Id_user_picture),
                              CONSTRAINT user_picture_AK UNIQUE(Id_users),

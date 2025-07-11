@@ -13,6 +13,7 @@ import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoOne;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.dto.picture.PictureLightDto;
+import manga_up.manga_up.mapper.CategoryMapper;
 import manga_up.manga_up.mapper.MangaMapper;
 import manga_up.manga_up.model.Author;
 import manga_up.manga_up.model.Category;
@@ -56,9 +57,11 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -66,6 +69,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -82,6 +86,8 @@ class MangaServiceTest {
     private PictureDao pictureDao;
     @Mock
     private CategoryDao categoryDao;
+    @Mock
+    private CategoryMapper categoryMapper;
     @Mock
     private AuthorDao authorDao;
     @InjectMocks
@@ -680,7 +686,7 @@ class MangaServiceTest {
         Manga mangaEntity = new Manga();
         mangaEntity.setAuthors(Set.of(author));
         mangaEntity.setGenres(Set.of(genre));
-        mangaEntity.setPictures(new  HashSet<>());
+        mangaEntity.setPictures(new HashSet<>());
         mangaEntity.setPriceHt(mangaDto.getPriceHt());
         mangaEntity.setTitle(mangaDto.getTitle());
         when(mangaMapper.mangaToEntity(mangaDto)).thenReturn(mangaEntity);
@@ -744,7 +750,7 @@ class MangaServiceTest {
     @Test
     void save_shouldThrowException_whenPicturesIsEmpty() {
         CategoryLittleDto category = new CategoryLittleDto(1);
-        Set<PictureLightDto> pictureLightDtos = new  HashSet<>();
+        Set<PictureLightDto> pictureLightDtos = new HashSet<>();
 
         MangaDto mangaDto = new MangaDto(
                 "One Piece",
@@ -888,6 +894,233 @@ class MangaServiceTest {
 
         verify(mangaDao).findRandomOneManga();
         verify(mangaMapper).mapToDto(projection);
+    }
+
+    @Test
+    void shouldThrowWhenUpdatingNonExistingManga() {
+        int id = 1;
+        MangaDto dto = mock(MangaDto.class);
+
+        when(mangaDao.findById(id)).thenReturn(Optional.empty());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+        assertEquals("Manga with id 1 not found", ex.getMessage());
+
+        verify(mangaDao).findById(id);
+        verifyNoMoreInteractions(mangaDao, authorDao, genreDao, pictureDao, categoryDao, mangaMapper);
+    }
+
+    @Test
+    void shouldThrowWhenPicturesNullOnUpdate() {
+        int id = 2;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        dto.setPictures(null);
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertEquals("A manga must contain at least one image.", ex.getMessage());
+    }
+
+    @Test
+    void shouldThrowWhenPicturesEmptyOnUpdate() {
+        int id = 3;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        dto.setPictures(Set.of());
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertEquals("A manga must contain at least one image.", ex.getMessage());
+    }
+
+    @Test
+    void shouldThrowWhenAuthorNotFoundOnUpdate() {
+        int id = 4;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        PictureLightDto pic = new PictureLightDto(1, "url", true);
+        dto.setPictures(Set.of(pic));
+        dto.setAuthors(Set.of(99));
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(99)).thenReturn(Optional.empty());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertTrue(ex.getMessage().contains("Author with id 99 not found"));
+    }
+
+    @Test
+    void shouldThrowWhenGenreNotFoundOnUpdate() {
+        int id = 5;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        PictureLightDto pic = new PictureLightDto(1, "url", true);
+        dto.setPictures(Set.of(pic));
+        dto.setAuthors(Set.of(1));
+        dto.setGenres(Set.of(88));
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(1)).thenReturn(Optional.of(new Author()));
+        when(genreDao.findById(88)).thenReturn(Optional.empty());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertTrue(ex.getMessage().contains("Genre with id 88 not found"));
+    }
+
+    @Test
+    void shouldThrowWhenNoMainPictureOnUpdate() {
+        int id = 6;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        dto.setIdCategories(new CategoryLittleDto(1));
+        PictureLightDto pic = new PictureLightDto(null, "url", false);
+        dto.setPictures(Set.of(pic));
+        dto.setAuthors(Set.of(1));
+        dto.setGenres(Set.of(1));
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(1)).thenReturn(Optional.of(new Author()));
+        when(genreDao.findById(1)).thenReturn(Optional.of(new Genre()));
+        when(categoryMapper.categoryLittleDto(dto.getIdCategories()))
+                .thenReturn(new Category());
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertEquals("At least one image must be marked as main.", ex.getMessage());
+
+        verify(mangaDao).findById(id);
+        verifyNoMoreInteractions(mangaDao, authorDao, genreDao, pictureDao, categoryDao, mangaMapper);
+    }
+
+    @Test
+    void shouldThrowWhenMultipleMainPicturesOnUpdate() {
+        int id = 7;
+        Manga existing = new Manga();
+        MangaDto dto = new MangaDto();
+        PictureLightDto p1 = new PictureLightDto(1, "url", true);
+        PictureLightDto p2 = new PictureLightDto(2, "url2", true);
+        dto.setPictures(Set.of(p1, p2));
+        dto.setAuthors(Set.of(1));
+        dto.setGenres(Set.of(1));
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(1)).thenReturn(Optional.of(new Author()));
+        when(genreDao.findById(1)).thenReturn(Optional.of(new Genre()));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> mangaService.update(id, dto));
+
+        assertEquals("Only one image can be marked as main.", ex.getMessage());
+    }
+
+    @Test
+    void shouldUpdateMangaSuccessfully() {
+        int id = 8;
+        Manga existing = new Manga();
+        existing.setPriceHt(new BigDecimal("100"));
+        existing.setPictures(new HashSet<>());
+
+        MangaDto dto = new MangaDto(
+                "Titre",
+                "Sous-titre",
+                Instant.parse("2020-01-01T00:00:00Z"),
+                "Résumé",
+                BigDecimal.valueOf(100),
+                BigDecimal.valueOf(110),
+                true,
+                true,
+                new CategoryLittleDto(1),
+                Set.of(1),
+                Set.of(1),
+                Set.of(new PictureLightDto(null, "url", true)),
+                Set.of());
+
+        MangaDto returnedDto = mock(MangaDto.class);
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(1)).thenReturn(Optional.of(new Author()));
+        when(genreDao.findById(1)).thenReturn(Optional.of(new Genre()));
+        when(categoryMapper.categoryLittleDto(dto.getIdCategories()))
+                .thenReturn(new Category());
+        when(pictureDao.save(any(Picture.class)))
+                .thenAnswer(inv -> inv.getArgument(0));
+        when(mangaDao.save(existing)).thenReturn(existing);
+        when(mangaMapper.mangaToMangaDto(existing))
+                .thenReturn(returnedDto);
+
+        MangaDto result = mangaService.update(id, dto);
+
+        assertSame(returnedDto, result, "Le DTO retourné doit être celui du mapper");
+        assertThat(existing.getTitle()).isEqualTo("Titre");
+        assertThat(existing.getPriceHt()).isEqualByComparingTo(new BigDecimal("110.0"));
+
+        verify(mangaDao).findById(id);
+        verify(authorDao).findById(1);
+        verify(genreDao).findById(1);
+        verify(categoryMapper).categoryLittleDto(dto.getIdCategories());
+        verify(pictureDao, atLeastOnce()).save(any(Picture.class));
+        verify(mangaDao).save(existing);
+        verify(mangaMapper).mangaToMangaDto(existing);
+    }
+
+    @Test
+    void shouldUpdateExistingPictureOnUpdate() {
+        int id = 9;
+        Manga existing = new Manga();
+        existing.setPriceHt(new BigDecimal("50"));
+        existing.setPictures(new HashSet<>(Set.of(new Picture())));
+
+        PictureLightDto picDto = new PictureLightDto(5, "new-url", true);
+        MangaDto dto = new MangaDto(
+                "T", "ST", Instant.now(),
+                "S", BigDecimal.valueOf(50), BigDecimal.valueOf(55),
+                true, true,
+                new CategoryLittleDto(1),
+                Set.of(1), Set.of(1),
+                Set.of(picDto),
+                Set.of());
+
+        Author author = new Author();
+        Genre genre = new Genre();
+        Category category = new Category();
+        Picture existingPic = new Picture();
+        existingPic.setId(5);
+        existingPic.setUrl("old-url");
+        existingPic.setMain(false);
+
+        when(mangaDao.findById(id)).thenReturn(Optional.of(existing));
+        when(authorDao.findById(1)).thenReturn(Optional.of(author));
+        when(genreDao.findById(1)).thenReturn(Optional.of(genre));
+        when(categoryMapper.categoryLittleDto(dto.getIdCategories()))
+                .thenReturn(category);
+
+        when(pictureDao.findById(5)).thenReturn(Optional.of(existingPic));
+
+        when(mangaDao.save(existing)).thenReturn(existing);
+        when(mangaMapper.mangaToMangaDto(existing)).thenReturn(dto);
+
+        MangaDto result = mangaService.update(id, dto);
+
+        assertThat(existingPic.getUrl()).isEqualTo("new-url");
+        assertThat(existingPic.getMain()).isTrue();
+
+        verify(pictureDao, never()).save(argThat(p -> p.getId() != null));
+
+        verify(mangaDao).save(existing);
+        verify(pictureDao).findById(5);
     }
 
 }
