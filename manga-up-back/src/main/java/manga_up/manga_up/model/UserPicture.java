@@ -15,8 +15,8 @@ public class UserPicture {
     @Column(name = "Id_user_picture", nullable = false)
     private Integer id;
 
-    @Size(max = 2083)
-    @Column(name = "url", length = 2083)
+    @Size(max = 255)
+    @Column(name = "url", length = 255)
     private String url;
 
     @NotNull

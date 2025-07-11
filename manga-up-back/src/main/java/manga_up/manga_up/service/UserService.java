@@ -13,6 +13,8 @@ import manga_up.manga_up.projection.appUser.AppUserProjection;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -138,7 +140,6 @@ public class UserService {
     }
 
     @Transactional
-    @PreAuthorize("#userProfilDto.id == authentication.principal.id")
     public UpdateUserDto updateCurrentUser(UpdateUserDto userProfilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -163,11 +164,17 @@ public class UserService {
             Integer idAdress = appUser.getIdUserAddress().getId();
             UserAdressDtoUpdate userAdressDtoUpdate = userAddressMapper
                     .toDtoUserAdressDtoUpdate(appUser.getIdUserAddress());
-            userAdressDtoUpdate.setLine1(userProfilDto.getIdUserAddress().getLine1());
-            userAdressDtoUpdate.setLine2(userProfilDto.getIdUserAddress().getLine2());
-            userAdressDtoUpdate.setLine3(userProfilDto.getIdUserAddress().getLine3());
-            userAdressDtoUpdate.setCity(userProfilDto.getIdUserAddress().getCity());
-            userAdressDtoUpdate.setPostalCode(userProfilDto.getIdUserAddress().getPostalCode());
+            userAdressDtoUpdate.setLine1(Jsoup.clean(userProfilDto.getIdUserAddress().getLine1(), Safelist.none()));
+            if (userProfilDto.getIdUserAddress().getLine2() != null) {
+                userAdressDtoUpdate.setLine2(Jsoup.clean(userProfilDto.getIdUserAddress().getLine2(), Safelist.none()));
+            }
+
+            if (userProfilDto.getIdUserAddress().getLine3() != null) {
+                userAdressDtoUpdate.setLine3(Jsoup.clean(userProfilDto.getIdUserAddress().getLine3(), Safelist.none()));
+            }
+            userAdressDtoUpdate.setCity(Jsoup.clean(userProfilDto.getIdUserAddress().getCity(), Safelist.none()));
+            userAdressDtoUpdate
+                    .setPostalCode(Jsoup.clean(userProfilDto.getIdUserAddress().getPostalCode(), Safelist.none()));
 
             userAddressService.updateUserAdressDtoUpdate(idAdress, userAdressDtoUpdate);
 

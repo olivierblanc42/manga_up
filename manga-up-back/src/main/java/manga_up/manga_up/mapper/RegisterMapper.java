@@ -36,17 +36,24 @@ public class RegisterMapper {
 
     public AppUser toAppUser(RegisterDto registerDto) {
         AppUser appUser = new AppUser();
-        appUser.setUsername(Jsoup.clean(registerDto.getUsername(), Safelist.none()));
-        appUser.setFirstname(Jsoup.clean(registerDto.getFirstname(), Safelist.none()));
-        appUser.setLastname(Jsoup.clean(registerDto.getLastname(), Safelist.none()));
-        appUser.setRole(registerDto.getRole());
-        appUser.setPhoneNumber(Jsoup.clean(registerDto.getPhoneNumber(), Safelist.none()));
+        appUser.setUsername(
+                registerDto.getUsername() != null ? Jsoup.clean(registerDto.getUsername(), Safelist.none()) : null);
+        appUser.setFirstname(
+                registerDto.getFirstname() != null ? Jsoup.clean(registerDto.getFirstname(), Safelist.none()) : null);
+        appUser.setLastname(
+                registerDto.getLastname() != null ? Jsoup.clean(registerDto.getLastname(), Safelist.none()) : null);
+        appUser.setPhoneNumber(
+                registerDto.getPhoneNumber() != null ? Jsoup.clean(registerDto.getPhoneNumber(), Safelist.none())
+                        : null);
         appUser.setEmail(registerDto.getEmail());
+        appUser.setRole(registerDto.getRole());
         appUser.setPassword(registerDto.getPassword());
+
+     
         appUser.setIdUserAddress(userAddressMapper.toEntity(registerDto.getAddress()));
         appUser.setIdGendersUser(genderUserMapper.toEntity(registerDto.getGenderUserId()));
+
         return appUser;
     }
-
 
 }

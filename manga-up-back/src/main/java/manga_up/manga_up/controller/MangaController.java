@@ -1,9 +1,14 @@
 package manga_up.manga_up.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import manga_up.manga_up.dto.ErroEntity;
 import manga_up.manga_up.dto.manga.MangaDto;
 import manga_up.manga_up.dto.manga.MangaDtoRandom;
 import manga_up.manga_up.projection.manga.MangaBaseProjection;
@@ -13,6 +18,7 @@ import manga_up.manga_up.service.MangaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,13 +62,27 @@ public class MangaController {
         return ResponseEntity.ok(mangaService.findMangaById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Adding Manga")
-    @PostMapping("/add")
-    public ResponseEntity<MangaDto> addManga(@Valid @RequestBody MangaDto mangaDto) {
-        LOGGER.info("Adding Manga");
+@PreAuthorize("hasRole('ADMIN')")
+@Operation(summary = "Add manga")
+@ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Manga added successfully"),
+    @ApiResponse(responseCode = "400", description = "Validation or duplication error", content = @Content(schema = @Schema(implementation = ErroEntity.class)))
+})
+@PostMapping("/add")
+public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
+    LOGGER.info("Adding Manga: {}", mangaDto);
+    try {
         return ResponseEntity.ok(mangaService.save(mangaDto));
+    } catch (DataIntegrityViolationException ex) {
+        String errorMessage = "Duplicate manga title: " + mangaDto.getTitle();
+        ErroEntity error = new ErroEntity("DUPLICATE_TITLE", errorMessage);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    } catch (EntityNotFoundException ex) {
+        ErroEntity error = new ErroEntity("NOT_FOUND", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+}
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete manga")
