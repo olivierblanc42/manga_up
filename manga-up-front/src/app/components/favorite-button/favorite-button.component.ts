@@ -33,10 +33,34 @@ export class FavoriteButtonComponent implements OnInit{
     }
   }
       
+not(e: Event) {
+    e.preventDefault();
+  this.favorisService.isFavorite(this.idOfUrl).catch(err => {
+    if (err.message === 'USER_NOT_AUTHENTICATED') {
+      alert('Vous devez être connecté pour utiliser les favoris.');
+    } else {
+      console.error('Erreur lors de la vérification du favori :', err);
+    }
+  });
+}
+
+
+  async toggleFavorite(event: Event) {
+    event.preventDefault();
+
+    try {
+      await this.favorisService.isFavorite(this.idOfUrl); 
+    } catch (err: any) {
+      if (err.message === 'USER_NOT_AUTHENTICATED') {
+        alert('Vous devez être connecté pour utiliser les favoris.');
+        return; 
+      }
+      console.error('Erreur lors de la vérification du favori :', err);
+      return;
+    }
 
 
 
-  toggleFavorite() {
     if (this.isFavorite) {
       this.favorisService.deleteFavoris(this.idOfUrl).subscribe(() => {
         this.isFavorite = false;

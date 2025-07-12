@@ -25,12 +25,13 @@
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
 
-                h2{
+                h2 {
                     margin: 0px;
                     padding-top: $padding-s;
                     padding-bottom: $padding-s;
                     color: black;
                 }
+
                 p {
                     margin: 0px;
 
@@ -53,6 +54,12 @@
                 display: flex;
                 flex-direction: column;
                 width: 100%;
+
+                img {
+                    flex: 1;
+                    contain: cover;
+                    object-fit: cover;
+                }
 
                 .card-single-manga__icons {
                     background: $secondary;
@@ -119,12 +126,12 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 
-                h2 {
-                        margin: 0px;
-                        padding-top: $padding-s;
-                        padding-bottom: $padding-s;
-                        color: black;
-                    }
+        h2 {
+            margin: 0px;
+            padding-top: $padding-s;
+            padding-bottom: $padding-s;
+            color: black;
+        }
     }
 
     .card-padding {
@@ -159,10 +166,6 @@
 @media (min-width: 1024px) {
 
     .card-single-manga {
-
-
-
-
         .card-padding {
             padding-left: 115px;
             padding-right: 115px;
@@ -198,6 +201,7 @@
                     max-width: 200px;
                     width: 30%;
 
+
                     .card-single-manga__icons {
                         background: $secondary;
                         display: flex;
@@ -215,6 +219,9 @@
                     max-width: 200px;
                     width: 30%;
 
+
+
+
                     .card-content__title {
                         text-transform: uppercase;
                         background: $tertiary ;
@@ -222,12 +229,13 @@
                         border-top-left-radius: 5px;
                         border-top-right-radius: 5px;
 
-                        h2{
+                        h2 {
                             margin: 0px;
                             padding-top: $padding-s;
                             padding-bottom: $padding-s;
                             color: black;
                         }
+
                         p {
                             margin: 0px;
 
@@ -244,7 +252,7 @@
                         justify-content: space-between;
                         padding-top: $padding;
                         padding-bottom: $padding;
-                        row-gap: 20px;
+                        row-gap: 10px;
 
                         span {
                             text-transform: uppercase;
@@ -300,6 +308,7 @@
         }
     }
 }
+
 @media (min-width: 1280px) {
     .card-single-manga {
         .card-padding {
@@ -309,11 +318,18 @@
                     max-width: 320px;
                     width: 30%;
                 }
+
                 .card-content {
                     min-width: 320px;
                     max-width: 320px;
                     width: 30%;
                 }
+
+                .card-content__infos {
+                    row-gap: 20px;
+                }
+
+
             }
         }
     }
@@ -322,4 +338,14 @@
 .favorite-button {
     all: unset;
     cursor: pointer;
+}
+
+.basket {
+    width: 48px;
+    height: 48px;
+
+    img {
+        width: 48px;
+        height: 48px;
+    }
 }

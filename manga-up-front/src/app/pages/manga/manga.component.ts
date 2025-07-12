@@ -63,6 +63,9 @@ export class MangaComponent implements OnInit {
     return this.datePipe.transform(dateString, 'yyyy') || '';
   }
   
-
+  warning(e: Event) {
+    e.preventDefault();
+    alert('Cette fonctionnalité est en cours de construction. Veuillez patienter.');
+  }
 
 }
