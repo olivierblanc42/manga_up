@@ -6,7 +6,7 @@
     <div *ngIf="!isLoadingManga && !manga && showEmptyMessage">
         <p>Aucun manga trouvé.</p>
     </div>
-    <div class="card card-single-manga"    *ngIf="!isLoadingManga && manga  ">
+    <div class="card card-single-manga" *ngIf="!isLoadingManga && manga  ">
         <div class="card-single-manga__title">
             <h1>{{manga.title}}</h1>
         </div>
@@ -20,7 +20,8 @@
                     }
 
                     <div class="card-single-manga__icons">
-                        <img src="svg/mdi_cart-outline_black.svg" alt="">
+                        <a  class="basket"   href="#" aria-label="Mon panier"><img src="svg/mdi_cart-outline_black.svg" alt="Icône panier"
+                                class="icons" (click)="warning($event)"></a>
                         <app-favorite-button></app-favorite-button>
                     </div>
                 </div>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="card-content__infos">
                         <div><span>Titre:</span> {{manga.title}}</div>
-                         
+
                         <div *ngIf="manga?.authors as authors">
                             <span>Auteurs:</span>
                             <div *ngFor="let author of authors; let i = index">
@@ -40,11 +41,11 @@
                                 <span *ngIf="i < authors.length - 1">, </span>
                             </div>
                         </div>
-                          
-                       
+
+
                         <div><span>Catégorie : </span>
                             <a [routerLink]="['/categorie', manga.idCategories.id]">
-                            {{manga.idCategories.label}}
+                                {{manga.idCategories.label}}
                             </a>
                         </div>
 
