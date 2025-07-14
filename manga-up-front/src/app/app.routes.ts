@@ -82,7 +82,7 @@ export const routes: Routes = [
             { path: 'mangasAdmin', component: MangasAdminComponent },
             {
                 path: 'manga/:id',
-                component: MangaComponent,
+                component: MangaAdminComponent,
             },
             { path: 'genresAdmin', component: GenresAdminComponent },
             { path: 'genre/:id', component: GenreAdminComponent },
