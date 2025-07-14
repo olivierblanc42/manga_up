@@ -224,4 +224,35 @@ public class AuthControllerTest {
         .andExpect(content().string(""));
   }
 
+  @Test
+  void shouldReturnJwtTokenOnLogin() throws Exception {
+    String loginJson = """
+        {
+          "username": "jean.dupont",
+          "password": "MotDePasseSecurise123!"
+        }
+        """;
+
+    String fakeJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.fakePayload.fakeSignature";
+
+    when(loginService.login(any(LoginRequestDto.class), any(HttpServletResponse.class)))
+        .thenAnswer(invocation -> {
+          Map<String, Object> body = new HashMap<>();
+          body.put("token", fakeJwtToken);
+          body.put("username", "jean.dupont");
+          body.put("message", "Login successful");
+          return ResponseEntity.ok(body);
+        });
+
+    mockMvc.perform(post("/api/auth/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(loginJson)
+        .with(csrf()))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.token").exists())
+        .andExpect(jsonPath("$.token").value(fakeJwtToken))
+        .andExpect(jsonPath("$.message").value("Login successful"))
+        .andExpect(jsonPath("$.username").value("jean.dupont"));
+  }
+
 }

@@ -19,7 +19,8 @@ public class AuthorDto implements Serializable {
     @Size(max = 50)
     private final String firstname;
     
-    @NotNull
+    @NotNull(message = "Description is required.")
+    @Size(max = 3000, message = "Description must be at most 3000 characters.")
     private final String description;
 
     @NotNull
@@ -28,8 +29,8 @@ public class AuthorDto implements Serializable {
     @NotNull
     private final LocalDate birthdate;
 
-    @NotNull
-    @Pattern(regexp = "^(https?://).*$", message = "URL must be valid and start with http or https")
+    @Size(max = 255, message = "URL must be at most 255 characters.")
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)+(:\\d+)?(/\\S*)?$", message = "URL is not valid.")
     private final String url;
 
     public AuthorDto(Integer id, String lastname, String firstname, String description, String genre, LocalDate birthdate,String url) {

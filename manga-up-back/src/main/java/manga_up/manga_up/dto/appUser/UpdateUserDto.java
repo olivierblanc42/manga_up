@@ -3,7 +3,9 @@ package manga_up.manga_up.dto.appUser;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import manga_up.manga_up.dto.UserAdress.UserAddressDto;
 import manga_up.manga_up.dto.UserAdress.UserAdressDtoUpdate;
@@ -15,9 +17,11 @@ public class UpdateUserDto implements Serializable {
 
     @NotNull
     @Size(max = 80)
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\-\\s]+$", message = "Only letters, spaces and hyphens allowed")
     private String firstname;
     @NotNull
     @Size(max = 80)
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\-\\s]+$", message = "Only letters, spaces and hyphens allowed")
     private String lastname;
 
 
@@ -27,6 +31,7 @@ public class UpdateUserDto implements Serializable {
     private String phoneNumber;
     @NotNull
     @Size(max = 320)
+    @Email
     private String email;
     @NotNull
     private UserAdressDtoUpdate idUserAddress;
