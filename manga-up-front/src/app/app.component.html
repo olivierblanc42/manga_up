@@ -14,7 +14,7 @@
             class="icons"></a>
         <img src="svg/material-symbols_list.svg" class="icons menu" alt="Icône menu" (click)="openNav()"
           aria-label="Ouvrir le menu">
-        <a aria-label="Mon panier"><img src="svg/mdi_cart-outline.svg" alt="Icône panier" class="icons"></a>
+        <a href="#" aria-label="Mon panier"><img src="svg/mdi_cart-outline.svg" alt="Icône panier" class="icons"  (click)="warning($event)"   ></a>
 
         <a class="link-admin" routerLink="admin" *ngIf="isAdmin" aria-label="Accès admin"><img src="svg/admin-tool.svg" alt="Icône panier" class="icons"></a>
       </div>
@@ -103,7 +103,7 @@
 
 
 
-<xng-breadcrumb class="breadcrumb">
+<xng-breadcrumb   class="breadcrumb">
 
 </xng-breadcrumb>
 

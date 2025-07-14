@@ -29,9 +29,23 @@ export type UserTest = {
     lastname: string;
     email: string;
     phoneNumber: string;
-    userAddressLitle: UserAddressLitle;
+    url: string;
+    idUserAddress: idUserAddress;
     mangas: Manga[];
 };
+
+export type UserUpdate = {
+    id: number;
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    phoneNumber: string;
+    url: string;
+    idUserAddress: idUserAddress;
+};
+
+
 
 
 export type UserResponse = {
@@ -293,6 +307,8 @@ export type GenderRegister = {
 export type Manga = {
     id: number;
     title: string;
+    picture: PictureLightDto;
+
 }
 
 export type FavoriteManga = {
@@ -324,7 +340,7 @@ export type MangaProjections = {
 
 
 export interface MangaDto {
-    id:number;
+    id: number;
     title: string;
     subtitle?: string;
     releaseDate?: Date;
@@ -339,6 +355,9 @@ export interface MangaDto {
     pictures: PictureLightDto[];
     usersFavorites?: UserFavoriteDto[];
 }
+
+
+
 
 export type PictureLightDto = {
     id: number;
@@ -379,7 +398,14 @@ export type MangaWithImages = {
     pictureId: string;
     picture: string;
     title: string;
+    authors: AuhtorFormanga[]
 }
+
+ export type AuhtorFormanga ={
+     firstname: string;
+     lastname: string;
+ }
+
 
 export type MangasWithImages = {
     content: MangaWithImages[];
@@ -473,14 +499,16 @@ export type UserAddressLittleProjection = {
     postalCode: string;
 }
 
-export type UserAddressLitle = {
-    line1: string;
-    line2: string;
-    line3: string;
-    city: string;
-    createdAt: Date;
-    postalCode: string;
-}
+export type IdUserAddress
+    = {
+        line1: string;
+        line2: string;
+        line3: string;
+        city: string;
+        createdAt: Date;
+        postalCode: string;
+    }
+
 
 export type UserRegister = {
     line1: string;
@@ -534,8 +562,9 @@ export type PictureSoloManga = {
     isMain: Boolean;
 }
 
-// csrf
-
 export type Csrf = {
     csrfToken: string;
-  };
+};
+
+
+type AuthorWithFullName = AuthorProjections & { fullName: string };

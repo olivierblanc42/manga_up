@@ -42,11 +42,15 @@ export class GenreComponent implements OnInit {
           if (!this.genre) {
             this.showEmptyMessage = true;
             this.isLoading = false;
+
           }
         }, 10000);
         return;
       } else {
+        
+
         this.genre = data;
+        console.log('Genre reçu :', this.genre);
         this.isLoading = false;
         this.showEmptyMessage = false;
       }

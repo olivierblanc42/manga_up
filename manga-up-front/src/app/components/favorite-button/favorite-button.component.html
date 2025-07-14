@@ -1,4 +1,4 @@
-<button class="btn-favoris" (click)="toggleFavorite()">
+<button class="btn-favoris" (click)="toggleFavorite($event)">
    @if(isFavorite== true){
     <img src="svg/mdi_heart_full.svg" alt="">
 }@else{

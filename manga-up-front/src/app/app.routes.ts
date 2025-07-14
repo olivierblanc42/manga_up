@@ -24,7 +24,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from './service/auth.guard';
-import { RoleGuard } from './service/role.guard'; 
+import { RoleGuard } from './service/role.guard';
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
 import { SearchComponent } from './pages/search/search.component';
 import { GenreAdminComponent } from './pages/admin/genre/genre.component';
@@ -36,29 +36,54 @@ import { AdminPictureComponent } from './pages/admin/admin-picture/admin-picture
 export const routes: Routes = [
     { path: '', component: HomeComponent, data: { breadcrumb: 'Home' } },
     { path: 'mangas', component: MangasComponent },
-    { path: 'genres', component: GenresComponent },
-    { path: 'genre/:id', component: GenreComponent },
+    {
+        path: 'genres', component: GenresComponent
+    },
+    {
+        path: 'genre/:id', component: GenreComponent, data: {
+            breadcrumb: 'genres'
+        }
+    },
     { path: 'categories', component: CategoriesComponent },
-    { path: 'categorie/:id', component: CategorieComponent },
+    {
+        path: 'categorie/:id', component: CategorieComponent,
+        data: {
+            breadcrumb: 'catégories'
+        }
+    },
     { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
     { path: 'register', component: UsersRegisterComponent },
     { path: 'auteurs', component: AuteursComponent },
-    { path: 'auteur/:id', component: AuteurComponent },
+    {
+        path: 'auteur/:id', component: AuteurComponent,
+        data: {
+            breadcrumb: 'auteurs'
+        }
+    },
     { path: 'privacy', component: PrivacyPolicyComponent },
-    { path: 'manga/:id', component: MangaComponent },
+    {
+        path: 'manga/:id',
+        component: MangaComponent,
+        data: {
+            breadcrumb: 'mangas'
+        }
+    },
     { path: "cart", component: CartComponent },
     { path: "login", component: LoginComponent },
     {
         path: 'search/:query',
         loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent)
-      } , 
+    },
     {
         path: 'admin', component: AdminLayoutComponent,
-        canActivate: [AuthGuard, RoleGuard], 
-        data: { role: 'ROLE_ADMIN' }, 
+        canActivate: [AuthGuard, RoleGuard],
+        data: { role: 'ROLE_ADMIN' },
         children: [
             { path: 'mangasAdmin', component: MangasAdminComponent },
-            { path: 'manga/:id', component: MangaAdminComponent },
+            {
+                path: 'manga/:id',
+                component: MangaComponent,
+            },
             { path: 'genresAdmin', component: GenresAdminComponent },
             { path: 'genre/:id', component: GenreAdminComponent },
             { path: 'categoriesAdmin', component: CategoriesAdminComponent },

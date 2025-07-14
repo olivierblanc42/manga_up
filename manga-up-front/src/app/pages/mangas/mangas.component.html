@@ -17,7 +17,9 @@
                <img class="image" src="{{manga.picture}}" alt="Image du manga  {{manga.title}}">
          <div>
             <h3 class="card-manga__title">{{manga.title}}</h3>
-             
+                           @for (author of manga.authors; track $index) {
+                           <p class="card-manga__autor">{{author.firstname}} {{author.lastname}}</p>
+                           }
          </div>
 
          <a [routerLink]="'/manga/' + manga.id_mangas" class="btn btn-card"   [attr.aria-label]="'Voir la fiche de ' + manga.title">

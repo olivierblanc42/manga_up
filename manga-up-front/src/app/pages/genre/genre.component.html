@@ -29,25 +29,31 @@
     </div>
 
 
-@if ((genre?.mangasWithImages?.content?.length ?? 0) > 0) {
-            <div class="section__grid">
-    @for (manga of genre?.mangasWithImages?.content; track $index) {
+    @if ((genre?.mangasWithImages?.content?.length ?? 0) > 0) {
+    <div class="section__grid">
+        @for (manga of genre?.mangasWithImages?.content; track $index) {
 
         <ui-card size="card-manga">
 
-       
-         <img src="{{manga.picture}}" alt="{{manga.title}}">  
+
+            <img src="{{manga.picture}}" alt="{{manga.title}}">
             <div>
                 <h3 class="card-manga__title">{{manga.title}}</h3>
                 <p class="card-manga__autor">
+                    @for (author of manga.authors; track $index) {
+                    {{author.lastname}} {{author.firstname}}
+                    }
                 </p>
-                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id_mangas "     [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title"   >
-                    <img src="svg/mdi_magnify.svg" alt="">  <p>voir plus</p>
+                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id_mangas "
+                    [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title">
+
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
                 </a>
             </div>
         </ui-card>
-    }
-</div>
+        }
+    </div>
     }@else {
     <p>Il n'y a pas encore de mangas dans le genre</p>
     }

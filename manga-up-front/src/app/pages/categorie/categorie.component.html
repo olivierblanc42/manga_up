@@ -12,7 +12,7 @@
             <h1>{{category.label}}</h1>
         </div>
         <div class="card-single-other__content">
-            <img src="{{category.url}}" alt="Image de presentation de la catégorie {{category.label}}"  >
+            <img src="{{category.url}}" alt="Image de presentation de la catégorie {{category.label}}">
             <div class=" card card-single-other__info">
                 <div class="card-single-other__info-title">
                     <h2>Présentation</h2>
@@ -34,29 +34,39 @@
         <h2>Mangas dans la categorie {{category?.label}}</h2>
     </div>
 
-@if ((category?.mangasWithImages?.content?.length ?? 0) > 0) {
-        <div class="section__grid">
-   @for (manga of category?.mangasWithImages?.content; track $index) {
-            <ui-card size="card-manga">
-
-       
-        <img src="{{manga.picture}}" alt="image manga {{manga.title}}">
-        
-
-        <div>
-            <h3 class="card-manga__title">{{manga.title}}</h3>
-            <a class="btn btn-card" [routerLink]="'/manga/' + manga.id_mangas " [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title"  >
-            <img src="svg/mdi_magnify.svg" alt="">   <p>voir plus</p>
-            </a>
-        </div>
+    @if ((category?.mangasWithImages?.content?.length ?? 0) > 0) {
+    <div class="section__grid">
+        @for (manga of category?.mangasWithImages?.content; track $index) {
+        <ui-card size="card-manga">
 
 
-    </ui-card>
-   }
+            <img src="{{manga.picture}}" alt="image manga {{manga.title}}">
 
-</div>
-   
-}
+
+            <div>
+                <h3 class="card-manga__title">{{manga.title}}</h3>
+                <p class="card-manga__autor">
+                    @for (author of manga.authors; track $index) {
+                    {{author.lastname}} {{author.firstname}}
+                    }
+                </p>
+                <a class="btn btn-card" [routerLink]="'/manga/' + manga.id_mangas "
+                    [attr.aria-label]="'Voir plus d’informations sur le manga ' + manga.title">
+                    <img src="svg/mdi_magnify.svg" alt="">
+                    <p>voir plus</p>
+                </a>
+            </div>
+
+
+        </ui-card>
+        }
+
+    </div>
+
+    }@else {
+    <p>Il n'y a pas encore de mangas dans la catégorie</p>
+    }
+
 
 
 </section>
