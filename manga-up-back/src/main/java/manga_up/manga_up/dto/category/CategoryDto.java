@@ -1,6 +1,7 @@
 package manga_up.manga_up.dto.category;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -15,7 +16,10 @@ public class CategoryDto implements Serializable {
     @Size(max = 50)
     private final String label;
     @NotNull
+    @Size(max = 3000, message = "Description must be at most 3000 characters.")
     private final String description;
+    @Size(max = 255, message = "URL must be at most 255 characters.")
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)+(:\\d+)?(/\\S*)?$", message = "URL is not valid.")
     private final String url;
 
 

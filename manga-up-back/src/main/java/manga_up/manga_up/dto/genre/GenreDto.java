@@ -14,13 +14,14 @@ public class GenreDto implements Serializable {
     @NotNull
     private final Integer id;
     @NotNull
-    @Size(max = 255)
-    @Pattern(regexp = "^(https?://)?([\\w.-]+)(:[0-9]{1,5})?(/.*)?$", message = "L'URL n'est pas valide")
+    @Size(max = 255, message = "URL must be at most 255 characters.")
+    @Pattern(regexp = "^(https?://)?([\\w.-]+)+(:\\d+)?(/\\S*)?$", message = "URL is not valid.")
     private final String url;
     @NotNull
     @Size(max = 50)
     private final String label;
     @NotNull
+    @Size(max = 3000, message = "Description must be at most 3000 characters.")
     private final String description;
 
     public GenreDto(Integer id, String url, String label, String description) {

@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class RegisterDto implements Serializable {
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z0-9_.-]{3,50}$", message = "The username contains invalid characters.")
+    @Pattern(regexp = "^[a-zA-Z0-9@_.-]{3,50}$", message = "The value contains invalid characters.")
     @Size(min = 3, max = 50)
     private String username;
 
