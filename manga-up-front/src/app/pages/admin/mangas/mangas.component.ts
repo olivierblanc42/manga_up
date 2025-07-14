@@ -99,7 +99,8 @@ export class MangasAdminComponent implements OnInit {
         this.isLoadingManga = false;
         this.showEmptyMessage = false;
       } 
-       
+      console.log("Manga", this.mangas);
+
       this.pages = this.convertNumberToArray(this.mangas?.totalPages!)
       this.lastPage = this.mangas?.totalPages!;
     })
@@ -213,7 +214,6 @@ export class MangasAdminComponent implements OnInit {
         console.error('Erreur lors de la création', error);
       }
     } else {
-
       this.mangaForm.markAllAsTouched();
     }
   }
