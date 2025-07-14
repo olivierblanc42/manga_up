@@ -398,6 +398,7 @@ export type MangaWithImages = {
     pictureId: string;
     picture: string;
     title: string;
+    authors: Authors[]
 }
 
 export type MangasWithImages = {

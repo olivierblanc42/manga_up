@@ -12,6 +12,7 @@
         h1 {
             margin: 0px;
             padding: $padding-s;
+            color: black;
         }
     }
 
@@ -23,7 +24,11 @@
                 padding: $padding-xs;
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
-
+                color: black;
+                    h3 {
+                            margin-top: 10px;
+                            margin-bottom: 10px;
+                        }
                 p {
                     margin: 0px;
 
@@ -32,6 +37,9 @@
 
             .card-single__summary-content {
                 padding: $padding-xs;
+                p{
+                                    padding: $padding-xl;
+                }
             }
         }
 
@@ -67,7 +75,11 @@
                     padding: $padding-xs;
                     border-top-left-radius: 5px;
                     border-top-right-radius: 5px;
-
+                    color: black;
+                    h2 {
+                            margin-top: 10px;
+                            margin-bottom: 10px;
+                        }
                     p {
                         margin: 0px;
 
@@ -200,8 +212,9 @@
 
     }
 
-  
+
 }
+
 @media (min-width: 1280px) {
     .card-single-auteur {
         .card-padding {
@@ -211,6 +224,7 @@
                     max-width: 320px;
                     width: 30%;
                 }
+
                 .card-content {
                     min-width: 320px;
                     max-width: 320px;
