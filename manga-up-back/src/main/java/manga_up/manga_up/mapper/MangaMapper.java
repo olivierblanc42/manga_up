@@ -91,7 +91,7 @@ public class MangaMapper {
     public Manga mangaToEntity(MangaDto mangaDto) {
         Manga manga = new Manga();
         manga.setTitle(Jsoup.clean(mangaDto.getTitle(),Safelist.none()));
-        manga.setSubtitle(Jsoup.clean(mangaDto.getSubtitle(), Safelist.none()));
+        manga.setSubtitle(mangaDto.getSubtitle() != null ? Jsoup.clean(mangaDto.getSubtitle(), Safelist.none()) : null);
         manga.setReleaseDate(mangaDto.getReleaseDate());
         manga.setSummary(Jsoup.clean(mangaDto.getSummary(), Safelist.none()));
         manga.setPriceHt(mangaDto.getPriceHt());

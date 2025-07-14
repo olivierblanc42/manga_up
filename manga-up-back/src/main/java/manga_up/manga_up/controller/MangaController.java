@@ -62,27 +62,26 @@ public class MangaController {
         return ResponseEntity.ok(mangaService.findMangaById(id));
     }
 
-@PreAuthorize("hasRole('ADMIN')")
-@Operation(summary = "Add manga")
-@ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Manga added successfully"),
-    @ApiResponse(responseCode = "400", description = "Validation or duplication error", content = @Content(schema = @Schema(implementation = ErroEntity.class)))
-})
-@PostMapping("/add")
-public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
-    LOGGER.info("Adding Manga: {}", mangaDto);
-    try {
-        return ResponseEntity.ok(mangaService.save(mangaDto));
-    } catch (DataIntegrityViolationException ex) {
-        String errorMessage = "Duplicate manga title: " + mangaDto.getTitle();
-        ErroEntity error = new ErroEntity("DUPLICATE_TITLE", errorMessage);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-    } catch (EntityNotFoundException ex) {
-        ErroEntity error = new ErroEntity("NOT_FOUND", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Add manga")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Manga added successfully"),
+            @ApiResponse(responseCode = "400", description = "Validation or duplication error", content = @Content(schema = @Schema(implementation = ErroEntity.class)))
+    })
+    @PostMapping("/add")
+    public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
+        LOGGER.info("Adding Manga: {}", mangaDto);
+        try {
+            return ResponseEntity.ok(mangaService.save(mangaDto));
+        } catch (DataIntegrityViolationException ex) {
+            String errorMessage = "Duplicate manga title: " + mangaDto.getTitle();
+            ErroEntity error = new ErroEntity("DUPLICATE_TITLE", errorMessage);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        } catch (EntityNotFoundException ex) {
+            ErroEntity error = new ErroEntity("NOT_FOUND", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        }
     }
-}
-
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "delete manga")
@@ -90,8 +89,7 @@ public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
     public void deleteManga(@PathVariable("id") Integer mangaId) {
         LOGGER.info("Deleting manga by id " + mangaId);
         mangaService.deleteManga(mangaId);
-    }    
-
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "All Mangas with pagination")
@@ -110,6 +108,5 @@ public ResponseEntity<?> addManga(@Valid @RequestBody MangaDto mangaDto) {
         MangaDto updatedManga = mangaService.update(id, mangaDto);
         return ResponseEntity.ok(updatedManga);
     }
-
 
 }

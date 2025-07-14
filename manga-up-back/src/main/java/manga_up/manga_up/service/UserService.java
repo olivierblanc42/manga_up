@@ -158,6 +158,7 @@ public class UserService {
         appUser.setLastname(userProfilDto.getLastname());
         appUser.setEmail(userProfilDto.getEmail());
         appUser.setPhoneNumber(userProfilDto.getPhoneNumber());
+        appUser.setUrl(userProfilDto.getUrl());
 
         if (appUser.getIdUserAddress() != null) {
 
