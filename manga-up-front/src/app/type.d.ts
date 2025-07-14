@@ -398,7 +398,14 @@ export type MangaWithImages = {
     pictureId: string;
     picture: string;
     title: string;
+    authors: AuhtorFormanga[]
 }
+
+ export type AuhtorFormanga ={
+     firstname: string;
+     lastname: string;
+ }
+
 
 export type MangasWithImages = {
     content: MangaWithImages[];

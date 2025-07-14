@@ -35,7 +35,8 @@
                     <h3 class="card-manga__title">{{ manga.title }}</h3>
                     <p class="card-manga__autor">
                         @for (author of manga.authors; track $index) {
-                        {{ author.firstname }} {{ author.lastname }}
+                          
+                        <a [routerLink]="'/auteur/' + author.id">{{author.firstname}} {{author.lastname}}</a>
                         @if (author !== manga.authors[manga.authors.length - 1]) {
                         ,
                         }
@@ -60,7 +61,7 @@
                 <h3 class="card-manga__title">{{manga.title}}</h3>
                 <p class="card-manga__autor">
                     @for (author of manga.authors; track $index) {
-                    {{author.firstname}} {{author.lastname}}
+                        <a [routerLink]="'/auteur/' + author.id">{{author.firstname}} {{author.lastname}}</a>
                     @if (author !== manga.authors[manga.authors.length - 1]) {
                     ,
                     }
