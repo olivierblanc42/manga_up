@@ -66,13 +66,14 @@ public class UserService {
      * @return a {@link ResponseEntity} containing the user's profile DTO or
      *         appropriate HTTP status.
      */
+    @Transactional
     public ResponseEntity<UserProfilDto> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
 
-            AppUser appUser = userdao.findAppUserByUsername(username);
+            AppUser appUser = userdao.findByUsername(username);
 
             if (appUser == null) {
                 return ResponseEntity.notFound().build();
