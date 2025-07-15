@@ -138,7 +138,7 @@ describe('CategoriesAdminComponent', () => {
   // Vérifie le titre affiché
   it('should have the correct title', () => {
     const titleElement = fixture.nativeElement.querySelector('h1');
-    expect(titleElement.textContent).toBe('Catégories');
+    expect(titleElement.textContent).toBe('Catégories:');
   });
 
   // Gère une erreur émise par le service

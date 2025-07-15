@@ -32,8 +32,7 @@ describe('AuthorComponent', () => {
                 id_mangas: 1,
                 title: "Naruto - Manga",
                 picture: "https://example.com/naruto.jpg",
-                pictureId: "1",
-                authors: [{
+                pictureId: "1", authors: [{
                   firstname: "string",
                   lastname: "string",
                 }
@@ -44,8 +43,7 @@ describe('AuthorComponent', () => {
                 id_mangas: 2,
                 title: "Bleach - Manga",
                 picture: "https://example.com/naruto.jpg",
-                pictureId: "2",
-                authors: [{
+                pictureId: "2", authors: [{
                   firstname: "string",
                   lastname: "string",
                 }
