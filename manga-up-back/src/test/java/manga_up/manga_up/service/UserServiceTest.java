@@ -325,7 +325,7 @@ class UserServiceTest {
         when(authentication.isAuthenticated()).thenReturn(true);
         when(authentication.getName()).thenReturn(username);
         when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(userDao.findAppUserByUsername(username)).thenReturn(mockUser);
+        when(userDao.findByUsername(username)).thenReturn(mockUser);
         when(appUserMapper.toDtoAppUser(mockUser)).thenReturn(mockDto);
 
         try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = Mockito
