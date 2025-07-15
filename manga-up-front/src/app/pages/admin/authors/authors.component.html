@@ -64,7 +64,7 @@
 
     <div>
         <div class="section-admin__title">
-            <h1>Auteurs:</h1>
+            <h1>Auteurs:</h1> <p>{{authors?.size}}</p>
         </div>
         <div>
             <table class="section-admin__content">
@@ -100,6 +100,35 @@
 
 
     </div>
-
+        <nav role="navigation" aria-label="Pagination">
+            <ul class="pagination">
+                @for(page of pages; track page; let count=$index){
+                @if(count===0){
+                <li>
+                    <button (click)="pagePrevious()" [ngClass]="currentPage <= 0 ? 'grey-desactive-btn': 'blue-active-btn'"
+                        aria-label="Page précédente" class="">
+                        Previous
+                    </button>
+                </li>
+                }
+        
+                <li>
+                    <button (click)="pageAuthor(page)" [attr.aria-current]="currentPage===page ? 'page' : null"
+                        [attr.aria-label]="'Page ' + (count + 1)" class="">
+                        {{count + 1}}
+                    </button>
+                </li>
+        
+                @if(count===lastPage-1){
+                <li>
+                    <button (click)="pageNext()" [ngClass]="currentPage===lastPage-1 ? 'grey-desactive-btn': 'blue-active-btn'"
+                        aria-label="Page suivante" class="">
+                        Next
+                    </button>
+                </li>
+                }
+                }
+            </ul>
+        </nav>
 </section>
 

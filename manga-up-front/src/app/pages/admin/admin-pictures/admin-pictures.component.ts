@@ -33,6 +33,8 @@ export class AdminPicturesComponent  implements OnInit {
     this.pictureService.currentpicturePagination.subscribe((data) => {
       this.pictures =data;
       console.log(this.pictures)
+      this.pages = this.convertNumberToArray(this.pictures?.totalPages!)
+      this.lastPage = this.pictures?.totalPages!;
     })
 
   }
