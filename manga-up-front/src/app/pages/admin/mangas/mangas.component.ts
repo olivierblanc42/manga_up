@@ -152,8 +152,8 @@ export class MangasAdminComponent implements OnInit {
       inStock: [false],
       active: [false],
       idCategories: [null, Validators.required],
-      genres: [[], [Validators.required, Validators.maxLength(1)]],   
-      authors: [[], [Validators.required, Validators.maxLength(1)]],  
+      genres: [[], [Validators.required]],   
+      authors: [[], [Validators.required]],  
       pictures: this.fb.array([])
     });
     

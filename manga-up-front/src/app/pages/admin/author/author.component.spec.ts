@@ -32,13 +32,24 @@ describe('AuthorComponent', () => {
                 id_mangas: 1,
                 title: "Naruto - Manga",
                 picture: "https://example.com/naruto.jpg",
-                pictureId: "1",
+                pictureId: "1", authors: [{
+                  firstname: "string",
+                  lastname: "string",
+                }
+
+                ]
               },
               {
                 id_mangas: 2,
                 title: "Bleach - Manga",
                 picture: "https://example.com/naruto.jpg",
-                pictureId: "2",
+                pictureId: "2", authors: [{
+                  firstname: "string",
+                  lastname: "string",
+                }
+
+                ]
+
               }
             ],
             size: 8,
